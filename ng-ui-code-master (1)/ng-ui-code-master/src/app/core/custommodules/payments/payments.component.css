@@ -1,0 +1,110 @@
+input[type="text"] {
+  height: 35px;
+  padding: 0.375rem 0.75rem;
+}
+:host
+  ::ng-deep
+  .payment-list
+  .ui-table-customers
+  .ui-table-tbody
+  > tr
+  > td:nth-last-child(2),
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="amount"] {
+  text-align: right;
+}
+:host
+  ::ng-deep
+  .invoice-list
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="invoiceNumber"] {
+  width: 11%;
+}
+:host
+  ::ng-deep
+  .invoice-list
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="amount"] {
+  width: 15%;
+  text-align: right;
+}
+:host
+  ::ng-deep
+  .invoice-list
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="dateReceived"],
+:host
+  ::ng-deep
+  .invoice-list
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="paymentType"] {
+  width: 13%;
+}
+:host
+  ::ng-deep
+  .attachmentList
+  .ui-table-customers
+  .ui-table-tbody
+  > tr
+  > td:nth-child(2) {
+  text-align: inherit;
+}
+:host ::ng-deep .p-inputnumber.p-component {
+  display: block;
+}
+.attchmentlabel {
+  font-size: inherit;
+}
+:host
+  ::ng-deep
+  .payment-list
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="amount"] {
+  width: 15%;
+}
+:host
+  ::ng-deep
+  .payment-list
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="paymentType"],
+:host
+  ::ng-deep
+  .payment-list
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="dateReceived"] {
+  width: 13%;
+}
+.text-view {
+  color: #00a88e;
+}
+:host
+  ::ng-deep
+  .payment-list
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="invoiceNumber"] {
+  width: 15%;
+}
+.action-for-selected-list {
+  background-color: inherit;
+  float: right;
+}

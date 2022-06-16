@@ -1,0 +1,12 @@
+:host ::ng-deep .create_experiences {
+  color: #009ce7;
+}
+:host ::ng-deep .assign_responsibilities {
+  color: #6ac069;
+}
+:host ::ng-deep .manage_teams {
+  color: #8484d7;
+}
+:host ::ng-deep .measure_progress {
+  color: #e44c7d;
+}

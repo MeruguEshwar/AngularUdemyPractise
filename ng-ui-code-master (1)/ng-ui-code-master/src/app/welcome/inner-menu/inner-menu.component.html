@@ -1,0 +1,14 @@
+<div class="topna sticky-top">
+  <nav id="navbar-inner-menu">
+    <div class="container">
+      <a class="active" style="color: #013b95; padding-left: 0px"
+        ><b class="badge badge-blue">{{ menuDetails.defaultLabel }}</b></a
+      >
+      <ng-container *ngFor="let submenu of menuDetails.subMenu">
+        <a href="{{ menuDetails.defaulturl }}#{{ submenu.url }}">{{
+          submenu.label
+        }}</a>
+      </ng-container>
+    </div>
+  </nav>
+</div>

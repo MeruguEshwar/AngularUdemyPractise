@@ -1,0 +1,631 @@
+<div [ngClass]="{ 'page-wrapper': !isEmp }">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header" *ngIf="!isEmp">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">Dashboard</li>
+            <li class="breadcrumb-item active">Project Documents</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+      <div class="col-sm-12" [ngClass]="{ 'p-0': isEmp }">
+        <div class="file-wrap">
+          <div class="file-sidebar">
+            <div class="file-header justify-content-center">
+              <span>Projects</span>
+              <a href="javascript:void(0);" class="file-side-close"
+                ><i class="fa fa-times"></i
+              ></a>
+            </div>
+            <div class="file-search">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <i class="fa fa-search"></i>
+                </div>
+                <input
+                  type="text"
+                  name="Search"
+                  class="form-control"
+                  placeholder="Search"
+                  [(ngModel)]="searchValue"
+                  (keyup)="filter(searchValue, mainDocumentCategoryList)"
+                />
+              </div>
+            </div>
+            <div class="file-pro-list">
+              <div class="file-scroll">
+                <ul class="file-menu">
+                  <li
+                    *ngFor="let item of documentCategoryList; let i = index"
+                    [ngClass]="{
+                      active:
+                        selectedDocumentCategoryDetailsIndex == i &&
+                        item.projectName == selectedRowData.projectName
+                    }"
+                  >
+                    <a href="javascript:void(0)" (click)="handleDocChange(i)">{{
+                      item.projectName
+                    }}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="file-cont-wrap">
+            <div class="file-cont-inner">
+              <div class="file-cont-header">
+                <div class="file-options">
+                  <a
+                    href="javascript:void(0)"
+                    id="file_sidebar_toggle"
+                    class="file-sidebar-toggle"
+                  >
+                    <i class="fa fa-bars"></i>
+                  </a>
+                </div>
+                <span *ngIf="selectedRowData">{{
+                  selectedRowData.projectName
+                }}</span>
+                <div
+                  *ngIf="isEmp && documentCategoryList.length"
+                  class="file-options"
+                  (click)="uploadDocCatg(selectedRowData)"
+                  style="cursor: pointer"
+                >
+                  <span class="btn-file"><i class="fa fa-upload"></i></span>
+                </div>
+              </div>
+              <div class="file-content">
+                <p-table
+                  [columns]="cols"
+                  [value]="documentCategoryDetails"
+                  styleClass="ui-table-customers"
+                  #dt
+                  [paginator]="true"
+                  [rows]="5"
+                  [showCurrentPageReport]="true"
+                  [alwaysShowPaginator]="true"
+                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                  [filterDelay]="0"
+                  [globalFilterFields]="[
+                    'documentTitle',
+                    'documentExpiryDate',
+                    'alertRequired',
+                    'sharedWithOthers',
+                    'projectName',
+                    'employeeName',
+                    'awsS3UniqueKey'
+                  ]"
+                  [ngClass]="{ personalView: !isEmp }"
+                >
+                  <ng-template pTemplate="caption">
+                    <div class="file-search">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <i class="fa fa-search"></i>
+                        </div>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Search"
+                          (input)="
+                            dt.filterGlobal($event.target.value, 'contains')
+                          "
+                        />
+                      </div>
+                    </div>
+                  </ng-template>
+                  <ng-template pTemplate="header" let-columns>
+                    <tr>
+                      <th *ngIf="isLink" style="width: 25px">
+                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                      </th>
+                      <th
+                        *ngFor="let col of columns"
+                        [pSortableColumn]="col.field"
+                      >
+                        {{ col.header }}
+                        <p-sortIcon [field]="col.field"></p-sortIcon>
+                      </th>
+                      <th
+                        class="actions"
+                        [ngStyle]="{ width: isEmp ? '5%' : '8%' }"
+                      ></th>
+                    </tr>
+                  </ng-template>
+                  <ng-template
+                    pTemplate="body"
+                    let-rowData
+                    let-columns="columns"
+                  >
+                    <tr [pSelectableRow]="rowData">
+                      <td *ngIf="isLink" style="width: 25px">
+                        <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                      </td>
+                      <td
+                        *ngFor="let col of columns"
+                        [attr.ng-reflect-field]="col.field"
+                      >
+                        <ng-container *ngIf="col.field == 'documentTitle'">
+                          <a (click)="onImageViewOpenClick(rowData)">
+                            {{ rowData[col.field] }}</a
+                          >
+                        </ng-container>
+                        <ng-container *ngIf="col.field == 'alertRequired'"
+                          >{{ +rowData[col.field] ? "Yes" : "No" }}
+                        </ng-container>
+                        <ng-container
+                          *ngIf="col.field == 'alertBeforeNoOfDays'"
+                        >
+                          <ng-container *ngIf="+rowData.alertRequired">
+                            {{ rowData[col.field] }}
+                          </ng-container>
+                        </ng-container>
+                        <ng-container *ngIf="col.field == 'sharedWithOthers'">
+                          <ng-container *ngIf="!rowData[col.field]">
+                            <i class="fa fa-dot-circle-o"></i>
+                            {{ rowData[col.field] }}
+                          </ng-container>
+                          <ng-container *ngIf="rowData[col.field]">
+                            <a
+                              href="javascript:void(0)"
+                              data-toggle="modal"
+                              class="is-shared"
+                              (click)="taggedDocumentModel(rowData)"
+                              ><i class="fa fa-dot-circle-o"></i>
+                              {{ rowData[col.field] }}
+                            </a>
+                          </ng-container>
+                        </ng-container>
+                        <ng-container *ngIf="col.field == 'taggedDocument'">
+                          <ng-container *ngIf="!rowData[col.field]">
+                            <i class="fa fa-dot-circle-o"></i>
+                            {{ rowData[col.field] }}
+                          </ng-container>
+                          <ng-container *ngIf="rowData[col.field]">
+                            <a
+                              href="javascript:void(0)"
+                              data-toggle="modal"
+                              class="is-shared"
+                              (click)="taggedProjectModel(rowData)"
+                              ><i class="fa fa-dot-circle-o"></i>
+                              {{ rowData[col.field] }}
+                            </a>
+                          </ng-container>
+                        </ng-container>
+                        <ng-container
+                          *ngIf="
+                            col.field != 'alertRequired' &&
+                            col.field != 'taggedDocument' &&
+                            col.field != 'sharedWithOthers' &&
+                            col.field != 'documentTitle'
+                          "
+                        >
+                          {{ rowData[col.field] }}
+                        </ng-container>
+                      </td>
+                      <td class="actions" *ngIf="!isEmp">
+                        <a
+                          class="dropdown-item"
+                          href="#"
+                          data-toggle="modal"
+                          (click)="fileToDownload(rowData)"
+                          ><i class="fa fa-download m-r-5"></i>
+                        </a>
+                      </td>
+                      <td class="actions" *ngIf="isEmp">
+                        <div class="dropdown dropdown-action">
+                          <a
+                            href="#"
+                            class="action-icon dropdown-toggle"
+                            data-toggle="dropdown"
+                            aria-expanded="false"
+                            ><i class="material-icons">more_vert</i></a
+                          >
+                          <div
+                            class="dropdown-menu dropdown-menu-right"
+                            x-placement="top-end"
+                            style="
+                              position: absolute;
+                              will-change: transform;
+                              top: 0px;
+                              left: 0px;
+                              transform: translate3d(72px, -2px, 0px);
+                            "
+                          >
+                            <a
+                              *ngIf="!rowData.taggedDocument"
+                              class="dropdown-item"
+                              href="#"
+                              data-toggle="modal"
+                              (click)="fileToEdit(rowData)"
+                              ><i class="fa fa-pencil-square-o m-r-5"></i>
+
+                              Edit
+                            </a>
+                            <a
+                              class="dropdown-item"
+                              href="#"
+                              data-toggle="modal"
+                              (click)="fileToDownload(rowData)"
+                              ><i class="fa fa-download m-r-5"></i>
+                              Download
+                            </a>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="emptymessage">
+                    <tr>
+                      <td
+                        [attr.colspan]="cols.length + 1"
+                        style="text-align: center"
+                      >
+                        No Records Found.
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Page Content -->
+</div>
+
+<!-- Upload File Modal -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: uploadFileInfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          *ngIf="errorLabel"
+          style="position: absolute; left: 15px"
+          class="text-danger"
+        >
+          {{ errorLabel }}
+        </h5>
+        <h5 class="modal-title">Upload Document</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal(f)"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form
+            (ngSubmit)="saveUploadFile(selectedDocumentCategoryDetails, f)"
+            #f="ngForm"
+          >
+            <div class="row" *ngIf="errorLabel">
+              <div class="col-sm-6" style="color: red">
+                {{ errorLabel }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Document Title <span class="text-danger">*</span></label
+                  >
+                  <input
+                    class="form-control"
+                    name="documentTitle"
+                    [(ngModel)]="fileUpload.documentTitle"
+                    type="text"
+                    required
+                    maxlength="100"
+                    (keypress)="sharedService.keyPressAlphaNumaric($event)"
+                  />
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-form-label">Document Number </label>
+                  <input
+                    class="form-control"
+                    name="documentNumber"
+                    [(ngModel)]="fileUpload.documentNumber"
+                    type="text"
+                    (keypress)="sharedService.keyPressAlphaNumaric($event)"
+                  />
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-form-label">Document Expiry Date </label>
+                  <p-calendar
+                    name="documentExpiryDate"
+                    [(ngModel)]="fileUpload.documentExpiryDate"
+                    showIcon="true"
+                    dateFormat="mm-dd-yy"
+                    dataType="string"
+                  ></p-calendar>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >File To Upload
+                    <span class="text-danger" *ngIf="!isFileEdit"
+                      >*</span
+                    ></label
+                  >
+                  <div class="d-flex align-items-center">
+                    <input
+                      (change)="onFileChange($event)"
+                      name="fileToUpload"
+                      class="form-control"
+                      type="file"
+                      required
+                      #fileInput
+                    />
+                    <div *ngIf="fileUpload.fileToUpload">
+                      <a
+                        class="btn btn-danger btn-clear-file"
+                        href="javascript:void(0)"
+                        aria-label="Remove"
+                        (click)="clearFile()"
+                      >
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                [ngClass]="{
+                  'col-sm-4': fileUpload.checked == true,
+                  'col-sm-12': fileUpload.checked == false
+                }"
+              >
+                <div class="form-group">
+                  <label class="col-form-label">Alert Required</label>
+                  <div>
+                    <p-inputSwitch
+                      name="alertRequired"
+                      [(ngModel)]="fileUpload.checked"
+                    ></p-inputSwitch>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-8" *ngIf="fileUpload.checked">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Alert Before No Of Days
+                    <span class="text-danger">*</span></label
+                  >
+                  <p-dropdown
+                    name="alertBeforeNoOfDays"
+                    [options]="noOfAlertsList"
+                    [(ngModel)]="fileUpload.alertBeforeNoOfDays"
+                    required
+                    [filter]="true"
+                  ></p-dropdown>
+                </div>
+              </div>
+              <div
+                class="col-sm-12"
+                *ngIf="supplierOfProjectList && supplierOfProjectList.length"
+              >
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Tag Customer
+                    <span class="tag-note"
+                      >This document will be linked to customer section</span
+                    >
+                  </label>
+                  <div>
+                    <p-multiSelect
+                      name="taggedProjects"
+                      [options]="supplierOfProjectList"
+                      [showToggleAll]="false"
+                      [(ngModel)]="selectedSupplierOfProjectList"
+                      [virtualScroll]="true"
+                      optionLabel=""
+                      optionValue=""
+                      [filter]="true"
+                      [itemSize]="34"
+                      optionLabel="companyName"
+                      optionValue="companyCode"
+                      class="multiselect-custom-virtual-scroll"
+                      (onChange)="hadleTaggedSupplier($event)"
+                    >
+                    </p-multiSelect>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="col-sm-12"
+                *ngIf="
+                  selectedSupplierOfProjectList &&
+                  selectedSupplierOfProjectList.length &&
+                  employeesOfProjectList &&
+                  employeesOfProjectList.length
+                "
+              >
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Tag Employees
+                    <span class="tag-note"
+                      >This Document will be shared to the below
+                      Employee(s)</span
+                    >
+                  </label>
+                  <p-multiSelect
+                    name="taggedEmployees"
+                    [options]="employeesOfProjectList"
+                    [showToggleAll]="false"
+                    [(ngModel)]="selectedEmployeesOfProjectList"
+                    [virtualScroll]="true"
+                    [filter]="true"
+                    [itemSize]="34"
+                    optionLabel="employeeName"
+                    optionValue="employeeCode"
+                    class="multiselect-custom-virtual-scroll"
+                  >
+                  </p-multiSelect>
+                </div>
+              </div>
+            </div>
+
+            <div class="submit-section" *ngIf="!isFileEdit">
+              <button
+                type="submit"
+                class="btn btn-success"
+                [disabled]="!f.valid || !fileUpload.fileToUpload"
+              >
+                <i class="fa fa-upload"></i>&nbsp;Upload
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger ml-2"
+                (click)="closeAddmodal(f)"
+              >
+                <i class="fa fa-times"></i>&nbsp;Cancel
+              </button>
+            </div>
+            <div class="submit-section" *ngIf="isFileEdit">
+              <button type="submit" class="btn btn-info" [disabled]="!f.valid">
+                <i class="fa fa-upload"></i>&nbsp;Update
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger ml-2"
+                (click)="closeAddmodal(f)"
+              >
+                <i class="fa fa-times"></i>&nbsp;Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Upload file Modal -->
+<!-- Image view file Modal -->
+<ng-container *ngIf="viewImage">
+  <app-imageviwer
+    [imageBlob]="imageBlob"
+    (onClose)="onImageViewCloseClick($event)"
+  >
+  </app-imageviwer>
+</ng-container>
+
+<!-- /Image view file Modal -->
+<!-- Tagged Documents Modal -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: taggedModelInfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+  *ngIf="taggedModelInfo == 'block'"
+>
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Tagged Details</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-tagged-or-shared-documents
+          [projectDocumentDetailsId]="selectedProjectDocumentDetailsId"
+        ></app-tagged-or-shared-documents>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Tagged Documents Modal -->
+
+<!-- Tagged Project Modal -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: taggedProjectModelInfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+  *ngIf="taggedProjectModelInfo == 'block'"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Tagged Customers</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card flex-fill m-0">
+          <div class="card-body">
+            <div class="row" *ngIf="selectedTaggedSuppliers">
+              <div
+                class="col-md-auto"
+                *ngFor="let item of selectedTaggedSuppliers.taggedSuppliers"
+              >
+                <div class="leave-info-box">
+                  <div class="media align-items-center">
+                    <!-- <a href="javascript:void(0)" class="avatar">
+                  <img src="{{ pictureUrl + report.photoPath }}" alt="user" />
+                </a> -->
+                    <div class="media-body">
+                      <div class="text-sm my-0">
+                        {{ item }}
+                        <!-- <small class="text-muted"
+                      >( {{ report.employeeId }} )</small
+                    > -->
+                      </div>
+                      <!-- <div>
+                    <small class="text-muted">{{ report.department }}</small
+                    >,
+                    <small class="text-muted">{{ report.designation }}</small>
+                  </div> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!selectedTaggedSuppliers?.taggedSuppliers">
+              No Project Found
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Tagged Documents Modal -->

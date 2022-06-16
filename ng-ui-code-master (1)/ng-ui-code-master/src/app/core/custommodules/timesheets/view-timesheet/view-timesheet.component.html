@@ -1,0 +1,513 @@
+<div class="page-wrapper" style="min-height: 283px">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">Dashboard</li>
+            <li class="breadcrumb-item">Timesheet</li>
+            <li class="breadcrumb-item active">View</li>
+          </ul>
+        </div>
+        <div class="col-auto float-right ml-auto">
+          <a href="javascript:void(0)" (click)="back()" class="btn add-btn"
+            ><i class="fa fa-long-arrow-left"></i> Back
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card mb-0">
+          <div class="card-body">
+            <h3 class="card-title">
+              Timesheet Details
+              <div
+                class="col-auto float-right ml-auto"
+                *ngIf="timesheetDetails?.status"
+              >
+                <div
+                  class="btn btn-white btn-sm btn-roundedl aprover-status mr-3"
+                >
+                  <i
+                    class="fa fa-dot-circle-o text-{{
+                      getStatusColor(timesheetDetails?.status)
+                    }}"
+                  ></i>
+                  {{ getStatus(timesheetDetails?.status) }}
+                </div>
+                <div class="btn-group btn-group-sm">
+                  <button
+                    class="btn btn-white"
+                    *ngIf="timesheetDetails?.screenShotLocation"
+                    (click)="downloadAttachment(timesheetDetails)"
+                  >
+                    <i class="fa fa-download"></i> Attachment
+                  </button>
+                  <button
+                    class="btn btn-white"
+                    (click)="downloadTimeSheetPDF(timesheetDetailsId)"
+                  >
+                    <i class="fa fa-file-pdf-o"></i> PDF
+                  </button>
+                  <button
+                    class="btn btn-white"
+                    *ngIf="
+                      timesheetDetails?.status != '2' &&
+                      timesheetDetails?.status != '3'
+                    "
+                  >
+                    <a (click)="showDialogToEdit(timesheetDetails)"
+                      ><i class="fa fa-pencil"></i> Edit</a
+                    >
+                  </button>
+                </div>
+              </div>
+            </h3>
+            <div class="profile-view">
+              <div class="row">
+                <div class="col-md-6">
+                  <ul class="personal-info">
+                    <li class="clearfix">
+                      <div class="title">Employee Name:</div>
+                      <div class="text">
+                        <strong> {{ timesheetDetails?.employeeName }}</strong>
+                      </div>
+                    </li>
+                    <li class="clearfix">
+                      <div class="title">Project Name:</div>
+                      <div class="text">
+                        <strong> {{ timesheetDetails?.projectName }}</strong>
+                      </div>
+                    </li>
+                    <li
+                      *ngIf="timesheetDetails?.timesheetPeriod"
+                      class="clearfix"
+                    >
+                      <div class="title">Timesheet Period:</div>
+                      <div class="text">
+                        <strong>
+                          {{ timesheetDetails?.timesheetPeriod }}</strong
+                        >
+                      </div>
+                    </li>
+
+                    <li
+                      *ngIf="timesheetDetails?.dateSubmitted"
+                      class="clearfix"
+                    >
+                      <div class="title">Date Submitted:</div>
+                      <div class="text">
+                        <strong> {{ timesheetDetails?.dateSubmitted }}</strong>
+                      </div>
+                    </li>
+
+                    <li
+                      *ngIf="timesheetDetails?.totalLoggedTime"
+                      class="clearfix"
+                    >
+                      <div class="title">
+                        Logged Hours <small class="text-muted">(HH:MM)</small> :
+                      </div>
+                      <div class="text">
+                        <strong>
+                          {{ timesheetDetails?.totalLoggedTime }}</strong
+                        >
+                      </div>
+                    </li>
+                    <li
+                      *ngIf="timesheetDetails?.totalLoggedTimeWithFraction"
+                      class="clearfix"
+                    >
+                      <div class="title">
+                        Logged Hours
+                        <small class="text-muted">(HH.FRACTION)</small> :
+                      </div>
+                      <div class="text">
+                        <strong>
+                          {{
+                            timesheetDetails?.totalLoggedTimeWithFraction
+                          }}</strong
+                        >
+                      </div>
+                    </li>
+                    <li *ngIf="timesheetDetails?.approvedBy" class="clearfix">
+                      <div class="title">
+                        {{ getStatus(timesheetDetails?.status) }} by:
+                      </div>
+                      <div class="text">
+                        <div class="text">
+                          <strong> {{ timesheetDetails?.approvedBy }}</strong>
+                        </div>
+                      </div>
+                    </li>
+                    <li
+                      *ngIf="timesheetDetails?.approvedByDateTime"
+                      class="clearfix"
+                    >
+                      <div class="title">
+                        {{ getStatus(timesheetDetails?.status) }} on:
+                      </div>
+                      <div class="text">
+                        <div class="text">
+                          <strong>
+                            {{ timesheetDetails?.approvedByDateTime }}</strong
+                          >
+                        </div>
+                      </div>
+                    </li>
+                    <li *ngIf="timesheetDetails?.comments" class="clearfix">
+                      <div class="title">Comments:</div>
+                      <div class="text">
+                        <strong> {{ timesheetDetails?.comments }}</strong>
+                      </div>
+                    </li>
+                    <!-- <li
+                      *ngIf="timesheetDetails?.screenShotLocation"
+                      class="clearfix"
+                    >
+                      <div class="title">Screenshot:</div>
+                      <div
+                        class="text screenshot"
+                        (click)="onImageViewOpenClick()"
+                        style="cursor: pointer"
+                      >
+                        <i class="fa fa-download" aria-hidden="true"> </i>
+                        Download Screenshot
+                      </div>
+                    </li>
+                    <li *ngIf="timesheetDetails?.status" class="clearfix">
+                      <div class="title">Status:</div>
+                      <div class="text">
+                        <strong>{{
+                          getStatus(timesheetDetails?.status)
+                        }}</strong>
+                      </div>
+                    </li> -->
+                  </ul>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col mt-2">
+                  <p-table
+                    [columns]="cols"
+                    [value]="timesheetDetails?.timesheetEntries"
+                    [rowsPerPageOptions]="[10, 25, 50]"
+                    styleClass="ui-table-customers timecard"
+                    #dt
+                    [paginator]="false"
+                    [rows]="10"
+                    [showCurrentPageReport]="true"
+                    [alwaysShowPaginator]="false"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    [filterDelay]="0"
+                    [globalFilterFields]="[]"
+                    ><ng-template pTemplate="header" let-columns>
+                      <tr>
+                        <ng-container *ngFor="let col of columns">
+                          <ng-container *ngIf="col.field == 'description'">
+                            <th colspan="2" [pSortableColumn]="col.field">
+                              {{ col.header }}
+                            </th>
+                          </ng-container>
+                          <ng-container *ngIf="col.field == 'entryDate'">
+                            <th [pSortableColumn]="col.field">
+                              {{ col.header }}
+                              <p-sortIcon [field]="col.field"></p-sortIcon>
+                            </th>
+                          </ng-container>
+                          <ng-container *ngIf="col.field == 'loggedTime'">
+                            <th [pSortableColumn]="col.field">
+                              {{ col.header }}
+                              <small class="text-muted">(HH:MM)</small>
+                            </th>
+                          </ng-container>
+                          <ng-container
+                            *ngIf="col.field == 'loggedTimeWithFraction'"
+                          >
+                            <th [pSortableColumn]="col.field">
+                              {{ col.header }}
+                              <small class="text-muted">(HH.FRACTION)</small>
+                            </th>
+                          </ng-container>
+
+                          <ng-container
+                            *ngIf="
+                              col.field != 'description' &&
+                              col.field != 'entryDate' &&
+                              col.field != 'loggedTime' &&
+                              col.field != 'loggedTimeWithFraction'
+                            "
+                          >
+                            <th [pSortableColumn]="col.field">
+                              {{ col.header }}
+                            </th>
+                          </ng-container>
+                        </ng-container>
+                        <!-- <th
+                      *ngFor="let col of columns"
+                      [pSortableColumn]="col.field"
+                    >
+                      {{ col.header }}
+                      <p-sortIcon [field]="col.field"></p-sortIcon>
+                    </th> -->
+                      </tr>
+                    </ng-template>
+                    <ng-template
+                      pTemplate="body"
+                      let-rowData
+                      let-columns="columns"
+                      let-rowIndex="rowIndex"
+                    >
+                      <tr [pSelectableRow]="rowData">
+                        <ng-container *ngFor="let col of columns">
+                          <ng-container *ngIf="col.field == 'entryDate'">
+                            <td>
+                              <div>
+                                {{ rowData[col.field] | date: "dd MMM yy" }}
+                                <span class="text-muted weekday"
+                                  >({{
+                                    rowData[col.field] | date: "EEE"
+                                  }})</span
+                                >
+                              </div>
+                            </td>
+                          </ng-container>
+                          <td *ngIf="col.field == 'entryType'">
+                            {{ getEntryType(rowData[col.field]) }}
+                          </td>
+                          <td
+                            *ngIf="
+                              col.field != 'entryType' &&
+                              col.field != 'entryDate' &&
+                              col.field != 'description'
+                            "
+                          >
+                            {{ rowData[col.field] }}
+                          </td>
+                          <td *ngIf="col.field == 'description'" colspan="2">
+                            {{ rowData[col.field] }}
+                          </td>
+                        </ng-container>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                      <tr>
+                        <td
+                          [attr.colspan]="cols.length"
+                          style="text-align: center"
+                        >
+                          No Records found.
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+              <div class="table-responsive mt-4">
+                <table class="table table-bordered mb-0">
+                  <thead style="background-color: #f4f4f4">
+                    <tr>
+                      <th></th>
+                      <th>Total Logged Time</th>
+                      <th style="color: '#28a745'">Regular</th>
+                      <th style="color: '#007bff'">Overtime</th>
+                      <th style="color: '#0040fd'">Double Overtime</th>
+                      <th style="color: '#dc3545'">Sick</th>
+                      <th style="color: '#17a2b8'">PTO</th>
+                      <th style="color: '#ffc107'">Break</th>
+                      <th style="color: '#ffc107'">Meal Premium</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        Total Logged Time
+                        <small class="text-muted">(HH:MM)</small>
+                      </td>
+                      <td>{{ totalLoggedTime | minuteSeconds }}</td>
+                      <td style="color: '#28a745'">
+                        {{ totalRegularTime | minuteSeconds }}
+                      </td>
+                      <td style="color: '#007bff'">
+                        {{ totalOvertimeTime | minuteSeconds }}
+                      </td>
+                      <td style="color: '#0040fd'">
+                        {{ totalDoubleOverTime | minuteSeconds }}
+                      </td>
+                      <td style="color: '#dc3545'">
+                        {{ totalSickTime | minuteSeconds }}
+                      </td>
+                      <td style="color: '#17a2b8'">
+                        {{ totalOTPTime | minuteSeconds }}
+                      </td>
+                      <td style="color: '#ffc107'">
+                        {{ totalBreakTime | minuteSeconds }}
+                      </td>
+                      <td style="color: '#ffc107'">
+                        {{ totalMealPremiumTime | minuteSeconds }}
+                      </td>
+                    </tr>
+                    <tr style="background-color: #f4f4f4">
+                      <td>
+                        Total Logged Time
+                        <small class="text-muted">(HH.FRACTION)</small>
+                      </td>
+                      <td>
+                        {{
+                          calculateTotalLoggedTimeInFraction(totalLoggedTime)
+                        }}
+                      </td>
+                      <td style="color: '#28a745'">
+                        {{
+                          calculateTotalLoggedTimeInFraction(totalRegularTime)
+                        }}
+                      </td>
+                      <td style="color: '#007bff'">
+                        {{
+                          calculateTotalLoggedTimeInFraction(totalOvertimeTime)
+                        }}
+                      </td>
+                      <td style="color: '#0040fd'">
+                        {{
+                          calculateTotalLoggedTimeInFraction(
+                            totalDoubleOverTime
+                          )
+                        }}
+                      </td>
+                      <td style="color: '#dc3545'">
+                        {{ calculateTotalLoggedTimeInFraction(totalSickTime) }}
+                      </td>
+                      <td style="color: '#17a2b8'">
+                        {{ calculateTotalLoggedTimeInFraction(totalOTPTime) }}
+                      </td>
+                      <td style="color: '#ffc107'">
+                        {{ calculateTotalLoggedTimeInFraction(totalBreakTime) }}
+                      </td>
+                      <td style="color: '#ffc107'">
+                        {{
+                          calculateTotalLoggedTimeInFraction(
+                            totalMealPremiumTime
+                          )
+                        }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- <div
+                class="row d-flex justify-content-between"
+                style="background-color: #f4f4f4; margin: 0px; margin-top: 15px"
+              >
+                <div class="total-logged-time">
+                  <i class="fa fa-dot-circle-o mr-1" style="color: inherit"></i
+                  >Total Logged Hours :
+                  <span *ngIf="totalLoggedTime">{{
+                    totalLoggedTime | minuteSeconds
+                  }}</span>
+                </div>
+                <div class="total-logged-time" style="color: '#28a745'">
+                  <i class="fa fa-dot-circle-o text-success mr-1"></i>Regular :
+                  <span *ngIf="totalRegularTime">{{
+                    totalRegularTime | minuteSeconds
+                  }}</span>
+                </div>
+                <div class="total-logged-time" style="color: '#007bff'">
+                  <i class="fa fa-dot-circle-o text-info mr-1"></i>Overtime :
+                  <span *ngIf="totalOvertimeTime">{{
+                    totalOvertimeTime | minuteSeconds
+                  }}</span>
+                </div>
+                <div class="total-logged-time" style="color: '#0040fd'">
+                  <i class="fa fa-dot-circle-o text-info dblot mr-1"></i>Double
+                  Overtime :
+                  <span *ngIf="totalDoubleOverTime">{{
+                    totalDoubleOverTime | minuteSeconds
+                  }}</span>
+                </div>
+                <div class="total-logged-time" style="color: '#dc3545'">
+                  <i class="fa fa-dot-circle-o text-danger mr-1"></i>Sick :
+                  <span *ngIf="totalSickTime">{{
+                    totalSickTime | minuteSeconds
+                  }}</span>
+                </div>
+                <div class="total-logged-time" style="color: '#17a2b8'">
+                  <i class="fa fa-dot-circle-o text-info pto mr-1"></i>PTO :
+                  <span *ngIf="totalOTPTime">{{
+                    totalOTPTime | minuteSeconds
+                  }}</span>
+                </div>
+                <div class="total-logged-time" style="color: '#ffc107'">
+                  <i class="fa fa-dot-circle-o text-warning mr-1"></i>Break :
+                  <span *ngIf="totalBreakTime">{{
+                    totalBreakTime | minuteSeconds
+                  }}</span>
+                </div>
+              </div> -->
+              <div
+                class="row d-flex justify-content-start"
+                style="background-color: #f4f4f4; margin: 0px; margin-top: 15px"
+              >
+                <div class="total-logged-time mr-0">Approvers :</div>
+                <div
+                  class="total-logged-time pl-0"
+                  *ngFor="let item of timesheetDetails?.approverEmailIds"
+                >
+                  {{ item }}
+                </div>
+              </div>
+              <div
+                class="row d-flex justify-content-start"
+                style="background-color: #f4f4f4; margin: 0px; margin-top: 15px"
+                *ngIf="
+                  timesheetDetails?.attachments &&
+                  timesheetDetails?.attachments.length
+                "
+              >
+                <div class="total-logged-time mr-0">Attachment :</div>
+                <div
+                  class="total-logged-time pl-0"
+                  *ngFor="let item of timesheetDetails?.attachments"
+                >
+                  <a
+                    class="attachment-file"
+                    style="cursor: pointer"
+                    class="attachment-file"
+                    (click)="downloadScreenShot(item)"
+                  >
+                    <i class="fa fa-paperclip"></i>
+                    {{ item.documentTitle }}
+                    <i class="fa fa-download btnColor"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Page Content -->
+  <ng-container *ngIf="timesheetsType == 'Add' || timesheetsType == 'Edit'">
+    <app-timecard
+      [timesheetType]="timesheetsType"
+      (onClose)="ontimesheetsAddCloseClick($event)"
+      [userId]="employeeDetailsId"
+      [recordData]="timesheetDetails"
+    ></app-timecard>
+  </ng-container>
+  <!-- Image view file Modal -->
+  <ng-container *ngIf="viewImage">
+    <app-imageviwer
+      [imageBlob]="imageBlob"
+      (onClose)="onImageViewCloseClick($event)"
+    >
+    </app-imageviwer>
+  </ng-container>
+
+  <!-- /Image view file Modal -->
+</div>

@@ -1,0 +1,423 @@
+<div class="main-wrapper">
+  <div class="account-content">
+    <a href="/" class="btn btn-primary apply-btn"
+      ><i class="fa fa-home fa-fw" aria-hidden="true"></i>Home</a
+    >
+    <div class="container">
+      <!-- Account Logo -->
+      <div class="account-logo">
+        <a href="javascript:void(0)">
+          <img src="assets/img/logo2.png" class="inv-logo" alt=""
+        /></a>
+      </div>
+      <!-- /Account Logo -->
+      <!-- Authorization Form -->
+      <ng-container *ngIf="isAuthPage">
+        <div class="account-box">
+          <div class="account-wrapper">
+            <h3 class="account-title">Validate Authorization</h3>
+            <p class="account-subtitle">
+              Enter your Authorization Code to access Invoice
+            </p>
+
+            <!-- Authorization Code -->
+            <form (ngSubmit)="submitAuthCode()" #f="ngForm">
+              <div class="form-group">
+                <label>Authorization Code</label>
+                <input
+                  name="authorizationCode"
+                  class="form-control"
+                  type="email"
+                  [(ngModel)]="authorizationCode"
+                  placeholder="Authorization Code"
+                  required
+                />
+              </div>
+              <div class="form-group text-center">
+                <button class="btn btn-primary account-btn" type="submit">
+                  Validate
+                </button>
+              </div>
+              <div class="account-footer">
+                <p>
+                  Forget your Authorization Code?
+                  <a href="javascript:void(0)" (click)="getResetModel()"
+                    >Resend</a
+                  >
+                </p>
+                <p *ngIf="sussLblMsg" class="text-success">{{ sussLblMsg }}</p>
+                <p *ngIf="errLablMsg" class="text-danger">{{ errLablMsg }}</p>
+              </div>
+            </form>
+            <!-- /Authorization Code -->
+          </div>
+        </div>
+      </ng-container>
+      <!-- /Authorization Form -->
+      <!-- Reset Form -->
+      <ng-container *ngIf="isRestPage">
+        <div class="account-box">
+          <div class="account-wrapper">
+            <h3 class="account-title">Resend Authorization</h3>
+            <p class="account-subtitle">
+              Enter your Email Id to resend Authorization Code
+            </p>
+
+            <!-- Reset Authorization Code -->
+            <form (ngSubmit)="resetAuthCodeSubmit()" #f="ngForm">
+              <div class="form-group">
+                <label>Email Id</label>
+                <input
+                  name="approverEmail"
+                  class="form-control"
+                  type="text"
+                  [(ngModel)]="approverEmail"
+                  placeholder="Email Id"
+                  required
+                />
+              </div>
+              <div class="form-group text-center">
+                <button class="btn btn-primary account-btn" type="submit">
+                  Resend
+                </button>
+              </div>
+              <div class="account-footer">
+                <p>
+                  Do you want to access Timesheet?
+                  <a href="javascript:void(0)" (click)="getSubmitModel()"
+                    >Click Here</a
+                  >
+                </p>
+                <p *ngIf="sussLblMsg" class="text-success">{{ sussLblMsg }}</p>
+                <p *ngIf="errLablMsg" class="text-danger">{{ errLablMsg }}</p>
+              </div>
+            </form>
+            <!-- / Reset Authorization Code -->
+          </div>
+        </div>
+      </ng-container>
+      <!-- /Reset Form -->
+      <!-- Timesheet details Form -->
+      <ng-container *ngIf="isInvoicePage">
+        <div class="account-box" style="width: 75%">
+          <div class="account-wrapper">
+            <!-- <h3 class="account-title pb-3">Invoice Details</h3> -->
+            <section>
+              <div class="row">
+                <div class="col-sm-6 m-b-20">
+                  <img src="assets/img/logo2.png" class="inv-logo" alt="" />
+                  <ul class="list-unstyled">
+                    <li>{{ invoiceDetails?.organizationName }}</li>
+                    <li>
+                      {{
+                        invoiceDetails?.organizationAddressDetails
+                          ?.addressLine1
+                      }},{{
+                        invoiceDetails?.organizationAddressDetails
+                          ?.addressLine2
+                      }},
+                    </li>
+
+                    <li>
+                      {{ invoiceDetails?.organizationAddressDetails?.city }},{{
+                        invoiceDetails?.organizationAddressDetails?.state
+                      }},
+                    </li>
+                    <li>
+                      {{
+                        invoiceDetails?.organizationAddressDetails?.country
+                      }},{{
+                        invoiceDetails?.organizationAddressDetails?.pinCode
+                      }}
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-sm-6 m-b-20">
+                  <div class="invoice-details">
+                    <h3 class="text-uppercase">
+                      Invoice {{ invoiceDetails?.invoiceNumber }}
+                    </h3>
+                    <ul class="list-unstyled">
+                      <li>
+                        Date:
+                        <span>{{ invoiceDetails?.invoiceDate | date }}</span>
+                      </li>
+                      <li>
+                        Due Date:
+                        <span>{{ invoiceDetails?.invoiceDueDate | date }}</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6 col-lg-7 col-xl-9 m-b-20">
+                  <h5>Invoice To:</h5>
+                  <ul class="list-unstyled">
+                    <li>
+                      <h5>
+                        <strong>{{ invoiceDetails?.companyEinNumber }}</strong>
+                      </h5>
+                    </li>
+                    <li>
+                      <span>{{ invoiceDetails?.companyName }}</span>
+                    </li>
+                    <li>{{ invoiceDetails?.companyAddress }}</li>
+                  </ul>
+                </div>
+                <div class="col-sm-6 col-lg-5 col-xl-3 m-b-20">
+                  <span class="text-muted">Payment Details:</span>
+                  <ul class="list-unstyled invoice-payment-details">
+                    <li>
+                      <div>Total Due</div>
+                      <div class="text-muted">
+                        {{ invoiceDetails?.totalAmount }}
+                      </div>
+                    </li>
+                    <li>
+                      <div>Bank Name</div>
+                      <div class="text-muted">
+                        {{
+                          invoiceDetails?.organizationRemittanceDetails
+                            ?.bankName
+                        }}
+                      </div>
+                    </li>
+                    <!-- <li>
+                        <div>Country</div>
+                        <div class="text-muted">
+                          {{
+                            invoiceDetails?.organizationRemittanceDetails
+                              ?.countryName
+                          }}
+                        </div>
+                      </li> -->
+                    <li>
+                      <div>Address</div>
+                      <div class="text-muted">
+                        {{
+                          invoiceDetails?.organizationRemittanceDetails
+                            ?.accountAddress
+                        }}
+                      </div>
+                    </li>
+                    <li>
+                      <div>Account Name</div>
+                      <div class="text-muted">
+                        {{
+                          invoiceDetails?.organizationRemittanceDetails
+                            ?.accountName
+                        }}
+                      </div>
+                    </li>
+                    <li>
+                      <div>Account Number</div>
+                      <div class="text-muted">
+                        {{
+                          invoiceDetails?.organizationRemittanceDetails
+                            ?.accountNumber
+                        }}
+                      </div>
+                    </li>
+
+                    <li
+                      *ngIf="
+                        invoiceDetails?.organizationRemittanceDetails
+                          ?.ifscCode != ''
+                      "
+                    >
+                      <div>IFSC Code</div>
+                      <div class="text-muted">
+                        {{
+                          invoiceDetails?.organizationRemittanceDetails
+                            ?.ifscCode
+                        }}
+                      </div>
+                    </li>
+                    <li
+                      *ngIf="
+                        invoiceDetails?.organizationRemittanceDetails
+                          ?.routingNumber != ''
+                      "
+                    >
+                      <div>Routing Number</div>
+                      <div class="text-muted">
+                        {{
+                          invoiceDetails?.organizationRemittanceDetails
+                            ?.routingNumber
+                        }}
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                  <thead>
+                    <tr>
+                      <th>NAME</th>
+                      <th class="d-none d-sm-table-cell">DESCRIPTION</th>
+                      <th>QUANTITY</th>
+                      <th>RATE</th>
+                      <th>DISCOUNT</th>
+                      <th>TAX</th>
+                      <th class="text-right">TOTAL</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container
+                      *ngFor="
+                        let invoice of invoiceDetails?.invoiceEntries;
+                        let i = index
+                      "
+                    >
+                      <tr>
+                        <td *ngIf="invoice?.projectDetailsId">
+                          {{ invoice?.projectName }}
+                        </td>
+                        <td *ngIf="invoice?.employeeDetailsId">
+                          {{ invoice?.employeeName }}
+                        </td>
+                        <td class="d-none d-sm-table-cell">
+                          {{ invoice?.description }}
+                        </td>
+                        <td>{{ invoice?.quantity }}</td>
+                        <td>{{ invoice?.rate }}</td>
+                        <td>{{ invoice?.discount }}</td>
+                        <td>{{ invoice?.tax }}</td>
+                        <td class="text-right">
+                          {{ invoice?.amount }}
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+              <div>
+                <div class="row invoice-payment">
+                  <div class="col-sm-7"></div>
+                  <div class="col-sm-5">
+                    <div class="m-b-20">
+                      <div class="table-responsive no-border">
+                        <table class="table mb-0">
+                          <tbody>
+                            <tr>
+                              <th>Total:</th>
+                              <td class="text-right text-primary">
+                                <h5>
+                                  {{ getTotal(invoiceDetails?.invoiceEntries) }}
+                                </h5>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="invoice-info">
+                  <h5>Other Information</h5>
+                  <p class="text-muted">
+                    {{ invoiceDetails?.otherInformation }}
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="submit-section">
+                    <button
+                      type="button"
+                      (click)="openCommentPopUp('3')"
+                      class="btn btn-primary submit-btn mr-2"
+                    >
+                      Approve
+                    </button>
+                    <button
+                      type="button"
+                      (click)="openCommentPopUp('4')"
+                      class="btn btn-primary submit-btn mr-2"
+                    >
+                      Reject
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-primary submit-btn mr-2"
+                      (click)="openCommentPopUp('5')"
+                    >
+                      Request Modify
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </ng-container>
+      <!-- /Timesheet details Form -->
+      <!-- Error Box -->
+      <ng-container *ngIf="errorMessagePage">
+        <div class="account-box">
+          <div class="account-wrapper">
+            <h3 class="account-title">{{ shortErrorMessage }}</h3>
+            <p class="account-subtitle">{{ fullErrorMessage }}</p>
+          </div>
+        </div>
+      </ng-container>
+      <!--/ Error Box -->
+    </div>
+  </div>
+</div>
+<!-- /Main Wrapper -->
+<!-- comment  Modal -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: commentInfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Comments</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeCommentmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form (ngSubmit)="submitStatus()">
+            <div class="row justify-content-center">
+              <div class="col">
+                <div class="form-group">
+                  <label class="col-form-label">Comments </label>
+                  <textarea
+                    pInputTextarea
+                    [(ngModel)]="comments"
+                    autoResize="autoResize"
+                    name="comments"
+                    [rows]="5"
+                    [cols]="30"
+                    placeholder="Please Provide your Comments"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary submit-btn">
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /comment  Modal -->

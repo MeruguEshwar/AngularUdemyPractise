@@ -1,0 +1,596 @@
+<div class="page-wrapper">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">Dashboard</li>
+            <li class="breadcrumb-item active">Pay Rate</li>
+          </ul>
+        </div>
+        <div class="col-auto float-right ml-auto" *ngIf="this.viewType">
+          <button
+            type="button"
+            class="btn add-btn"
+            (click)="showDialogToAdd()"
+            [disabled]="!employeeSelectedToaddPayRate?.employeeDetailsId"
+          >
+            <i class="fa fa-plus"></i> Add Pay Rate
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- /page Header-->
+    <!-- Search Filter -->
+    <div class="row filter-row" *ngIf="this.viewType">
+      <div class="col-sm-6 col-md-3">
+        <div class="form-group form-focus select-focus focused">
+          <p-dropdown
+            [options]="employeeList"
+            [(ngModel)]="selectedEmployee"
+            optionLabel="fullName"
+            [filter]="true"
+          ></p-dropdown>
+
+          <label class="focus-label"></label>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-2">
+        <a
+          href="javascript:void(0)"
+          class="btn btn-info btn-block"
+          (click)="getDetails(selectedEmployee)"
+        >
+          <i class="fa fa-search"></i>&nbsp;Get Pay Rate</a
+        >
+      </div>
+    </div>
+    <!-- /Search Filter -->
+    <div
+      class="col pl-0 pr-0"
+      *ngIf="employeeSelectedToaddPayRate?.employeeDetailsId"
+    >
+      <p-table
+        [columns]="cols"
+        [value]="payRateList"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        styleClass="ui-table-customers"
+        #dt
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [alwaysShowPaginator]="false"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [filterDelay]="0"
+        [globalFilterFields]="['department', 'description', 'status']"
+      >
+        <ng-template pTemplate="caption">
+          <div>
+            Employee Pay Rate -
+            <span class="username">{{
+              employeeSelectedToaddPayRate?.fullName
+            }}</span>
+          </div>
+          <!-- <div class="ui-table-globalfilter-container">
+            <input
+              pInputText
+              type="text"
+              (input)="dt.filterGlobal($event.target.value, 'contains')"
+              placeholder="Search"
+            />
+          </div> -->
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th style="width: 12%; text-align: center">#</th>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{ col.header }}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+            <!-- <th class="actions">Actions</th> -->
+          </tr>
+        </ng-template>
+        <ng-template
+          pTemplate="body"
+          let-rowData
+          let-columns="columns"
+          let-rowIndex="rowIndex"
+        >
+          <tr [pSelectableRow]="rowData">
+            <td>
+              <a
+                [routerLink]="['/admin/payrate/view']"
+                [state]="{
+                  details: rowData
+                }"
+                >#PR-0000{{ rowIndex + 1 }}
+              </a>
+            </td>
+            <ng-container *ngFor="let col of columns">
+              <td
+                *ngIf="
+                  col.field != 'status' &&
+                  col.field != 'rateCodeDescription' &&
+                  col.field != 'rate' &&
+                  col.field != 'salary'
+                "
+              >
+                {{ rowData[col.field] }}
+              </td>
+              <td *ngIf="col.field == 'rate'">
+                <div *ngIf="rowData[col.field]; else noRate">
+                  {{ organizationCurrency }} {{ rowData[col.field] }}
+                </div>
+                <ng-template #noRate> &nbsp; </ng-template>
+              </td>
+              <td *ngIf="col.field == 'salary'">
+                <div *ngIf="rowData[col.field]; else noSal">
+                  {{ organizationCurrency }} {{ rowData[col.field] }}
+                </div>
+                <ng-template #noSal> &nbsp; </ng-template>
+              </td>
+              <td *ngIf="col.field == 'rateCodeDescription'">
+                <div
+                  class="d-flex justify-content-start"
+                  pTooltip="{{ rowData[col.field] }}"
+                  tooltipPosition="top"
+                  *ngIf="rowData[col.field]"
+                >
+                  <div class="tab-descp">
+                    {{ rowData[col.field] }}
+                  </div>
+                  <div>
+                    <i class="fa fa-info-circle ml-3" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </td>
+              <td class="" *ngIf="col.field == 'status'">
+                <div class="dropdown action-label">
+                  <a
+                    class="btn btn-white btn-sm btn-rounded dropdown-toggle"
+                    href="#"
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <i
+                      class="fa fa-dot-circle-o text-danger"
+                      *ngIf="rowData[col.field] == 'In Active'"
+                    ></i>
+                    <i
+                      class="fa fa-dot-circle-o text-success"
+                      *ngIf="rowData[col.field] == 'Active'"
+                    ></i>
+                    {{ rowData[col.field] }}
+                  </a>
+                  <div
+                    class="dropdown-menu dropdown-menu-right"
+                    x-placement="bottom-end"
+                    style="
+                      position: absolute;
+                      will-change: transform;
+                      top: 0px;
+                      left: 0px;
+                      transform: translate3d(-17px, 31px, 0px);
+                    "
+                  >
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      (click)="statusUpdate(rowData, 'deactivate')"
+                      ><i class="fa fa-dot-circle-o text-danger"></i>
+                      Deactivate</a
+                    >
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      (click)="statusUpdate(rowData, 'activate')"
+                      ><i class="fa fa-dot-circle-o text-success"></i>
+                      Activate</a
+                    >
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- <td class="actions">
+              <div class="dropdown dropdown-action">
+                <a
+                  href="#"
+                  class="action-icon dropdown-toggle"
+                  data-toggle="dropdown"
+                  aria-expanded="false"
+                  ><i class="material-icons">more_vert</i></a
+                >
+                <div
+                  class="dropdown-menu dropdown-menu-right"
+                  x-placement="top-end"
+                  style="
+                    position: absolute;
+                    will-change: transform;
+                    top: 0px;
+                    left: 0px;
+                    transform: translate3d(72px, -2px, 0px);
+                  "
+                >
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    data-toggle="modal"
+                    (click)="showDialogToEdit(rowData)"
+                    ><i class="fa fa-pencil m-r-5"></i> Edit</a
+                  >
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    data-toggle="modal"
+                    (click)="showDialogToEdit(rowData)"
+                    class="dropdown-item delete"
+                    ><i class="fa fa-trash-o m-r-5"></i> Delete</a
+                  >
+                </div>
+              </div>
+            </td> -->
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td [attr.colspan]="cols.length + 1" style="text-align: center">
+              No Records Found.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <div
+      class="col pl-0 pr-0"
+      *ngIf="!employeeSelectedToaddPayRate?.employeeDetailsId"
+    >
+      <p-table
+        [columns]="cols"
+        [value]="payRateList"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        styleClass="ui-table-customers"
+        #dt
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [alwaysShowPaginator]="false"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [filterDelay]="0"
+        [globalFilterFields]="['department', 'description', 'status']"
+      >
+        <ng-template pTemplate="caption">
+          <div>
+            Employee Pay Rate -
+            <span class="username">{{
+              employeeSelectedToaddPayRate?.fullName
+            }}</span>
+          </div>
+
+          <!-- <div class="ui-table-globalfilter-container">
+          <input
+            pInputText
+            type="text"
+            (input)="dt.filterGlobal($event.target.value, 'contains')"
+            placeholder="Search"
+          />
+        </div> -->
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{ col.header }}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+            <!-- <th class="actions">Actions</th> -->
+          </tr>
+        </ng-template>
+        <ng-template
+          pTemplate="body"
+          let-rowData
+          let-columns="columns"
+          let-rowIndex="rowIndex"
+        >
+          <tr [pSelectableRow]="rowData">
+            <ng-container *ngFor="let col of columns">
+              <td
+                *ngIf="
+                  col.field != 'status' &&
+                  col.field != 'rateCodeDescription' &&
+                  col.field != 'employeeName' &&
+                  col.field != 'rate' &&
+                  col.field != 'salary'
+                "
+              >
+                {{ rowData[col.field] }}
+              </td>
+              <td *ngIf="col.field == 'rate'">
+                <div *ngIf="rowData[col.field]; else noRate">
+                  {{ organizationCurrency }} {{ rowData[col.field] }}
+                </div>
+                <ng-template #noRate> &nbsp; </ng-template>
+              </td>
+              <td *ngIf="col.field == 'salary'">
+                <div *ngIf="rowData[col.field]; else noSal">
+                  {{ organizationCurrency }} {{ rowData[col.field] }}
+                </div>
+                <ng-template #noSal> &nbsp; </ng-template>
+              </td>
+              <td *ngIf="col.field == 'employeeName'">
+                <h2 class="table-avatar">
+                  <a
+                    [routerLink]="['/admin/payrate/view']"
+                    [state]="{
+                      details: rowData
+                    }"
+                    >{{ rowData[col.field] }}
+                  </a>
+                </h2>
+              </td>
+              <td *ngIf="col.field == 'rateCodeDescription'">
+                <div
+                  class="d-flex justify-content-start"
+                  pTooltip="{{ rowData[col.field] }}"
+                  tooltipPosition="top"
+                  *ngIf="rowData[col.field]"
+                >
+                  <div class="tab-descp">
+                    {{ rowData[col.field] }}
+                  </div>
+                  <div>
+                    <i class="fa fa-info-circle ml-3" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </td>
+              <td class="" *ngIf="col.field == 'status'">
+                <div class="dropdown action-label">
+                  <a
+                    class="btn btn-white btn-sm btn-rounded dropdown-toggle"
+                    href="#"
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <i
+                      class="fa fa-dot-circle-o text-danger"
+                      *ngIf="rowData[col.field] == 'In Active'"
+                    ></i>
+                    <i
+                      class="fa fa-dot-circle-o text-success"
+                      *ngIf="rowData[col.field] == 'Active'"
+                    ></i>
+                    {{ rowData[col.field] }}
+                  </a>
+                  <div
+                    class="dropdown-menu dropdown-menu-right"
+                    x-placement="bottom-end"
+                    style="
+                      position: absolute;
+                      will-change: transform;
+                      top: 0px;
+                      left: 0px;
+                      transform: translate3d(-17px, 31px, 0px);
+                    "
+                  >
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      (click)="statusUpdate(rowData, 'deactivate')"
+                      ><i class="fa fa-dot-circle-o text-danger"></i>
+                      Deactivate</a
+                    >
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      (click)="statusUpdate(rowData, 'activate')"
+                      ><i class="fa fa-dot-circle-o text-success"></i>
+                      Activate</a
+                    >
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td [attr.colspan]="cols.length" style="text-align: center">
+              No Records Found.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+<!-- Add or edit deductions -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: payRateModel }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          *ngIf="errorLabel"
+          style="position: absolute; left: 15px"
+          class="text-danger"
+        >
+          {{ errorLabel }}
+        </h5>
+        <h5 class="modal-title">
+          Pay Rate Details : {{ selectedEmployee?.fullName }}
+        </h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeUploadmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card m-0">
+          <div class="card-body">
+            <form (ngSubmit)="savePayRate(f)" #f="ngForm">
+              <div class="row" *ngIf="errorLabel">
+                <div class="col-sm-6" style="color: red">
+                  <!-- {{ errorLabel }} -->
+                </div>
+              </div>
+              <div class="row justify-content-center">
+                <!-- <div class="form-group col-12">
+                  <label
+                    >Select Employee <span class="text-danger"> *</span></label
+                  >
+                  <p-dropdown
+                    [options]="employeeList"
+                    [filter]="true"
+                    [(ngModel)]="employeeSelectedToaddPayRate"
+                    name="employeeSelectedToaddPayRate"
+                    optionLabel="fullName"
+                    (onChange)="selectEmployeeToAddPayRate()"
+                  ></p-dropdown>
+                </div> -->
+                <div class="form-group col-12">
+                  <label
+                    >{{ organizationCurrency }} Pay Rate
+                    <span class="text-danger"> *</span></label
+                  >
+                  <div class="d-flex justify-content-start">
+                    <div>
+                      <p-selectButton
+                        name="payrateMode"
+                        [options]="payrateMode"
+                        [(ngModel)]="payRateDetails.payRateType"
+                      ></p-selectButton>
+                    </div>
+                    <div class="ml-3">
+                      <p-inputNumber
+                        *ngIf="payRateDetails.payRateType == '1'"
+                        name="rate"
+                        [(ngModel)]="payRateDetails.rate"
+                        placeholder="Enter Rate"
+                        maxlength="12"
+                        [minFractionDigits]="2"
+                        [useGrouping]="false"
+                        ariaRequired="true"
+                        required
+                      ></p-inputNumber>
+                      <!-- <input
+                        *ngIf="payRateDetails.payRateType == '1'"
+                        class="form-control text-right"
+                        type="number"
+                        placeholder="Enter Rate"
+                        min="0"
+                        oninput="validity.valid||(value='');"
+                        [(ngModel)]="payRateDetails.rate"
+                        name="rate"
+                        required
+                      /> -->
+                      <p-inputNumber
+                        *ngIf="payRateDetails.payRateType == '2'"
+                        name="amount"
+                        [(ngModel)]="payRateDetails.salary"
+                        placeholder="Enter Salary"
+                        maxlength="12"
+                        [minFractionDigits]="2"
+                        [useGrouping]="false"
+                        ariaRequired="true"
+                        required
+                      ></p-inputNumber>
+                      <!-- <input
+                        *ngIf="payRateDetails.payRateType == '2'"
+                        class="form-control text-right"
+                        type="number"
+                        min="0"
+                        oninput="validity.valid||(value='');"
+                        placeholder="Enter Salary"
+                        name="amount"
+                        [(ngModel)]="payRateDetails.salary"
+                        required
+                      /> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-6">
+                  <label>Start Date <span class="text-danger"> *</span></label>
+                  <p-calendar
+                    #minimumDate
+                    [yearNavigator]="true"
+                    [monthNavigator]="true"
+                    yearRange="1980:2050"
+                    readonlyInput="true"
+                    showIcon="true"
+                    dateFormat="mm-dd-yy"
+                    [(ngModel)]="payRateDetails.startDate"
+                    name="startDate"
+                    dataType="string"
+                    (onClose)="checkPayRateExists()"
+                    required
+                  ></p-calendar>
+                  <span class="text-danger">{{ startDateError }}</span>
+                </div>
+                <div class="col-6">
+                  <div
+                    class="form-group"
+                    *ngIf="payRateDetails.employeePayRateDetailsId"
+                  >
+                    <label>End Date <span class="text-danger"> *</span></label>
+                    <p-calendar
+                      [yearNavigator]="true"
+                      [monthNavigator]="true"
+                      yearRange="1980:2050"
+                      readonlyInput="true"
+                      [minDate]="minimumDate.value"
+                      showIcon="true"
+                      dateFormat="mm-dd-yy"
+                      [(ngModel)]="payRateDetails.endDate"
+                      name="startDate"
+                      dataType="string"
+                      required
+                    ></p-calendar>
+                  </div>
+                </div>
+                <div class="form-group col-12">
+                  <label>Description</label>
+                  <textarea
+                    pInputTextarea
+                    autoResize="autoResize"
+                    [rows]="5"
+                    name="rateCodeDescp"
+                    [(ngModel)]="payRateDetails.rateCodeDescription"
+                    (keypress)="sharedService.keyPressAddress($event)"
+                  ></textarea>
+                </div>
+              </div>
+
+              <div class="submit-section">
+                <button
+                  type="submit"
+                  class="btn btn-success submit-btn"
+                  [disabled]="!f.valid"
+                >
+                  <i class="fa fa-save"></i>&nbsp;Save
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger submit-btn ml-2"
+                  (click)="closeUploadmodal()"
+                >
+                  <i class="fa fa-times"></i>&nbsp;Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Add or edit deductions -->

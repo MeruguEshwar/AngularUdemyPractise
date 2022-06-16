@@ -1,0 +1,105 @@
+:host ::ng-deep #education_info p-calendar .ui-inputtext,
+:host ::ng-deep #experience_info p-calendar .ui-inputtext {
+  height: 50px;
+  padding: 21px 12px 6px;
+}
+
+:host
+  ::ng-deep
+  #education_info
+  .ui-calendar.ui-calendar-w-btn
+  .ui-datepicker-trigger.ui-button,
+:host
+  ::ng-deep
+  #experience_info
+  .ui-calendar.ui-calendar-w-btn
+  .ui-datepicker-trigger.ui-button {
+  position: absolute;
+  height: 50px;
+}
+/* :host ::ng-deep #education_info .ui-datepicker:not(.ui-datepicker-inline),
+:host ::ng-deep #experience_info .ui-datepicker:not(.ui-datepicker-inline) {
+  top: 50px !important;
+} */
+.leave-info-box:last-child {
+  margin-bottom: 15px;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+.personal-info .text .badge {
+  padding: 8px;
+  padding-left: 25px;
+  border-radius: 8px;
+}
+.noti-dot:after {
+  top: 0px;
+  left: 0px;
+  border-color: #ff9b44;
+  background-color: #ff9b44;
+}
+.noti-dot:before {
+  left: 7px;
+  top: 7px;
+  border-color: #ff9b44;
+}
+.bg-inverse-info.noti-dot:after {
+  border-color: #00a2e3;
+  background-color: #00a2e3;
+}
+.bg-inverse-info.noti-dot:before {
+  border-color: #00a2e3;
+}
+.bg-inverse-info {
+  background-color: rgba(0, 162, 227, 0.12) !important;
+  color: #00a2e3 !important;
+}
+.bg-inverse-success.noti-dot:after {
+  border-color: #26af48;
+  background-color: #26af48;
+}
+.bg-inverse-success.noti-dot:before {
+  border-color: #26af48;
+}
+.bg-inverse-danger.noti-dot:after {
+  border-color: #e63c3c;
+  background-color: #e63c3c;
+}
+.bg-inverse-danger.noti-dot:before {
+  border-color: #e63c3c;
+}
+.stats-list {
+  height: 250px;
+}
+.stats-info {
+  text-align: start;
+  padding: 10px 15px;
+}
+.stats-info .personal-info li {
+  margin-bottom: 5px;
+}
+.stats-info .personal-info li .title {
+  width: 22%;
+}
+.stats-list ul li:last-child {
+  margin-bottom: 0px;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="dateOfBirth"] {
+  width: 23%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="phoneNumber"] {
+  width: 26%;
+}
+.personal-info .text .badge.noti-dot {
+  min-width: 100px;
+  position: absolute !important;
+}

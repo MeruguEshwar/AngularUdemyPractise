@@ -1,0 +1,770 @@
+<div class="card-body">
+  <section>
+    <div class="row">
+      <div class="col-2 pb-2">
+        <img
+          src="assets/img/homeland-security-2.png"
+          alt="logo"
+          class="rounded"
+        />
+      </div>
+      <div class="col-8 text-center d-flex align-items-center flex-column">
+        <h3><b>Employment Eligibility Verification</b></h3>
+        <h3 class="m-0">
+          <b>Department of Homeland Security </b>
+        </h3>
+        <h3 style="font-weight: 400">
+          U.S. Citizenship and Immigration Services
+        </h3>
+      </div>
+      <div class="col-2 text-center">
+        <h3 class="m-0">USCIS</h3>
+        <h3 class="m-0">Form I-9</h3>
+        <p>OMB No. 1615-0047</p>
+        <p>Expires 10/31/2022</p>
+      </div>
+    </div>
+    <div style="border: 5px solid"></div>
+    <div style="border-bottom: 1px solid; padding-top: 5px"></div>
+    <div class="row pt-2">
+      <div class="col">
+        <p class="mb-1">
+          <b
+            ><strong
+              ><i class="fa fa-play" aria-hidden="true"></i>START HERE:</strong
+            >
+            Read instructions carefully before completing this form. The
+            instructions must be available, either in paper or electronically,
+            during completion of this form. Employers are liable for errors in
+            the completion of this form.</b
+          >
+        </p>
+        <p class="mb-1">
+          <b>ANTI-DISCRIMINATION NOTICE:</b> It is illegal to discriminate
+          against work-authorized individuals. Employers <b>CANNOT</b> specify
+          which document(s) an employee may present to establish employment
+          authorization and identity. The refusal to hire or continue to employ
+          an individual because the documentation presented has a future
+          expiration date may also constitute illegal discrimination.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 border">
+        <div class="row" style="background-color: #f7f7f7">
+          <div class="col-12 border">
+            <p>
+              <b style="font-size: large"
+                >Section 1. Employee Information and Attestation</b
+              >
+              (Employees must complete and sign Section 1 of Form I-9 no later
+              than the
+              <b>first day of employment,</b> but not before accepting a job
+              offer.)
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-3 col-sm-3 col-md-3 form-group">
+            <label class="text-muted"
+              >Last Name<span> (Family Name)</span>
+              <span class="text-danger"> *</span>
+            </label>
+            <div class="d-flex align-items-center">
+              <input
+                type="text"
+                class="form-control"
+                name="lastName"
+                [(value)]="webI9Details.lastName"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-xs-4 col-sm-4 col-md-4 form-group">
+            <label class="text-muted"
+              >First Name<span> (Given Name)</span>
+              <span class="text-danger"> *</span>
+            </label>
+            <div class="d-flex align-items-center">
+              <input
+                type="text"
+                class="form-control"
+                [value]="webI9Details.firstName"
+                minlength="2"
+                maxlength="150"
+                name="firstName"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-xs-2 col-sm-2 col-md-2 form-group">
+            <label class="text-muted"
+              >Middle Initial<span class="text-danger pr-2"> *</span>
+            </label>
+            <div class="d-flex align-items-center">
+              <input
+                type="text"
+                class="form-control"
+                name="middleInitial"
+                [(value)]="webI9Details.middleInitial"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-xs-3 col-sm-3 col-md-3 form-group">
+            <label class="text-muted"
+              >Other Last Names<span class="text-danger pr-2"> *</span>
+            </label>
+            <div class="d-flex align-items-center">
+              <input
+                type="text"
+                class="form-control"
+                name="otherLastName"
+                [(value)]="webI9Details.otherLastName"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4 col-sm-4 col-md-4 form-group">
+            <label class="text-muted"
+              >Address <span>(Street Number and Name)</span>
+              <span class="text-danger"> *</span></label
+            >
+            <div class="d-flex align-items-center">
+              <input
+                type="text"
+                class="form-control"
+                name="address"
+                [(value)]="webI9Details.address"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-xs-2 col-sm-2 col-md-2 form-group">
+            <label class="text-muted"
+              >Apt. Number<span class="text-danger pr-2"> *</span>
+            </label>
+            <div class="d-flex align-items-center">
+              <input
+                type="text"
+                class="form-control"
+                name="aptNumber"
+                [(value)]="webI9Details.aptNumber"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-xs-4 col-sm-4 col-md-4 form-group">
+            <label class="text-muted"
+              >City or Town <span class="text-danger">*</span></label
+            >
+            <div class="d-flex align-items-center">
+              <input
+                type="text"
+                class="form-control"
+                name="cityOrTown"
+                [(value)]="webI9Details.cityOrTown"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-xs-1 col-sm-1 col-md-1 form-group">
+            <label class="text-muted"
+              >State<span class="text-danger"> *</span></label
+            >
+            <div class="d-flex align-items-center">
+              <input
+                type="text"
+                class="form-control"
+                name="state"
+                [(value)]="webI9Details.state"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-xs-1 col-sm-1 col-md-1 form-group">
+            <label class="text-muted"
+              >ZIP<span class="text-danger"> *</span></label
+            >
+            <div class="d-flex align-items-center">
+              <input
+                type="text"
+                class="form-control"
+                name="zipCode"
+                [(value)]="webI9Details.zipCode"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-3 col-sm-3 col-md-3 form-group">
+            <label class="text-muted"
+              >Date of Birth <span>(MM-DD-YYYY)</span>
+              <span class="text-danger"> *</span>
+            </label>
+            <div class="">
+              <p-calendar
+                [yearNavigator]="true"
+                [monthNavigator]="true"
+                yearRange="1980:2050"
+                readonlyInput="true"
+                name="dateOfBirth"
+                dateFormat="mm-dd-yy"
+                dataType="string"
+                name="dateOfBirth"
+                [(ngModel)]="webI9Details.dateOfBirth"
+                aria-required="true"
+                disabled="true"
+                required
+              ></p-calendar>
+            </div>
+          </div>
+          <div class="col-xs-3 col-sm-3 col-md-3 form-group">
+            <label class="text-muted"
+              >U.S. Social Security Number
+              <span class="text-danger"> *</span></label
+            >
+            <div class="d-flex align-items-center">
+              <!-- <input
+                type="text"
+                class="form-control"
+                name="usSsn"
+                [(value)]="webI9Details.usSsn"
+                readonly
+              /> -->
+              <p-inputMask
+                class="form-control"
+                mask="999-99-9999"
+                [(ngModel)]="webI9Details.usSsn"
+                name="usSsn"
+                readonly="true"
+              ></p-inputMask>
+            </div>
+          </div>
+          <div class="col-xs-3 col-sm-3 col-md-3 form-group">
+            <label class="text-muted">Employee's email address</label>
+            <div class="d-flex align-items-center">
+              <input
+                type="text"
+                class="form-control"
+                name="email"
+                placeholder="Email"
+                [(value)]="webI9Details.email"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-xs-3 col-sm-3 col-md-3 form-group">
+            <label class="text-muted">Employee's Telephone Number </label>
+            <div class="d-flex align-items-center">
+              <input
+                type="text"
+                class="form-control"
+                name="phoneNumber"
+                [(value)]="webI9Details.phoneNumber"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 py-3">
+        <p style="margin-right: 20%" class="mb-1">
+          <b
+            >I am aware that federal law provides for imprisonment and/or fines
+            for false statements or use of false documents in connection with
+            the completion of this form.</b
+          >
+        </p>
+        <p>
+          <b
+            >I attest, under penalty of perjury, that I am (check one of the
+            following boxes):</b
+          >
+        </p>
+      </div>
+      <div class="col-12 border">
+        <div class="row">
+          <div class="col-auto d-flex align-items-center pr-0">
+            <div class="checkbox">
+              <p-radioButton
+                name="perjury"
+                value="hasCitizenOfUs"
+                [(ngModel)]="webI9Details.hasCitizenOfUs"
+                inputId="perjury1"
+                disabled
+              ></p-radioButton>
+            </div>
+          </div>
+
+          <label class="col-form-label col-md-auto"
+            >1. A citizen of the United States</label
+          >
+        </div>
+        <div class="row">
+          <div class="col-auto d-flex align-items-center pr-0">
+            <div class="checkbox">
+              <p-radioButton
+                name="perjury"
+                value="hasNonCitizenNationalOfUs"
+                [(ngModel)]="webI9Details.hasNonCitizenNationalOfUs"
+                inputId="perjury2"
+                disabled
+              ></p-radioButton>
+            </div>
+          </div>
+
+          <label class="col-form-label col-md-auto"
+            >2. A noncitizen national of the United States (See
+            instructions)</label
+          >
+        </div>
+        <div class="row">
+          <div class="col-auto d-flex align-items-center pr-0">
+            <div class="checkbox">
+              <p-radioButton
+                name="perjury"
+                value="hasLawfulPermanentResident"
+                [(ngModel)]="webI9Details.hasLawfulPermanentResident"
+                inputId="perjury3"
+                disabled
+              ></p-radioButton>
+              <!-- <p-checkbox
+                            name="hasLawfulPermanentResident"
+                            [(ngModel)]="i9.hasLawfulPermanentResident"
+                            [binary]="true"
+                          ></p-checkbox> -->
+            </div>
+          </div>
+
+          <label class="col-form-label col-md-auto"
+            >3. A lawful permanent resident</label
+          >
+          <ng-container *ngIf="webI9Details.hasLawfulPermanentResident">
+            <label class="col-md-auto col-form-label"
+              >(Alien Registration Number/USCIS Number):
+            </label>
+            <div class="col-md-auto">
+              <input
+                type="text"
+                class="form-control"
+                name="lprAlienRegNoOrUscisNo"
+                [(value)]="webI9Details.lprAlienRegNoOrUscisNo"
+                readonly
+              />
+            </div>
+          </ng-container>
+        </div>
+        <div class="row">
+          <div class="col-auto d-flex align-items-center pr-0">
+            <div class="checkbox">
+              <p-radioButton
+                name="perjury"
+                value="hasAlienAuthorizedToWork"
+                [(ngModel)]="webI9Details.hasAlienAuthorizedToWork"
+                inputId="perjury4"
+                disabled
+              ></p-radioButton>
+              <!-- <p-checkbox
+                            name="hasAlienAuthorizedToWork"
+                            [(ngModel)]="i9.hasAlienAuthorizedToWork"
+                            [binary]="true"
+                          ></p-checkbox> -->
+            </div>
+          </div>
+
+          <label class="col-form-label col-md-auto"
+            >4. An alien authorized to work
+          </label>
+          <ng-container *ngIf="webI9Details.hasAlienAuthorizedToWork">
+            <label class="col-form-label col-md-auto"
+              >Until (expiration date, if applicable, mm/dd/yyyy):
+            </label>
+            <div class="col-md-auto">
+              <p-calendar
+                [yearNavigator]="true"
+                [monthNavigator]="true"
+                yearRange="1980:2050"
+                readonlyInput="true"
+                name="dateOfBirth"
+                dateFormat="mm-dd-yy"
+                dataType="string"
+                name="alienAuthorizationWorkExpirationDate"
+                [(ngModel)]="webI9Details.alienAuthorizationWorkExpirationDate"
+                disabled="true"
+              ></p-calendar>
+            </div>
+          </ng-container>
+        </div>
+        <ng-container *ngIf="webI9Details.hasAlienAuthorizedToWork">
+          <div class="row d-flex align-items-center">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10">
+              <p>
+                Some aliens may write "N/A" in the expiration date field(See
+                instructions)
+              </p>
+              <p class="mt-2">
+                <b
+                  >Aliens authorized to work must provide only one of the
+                  following document numbers to complete Form I-9: An Alien
+                  Registration Number/USCIS Number OR Form I-94 Admission Number
+                  OR Foreign Passport Number.</b
+                >
+              </p>
+            </div>
+            <div class="col-sm-1"></div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="row">
+                <label class="col-auto col-form-label"
+                  >1. Alien Registration Number/USCIS Number:
+                </label>
+                <div class="col-auto">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="alienRegNoOrUscisNo"
+                    [(value)]="webI9Details.alienRegNoOrUscisNo"
+                    readonly
+                  />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-4 text-center">OR</div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="row">
+                <label class="col-auto col-form-label"
+                  >2. Form I-94 Admission Number:
+                </label>
+                <div class="col-auto">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="formI94AdmnNumber"
+                    [(value)]="webI9Details.formI94AdmnNumber"
+                    readonly
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4 text-center">OR</div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="row">
+                <label class="col-auto col-form-label"
+                  >3. Foreign Passport Number:
+                </label>
+                <div class="col-auto">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="foreignPassportNumber"
+                    [(value)]="webI9Details.foreignPassportNumber"
+                    readonly
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row py-2">
+            <div class="col">
+              <div class="row">
+                <label class="col-auto col-form-label pl-4"
+                  >Country of Issuance:
+                </label>
+                <div class="col-auto">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="countryOfIssuance"
+                    [(value)]="webI9Details.countryOfIssuance"
+                    readonly
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="col-12 py-3">
+        <strong
+          >I attest, under penalties of perjury, I declare that I have examined
+          this certificate and, to the best of my knowledge and belief, it is
+          true, correct, and complete.</strong
+        >
+      </div>
+      <div class="col-12 py-3">
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label class="text-muted"
+              >Signature Of The Employee
+              <span class="text-danger">*</span>
+            </label>
+            <div class="d-flex align-items-center">
+              <input
+                type="text"
+                class="form-control"
+                name="signatureOfTheEmployee"
+                [(value)]="webI9Details.signatureOfTheEmployee"
+                [ngStyle]="{
+                  'font-family': webI9Details.signatureFontOfTheEmployee
+                }"
+                [ngClass]="{
+                  'signature-box': signatureDetails?.i9Config != '1'
+                }"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="form-group col-md-3">
+            <label class="text-muted"
+              >Date Submitted <span class="text-danger">*</span>
+            </label>
+            <div class="">
+              <p-calendar
+                [yearNavigator]="true"
+                [monthNavigator]="true"
+                yearRange="1980:2050"
+                readonlyInput="true"
+                name="dateSubmitted"
+                dateFormat="mm-dd-yy"
+                dataType="string"
+                [(ngModel)]="webI9Details.dateSubmitted"
+                aria-required="true"
+                required
+                disabled="true"
+              ></p-calendar>
+            </div>
+          </div>
+          <div class="col-md-3 form-group">
+            <label class="text-muted"
+              >Prepared By Employer <span class="text-danger">*</span></label
+            >
+            <div class="d-flex align-items-center">
+              <div class="mr-3">
+                <p-radioButton
+                  name="preparedByEmployer"
+                  value="1"
+                  label="Yes"
+                  [(ngModel)]="webI9Details.preparedByEmployer"
+                  aria-required="true"
+                  required
+                  disabled="true"
+                >
+                </p-radioButton>
+              </div>
+              <div class="">
+                <p-radioButton
+                  name="preparedByEmployer"
+                  value="2"
+                  label="No"
+                  [(ngModel)]="webI9Details.preparedByEmployer"
+                  aria-required="true"
+                  required
+                  disabled="true"
+                >
+                </p-radioButton>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 py-3">
+        <div class="row" style="background-color: #f7f7f7">
+          <div class="col-12 border">
+            <div>
+              <p>
+                <b style="font-size: large"
+                  >Preparer and/or Translator Certification (check one):</b
+                >
+              </p>
+            </div>
+            <div>
+              <p-radioButton
+                name="preparerAndOrTranslatorCertification"
+                value="0"
+                label="I did not use a preparer or translator."
+                aria-required="true"
+                class="mr-3"
+                [(ngModel)]="webI9Details.preparerAndOrTranslatorCertification"
+                disabled="true"
+                required
+              ></p-radioButton>
+              <p-radioButton
+                name="preparerAndOrTranslatorCertification"
+                value="1"
+                label="A preparer(s) and/or translator(s) assisted the employee in completing Section 1."
+                aria-required="true"
+                [(ngModel)]="webI9Details.preparerAndOrTranslatorCertification"
+                required
+                class="mr-3"
+                disabled="true"
+              ></p-radioButton>
+            </div>
+            <div style="font-style: italic">
+              (Fields below must be completed and signed when preparers and/or
+              translators assist an employee in completing Section 1.)
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 py-3">
+            <strong>
+              I attest, under penalty of perjury, that I have assisted in the
+              completion of Section 1 of this form and that to the best of my
+              knowledge <br />the information is true and correct.
+            </strong>
+          </div>
+          <div
+            class="col-12"
+            *ngIf="webI9Details.preparerAndOrTranslatorCertification == '1'"
+          >
+            <div class="row">
+              <div class="col-xs-8 col-sm-8 col-md-8 form-group">
+                <label class="text-muted"
+                  >Signature of Preparer or Translator
+                  <span class="text-danger"> *</span>
+                </label>
+                <div class="d-flex align-items-center">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="signatureOfThePreparerOrTranslator"
+                    [(value)]="webI9Details.signatureOfThePreparerOrTranslator"
+                    readonly
+                  />
+                </div>
+              </div>
+              <div class="col-xs-4 col-sm-4 col-md-4 form-group">
+                <label class="text-muted"
+                  >Today's Date
+                  <span class="text-danger"> *</span>
+                </label>
+                <div>
+                  <p-calendar
+                    [yearNavigator]="true"
+                    [monthNavigator]="true"
+                    yearRange="1980:2050"
+                    readonlyInput="true"
+                    name="dateSubmittedPreparer"
+                    dateFormat="mm-dd-yy"
+                    dataType="string"
+                    aria-required="true"
+                    [(ngModel)]="webI9Details.dateSubmittedPreparer"
+                    required
+                    disabled="true"
+                  ></p-calendar>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6 col-sm-6 col-md-6 form-group">
+                <label class="text-muted"
+                  >Last Name<span> (Family Name)</span>
+                  <span class="text-danger"> *</span>
+                </label>
+                <div class="d-flex align-items-center">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="lastNamePreparer"
+                    [(value)]="webI9Details.lastNamePreparer"
+                    readonly
+                  />
+                </div>
+              </div>
+              <div class="col-xs-6 col-sm-6 col-md-6 form-group">
+                <label class="text-muted"
+                  >First Name<span> (Given Name)</span>
+                  <span class="text-danger"> *</span>
+                </label>
+                <div class="d-flex align-items-center">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="firstNamePreparer"
+                    minlength="2"
+                    maxlength="150"
+                    [(value)]="webI9Details.firstNamePreparer"
+                    readonly
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-5 col-sm-5 col-md-5 form-group">
+                <label class="text-muted"
+                  >Address
+                  <span>(Street Number and Name)</span>
+                  <span class="text-danger"> *</span></label
+                >
+                <div class="d-flex align-items-center">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="addressPreparer"
+                    [(value)]="webI9Details.addressPreparer"
+                    readonly
+                  />
+                </div>
+              </div>
+              <div class="col-xs-4 col-sm-4 col-md-4 form-group">
+                <label class="text-muted"
+                  >City or Town <span class="text-danger">*</span></label
+                >
+                <div class="d-flex align-items-center">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="cityOrTownPreparer"
+                    [(value)]="webI9Details.cityOrTownPreparer"
+                    readonly
+                  />
+                </div>
+              </div>
+              <div class="col-xs-1 col-sm-1 col-md-1 form-group">
+                <label class="text-muted"
+                  >State<span class="text-danger"> *</span></label
+                >
+                <div class="d-flex align-items-center">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="statePreparer"
+                    [(value)]="webI9Details.statePreparer"
+                    readonly
+                  />
+                </div>
+              </div>
+              <div class="col-xs-2 col-sm-2 col-md-2 form-group">
+                <label class="text-muted"
+                  >ZIP<span class="text-danger"> *</span></label
+                >
+                <div class="d-flex align-items-center">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="zipCodePreparer"
+                    [(value)]="webI9Details.zipCodePreparer"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

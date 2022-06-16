@@ -1,0 +1,50 @@
+<div class="page-wrapper1">
+    <div class="auth-bg">
+        <div class="authentication-box">
+            <div class="account-logo">
+                <div class="text-center">
+                    <h1>
+                        <a routerLink="/" style="display: flex;justify-content: center;">
+                            <!-- <app-feather-icons [icon]="_settings.data.logo" size="xx-small m-r-10"></app-feather-icons> -->
+                            <img src="assets/img/logo2.png" class="logo" />
+                            <!-- <span>{{_settings.data.title}}</span> -->
+                        </a>
+                    </h1>
+                </div>
+            </div>
+            <div class="card mt-4">
+                <div class="card-body">
+                    <div class="text-center">
+                        <h4>Authenticate with OTP</h4>
+                    </div>
+                    <span *ngIf="!!tfa.tempSecret">
+
+                      <div class="text-center" *ngIf="showTAQRCode">
+                        Scan the QR code or enter the secret key in Google Authenticator 
+                        <a target="_blank" href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en_US&ref=hackernoon.com">Download Scanner APP</a>
+                      </div>
+              
+                      <img [src]="tfa.dataURL" alt="" *ngIf="showTAQRCode" class="img-thumbnail" style="display:block;margin:auto;margin-bottom: 10px;">
+                      <form class="form-group" (ngSubmit)="confirm()" #otpForm="ngForm" style="width: 360px;margin: 0px auto;">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <input name="authcode" type="text" #iauthcode="ngModel" class="form-control" maxlength="6"
+                            placeholder="Enter the TFA Code" id="authcode" autocomplete="off" appOnlynumber
+                           [(ngModel)]="authcode" required>                       
+                          </div>
+                          <div class="col-md-6">
+                            <button type="Submit" class="btn btn-primary btn-block"
+                            [disabled]="iauthcode?.errors?.required">Verify</button>
+                          </div>
+                        </div>
+                      </form>
+                      <div class="text-center" *ngIf="!showTAQRCode" style="margin-top: 10px;">
+                        <a href="javascript:void(0)" (click)="reset()"><u>Click here to request for reset scan TFA</u></a>
+                      </div>
+                      <p class="text-danger" style="text-align:center;" *ngIf="errorMessage">{{errorMessage}}</p>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

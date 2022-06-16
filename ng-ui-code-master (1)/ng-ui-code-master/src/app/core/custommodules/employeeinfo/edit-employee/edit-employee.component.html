@@ -1,0 +1,146 @@
+<div
+  id="edit_employee"
+  [ngStyle]="{ display: editemployeeDisplay }"
+  data-backdrop="static"
+  class="modal custom-modal backdrop"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Employee</h5>
+        <button type="button" class="close" (click)="closeAddmodal()">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #f="ngForm" (ngSubmit)="save()">
+          <div *ngIf="employee">
+            <div class="row" *ngIf="errLabel">
+              <div class="col-sm-6" class="text-danger">
+                {{ errLabel }}
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="col-form-label"
+                        >First Name <span class="text-danger">*</span></label
+                      >
+                      <input
+                        pInputText
+                        class="form-control"
+                        [(ngModel)]="employee.firstName"
+                        name="firstName"
+                        placeholder=" "
+                        type="text"
+                        required
+                        #firstName="ngModel"
+                        minlength="2"
+                        maxlength="150"
+                        pattern="[A-Za-z]{1,150}"
+                        (keypress)="sharedService.keyPressAlphabet($event)"
+                      />
+                      <small
+                        class="text-danger"
+                        *ngIf="firstName.touched && firstName.invalid"
+                        >The given value is not a valid format.</small
+                      >
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="col-form-label"
+                        >Last Name <span class="text-danger">*</span></label
+                      >
+                      <input
+                        pInputText
+                        class="form-control"
+                        [(ngModel)]="employee.lastName"
+                        name="lastName"
+                        placeholder=" "
+                        type="text"
+                        required
+                        #lastName="ngModel"
+                        maxlength="150"
+                        pattern="[A-Za-z]{1,150}"
+                        (keypress)="sharedService.keyPressAlphabet($event)"
+                      />
+                      <small
+                        class="text-danger"
+                        *ngIf="lastName.touched && lastName.invalid"
+                        >The given value is not a valid format.</small
+                      >
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="col-form-label"
+                        >Email <span class="text-danger">*</span></label
+                      >
+                      <input
+                        pInputText
+                        class="form-control"
+                        [(ngModel)]="employee.email"
+                        type="email"
+                        name="email"
+                        #email="ngModel"
+                        maxlength="150"
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                        (keypress)="sharedService.keyPressEmail($event)"
+                        required
+                      />
+                      <small
+                        class="text-danger"
+                        *ngIf="email.touched && email.invalid"
+                        >The given value is not a valid format.</small
+                      >
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="col-form-label"
+                        >Mobile<span class="text-danger">*</span></label
+                      >
+                      <input
+                        pInputText
+                        class="form-control"
+                        [(ngModel)]="employee.phoneNumber"
+                        type="tel"
+                        name="phoneNumber"
+                        #phone="ngModel"
+                        maxlength="15"
+                        pattern="[0-9]{10,15}"
+                        required
+                        (keypress)="sharedService.keyPressNumber($event)"
+                      />
+                      <small
+                        class="text-danger"
+                        *ngIf="phone.touched && phone.invalid"
+                        >The given value is not a valid format.</small
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="submit-section">
+              <button
+                type="submit"
+                class="btn btn-success submit-btn"
+                data-dismiss="modal"
+              >
+                <i class="fa fa-save"></i>&nbsp;Save
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

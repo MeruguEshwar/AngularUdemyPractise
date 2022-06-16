@@ -1,0 +1,196 @@
+p {
+  margin: 0px;
+}
+.username {
+  color: #6c757d;
+  text-transform: capitalize;
+}
+
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+}
+.downloadW4Form .nav-item {
+  cursor: pointer;
+  margin: 0px 10px;
+}
+
+.downloadI9Form .list-group-item {
+  border: none;
+  color: #013893;
+}
+.downloadI9Form .list-group-item:hover {
+  color: #00a2e3;
+}
+.cShip_info .personal-info li .title {
+  width: 50%;
+}
+.personal-info li .title {
+  width: 30%;
+  font-weight: inherit;
+}
+.checkboxlebal {
+  color: #0099dc;
+}
+.alert-info {
+  border-color: #f2fafb;
+  background-color: #f2fafb;
+  font-size: 13px;
+  font-style: italic;
+}
+.form-group span,
+.personal-info .title span,
+.checkboxlebal {
+  font-size: 67%;
+  font-style: italic;
+}
+.text-info {
+  color: #0099dc !important;
+}
+.text-draft {
+  color: #0099dc !important;
+}
+.bg-inverse-info {
+  color: #0099dc !important;
+}
+.bg-inverse-draft {
+  color: #0099dc !important;
+}
+/* acc */
+#accordionExample .card-header {
+  /* background: linear-gradient(to right, #013893 0%, #00a2e3 100%); */
+  background-color: #f7f7f7;
+  padding: 0px;
+  display: flex;
+  justify-content: start;
+  align-items: baseline;
+  text-decoration: none;
+  font-size: inherit;
+}
+#accordionExample .card-header[aria-expanded="true"] {
+  background-color: #00a88e;
+}
+#accordionExample #declarationHeading.card-header[aria-expanded="true"] {
+  background-color: #f7f7f7;
+}
+#accordionExample .card-header[aria-expanded="true"] button {
+  font-weight: 500;
+}
+#accordionExample .card-header:hover {
+  /* background: linear-gradient(to right, #013893 0%, #00a2e3 100%); */
+  color: inherit;
+}
+#accordionExample .card-header button {
+  color: inherit;
+  width: 100%;
+  text-align: left;
+  text-decoration: none;
+  padding-left: 5px;
+  font-size: inherit;
+  font-weight: 500;
+}
+#accordionExample .card {
+  margin-bottom: 25px;
+}
+#accordionExample .card-header button::after {
+  border-top: 0;
+  border-left: 0;
+  border-bottom: 2px solid #fff;
+  border-right: 2px solid #fff;
+  content: "";
+  height: 8px;
+  display: inline-block;
+  pointer-events: none;
+  -webkit-transform-origin: 66% 66%;
+  transform-origin: 66% 66%;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+  -webkit-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+  width: 8px;
+  border-color: #1f1f1f;
+  vertical-align: 2px;
+  margin-left: 2px;
+  position: absolute;
+  right: 10px;
+  top: 11px;
+}
+#accordionExample .card-header[aria-expanded="true"] button::after {
+  -webkit-transform: rotate(-135deg);
+  transform: rotate(-135deg);
+}
+#accordionExample .card-header[aria-expanded="true"] button .badge,
+#accordionExample .card-header[aria-expanded="true"] button .fa {
+  display: none;
+}
+.col-table-headers {
+  border: 1px solid #f6f6f6;
+  padding: 10px;
+  height: 100px;
+  text-align: center;
+}
+table {
+  width: 100%;
+}
+table th {
+  text-align: center;
+  width: 33.3%;
+}
+table td {
+  vertical-align: baseline;
+}
+ol {
+  padding-left: 20px;
+  padding-right: 10px;
+}
+td,
+th {
+  border: 1px solid #dddddd;
+  padding: 8px;
+}
+.noti-dot:before {
+  top: auto;
+  right: 45px;
+}
+.noti-dot:after {
+  top: -4px;
+  right: 38px;
+}
+
+.form-group {
+  margin-bottom: 0px;
+  border: 1px solid #e1e1e1;
+  padding: 0px 5px 0px 5px;
+}
+:host ::ng-deep .ui-inputtext,
+:host ::ng-deep .ui-calendar .ui-calendar-button,
+:host ::ng-deep .ui-calendar,
+.form-control {
+  border-color: transparent;
+  box-shadow: none;
+  height: 25px;
+  background: aliceblue;
+  padding: 0px;
+}
+input::placeholder {
+  color: transparent;
+}
+:host ::ng-deep .view .ui-inputtext,
+:host ::ng-deep .view .ui-calendar .ui-calendar-button,
+:host ::ng-deep .view .ui-calendar,
+.form-control {
+  background: transparent;
+  opacity: 1;
+}
+.form-control.perjury {
+  background: aliceblue;
+}
+.signature-box {
+  font-weight: bold;
+  font-size: 40px;
+  height: 60px;
+}
+input.ng-valid.ng-touched,
+:host ::ng-deep .ui-inputtext:enabled:hover:not(.ui-state-error) {
+  border-color: transparent;
+}

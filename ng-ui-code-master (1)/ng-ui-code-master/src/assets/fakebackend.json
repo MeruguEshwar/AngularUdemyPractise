@@ -1,0 +1,213 @@
+{
+    "departments": [
+        {
+            "id":"DEPT1",
+            "name": "HR",
+            "status":"Active",
+            "description": "Human Resource Department"
+        },
+        {
+            "id":"DEPT2",
+            "name": "IT",
+            "status":"Active",
+            "description": "Infrastructer Development Department"
+        }
+    ],
+    "designations": [
+        {
+            "id":"1",
+            "name": "Software Engineer",
+            "status":"Active",
+            "description": "Software Engineer"
+        },        
+        {
+            "id":"2",
+            "name": "Developer",
+            "status":"Active",
+            "description": "Developer"
+        },
+        {
+            "id":"3",
+            "name": "Tester",
+            "status":"Active",
+            "description": "Tester"
+        }
+    ],
+    "users": [
+        {
+            "id":1,
+            "name":"admin",
+            "employeeid":"admin",
+            "email":"admin@gmail.com",
+            "mobile":"9000143257",
+            "designation":"Android Developer",
+            "joiningdate":"17-01-2018",
+            "password":"admin",
+            "role":"admin"
+        },
+        {
+            "id":1,
+            "name":"user",
+            "employeeid":"user",
+            "email":"user@gmail.com",
+            "mobile":"9000143257",
+            "designation":"Android Developer",
+            "joiningdate":"17-01-2018",
+            "password":"user",
+            "role":"user"
+        },
+        {
+            "id": 1,
+            "name": "Jaya Prakash",
+            "employeeid": "FT010",
+            "email": "jp@gmail.com",
+            "mobile": "9876543210",
+            "joiningdate": "17-01-2018",
+            "designation": "UI Developer",
+            "password":"user",
+            "role":"user"
+        },
+        {
+            "id": 1,
+            "name": "JJaya Prakash2",
+            "employeeid": "FT001",
+            "email": "jp@gmail.com",
+            "mobile": "9000143257",
+            "joiningdate": "17-01-2018",
+            "designation": "Web Developer",
+            "password":"user",
+            "role":"user"
+        },
+        {
+            "id": 1,
+            "name": "Jeffrey Warden",
+            "employeeid": "FT002",
+            "email": "Gray",
+            "mobile": "9876543210",
+            "joiningdate": "17-01-2018",
+            "designation": "Web Developer",
+            "password":"user",
+            "role":"user"
+        },
+        {
+            "id": 1,
+            "name": "Bernard Galaviz",
+            "employeeid": "FT003",
+            "email": "Orange",
+            "mobile": "9000143257",
+            "joiningdate": "17-01-2018",
+            "designation": "Android Developer",
+            "password":"user",
+            "role":"user"
+        },
+        {
+            "id": 1,
+            "name": "Jaya Prakash",
+            "employeeid": "FT004",
+            "email": "jp@gmail.com",
+            "mobile": "9000143257",
+            "joiningdate": "17-01-2018",
+            "designation": "UI Developer",
+            "password":"user",
+            "role":"user"
+        },
+        {
+            "id": 1,
+            "name": "Mercedes",
+            "employeeid": "FT005",
+            "email": "Orange",
+            "mobile": "9876543210",
+            "joiningdate": "17-01-2018",
+            "designation": "Web Developer",
+            "password":"user"
+        },
+        {
+            "id": 1,
+            "name": "Jaya Prakash",
+            "employeeid": "FT006",
+            "email": "Black",
+            "mobile": "9876543210",
+            "joiningdate": "17-01-2018",
+            "designation": "UI Developer",
+            "password":"user",
+            "role":"user"
+        },
+        {
+            "id": 1,
+            "name": "Honda",
+            "employeeid": "FT007",
+            "email": "jayaprakash@gmail.com",
+            "mobile": "9876543210",
+            "joiningdate": "17-01-2018",
+            "designation": "Ios Developer",
+            "password":"user",
+            "role":"user"
+        },
+        {
+            "id": 1,
+            "name": "Jaya Prakash",
+            "employeeid": "FT008",
+            "email": "jp@gmail.com",
+            "mobile": "9000143257",
+            "joiningdate": "17-01-2018",
+            "designation": "UI Developer",
+            "password":"user",
+            "role":"user"
+        },
+        {
+            "id": 1,
+            "name": "Ford",
+            "employeeid": "FT009",
+            "email": "Black",
+            "mobile": "9876543210",
+            "joiningdate": "17-01-2018",
+            "designation": "UI Developer",
+            "password":"user",
+            "role":"user"
+        },
+        {
+            "id": 1,
+            "name": "Jaya Prakash",
+            "employeeid": "FT010",
+            "email": "jp@gmail.com",
+            "mobile": "9876543210",
+            "joiningdate": "17-01-2018",
+            "designation": "UI Developer",
+            "password":"user",
+            "role":"user"
+        },
+        {
+            "id": 1,
+            "name": "Honda",
+            "employeeid": "FT007",
+            "email": "jayaprakash@gmail.com",
+            "mobile": "9876543210",
+            "joiningdate": "17-01-2018",
+            "designation": "Ios Developer",
+            "password":"user",
+            "role":"user"
+        },
+        {
+            "id": 1,
+            "name": "Honda",
+            "employeeid": "FT007",
+            "email": "jayaprakash@gmail.com",
+            "mobile": "9876543210",
+            "joiningdate": "17-01-2018",
+            "designation": "Ios Developer",
+            "password":"user",
+            "role":"user"
+        },
+        {
+            "id": 1,
+            "name": "Honda",
+            "employeeid": "FT007",
+            "email": "jayaprakash@gmail.com",
+            "mobile": "9876543210",
+            "joiningdate": "17-01-2018",
+            "designation": "Ios Developer",
+            "password":"user",
+            "role":"user"
+        }
+    ]
+}

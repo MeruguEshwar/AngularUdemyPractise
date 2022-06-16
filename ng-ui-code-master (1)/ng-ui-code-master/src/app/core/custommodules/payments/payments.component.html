@@ -1,0 +1,647 @@
+<div class="page-wrapper" style="min-height: 188px">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="javascript:void(0)">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Payments</li>
+            <li class="breadcrumb-item active">Credits</li>
+          </ul>
+        </div>
+        <div class="col-auto float-right ml-auto">
+          <a
+            href="javascript:void(0);"
+            class="btn add-btn"
+            (click)="addPayments()"
+            ><i class="fa fa-plus"></i> Add Credit Payment</a
+          >
+        </div>
+      </div>
+    </div>
+    <!-- Search Filter -->
+    <div class="row filter-row mt-5">
+      <div class="col-sm-6 col-md-2">
+        <div class="form-group form-focus select-focus focused">
+          <p-calendar
+            #minimumDate
+            [yearNavigator]="true"
+            [monthNavigator]="true"
+            yearRange="1980:2050"
+            readonlyInput="true"
+            showIcon="true"
+            placeholder="From"
+            [(ngModel)]="fromDate"
+            dateFormat="mm-dd-yy"
+            dataType="string"
+            name="fromDate"
+          ></p-calendar>
+          <!-- <label class="focus-label">From</label> -->
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-2">
+        <div class="form-group form-focus select-focus focused">
+          <p-calendar
+            [yearNavigator]="true"
+            [monthNavigator]="true"
+            yearRange="1980:2050"
+            readonlyInput="true"
+            [minDate]="minimumDate.value"
+            showIcon="true"
+            placeholder="To"
+            [(ngModel)]="toDate"
+            dateFormat="mm-dd-yy"
+            dataType="string"
+            name="toDate"
+          ></p-calendar>
+          <!-- <label class="focus-label">To</label> -->
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <div class="form-group form-focus select-focus focused">
+          <input
+            class="form-control"
+            type="text"
+            [(ngModel)]="invoiceNumber"
+            name="invoiceNumber"
+            placeholder="Invoice Number"
+          />
+
+          <!-- <label class="focus-label">Invoice Number</label> -->
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <div class="form-group form-focus select-focus focused">
+          <p-dropdown
+            [options]="customerOptions"
+            [(ngModel)]="selectedCustomerOptions"
+            optionLabel="companyName"
+            [filter]="true"
+            [showClear]="true"
+          ></p-dropdown>
+
+          <label class="focus-label"></label>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-2">
+        <a
+          href="javascript:void(0)"
+          class="btn btn-info btn-block"
+          (click)="
+            search(fromDate, toDate, invoiceNumber, selectedCustomerOptions)
+          "
+        >
+          <i class="fa fa-search"></i>&nbsp;Search
+        </a>
+      </div>
+    </div>
+    <!-- /Search Filter -->
+    <div
+      *ngIf="selectedPaymentList && selectedPaymentList.length"
+      class="action-for-selected-list"
+    >
+      <a
+        class="btn btn-default pl-1 text-success"
+        href="javascript:void(0)"
+        title="Undo Delete"
+        *ngIf="paymentToogleType == 1"
+        (click)="onDeletePayment(selectedPaymentList, 'Undo Payments')"
+      >
+        <i class="fa fa-undo fa-lg" aria-hidden="true"></i>
+      </a>
+      <a
+        class="btn btn-default pl-1 text-danger"
+        href="javascript:void(0)"
+        title="Delete Payments Permanantly"
+        *ngIf="paymentToogleType == 1"
+        (click)="
+          onDeletePayment(selectedPaymentList, 'Delete Payments Permanantly')
+        "
+      >
+        <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+      </a>
+      <a
+        class="btn btn-default pl-1 text-danger"
+        href="javascript:void(0)"
+        title="Delete Payments"
+        *ngIf="paymentToogleType == 0"
+        (click)="onDeletePayment(selectedPaymentList, 'Delete Payments')"
+      >
+        <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+      </a>
+    </div>
+    <p-tabView
+      (onChange)="handleChange($event)"
+      [(activeIndex)]="paymentToogleType"
+    >
+      <p-tabPanel header="Credit Payments">
+        <ng-container *ngTemplateOutlet="payments"></ng-container>
+      </p-tabPanel>
+      <p-tabPanel header="Deleted Credit Payments">
+        <ng-container *ngTemplateOutlet="payments"></ng-container>
+      </p-tabPanel>
+    </p-tabView>
+    <!-- /Page Header -->
+    <ng-template #payments>
+      <div class="col pl-0 pr-0 mt-2" *ngIf="!loading">
+        <p-table
+          [columns]="cols"
+          [value]="paymentList"
+          [rowsPerPageOptions]="[10, 25, 50]"
+          styleClass="ui-table-customers"
+          #dt
+          [paginator]="true"
+          [rows]="10"
+          [showCurrentPageReport]="true"
+          [alwaysShowPaginator]="false"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          [filterDelay]="0"
+          [globalFilterFields]="['department', 'description', 'status']"
+          class="payment-list"
+          [(selection)]="selectedPaymentList"
+        >
+          <!-- <ng-template pTemplate="caption">
+          .
+          <div class="ui-table-globalfilter-container">
+            <input
+              pInputText
+              type="text"
+              (input)="dt.filterGlobal($event.target.value, 'contains')"
+              placeholder="Search"
+            />
+          </div>
+        </ng-template> -->
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <!-- <th style="width: 12%; text-align: center">#</th> -->
+              <th style="width: 3%">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{ col.header }}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+              <th
+                class="actions"
+                [ngStyle]="{ width: paymentToogleType == 0 ? '6%' : '8%' }"
+              ></th>
+            </tr>
+          </ng-template>
+          <ng-template
+            pTemplate="body"
+            let-rowData
+            let-columns="columns"
+            let-rowIndex="rowIndex"
+          >
+            <tr>
+              <!-- <td
+              data-toggle="modal"
+              (click)="editPayment(rowData)"
+              style="text-align: center"
+            >
+              <a
+                href="javascript:void(0)"
+                [routerLink]="['/admin/payments/payment/view']"
+                [state]="{ paymentDetailsId: rowData.paymentDetailsId }"
+                >#PYMT-0000{{ rowIndex + 1 }}</a
+              >
+            </td> -->
+              <td>
+                <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+              </td>
+              <td *ngFor="let col of columns" [pSelectableRow]="col.field">
+                <ng-container *ngIf="col.field != 'amount'">
+                  {{ rowData[col.field] }}
+                </ng-container>
+                <ng-container *ngIf="col.field == 'amount'">
+                  {{ organizationCurrency }} {{ rowData[col.field] }}
+                </ng-container>
+              </td>
+              <td class="action-td">
+                <a
+                  href="javascript:void(0)"
+                  [routerLink]="['/admin/payments/payment/view']"
+                  [state]="{ paymentDetailsId: rowData.paymentDetailsId }"
+                  ><i class="fa fa-eye m-r-5 text-view"></i
+                ></a>
+                <a href="javascript:void(0)" *ngIf="paymentToogleType == 1">
+                  <i
+                    class="fa fa-undo m-r-5 text-success"
+                    style="cursor: pointer"
+                    (click)="onDeletePayment(rowData, 'Undo Payment')"
+                  ></i>
+                </a>
+                <a href="javascript:void(0)" *ngIf="paymentToogleType == 0">
+                  <i
+                    class="fa fa-trash-o m-r-5 text-danger"
+                    style="cursor: pointer"
+                    (click)="onDeletePayment(rowData, 'Delete Payment')"
+                  ></i>
+                </a>
+                <a href="javascript:void(0)" *ngIf="paymentToogleType == 1">
+                  <i
+                    class="fa fa-trash-o m-r-5 text-danger"
+                    style="cursor: pointer"
+                    (click)="
+                      onDeletePayment(rowData, 'Delete Payment Permanantly')
+                    "
+                  ></i>
+                </a>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td [attr.colspan]="cols.length + 2" style="text-align: center">
+                No Records Found.
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </ng-template>
+  </div>
+  <!-- /Page Content -->
+</div>
+
+<!-- add payment model-->
+<div
+  id="add_payment"
+  [ngStyle]="{ display: addPaymentsModel }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="form-header mt-3 mb-0">
+        <h3>Payment Details</h3>
+      </div>
+      <div class="row justify-content-md-center">
+        <div class="col-sm-11">
+          <div class="card">
+            <form #paymentForm="ngForm">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label
+                        >Customer Name <span class="text-danger"> *</span>
+                      </label>
+                      <p-dropdown
+                        [options]="customerOptions"
+                        [(ngModel)]="selectedCustomerOptions"
+                        optionLabel="companyName"
+                        (onChange)="onCompanyList($event.value)"
+                        name="customersName"
+                        required
+                        [filter]="true"
+                      ></p-dropdown>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label
+                        >{{ organizationCurrency }} Amount Received
+                        <span class="text-danger"> *</span></label
+                      >
+                      <div>
+                        <p-inputNumber
+                          name="number"
+                          [(ngModel)]="payment.amount"
+                          maxlength="12"
+                          [minFractionDigits]="2"
+                          [useGrouping]="false"
+                          ariaRequired="true"
+                          required
+                        ></p-inputNumber>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label
+                        >Date Received
+                        <span class="text-danger"> *</span></label
+                      >
+                      <p-calendar
+                        [yearNavigator]="true"
+                        [monthNavigator]="true"
+                        yearRange="1980:2050"
+                        readonlyInput="true"
+                        id="dateReceived"
+                        showIcon="true"
+                        dateFormat="mm-dd-yy"
+                        name="invoiceDueDate"
+                        dataType="string"
+                        [(ngModel)]="payment.dateReceived"
+                        required
+                      ></p-calendar>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label
+                        >Payment Type <span class="text-danger"> *</span></label
+                      >
+                      <p-dropdown
+                        [options]="paymentOptions"
+                        [(ngModel)]="selectedPaymentOptions"
+                        optionLabel="label"
+                        (onChange)="onPaymentOption($event.value)"
+                        name="paymentType"
+                        required
+                        [filter]="true"
+                      ></p-dropdown>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label>Invoice Number</label>
+                      <input
+                        class="form-control"
+                        type="text"
+                        [(ngModel)]="payment.invoiceNumber"
+                        name="invoiceNumber"
+                        (keypress)="sharedService.keyPressAlphaNumaric($event)"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label>Description</label>
+                      <textarea
+                        class="form-control"
+                        [(ngModel)]="payment.description"
+                        rows="3"
+                        name="description"
+                        (keypress)="sharedService.keyPressAddress($event)"
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+                <h3 class="card-titile attchmentlabel">
+                  Attachments
+                  <div class="col-auto float-right ml-auto">
+                    <a
+                      *ngIf="paymentForm.valid"
+                      href="javascript:void(0);"
+                      class=""
+                      (click)="uploadAttachemnts()"
+                      ><i class="fa fa-plus"></i> Add Attachment</a
+                    >
+                  </div>
+                </h3>
+                <div class="col pl-0 pr-0 mt-2" *ngIf="!loading">
+                  <p-table
+                    [columns]="attachmentCols"
+                    [value]="attachmentList"
+                    [rowsPerPageOptions]="[10, 25, 50]"
+                    styleClass="ui-table-customers attachmentList"
+                    #dt
+                    [paginator]="true"
+                    [rows]="5"
+                    [showCurrentPageReport]="true"
+                    [alwaysShowPaginator]="false"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    [filterDelay]="0"
+                    [globalFilterFields]="[
+                      'department',
+                      'description',
+                      'status'
+                    ]"
+                    class="invoice-list"
+                  >
+                    <ng-template pTemplate="header" let-columns>
+                      <tr>
+                        <th
+                          *ngFor="let col of columns"
+                          [pSortableColumn]="col.field"
+                        >
+                          {{ col.header }}
+                          <p-sortIcon [field]="col.field"></p-sortIcon>
+                        </th>
+                        <th class="actions" style="width: 13%">Actions</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template
+                      pTemplate="body"
+                      let-rowData
+                      let-columns="columns"
+                      let-rowIndex="rowIndex"
+                    >
+                      <tr [pSelectableRow]="rowData">
+                        <td *ngFor="let col of columns">
+                          <ng-container *ngIf="col.field != 'status'">
+                            {{ rowData[col.field] }}
+                          </ng-container>
+                        </td>
+                        <td class="actions">
+                          <i
+                            class="fa fa-trash-o text-danger"
+                            style="cursor: pointer"
+                            data-target="#confirmModel"
+                            data-toggle="modal"
+                            (click)="onDeleteAttachment(rowData)"
+                          ></i>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                      <tr>
+                        <td
+                          [attr.colspan]="attachmentCols.length + 1"
+                          style="text-align: center"
+                        >
+                          No Records Found.
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+                <div class="submit-section">
+                  <!-- <button
+                    class="btn btn-primary submit-btn m-r-10"
+                    (click)="uploadAttachemnts()"
+                    [disabled]="!paymentForm.valid"
+                  >
+                    Add Attachment
+                  </button> -->
+                  <button
+                    class="btn btn-success submit-btn m-r-10"
+                    (click)="savePayments(paymentForm)"
+                    [disabled]="!paymentForm.valid"
+                  >
+                    <i class="fa fa-save"></i>&nbsp;Save
+                  </button>
+                  <button
+                    class="btn btn-danger submit-btn"
+                    (click)="closeModal(paymentForm)"
+                  >
+                    <i class="fa fa-times"></i>&nbsp;Cancel
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /add payment model-->
+<!-- confirm model -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: confirmModel }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          (click)="closeModal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-header">
+          <!-- <h3>Delete Payment</h3> -->
+          <p>Are you sure ? Do you want to {{ confirmType }} ?</p>
+        </div>
+        <div class="modal-btn">
+          <div class="row">
+            <div class="col-6 d-flex justify-content-end">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                (click)="confirmDelete(confirmType)"
+                class="btn btn-info submit-btn"
+                ><i class="fa fa-check"></i>&nbsp;Confirm</a
+              >
+            </div>
+            <div class="col-6 d-flex justify-content-start">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                class="btn btn-danger submit-btn"
+                (click)="closeModal()"
+                ><i class="fa fa-times"></i>&nbsp;Cancel</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /confirm model -->
+<!-- Upload file model-->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: uploadFileInfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          *ngIf="errorLabel"
+          style="position: absolute; left: 15px"
+          class="text-danger"
+        >
+          {{ errorLabel }}
+        </h5>
+        <h5 class="modal-title">Upload Document</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeUploadFileInfoModal(uploadForm)"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form (ngSubmit)="saveUploadFile(uploadForm)" #uploadForm="ngForm">
+            <div class="row" *ngIf="errorLabel">
+              <div class="col-sm-6" style="color: red">
+                {{ errorLabel }}
+              </div>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-12">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Title <span class="text-danger">*</span></label
+                  >
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="title"
+                    [(ngModel)]="uploadedFileTitle"
+                    maxlength="100"
+                    pattern="[A-Za-z ]{1,150}"
+                    (keypress)="sharedService.keyPressAlphabet($event)"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >File To Upload <span class="text-danger">*</span></label
+                  >
+                  <div class="d-flex align-items-center">
+                    <input
+                      class="form-control"
+                      type="file"
+                      id="fileToUpload"
+                      name="file"
+                      (change)="onFileChange($event)"
+                      #fileInput
+                      required
+                    />
+                    <div *ngIf="fileToUpload">
+                      <a
+                        class="btn btn-danger btn-clear-file"
+                        href="javascript:void(0)"
+                        aria-label="Remove"
+                        (click)="clearFile()"
+                      >
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="submit-section">
+              <button
+                type="submit"
+                class="btn btn-success submit-btn"
+                [disabled]="!uploadForm.valid || !fileToUpload"
+              >
+                <i class="fa fa-upload"></i>&nbsp;Upload
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Upload file Modal -->

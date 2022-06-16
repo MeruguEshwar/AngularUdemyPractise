@@ -1,0 +1,22 @@
+.table tr td.description {
+  position: absolute;
+  width: 59%;
+}
+#expence-line-item-description0 {
+  border: none;
+}
+
+.table td {
+  padding: 5px 10px 5px 0px !important;
+  border: none;
+}
+.table tr {
+  border-top: 1px solid #dee2e6;
+}
+:host ::ng-deep .p-inputnumber {
+  width: 100%;
+}
+.table td,
+.table th {
+  border: none;
+}

@@ -1,0 +1,13 @@
+.module-div .check-box-div,
+.module-div .role {
+  font-weight: 500;
+}
+:host ::ng-deep .ui-chkbox .ui-chkbox-box {
+  border-radius: 15px;
+}
+:host ::ng-deep .ui-chkbox .ui-chkbox-box .ui-chkbox-icon {
+  font-size: 12px;
+}
+:host ::ng-deep .pi {
+  line-height: 1.2;
+}

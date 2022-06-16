@@ -1,0 +1,56 @@
+<div data-spy="scroll" data-target="#navbar-inner-menu" data-offset="0">
+  <ng-container *ngFor="let item of bannerDetails">
+    <div class="row py-5 d-flex align-items-center" [id]="item.id">
+      <div class="col-sm-6">
+        <div *ngIf="item.imgType == 'right'" class="pr-5">
+          <h3>{{ item.headLineTag }}</h3>
+          <h1 class="heading3">
+            {{ item.HeadLine }}
+          </h1>
+          <p class="paragraph3">
+            {{ item.content }}
+          </p>
+          <ng-container *ngIf="item.list">
+            <ul class="list-unstyled">
+              <li *ngFor="let listItem of item.list">
+                <i
+                  class="fa fa-check-circle mr-2 check-list"
+                  aria-hidden="true"
+                ></i
+                >{{ listItem }}
+              </li>
+            </ul>
+          </ng-container>
+        </div>
+        <div *ngIf="item.imgType == 'left'">
+          <img [src]="item.img" alt="Cinque Terre" width="550" height="400" />
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div *ngIf="item.imgType == 'left'" class="pl-5">
+          <h3>{{ item.headLineTag }}</h3>
+          <h1 class="heading3">
+            {{ item.HeadLine }}
+          </h1>
+          <p class="paragraph3">
+            {{ item.content }}
+          </p>
+          <ng-container *ngIf="item.list">
+            <ul class="list-unstyled">
+              <li *ngFor="let listItem of item.list">
+                <i
+                  class="fa fa-check-circle mr-2 check-list"
+                  aria-hidden="true"
+                ></i
+                >{{ listItem }}
+              </li>
+            </ul>
+          </ng-container>
+        </div>
+        <div *ngIf="item.imgType == 'right'">
+          <img [src]="item.img" alt="Cinque Terre" width="550" height="400" />
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

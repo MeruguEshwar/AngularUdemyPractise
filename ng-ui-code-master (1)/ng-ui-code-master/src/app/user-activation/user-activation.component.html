@@ -1,0 +1,120 @@
+<div class="main-wrapper">
+  <div class="account-content">
+    <div class="container">
+      <!-- Account Logo -->
+      <div class="account-logo">
+        <a href="javascript:void(0)">
+          <img src="assets/img/logo2.png" class="inv-logo" alt=""
+        /></a>
+      </div>
+      <!-- /Account Logo -->
+
+      <div class="account-box" *ngIf="isValid">
+        <div class="account-wrapper">
+          <h3 class="account-title">Set your password</h3>
+
+          <!-- Account Form -->
+          <form
+            name="activationForm"
+            (ngSubmit)="onFormSubmit()"
+            [formGroup]="activationForm"
+          >
+            <div class="form-group">
+              <label>Password</label>
+              <input
+                pInputText
+                tabindex="1"
+                class="form-control"
+                formControlName="password"
+                name="password"
+                type="password"
+              />
+            </div>
+            <div class="form-group">
+              <p-message
+                severity="error"
+                [text]="
+                  activationForm.controls['password'].errors['required']
+                    ? 'Password is required'
+                    : activationForm.get('password').errors?.minlength
+                    ? 'Must be longer than 12 characters'
+                    : activationForm.get('password').errors?.maxlength
+                    ? 'should not exceed 32 characters'
+                    : activationForm.get('password').errors?.hasRepeatedLetters
+                    ? 'New password should not be contineous repeated characters (EX: 1111 or aaaa etc.)'
+                    : activationForm.get('password').errors?.isMatchPattern
+                    ? 'Password should contain each of the following groups: uppercase, lowercase,special, and numeric'
+                    : activationForm.get('password').errors?.validateSequence
+                    ? 'password should not be sequence characters (EX: abcd or 1234 etc.)'
+                    : ''
+                "
+                *ngIf="
+                  !activationForm.controls['password'].valid &&
+                  activationForm.controls['password'].dirty
+                "
+              ></p-message>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col">
+                  <label>Re Enter Password</label>
+                </div>
+              </div>
+              <input
+                pInputText
+                tabindex="2"
+                formControlName="repassword"
+                name="repassword"
+                class="form-control"
+                type="password"
+              />
+            </div>
+            <div class="form-group">
+              <p-message
+                severity="error"
+                [text]="
+                  activationForm.get('repassword').errors?.required
+                    ? 'Password is required'
+                    : activationForm.get('repassword').errors?.minlength
+                    ? 'Must be longer than 12 characters'
+                    : activationForm.get('repassword').errors?.maxlength
+                    ? 'should not exceed 32 characters'
+                    : activationForm.get('repassword').errors
+                        ?.hasRepeatedLetters
+                    ? 'New password should not be contineous repeated characters (EX: 1111 or aaaa etc.)'
+                    : activationForm.get('repassword').errors?.isMatchPattern
+                    ? 'Password should contain each of the following groups: uppercase, lowercase,special, and numeric'
+                    : activationForm.get('repassword').errors?.validateSequence
+                    ? 'password should not be sequence characters (EX: abcd or 1234 etc.)'
+                    : activationForm.get('repassword').errors?.passwordMisMatch
+                    ? 'Re Enter Password not matched with Password'
+                    : ''
+                "
+                *ngIf="
+                  !activationForm.controls['repassword'].valid &&
+                  activationForm.controls['repassword'].dirty
+                "
+              ></p-message>
+            </div>
+            <div class="form-group text-center">
+              <button
+                tabindex="3"
+                class="btn btn-primary account-btn"
+                [disabled]="!activationForm.valid"
+                type="submit"
+              >
+                Set Password
+              </button>
+            </div>
+            <!-- <div class="account-footer">
+                <p>Don't have an account yet? <a [routerLink]="['/welcome']">Register</a></p>
+              </div> -->
+          </form>
+          <!-- /Account Form -->
+        </div>
+      </div>
+      <div *ngIf="!isValid">Invald link please try later</div>
+    </div>
+  </div>
+</div>
+<!-- /Main Wrapper -->

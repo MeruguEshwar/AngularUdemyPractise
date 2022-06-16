@@ -1,0 +1,11 @@
+.account-logo {
+  margin-bottom: 0px;
+}
+.account-logo img {
+  width: auto;
+  height: 65px;
+}
+:host ::ng-deep .ui-message .ui-message-icon {
+  margin-right: 10px;
+  font-size: smaller;
+}

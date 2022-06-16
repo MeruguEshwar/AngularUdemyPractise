@@ -1,0 +1,12 @@
+:host ::ng-deep .Organize_your_goals {
+  color: #009ce7;
+}
+:host ::ng-deep .manage_your_resources {
+  color: #6ac069;
+}
+:host ::ng-deep .create_growth_maps {
+  color: #8484d7;
+}
+:host ::ng-deep .improve_communication {
+  color: #e44c7d;
+}

@@ -1,0 +1,379 @@
+<div class="main-wrapper">
+  <div class="account-content">
+    <a href="/" class="btn btn-primary apply-btn"
+      ><i class="fa fa-home fa-fw" aria-hidden="true"></i>Home</a
+    >
+    <div class="container">
+      <!-- Account Logo -->
+      <div class="account-logo">
+        <a href="javascript:void(0)">
+          <img src="assets/img/logo2.png" class="inv-logo" alt=""
+        /></a>
+      </div>
+      <!-- /Account Logo -->
+      <!-- Authorization Form -->
+      <ng-container *ngIf="isAuthPage">
+        <div class="account-box">
+          <div class="account-wrapper">
+            <h3 class="account-title">Validate Authorization</h3>
+            <p class="account-subtitle">
+              Enter your Authorization Code to access timesheet
+            </p>
+
+            <!-- Authorization Code -->
+            <form (ngSubmit)="submitAuthCode()" #f="ngForm">
+              <div class="form-group">
+                <label>Authorization Code</label>
+                <input
+                  name="authorizationCode"
+                  class="form-control"
+                  type="email"
+                  [(ngModel)]="authorizationCode"
+                  placeholder="Authorization Code"
+                  required
+                />
+              </div>
+              <div class="form-group text-center">
+                <button class="btn btn-primary account-btn" type="submit">
+                  Validate
+                </button>
+              </div>
+              <div class="account-footer">
+                <p>
+                  Forget your Authorization Code?
+                  <a href="javascript:void(0)" (click)="getResetModel()"
+                    >Resend</a
+                  >
+                </p>
+                <p *ngIf="sussLblMsg" class="text-success">{{ sussLblMsg }}</p>
+                <p *ngIf="errLablMsg" class="text-danger">{{ errLablMsg }}</p>
+              </div>
+            </form>
+            <!-- /Authorization Code -->
+          </div>
+        </div>
+      </ng-container>
+      <!-- /Authorization Form -->
+      <!-- Reset Form -->
+      <ng-container *ngIf="isRestPage">
+        <div class="account-box">
+          <div class="account-wrapper">
+            <h3 class="account-title">Resend Authorization</h3>
+            <p class="account-subtitle">
+              Enter your Email Id to resend Authorization Code
+            </p>
+
+            <!-- Reset Authorization Code -->
+            <form (ngSubmit)="resetAuthCodeSubmit()" #f="ngForm">
+              <div class="form-group">
+                <label>Email Id</label>
+                <input
+                  name="approverEmail"
+                  class="form-control"
+                  type="text"
+                  [(ngModel)]="approverEmail"
+                  placeholder="Email Id"
+                  required
+                />
+              </div>
+              <div class="form-group text-center">
+                <button class="btn btn-primary account-btn" type="submit">
+                  Resend
+                </button>
+              </div>
+              <div class="account-footer">
+                <p>
+                  Do you want to access Timesheet?
+                  <a href="javascript:void(0)" (click)="getSubmitModel()"
+                    >Click Here</a
+                  >
+                </p>
+                <p *ngIf="sussLblMsg" class="text-success">{{ sussLblMsg }}</p>
+                <p *ngIf="errLablMsg" class="text-danger">{{ errLablMsg }}</p>
+              </div>
+            </form>
+            <!-- / Reset Authorization Code -->
+          </div>
+        </div>
+      </ng-container>
+      <!-- /Reset Form -->
+      <!-- Timesheet details Form -->
+      <ng-container *ngIf="isTimesheetPage">
+        <div class="account-box" style="width: 75%">
+          <div class="account-wrapper">
+            <h3 class="account-title pb-3">Timesheet Details</h3>
+            <section>
+              <div class="row">
+                <div class="col">
+                  <ul class="personal-info">
+                    <li class="clearfix">
+                      <div class="title">Resource Name:</div>
+                      <div class="text">
+                        {{ timesheetDetails?.employeeName }}
+                      </div>
+                    </li>
+                    <li class="clearfix">
+                      <div class="title">Timesheet Period:</div>
+                      <div class="text">
+                        {{ timesheetDetails?.timesheetPeriod }}
+                      </div>
+                    </li>
+                    <li class="clearfix">
+                      <div class="title">Project:</div>
+                      <div class="text">
+                        {{ timesheetDetails?.projectName }}
+                      </div>
+                    </li>
+                    <li class="clearfix">
+                      <div class="title">Status:</div>
+                      <div class="text">
+                        {{ getStatus(timesheetDetails?.status) }}
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col pl-0 pr-0 mt-2">
+                  <p-table
+                    [columns]="cols"
+                    [value]="timesheetDetails?.timesheetEntries"
+                    styleClass="ui-table-customers"
+                    #dt
+                  >
+                    <!-- <ng-template pTemplate="caption">
+                    .
+    
+                    <div class="ui-table-globalfilter-container">
+                      <input
+                        pInputText
+                        type="text"
+                        (input)="dt.filterGlobal($event.target.value, 'contains')"
+                        placeholder="Search"
+                      />
+                    </div>
+                  </ng-template> -->
+                    <ng-template pTemplate="header" let-columns>
+                      <tr>
+                        <ng-container *ngFor="let col of columns">
+                          <ng-container *ngIf="col.header == 'Description'">
+                            <th colspan="3">
+                              {{ col.header }}
+                            </th>
+                          </ng-container>
+                          <ng-container *ngIf="col.header != 'Description'">
+                            <th>
+                              {{ col.header }}
+                            </th>
+                          </ng-container>
+                        </ng-container>
+                      </tr>
+                    </ng-template>
+                    <ng-template
+                      pTemplate="body"
+                      let-rowData
+                      let-columns="columns"
+                      let-rowIndex="rowIndex"
+                    >
+                      <tr
+                        [pSelectableRow]="rowData"
+                        *ngIf="rowData.status == '1'"
+                      >
+                        <ng-container *ngFor="let col of columns">
+                          <ng-container *ngIf="col.field == 'description'">
+                            <td colspan="3">
+                              {{ rowData[col.field] }}
+                            </td>
+                          </ng-container>
+                          <ng-container>
+                            <td *ngIf="col.field == 'entryType'">
+                              {{ getEntryType(rowData[col.field]) }}
+                            </td>
+                          </ng-container>
+                          <td
+                            *ngIf="
+                              col.field != 'entryType' &&
+                              col.field != 'description'
+                            "
+                          >
+                            {{ rowData[col.field] }}
+                          </td>
+                        </ng-container>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                      <tr>
+                        <td
+                          [attr.colspan]="cols.length"
+                          style="text-align: center"
+                        >
+                          No Records Found.
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+              <div
+                class="row d-flex justify-content-start"
+                style="background-color: #f4f4f4; margin-top: 10px"
+              >
+                <div class="total-logged-time" *ngIf="totalLoggedTime">
+                  Total Logged Time :
+                  <span>{{ totalLoggedTime | minuteSeconds }}</span>
+                </div>
+                <div
+                  class="total-logged-time"
+                  style="color: '#28a745'"
+                  *ngIf="totalRegularTime"
+                >
+                  Regular :
+                  <span>{{ totalRegularTime | minuteSeconds }}</span>
+                </div>
+                <div
+                  class="total-logged-time"
+                  style="color: '#007bff'"
+                  *ngIf="totalOvertimeTime"
+                >
+                  Overtime :
+                  <span>{{ totalOvertimeTime | minuteSeconds }}</span>
+                </div>
+                <div
+                  class="total-logged-time"
+                  style="color: '#dc3545'"
+                  *ngIf="totalSickTime"
+                >
+                  Sick :
+                  <span>{{ totalSickTime | minuteSeconds }}</span>
+                </div>
+                <div
+                  class="total-logged-time"
+                  style="color: '#17a2b8'"
+                  *ngIf="totalOTPTime"
+                >
+                  PTO :
+                  <span>{{ totalOTPTime | minuteSeconds }}</span>
+                </div>
+                <div
+                  class="total-logged-time"
+                  style="color: '#ffc107'"
+                  *ngIf="totalBreakTime"
+                >
+                  Break :
+                  <span>{{ totalBreakTime | minuteSeconds }}</span>
+                </div>
+                <!-- <div class="total-logged-time downloadScreenShot">
+                  <a
+                    class="mr-4"
+                    *ngIf="timesheetsDetails?.screenShotLocation"
+                    (click)="downloadScreenShot(timesheetsDetails)"
+                    ><i class="fa fa-download fa-fw" aria-hidden="true"></i
+                    >Screenshot</a
+                  >
+                  <a
+                    class=""
+                    *ngIf="timesheetsDetails?.screenShotLocation"
+                    (click)="deleteScreenShot(timesheetsDetails)"
+                    ><i class="fa fa-trash-o fa-fw" aria-hidden="true"></i>Delete</a
+                  >
+                </div> -->
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="submit-section">
+                    <button
+                      type="button"
+                      (click)="openCommentPopUp('3')"
+                      class="btn btn-primary submit-btn mr-2"
+                    >
+                      Approve
+                    </button>
+                    <button
+                      type="button"
+                      (click)="openCommentPopUp('4')"
+                      class="btn btn-primary submit-btn mr-2"
+                    >
+                      Reject
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-primary submit-btn mr-2"
+                      (click)="openCommentPopUp('5')"
+                    >
+                      Request Modify
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </ng-container>
+      <!-- /Timesheet details Form -->
+      <!-- Error Box -->
+      <ng-container *ngIf="errorMessagePage">
+        <div class="account-box">
+          <div class="account-wrapper">
+            <h3 class="account-title">{{ shortErrorMessage }}</h3>
+            <p class="account-subtitle">{{ fullErrorMessage }}</p>
+          </div>
+        </div>
+      </ng-container>
+      <!--/ Error Box -->
+    </div>
+  </div>
+</div>
+<!-- /Main Wrapper -->
+<!-- comment  Modal -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: commentInfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Comments</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeCommentmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form (ngSubmit)="submitStatus()">
+            <div class="row justify-content-center">
+              <div class="col">
+                <div class="form-group">
+                  <label class="col-form-label">Comments </label>
+                  <textarea
+                    pInputTextarea
+                    [(ngModel)]="comments"
+                    autoResize="autoResize"
+                    name="comments"
+                    [rows]="5"
+                    [cols]="30"
+                    placeholder="Please Provide your Comments"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary submit-btn">
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /comment  Modal -->

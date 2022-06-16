@@ -1,0 +1,273 @@
+<div class="page-wrapper" style="min-height: 283px">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="javascript:void(0)">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Expense</li>
+            <li class="breadcrumb-item">View</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="card mb-0">
+      <div class="card-body">
+        <h3 class="card-title">
+          Expense Details
+          <a
+            href="javascript:void(0)"
+            class="edit-icon"
+            (click)="showDialogToEdit()"
+            ><i class="fa fa-pencil"></i
+          ></a>
+        </h3>
+        <div class="profile-view">
+          <div class="row">
+            <div class="col-md-12">
+              <ul class="personal-info">
+                <li *ngIf="expensesPayRateDetails?.expenseName">
+                  <div class="title">Expense Name</div>
+                  <div class="text">
+                    :<strong> {{ expensesPayRateDetails?.expenseName }}</strong>
+                  </div>
+                </li>
+                <li *ngIf="expensesPayRateDetails?.expenseDate">
+                  <div class="title">Expense Date</div>
+                  <div class="text">
+                    : {{ expensesPayRateDetails?.expenseDate }}
+                  </div>
+                </li>
+                <li *ngIf="expensesPayRateDetails?.totalAmount">
+                  <div class="title">Total Amount</div>
+                  <div class="text">
+                    : {{ organizationCurrency }}
+                    {{ expensesPayRateDetails?.totalAmount }}
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-12">
+              <h3 class="card-title mt-3">Expense Line Item Details</h3>
+              <div class="table-responsive">
+                <table class="table table-hover table-white">
+                  <thead>
+                    <tr>
+                      <th style="width: 50%">Expense Line Item</th>
+                      <th style="width: 25%" style="float: right">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let expense of expensesEntries; let i = index">
+                      <ng-container *ngIf="expense.status != '0'">
+                        <td class="align-middle">
+                          {{ expense.description }}
+                        </td>
+                        <td class="align-middle" style="float: right">
+                          {{ organizationCurrency }} {{ expense.amount }}
+                        </td>
+                      </ng-container>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- /Page Content -->
+</div>
+<!-- Add or edit deductions -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: expenseModel }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+  *ngIf="employeeExpenseDetailsId"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Expense Details : {{ expensesPayRateDetails.employeeName }}
+        </h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeUploadmodal('cancel')"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card m-0">
+          <div class="card-body">
+            <div class="line-item">
+              <form (ngSubmit)="save(f)" #f="ngForm">
+                <div class="row" *ngIf="errorLabel">
+                  <div class="col-sm-6" style="color: red">
+                    {{ errorLabel }}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-4">
+                    <label
+                      >Expense Name <span class="text-danger"> *</span>
+                    </label>
+                    <p-autoComplete
+                      [(ngModel)]="expensesPayRateDetails.expenseName"
+                      [suggestions]="filteredExpenses"
+                      (completeMethod)="filterExpenses($event)"
+                      name="expenseName"
+                      required
+                    ></p-autoComplete>
+                  </div>
+                  <div class="form-group col-4">
+                    <label
+                      >Expense Date <span class="text-danger"> *</span></label
+                    >
+                    <p-calendar
+                      [yearNavigator]="true"
+                      [monthNavigator]="true"
+                      yearRange="1980:2050"
+                      readonlyInput="true"
+                      showIcon="true"
+                      dateFormat="mm-dd-yy"
+                      name="expanceDate"
+                      dataType="string"
+                      [(ngModel)]="expensesPayRateDetails.expenseDate"
+                      required
+                    ></p-calendar>
+                  </div>
+                  <div class="col-md-12 col-sm-12">
+                    <div class="table-responsive">
+                      <table class="table table-hover table-white">
+                        <thead>
+                          <tr>
+                            <th style="width: 50%">Expense Line Item</th>
+                            <th style="width: 25%">
+                              {{ organizationCurrency }} Amount
+                            </th>
+                            <th style="width: 6%">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            *ngFor="
+                              let expense of expensesEntries;
+                              let i = index
+                            "
+                          >
+                            <ng-container *ngIf="expense.status != '0'">
+                              <td
+                                class="align-middle description"
+                                id="expence-line-item-description{{ i }}"
+                              >
+                                <ng-container>
+                                  <div>
+                                    <p-autoComplete
+                                      [(ngModel)]="expense.description"
+                                      [suggestions]="filteredDescriptions"
+                                      (completeMethod)="
+                                        filterDescription($event)
+                                      "
+                                      name="description{{ i }}"
+                                    ></p-autoComplete>
+                                  </div>
+                                </ng-container>
+                              </td>
+                              <td class="align-middle">
+                                <p-inputNumber
+                                  name="amount{{ i }}"
+                                  [(ngModel)]="expense.amount"
+                                  maxlength="12"
+                                  [minFractionDigits]="2"
+                                  [useGrouping]="false"
+                                  (onBlur)="
+                                    onInputKeyUp($event.value, expensesEntries)
+                                  "
+                                  ariaRequired="true"
+                                  required
+                                ></p-inputNumber>
+                                <!-- <input
+                                  class="form-control text-right"
+                                  name="amount{{ i }}"
+                                  [(ngModel)]="expense.amount"
+                                  type="number"
+                                  min="0"
+                                  oninput="validity.valid||(value='');"
+                                  required
+                                  (keyup)="getAmount(expensesEntries)"
+                                /> -->
+                              </td>
+
+                              <td class="align-middle">
+                                <a
+                                  href="javascript:void(0)"
+                                  class="text-success font-18 mr-3"
+                                  (click)="onAddexpenseLineItem()"
+                                  title="Add"
+                                  ><i class="fa fa-plus"></i
+                                ></a>
+                                <a
+                                  href="javascript:void(0)"
+                                  class="text-danger font-18"
+                                  (click)="onRemoveexpenseLineItem(expense, i)"
+                                  title="Delete"
+                                  ><i class="fa fa-trash-o"></i
+                                ></a>
+                              </td>
+                            </ng-container>
+                          </tr>
+                          <tr>
+                            <td></td>
+                            <th colspan="2">
+                              Total Amount:
+                              <span class="text-primary">
+                                {{ organizationCurrency }}
+                                {{ expensesPayRateDetails.totalAmount }}</span
+                              >
+                            </th>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="submit-section">
+                  <button
+                    type="submit"
+                    class="btn btn-success submit-btn"
+                    [disabled]="!f.valid"
+                  >
+                    <i class="fa fa-save"></i>&nbsp;Save
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger submit-btn ml-2"
+                    (click)="closeUploadmodal()"
+                  >
+                    <i class="fa fa-times"></i>&nbsp;Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Add or edit deductions -->

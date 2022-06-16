@@ -1,0 +1,911 @@
+<div
+  id="add_paystubs"
+  class="modal custom-modal backdrop"
+  [ngStyle]="{ display: addPaystubDisplay }"
+  role="dialog"
+  aria-modal="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered modal-lg"
+    role="document"
+    style="max-width: 85%"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Paystubs Details<span>&nbsp;:&nbsp;{{ empName?.fullName }}</span>
+        </h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #f="ngForm">
+          <section>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="card">
+                  <div class="card-body" style="font-size: 95%">
+                    <div class="row">
+                      <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                          <label class="col-form-label"
+                            >Cheque Date
+                            <span class="text-danger">*</span></label
+                          >
+                          <p-calendar
+                            [yearNavigator]="true"
+                            [monthNavigator]="true"
+                            yearRange="1980:2050"
+                            readonlyInput="true"
+                            name="checkDate"
+                            [(ngModel)]="paystubs.checkDate"
+                            dataType="string"
+                            showIcon="true"
+                            dateFormat="mm-dd-yy"
+                            required="true"
+                          ></p-calendar>
+                        </div>
+                      </div>
+                      <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                          <label class="col-form-label"
+                            >Payperiod Start Date
+                            <span class="text-danger">*</span></label
+                          >
+                          <p-calendar
+                            #minimumDate
+                            [yearNavigator]="true"
+                            [monthNavigator]="true"
+                            yearRange="1980:2050"
+                            readonlyInput="true"
+                            name="startDate"
+                            [(ngModel)]="paystubs.startDate"
+                            dataType="string"
+                            showIcon="true"
+                            dateFormat="mm-dd-yy"
+                            required="true"
+                          ></p-calendar>
+                        </div>
+                      </div>
+                      <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                          <label class="col-form-label"
+                            >Payperiod End Date
+                            <span class="text-danger">*</span></label
+                          >
+                          <p-calendar
+                            [yearNavigator]="true"
+                            [monthNavigator]="true"
+                            yearRange="1980:2050"
+                            readonlyInput="true"
+                            [minDate]="minimumDate.value"
+                            name="endDate"
+                            [(ngModel)]="paystubs.endDate"
+                            dataType="string"
+                            showIcon="true"
+                            dateFormat="mm-dd-yy"
+                            required="true"
+                          ></p-calendar>
+                        </div>
+                      </div>
+                      <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                          <label class="col-form-label"
+                            >Pay Type <span class="text-danger">*</span></label
+                          >
+                          <div class="dropwonbox">
+                            <p-dropdown
+                              [options]="payTypes"
+                              [(ngModel)]="paystubs.payType"
+                              (ngModelChange)="paystubs.payType = $event"
+                              placeholder="Select a Pay Type"
+                              name="payType"
+                              [filter]="true"
+                              required="true"
+                            >
+                            </p-dropdown>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="col-sm-6 col-md-3"
+                        *ngIf="paystubs.payType == 'Other'"
+                      >
+                        <div class="form-group">
+                          <label class="col-form-label">Enter Pay Type</label>
+                          <input
+                            pInputText
+                            class="form-control"
+                            [(ngModel)]="newPayType"
+                            name="payType"
+                            placeholder=""
+                            type="text"
+                            #payType="ngModel"
+                            (keypress)="
+                              sharedService.keyPressCustomValidator(
+                                $event,
+                                '[a-zA-z0-9 ]'
+                              )
+                            "
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4" *ngIf="!isEmp">
+                        <!-- <div class="form-group">
+                          <label class="col-form-label">Employee </label>
+                          <div class="dropwonbox">
+                            <p-dropdown [options]="lstEmployes" [(ngModel)]="paystubs.employeeDetailsId"
+                              (ngModelChange)="paystubs.employeeDetailsId = $event" placeholder="Select a Employee"
+                              name="employee" [filter]="true">
+                            </p-dropdown>
+                          </div>
+                        </div> -->
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label class="col-form-label"
+                            >Pay Summary
+                            <ul class="pay-category">
+                              <li>
+                                Gross Earnings: {{ organizationCurrency }}
+                                {{ paystubs.grossEarnings }}
+                              </li>
+                              <li>
+                                Withholdings: {{ organizationCurrency }}
+                                {{ paystubs.withHoldings }}
+                              </li>
+                              <li>
+                                Deductions: {{ organizationCurrency }}
+                                {{ paystubs.deductions }}
+                              </li>
+                            </ul>
+                          </label>
+                          <div class="paysummary-bar">
+                            <div
+                              class="paysummary-barbase"
+                              [ngClass]="{
+                                'paysummary-bar1': paystubs.grossEarnings
+                              }"
+                              title="Gross Earnings: {{
+                                paystubs.grossEarnings
+                              }}"
+                            ></div>
+                            <div
+                              class="paysummary-barbase"
+                              [ngClass]="{
+                                'paysummary-bar3': paystubs.withHoldings
+                              }"
+                              title="Withholdings: {{ paystubs.withHoldings }}"
+                            ></div>
+                            <div
+                              class="paysummary-barbase"
+                              [ngClass]="{
+                                'paysummary-bar2': paystubs.deductions
+                              }"
+                              title="Deductions: {{ paystubs.deductions }}"
+                            ></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px">
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label class="col-form-label"
+                            >Cheque Number
+                            <span
+                              class="text-danger"
+                              *ngIf="paystubs.payType == 'Cheque'"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="paystubs.checkNumber"
+                            name="checkNumber"
+                            #checkNumber="ngModel"
+                            maxlength="24"
+                            (keypress)="sharedService.keyPressNumber($event)"
+                            [required]="paystubs.payType == 'Cheque'"
+                          />
+                          <small
+                            class="text-danger"
+                            *ngIf="checkNumber.touched && checkNumber.invalid"
+                            >Enter Cheque Number</small
+                          >
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label class="col-form-label">Total Hours</label>
+                          <input
+                            pInputText
+                            class="form-control"
+                            [(ngModel)]="paystubs.totalHours"
+                            name="totalHours"
+                            placeholder=""
+                            type="text"
+                            [disabled]="true"
+                            #totalHours="ngModel"
+                            maxlength="24"
+                            pattern="[0-9]"
+                            (keypress)="sharedService.keyPressNumber($event)"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label class="col-form-label"
+                            >{{ organizationCurrency }} Net Pay</label
+                          >
+                          <input
+                            pInputText
+                            class="form-control"
+                            [(ngModel)]="paystubs.netAmount"
+                            name="netAmount"
+                            placeholder=""
+                            type="text"
+                            [disabled]="true"
+                            #netAmount="ngModel"
+                            maxlength="24"
+                            pattern="[0-9]"
+                            (keypress)="sharedService.keyPressNumber($event)"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="card">
+                          <div class="card-body">
+                            <h3
+                              class="card-title"
+                              (click)="grossEarnings = !grossEarnings"
+                            >
+                              Gross Earnings
+                              <span class="pull-right">
+                                Total: {{ organizationCurrency }}&nbsp;{{
+                                  paystubs.grossEarnings
+                                }}&nbsp;&nbsp;
+                                <i
+                                  class="fa fa-angle-down"
+                                  *ngIf="!grossEarnings"
+                                  aria-hidden="true"
+                                ></i>
+                                <i
+                                  class="fa fa-angle-up"
+                                  *ngIf="grossEarnings"
+                                  aria-hidden="true"
+                                ></i>
+                              </span>
+                            </h3>
+
+                            <div class="row" *ngIf="grossEarnings">
+                              <div class="col-sm-6">
+                                Description <span class="text-danger">*</span>
+                              </div>
+                              <div class="col-sm-2" style="padding-left: 0px">
+                                &nbsp;
+                              </div>
+                              <div class="col-sm-1" style="padding: 0px 3px">
+                                Hours
+                              </div>
+                              <div class="col-sm-1" style="padding: 0px 3px">
+                                {{ organizationCurrency }} Rate
+                              </div>
+                              <div class="col-sm-1" style="padding: 0px 3px">
+                                {{ organizationCurrency }} Amount
+                                <span class="text-danger">*</span>
+                              </div>
+                              <div class="col-sm-1">
+                                <a class="edit-icon" href="javascript:void(0)"
+                                  ><i
+                                    class="fa fa-plus"
+                                    (click)="addGross()"
+                                  ></i
+                                ></a>
+                              </div>
+                              <hr />
+                              <ng-container
+                                *ngFor="
+                                  let row of paystubs.grossEarningsList;
+                                  index as sno
+                                "
+                              >
+                                <div class="col-sm-6" [hidden]="!row.status">
+                                  <div class="form-group">
+                                    <p-autoComplete
+                                      [suggestions]="filteredCategory"
+                                      [(ngModel)]="row.description"
+                                      (completeMethod)="
+                                        filterCategory($event, sno, 'gross')
+                                      "
+                                      name="grossdesc{{ sno }}"
+                                      required
+                                      #description="ngModel"
+                                      (keypress)="
+                                        sharedService.keyPressCustomValidator(
+                                          $event,
+                                          '[a-zA-z0-9 ]'
+                                        )
+                                      "
+                                    >
+                                    </p-autoComplete>
+                                  </div>
+                                </div>
+                                <div
+                                  class="col-sm-2"
+                                  style="padding-left: 0px"
+                                  [hidden]="!row.status"
+                                >
+                                  <div class="form-group">
+                                    <p-selectButton
+                                      [options]="deductionType"
+                                      [(ngModel)]="row.grossEarningType"
+                                      name="selectedDiscount {{ sno }}"
+                                      (onChange)="getAmount(row, sno)"
+                                    >
+                                    </p-selectButton>
+                                  </div>
+                                </div>
+                                <div
+                                  class="col-sm-1"
+                                  style="padding: 0px 3px"
+                                  [hidden]="!row.status"
+                                >
+                                  <div class="form-group">
+                                    <p-inputNumber
+                                      name="hours{{ sno }}"
+                                      [(ngModel)]="row.hours"
+                                      maxlength="12"
+                                      [minFractionDigits]="2"
+                                      [useGrouping]="false"
+                                      (onBlur)="onInputKeyUp(row, sno, 'gross')"
+                                      ariaRequired="true"
+                                      required
+                                      [disabled]="row.grossEarningType == '2'"
+                                    >
+                                    </p-inputNumber>
+                                  </div>
+                                </div>
+                                <div
+                                  class="col-sm-1"
+                                  style="padding: 0px 3px"
+                                  [hidden]="!row.status"
+                                >
+                                  <div class="form-group">
+                                    <p-inputNumber
+                                      name="rate{{ sno }}"
+                                      [(ngModel)]="row.rate"
+                                      maxlength="12"
+                                      [minFractionDigits]="2"
+                                      [useGrouping]="false"
+                                      (onBlur)="onInputKeyUp(row, sno, 'gross')"
+                                      ariaRequired="true"
+                                      required
+                                      [disabled]="row.grossEarningType == '2'"
+                                    >
+                                    </p-inputNumber>
+                                  </div>
+                                </div>
+                                <div
+                                  class="col-sm-1"
+                                  style="padding: 0px 3px"
+                                  [hidden]="!row.status"
+                                >
+                                  <div class="form-group">
+                                    <p-inputNumber
+                                      name="amount{{ sno }}"
+                                      [(ngModel)]="row.amount"
+                                      maxlength="12"
+                                      [minFractionDigits]="2"
+                                      [useGrouping]="false"
+                                      (onBlur)="onInputKeyUp(row, sno, 'gross')"
+                                      ariaRequired="true"
+                                      required
+                                      [disabled]="row.grossEarningType != '2'"
+                                    ></p-inputNumber>
+                                  </div>
+                                </div>
+                                <div class="col-sm-1" [hidden]="!row.status">
+                                  <div class="form-group">
+                                    <a
+                                      class="edit-icon"
+                                      href="javascript:void(0)"
+                                      ><i
+                                        class="fa fa-trash"
+                                        (click)="deleteGross(row, sno, 'gross')"
+                                      ></i
+                                    ></a>
+                                  </div>
+                                </div>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
+                        <div class="card">
+                          <div class="card-body">
+                            <h3
+                              class="card-title"
+                              (click)="withHoldings = !withHoldings"
+                            >
+                              Withholdings
+                              <span class="pull-right">
+                                Total: {{ organizationCurrency }}&nbsp;{{
+                                  paystubs.withHoldings
+                                }}&nbsp;&nbsp;
+                                <i
+                                  class="fa fa-angle-down"
+                                  *ngIf="!withHoldings"
+                                  aria-hidden="true"
+                                ></i>
+                                <i
+                                  class="fa fa-angle-up"
+                                  *ngIf="withHoldings"
+                                  aria-hidden="true"
+                                ></i>
+                              </span>
+                            </h3>
+
+                            <div class="row" *ngIf="withHoldings">
+                              <div class="col-sm-6">
+                                Description <span class="text-danger">*</span>
+                              </div>
+                              <div class="col-sm-5">
+                                {{ organizationCurrency }} Amount
+                                <span class="text-danger">*</span>
+                              </div>
+                              <div class="col-sm-1">
+                                <a class="edit-icon" href="javascript:void(0)"
+                                  ><i
+                                    class="fa fa-plus"
+                                    (click)="addHoldings()"
+                                  ></i
+                                ></a>
+                              </div>
+                              <hr />
+                              <ng-container
+                                *ngFor="
+                                  let row of paystubs.withholdingsList;
+                                  index as sno
+                                "
+                              >
+                                <div class="col-sm-6" [hidden]="!row.status">
+                                  <div class="form-group">
+                                    <p-autoComplete
+                                      [suggestions]="filteredCategory"
+                                      [(ngModel)]="row.description"
+                                      (completeMethod)="
+                                        filterCategory($event, sno, 'holdings')
+                                      "
+                                      name="withHoldingsdec{{ sno }}"
+                                      required
+                                      #description="ngModel"
+                                      (keypress)="
+                                        sharedService.keyPressCustomValidator(
+                                          $event,
+                                          '[a-zA-z0-9 ]'
+                                        )
+                                      "
+                                    >
+                                    </p-autoComplete>
+                                  </div>
+                                </div>
+                                <div class="col-sm-5" [hidden]="!row.status">
+                                  <div class="form-group">
+                                    <p-inputNumber
+                                      name="withholdingAmount{{ sno }}"
+                                      [(ngModel)]="row.withholdingAmount"
+                                      maxlength="12"
+                                      [minFractionDigits]="2"
+                                      [useGrouping]="false"
+                                      (onBlur)="
+                                        onInputKeyUp(row, sno, 'holdings')
+                                      "
+                                      ariaRequired="true"
+                                      required
+                                    >
+                                    </p-inputNumber>
+                                  </div>
+                                </div>
+                                <div class="col-sm-1" [hidden]="!row.status">
+                                  <div class="form-group">
+                                    <a
+                                      class="edit-icon"
+                                      href="javascript:void(0)"
+                                      ><i
+                                        class="fa fa-trash"
+                                        (click)="
+                                          deleteHoldings(row, sno, 'holdings')
+                                        "
+                                      ></i
+                                    ></a>
+                                  </div>
+                                </div>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
+                        <div class="card">
+                          <div class="card-body">
+                            <h3
+                              class="card-title"
+                              (click)="deductions = !deductions"
+                            >
+                              Deductions
+                              <span class="pull-right">
+                                Total: {{ organizationCurrency }}&nbsp;{{
+                                  paystubs.deductions
+                                }}&nbsp;&nbsp;
+                                <i
+                                  class="fa fa-angle-down"
+                                  *ngIf="!deductions"
+                                  aria-hidden="true"
+                                ></i>
+                                <i
+                                  class="fa fa-angle-up"
+                                  *ngIf="deductions"
+                                  aria-hidden="true"
+                                ></i>
+                              </span>
+                            </h3>
+
+                            <div class="row" *ngIf="deductions">
+                              <div class="col-sm-6">
+                                Description <span class="text-danger">*</span>
+                              </div>
+                              <div class="col-sm-5">
+                                {{ organizationCurrency }} Amount
+                                <span class="text-danger">*</span>
+                              </div>
+                              <div class="col-sm-1">
+                                <a class="edit-icon" href="javascript:void(0)"
+                                  ><i
+                                    class="fa fa-plus"
+                                    (click)="addDeduction()"
+                                  ></i
+                                ></a>
+                              </div>
+                              <hr />
+                              <ng-container
+                                *ngFor="
+                                  let row of paystubs.deductionsList;
+                                  index as sno
+                                "
+                              >
+                                <div class="col-sm-6" [hidden]="!row.status">
+                                  <div class="form-group">
+                                    <p-autoComplete
+                                      [suggestions]="filteredCategory"
+                                      [(ngModel)]="row.description"
+                                      (completeMethod)="
+                                        filterCategory(
+                                          $event,
+                                          sno,
+                                          'deductions'
+                                        )
+                                      "
+                                      name="deductiondesc{{ sno }}"
+                                      required
+                                      #description="ngModel"
+                                      (keypress)="
+                                        sharedService.keyPressCustomValidator(
+                                          $event,
+                                          '[a-zA-z0-9 ]'
+                                        )
+                                      "
+                                    >
+                                    </p-autoComplete>
+                                  </div>
+                                </div>
+                                <div class="col-sm-5" [hidden]="!row.status">
+                                  <div class="form-group">
+                                    <p-inputNumber
+                                      name="deductionAmount{{ sno }}"
+                                      [(ngModel)]="row.deductionAmount"
+                                      maxlength="12"
+                                      [minFractionDigits]="2"
+                                      [useGrouping]="false"
+                                      (onBlur)="
+                                        onInputKeyUp(row, sno, 'deductions')
+                                      "
+                                      ariaRequired="true"
+                                      required
+                                    >
+                                    </p-inputNumber>
+                                  </div>
+                                </div>
+                                <div class="col-sm-1" [hidden]="!row.status">
+                                  <div class="form-group">
+                                    <a
+                                      class="edit-icon"
+                                      href="javascript:void(0)"
+                                      ><i
+                                        class="fa fa-trash pointer"
+                                        (click)="
+                                          deleteDeduction(
+                                            row,
+                                            sno,
+                                            'deductions'
+                                          )
+                                        "
+                                      ></i
+                                    ></a>
+                                  </div>
+                                </div>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
+                        <div class="card">
+                          <div class="card-body">
+                            <h3 class="card-title" (click)="others = !others">
+                              Others
+                              <span class="pull-right">
+                                <i
+                                  class="fa fa-angle-down"
+                                  *ngIf="!others"
+                                  aria-hidden="true"
+                                ></i>
+                                <i
+                                  class="fa fa-angle-up"
+                                  *ngIf="others"
+                                  aria-hidden="true"
+                                ></i>
+                              </span>
+                            </h3>
+
+                            <div class="row" *ngIf="others">
+                              <div class="col-sm-6">
+                                Description <span class="text-danger">*</span>
+                              </div>
+                              <div class="col-sm-2" style="padding-left: 0px">
+                                &nbsp;
+                              </div>
+                              <div class="col-sm-3">
+                                {{ organizationCurrency }} Amount
+                                <span class="text-danger">*</span>
+                              </div>
+                              <div class="col-sm-1">
+                                <a class="edit-icon" href="javascript:void(0)"
+                                  ><i
+                                    class="fa fa-plus"
+                                    (click)="addOthers()"
+                                  ></i
+                                ></a>
+                              </div>
+                              <hr />
+                              <ng-container
+                                *ngFor="
+                                  let row of paystubs.othersList;
+                                  index as sno
+                                "
+                              >
+                                <div class="col-sm-6" [hidden]="!row.status">
+                                  <div class="form-group">
+                                    <p-autoComplete
+                                      [suggestions]="filteredCategory"
+                                      [(ngModel)]="row.description"
+                                      (completeMethod)="
+                                        filterCategory($event, sno, 'others')
+                                      "
+                                      name="otherdesc{{ sno }}"
+                                      required
+                                      #description="ngModel"
+                                      (keypress)="
+                                        sharedService.keyPressCustomValidator(
+                                          $event,
+                                          '[a-zA-z0-9 ]'
+                                        )
+                                      "
+                                    >
+                                    </p-autoComplete>
+                                  </div>
+                                </div>
+                                <div
+                                  class="col-sm-2"
+                                  style="padding-left: 0px"
+                                  [hidden]="!row.status"
+                                >
+                                  <div class="form-group">
+                                    <p-selectButton
+                                      [options]="otherType"
+                                      [(ngModel)]="row.otherType"
+                                      name="selectedOtherType {{ sno }}"
+                                      (onChange)="getOtherAmount(row, sno)"
+                                    >
+                                    </p-selectButton>
+                                  </div>
+                                </div>
+                                <div class="col-sm-3" [hidden]="!row.status">
+                                  <div class="form-group">
+                                    <p-inputNumber
+                                      name="amount{{ sno }}"
+                                      [(ngModel)]="row.amount"
+                                      maxlength="12"
+                                      [minFractionDigits]="2"
+                                      [useGrouping]="false"
+                                      (onBlur)="
+                                        onInputKeyUp(row, sno, 'others')
+                                      "
+                                      ariaRequired="true"
+                                      required
+                                    >
+                                    </p-inputNumber>
+                                  </div>
+                                </div>
+                                <div class="col-sm-1" [hidden]="!row.status">
+                                  <div class="form-group">
+                                    <a
+                                      class="edit-icon"
+                                      href="javascript:void(0)"
+                                      ><i
+                                        class="fa fa-trash"
+                                        (click)="
+                                          deleteOthers(row, sno, 'others')
+                                        "
+                                      ></i
+                                    ></a>
+                                  </div>
+                                </div>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <div class="card">
+                          <div class="card-body">
+                            <h3 class="card-title">Attachment</h3>
+                            <div class="form-group">
+                              <!-- <label class="col-form-label">Attachment</label> -->
+                              <div class="d-flex align-items-center">
+                                <input
+                                  class="form-control mr-3"
+                                  type="file"
+                                  id="fileToUpload"
+                                  (change)="onFileChange($event)"
+                                  #fileInput
+                                />
+                                <div *ngIf="fileToUpload">
+                                  <a
+                                    class="btn btn-danger btn-clear-file"
+                                    href="javascript:void(0)"
+                                    aria-label="Remove"
+                                    (click)="clearFile()"
+                                  >
+                                    <i
+                                      class="fa fa-times"
+                                      aria-hidden="true"
+                                    ></i>
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+                            <ng-container
+                              *ngIf="paystubs.employeeDocumentUploadDetailsId"
+                            >
+                              <div class="form-group">
+                                <a
+                                  href="javascript:void(0)"
+                                  class="edit-icon mr-2"
+                                  title="Download Attachment"
+                                  style="float: left"
+                                >
+                                  <i
+                                    class="fa fa-download"
+                                    (click)="downloadFile(paystubs)"
+                                  ></i
+                                ></a>
+                                <a
+                                  href="javascript:void(0)"
+                                  class="edit-danger-icon"
+                                  title="Delete Attachment"
+                                  style="float: left"
+                                >
+                                  <i
+                                    class="fa fa-trash-o"
+                                    (click)="deleteDownloadFile(paystubs)"
+                                  ></i
+                                ></a>
+                              </div>
+                            </ng-container>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-12">
+                        <div class="submit-section">
+                          <button
+                            type="button"
+                            class="btn"
+                            [ngClass]="{
+                              'btn-info': paystubs.paystubDetailsId,
+                              'btn-success': !paystubs.paystubDetailsId
+                            }"
+                            (click)="save()"
+                            [disabled]="!f.valid || !paystubs.netAmount"
+                          >
+                            <ng-container *ngIf="paystubs.paystubDetailsId">
+                              <i class="fa fa-check"></i>&nbsp;Update
+                            </ng-container>
+                            <ng-container *ngIf="!paystubs.paystubDetailsId">
+                              <i class="fa fa-save"></i>&nbsp;Save
+                            </ng-container>
+                          </button>
+                          <button
+                            class="btn btn-danger ml-2"
+                            (click)="closeAddmodal()"
+                          >
+                            <i class="fa fa-times"></i>&nbsp;Cancel
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- confirm model -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: confirmModel }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+  *ngIf="confirmModel == 'block'"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          (click)="closeConfirmModel()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-header">
+          <h3>Delete File</h3>
+          <p>Are you sure ? Do you want to delete ?</p>
+        </div>
+        <div class="submit-section">
+          <button class="btn btn-info" (click)="confirm()">
+            <i class="fa fa-trash-o"></i>&nbsp;Delete
+          </button>
+          <button class="btn btn-danger ml-2" (click)="closeConfirmModel()">
+            <i class="fa fa-times"></i>&nbsp;Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /confirm model -->

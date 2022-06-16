@@ -1,0 +1,118 @@
+<div class="col pl-0 pr-0 mt-2" *ngIf="!loading">
+  <p-table
+    [columns]="cols"
+    [value]="lstPaystubs"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    styleClass="ui-table-customers"
+    #dt
+    [paginator]="true"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [alwaysShowPaginator]="false"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [filterDelay]="0"
+    [globalFilterFields]="['department', 'description', 'status']"
+  >
+    <ng-template pTemplate="caption">
+      Employee Paystubs - <span class="username">{{ userName }}</span>
+
+      <div class="ui-table-globalfilter-container">
+        <a
+          href="javascript:void(0)"
+          class="btn add-btn ml-3"
+          (click)="showDialogToAdd()"
+          ><i class="fa fa-plus"></i> Add Paystubs</a
+        >
+        <p-dropdown
+          [options]="yearLst"
+          [(ngModel)]="selectedYear"
+          (onChange)="getyear($event)"
+          [filter]="true"
+        ></p-dropdown>
+        <input
+          pInputText
+          type="text"
+          (input)="dt.filterGlobal($event.target.value, 'contains')"
+          placeholder="Search"
+        />
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          {{ col.header }}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+        <th class="actions">Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr [pSelectableRow]="rowData">
+        <td *ngFor="let col of columns">
+          <ng-container *ngIf="col.field == 'status'">
+            {{ rowData[col.field] | status }}
+          </ng-container>
+          <ng-container *ngIf="col.field != 'status'">
+            {{ rowData[col.field] }}
+          </ng-container>
+        </td>
+
+        <td class="actions">
+          <div class="dropdown dropdown-action">
+            <a
+              href="#"
+              class="action-icon dropdown-toggle"
+              data-toggle="dropdown"
+              aria-expanded="false"
+              ><i class="material-icons">more_vert</i></a
+            >
+            <div
+              class="dropdown-menu dropdown-menu-right"
+              x-placement="top-end"
+              style="
+                position: absolute;
+                will-change: transform;
+                top: 0px;
+                left: 0px;
+                transform: translate3d(72px, -2px, 0px);
+              "
+            >
+              <a
+                class="dropdown-item"
+                href="#"
+                data-toggle="modal"
+                (click)="showDialogToEdit(rowData)"
+                ><i class="fa fa-pencil m-r-5"></i> Edit</a
+              >
+              <a
+                class="dropdown-item"
+                href="#"
+                data-toggle="modal"
+                (click)="downloadFile(rowData)"
+                ><i class="fa fa-download m-r-5"></i>Download</a
+              >
+            </div>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td [attr.colspan]="cols.length" style="text-align: center">
+          No Records Found.
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<!-- /Page Content -->
+
+<ng-container *ngIf="paystubType == 'Add' || paystubType == 'Edit'">
+  <app-profile-add-paystubs
+    [paystubType]="paystubType"
+    [paystubs]="paystub"
+    [userId]="userId"
+    (onClose)="onPaystubAddCloseClick($event)"
+  >
+  </app-profile-add-paystubs>
+</ng-container>

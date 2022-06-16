@@ -1,0 +1,113 @@
+<div>
+  <div
+    class="row d-flex justify-content-start attachmentssection"
+    style="background-color: #f4f4f4; margin: 0px; margin-top: 15px"
+  >
+    <div class="total-logged-time mr-0">Tagged Projects :</div>
+    <div class="total-logged-time pl-0" *ngFor="let item of documentList">
+      <a class="attachment-file">
+        <i class="fa fa-tag"></i>
+        {{ item.projectName }}
+        <i class="fa fa-times text-danger" style="cursor: pointer"></i>
+      </a>
+    </div>
+  </div>
+  <div
+    class="row d-flex justify-content-start attachmentssection"
+    style="background-color: #f4f4f4; margin: 0px; margin-top: 15px"
+  >
+    <div class="total-logged-time mr-0">Tagged Employees :</div>
+    <div class="total-logged-time pl-0" *ngFor="let item of employeeList">
+      <a class="attachment-file">
+        <i class="fa fa-tag"></i>
+        {{ item.employeeName }}
+        <i class="fa fa-times text-danger" style="cursor: pointer"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- <p-tabView>
+  <p-tabPanel header="Tagged Project">
+    <div class="col pl-0 pr-0 mt-2" *ngIf="!loading">
+      <p-table
+        [columns]="projectCols"
+        [value]="documentList"
+        [rowsPerPageOptions]="[5, 10, 25, 50]"
+        styleClass="ui-table-customers"
+        #dt
+        [paginator]="true"
+        [rows]="5"
+        [showCurrentPageReport]="true"
+        [alwaysShowPaginator]="false"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [filterDelay]="0"
+        [globalFilterFields]="[]"
+      >
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{ col.header }}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr [pSelectableRow]="rowData">
+            <td *ngFor="let col of columns">
+              {{ rowData[col.field] }}
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td [attr.colspan]="projectCols.length" style="text-align: center">
+              No Records Found.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </p-tabPanel>
+  <p-tabPanel header="Tagged Employees">
+    <div class="col pl-0 pr-0 mt-2" *ngIf="!loading">
+      <p-table
+        [columns]="empCols"
+        [value]="employeeList"
+        [rowsPerPageOptions]="[5, 10, 25, 50]"
+        styleClass="ui-table-customers"
+        #dt
+        [paginator]="true"
+        [rows]="5"
+        [showCurrentPageReport]="true"
+        [alwaysShowPaginator]="false"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [filterDelay]="0"
+        [globalFilterFields]="[]"
+      >
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{ col.header }}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr [pSelectableRow]="rowData">
+            <td *ngFor="let col of columns">
+              {{ rowData[col.field] }}
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td [attr.colspan]="empCols.length" style="text-align: center">
+              No Records Found.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </p-tabPanel>
+</p-tabView> -->

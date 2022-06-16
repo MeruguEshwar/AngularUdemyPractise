@@ -1,0 +1,54 @@
+.authentication-box {
+    width: 560px;
+    z-index: 2;
+    margin: 0 auto;
+    .theme-form {
+        padding-top: 20px;
+        .form-group {
+            .col-form-label {
+                color: #999;
+            }
+        }
+        .social {
+            .form-row {
+                justify-content: center;
+            }
+        }
+        .btn-block {
+            position: relative;
+            span {
+                transition: 0.5s all;
+            }
+            .login-loader {
+                position: absolute;
+                opacity: 0;
+                z-index: auto;
+                margin: auto;
+                top: 0;
+                right: 156px;
+                bottom: 0;
+                content: " ";
+                img {
+                    width: 40px;
+                }
+            }
+            &.loader {
+                .login-loader {
+                    opacity: 1;
+                }
+                span {
+                    padding-right: 50px;
+                }
+            }
+        }
+    }
+}
+
+.auth-bg {
+    //background: $url_1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 50px 100px;
+}

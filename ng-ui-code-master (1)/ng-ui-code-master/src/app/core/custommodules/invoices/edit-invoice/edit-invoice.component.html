@@ -1,0 +1,1302 @@
+<div class="page-wrapper" style="min-height: 188px">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="javascript:void(0)">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Create AR Invoice</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <!-- Page body -->
+    <div class="page-body">
+      <div class="row">
+        <div class="col-sm-12">
+          <form #f="ngForm">
+            <div class="row top">
+              <div class="col-md-3">
+                <div class="row">
+                  <div class="card mr-3">
+                    <div class="card-body">
+                      <h3 class="card-title">Invoice Details</h3>
+                      <div class="form-group">
+                        <label
+                          >Invoice Date <span class="text-danger"> *</span>
+                        </label>
+                        <div>
+                          <p-calendar
+                            showIcon="true"
+                            dateFormat="mm-dd-yy"
+                            name="invoiceDate"
+                            dataType="string"
+                            [(ngModel)]="invoicesDetails.invoiceDate"
+                            dataType="string"
+                          ></p-calendar>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label
+                          >Invoice Number <span class="text-danger"> *</span>
+                          <span
+                            class="gen-Inv-Num"
+                            (click)="generateInvoiceNumber()"
+                          >
+                            Generate New</span
+                          ></label
+                        >
+                        <input
+                          class="form-control"
+                          name="invoiceNumber"
+                          type="text"
+                          [(ngModel)]="invoicesDetails.invoiceNumber"
+                          required
+                          (ngModelChange)="
+                            invoicesDetails.invoiceNumber = $event.toUpperCase()
+                          "
+                          (blur)="
+                            validateInvoicenumber(invoicesDetails.invoiceNumber)
+                          "
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label>Credit Days</label>
+                        <p-dropdown
+                          [options]="creditDaysOptions"
+                          [(ngModel)]="selectedCreditDaysOptions"
+                          optionLabel="label"
+                          name="creditDays"
+                          (onChange)="oncreditDays($event.value)"
+                          [filter]="true"
+                        ></p-dropdown>
+                      </div>
+                      <div class="form-group">
+                        <label
+                          >Due Date <span class="text-danger"> *</span></label
+                        >
+                        <div>
+                          <p-calendar
+                            showIcon="true"
+                            dateFormat="mm-dd-yy"
+                            [minDate]="minimumDate"
+                            [yearNavigator]="true"
+                            [monthNavigator]="true"
+                            yearRange="1980:2050"
+                            name="invoiceDueDate"
+                            dataType="string"
+                            [(ngModel)]="invoicesDetails.invoiceDueDate"
+                            required
+                          ></p-calendar>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label>PO Number</label>
+                        <input
+                          class="form-control"
+                          name="poNumber"
+                          type="text"
+                          [(ngModel)]="invoicesDetails.poNumber"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="row">
+                  <div class="card mr-3">
+                    <div class="card-body">
+                      <h3 class="card-title">Invoice Source</h3>
+                      <div class="form-group">
+                        <label>Organization Name </label>
+                        <div class="text-muted">
+                          {{ invoicesDetails?.organizationName }}
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label>EIN Number</label>
+                        <div class="text-muted">
+                          {{ invoicesDetails?.einNumber }}
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label
+                          >Mailing Address
+                          <span class="text-danger"> *</span></label
+                        >
+                        <p-dropdown
+                          [options]="shipFromOption"
+                          [(ngModel)]="selectedshipFromOption"
+                          optionLabel="label"
+                          (onChange)="onShipFrom($event.value)"
+                          name="shipFrom"
+                          required
+                          [filter]="true"
+                        ></p-dropdown>
+                      </div>
+                      <div
+                        class="form-group"
+                        *ngIf="selectedshipFromOption?.label"
+                      >
+                        <label>Shipping Address </label>
+                        <div class="text-muted">
+                          {{ selectedshipFromOption?.label || "-" }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="row">
+                  <div class="card mr-3">
+                    <div class="card-body">
+                      <h3 class="card-title">Invoice Destination</h3>
+                      <div class="form-group">
+                        <label
+                          >Customer Name <span class="text-danger"> *</span>
+                        </label>
+                        <p-dropdown
+                          [options]="customerOptions"
+                          [(ngModel)]="selectedCustomerOptions"
+                          optionLabel="companyName"
+                          (onChange)="onCompanyList($event.value)"
+                          name="customersName"
+                          required
+                          [filter]="true"
+                        ></p-dropdown>
+                      </div>
+                      <div
+                        class="form-group"
+                        *ngIf="selectedCustomerOptions?.companyName"
+                      >
+                        <label>Customer Name </label>
+                        <div class="text-muted">
+                          {{ selectedCustomerOptions?.companyName || "-" }}
+                        </div>
+                      </div>
+                      <div
+                        class="form-group"
+                        *ngIf="selectedCustomerOptions?.einNumber"
+                      >
+                        <label>Customer EIN </label>
+                        <div class="text-muted">
+                          {{ selectedCustomerOptions?.einNumber || "-" }}
+                        </div>
+                      </div>
+                      <div
+                        class="form-group"
+                        *ngIf="selectedCustomerOptions?.companyAddress"
+                      >
+                        <label>Ship To</label>
+                        <div class="text-muted">
+                          {{ selectedCustomerOptions?.companyAddress || "-" }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="row">
+                  <div class="card">
+                    <div class="card-body">
+                      <h3 class="card-title">Remittance Details</h3>
+                      <div class="form-group">
+                        <label
+                          >Remittance Name <span class="text-danger"> *</span>
+                        </label>
+                        <p-dropdown
+                          [options]="remitCompany"
+                          [(ngModel)]="selectedRemitCompanyOptions"
+                          optionLabel="label"
+                          (onChange)="onRemitSelect($event.value)"
+                          name="Remittance"
+                          required
+                          [filter]="true"
+                        ></p-dropdown>
+                      </div>
+                      <div *ngIf="selectedRemitCompanyOptions?.value">
+                        <div
+                          class="form-group"
+                          *ngIf="selectedRemitCompanyOptions?.value?.bankName"
+                        >
+                          <label>Bank Name</label>
+                          <div class="text-muted">
+                            {{
+                              selectedRemitCompanyOptions?.value?.bankName ||
+                                "-"
+                            }}
+                          </div>
+                        </div>
+                        <div
+                          class="form-group"
+                          *ngIf="
+                            selectedRemitCompanyOptions?.value?.accountAddress
+                          "
+                        >
+                          <label>Bank Address </label>
+                          <div class="text-muted">
+                            {{
+                              selectedRemitCompanyOptions?.value
+                                ?.accountAddress || "-"
+                            }}
+                          </div>
+                        </div>
+                        <div
+                          class="form-group"
+                          *ngIf="
+                            selectedRemitCompanyOptions?.value?.accountName
+                          "
+                        >
+                          <label>Acount Name </label>
+                          <div class="text-muted">
+                            {{
+                              selectedRemitCompanyOptions?.value?.accountName ||
+                                "-"
+                            }}
+                          </div>
+                        </div>
+                        <div
+                          class="form-group"
+                          *ngIf="
+                            selectedRemitCompanyOptions?.value?.accountNumber
+                          "
+                        >
+                          <label>Account Number </label>
+                          <div class="text-muted">
+                            {{
+                              selectedRemitCompanyOptions?.value
+                                ?.accountNumber || "-"
+                            }}
+                          </div>
+                        </div>
+                        <div
+                          class="form-group"
+                          *ngIf="
+                            selectedRemitCompanyOptions?.value.routingNumber !=
+                              '' &&
+                            selectedRemitCompanyOptions?.value.routingNumber
+                          "
+                        >
+                          <label>Routing Number </label>
+                          <div class="text-muted">
+                            {{
+                              selectedRemitCompanyOptions?.value
+                                ?.routingNumber || "-"
+                            }}
+                          </div>
+                        </div>
+                        <div
+                          class="form-group"
+                          *ngIf="
+                            selectedRemitCompanyOptions?.value.ifscCode != '' &&
+                            selectedRemitCompanyOptions?.value.ifscCode
+                          "
+                        >
+                          <label>IFSC Code</label>
+                          <div class="text-muted">
+                            {{
+                              selectedRemitCompanyOptions?.value?.ifscCode ||
+                                "-"
+                            }}
+                          </div>
+                        </div>
+                        <div
+                          class="form-group"
+                          *ngIf="
+                            selectedRemitCompanyOptions?.value?.otherDetails
+                          "
+                        >
+                          <label>Other Details </label>
+                          <div class="text-muted">
+                            {{
+                              selectedRemitCompanyOptions?.value
+                                ?.otherDetails || "-"
+                            }}
+                          </div>
+                        </div>
+                        <!-- <div
+                          class="form-group"
+                          *ngIf="selectedRemitCompanyOptions?.value?.country"
+                        >
+                          <label>Country</label>
+                          <div class="text-muted">
+                            {{
+                              getCountryName(
+                                selectedRemitCompanyOptions?.value?.country
+                              ) || "-"
+                            }}
+                          </div>
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="row p-2 d-flex align-items-center"
+              style="background-color: #f7f7f7; margin-top: 10px"
+            >
+              <p-radioButton
+                name="invoicePaymentDetailsBasedType"
+                value="project"
+                label="Project"
+                (onClick)="entryType($event, 'project')"
+                [(ngModel)]="invoicePaymentDetailsBasedType"
+                class="mr-2"
+                [disabled]="grandTotal ? true : false"
+              ></p-radioButton>
+              <p-radioButton
+                name="invoicePaymentDetailsBasedType"
+                value="consultant"
+                label="Consultant"
+                class="mr-2"
+                (onClick)="entryType($event, 'consultant')"
+                [(ngModel)]="invoicePaymentDetailsBasedType"
+                [disabled]="grandTotal ? true : false"
+              ></p-radioButton>
+            </div>
+            <div class="row btm">
+              <div class="col-md-12 col-sm-12">
+                <div class="table-responsive">
+                  <table class="table table-hover table-white">
+                    <thead>
+                      <tr>
+                        <th style="width: 2%">#</th>
+                        <ng-container
+                          *ngIf="invoicePaymentDetailsBasedType == 'project'"
+                        >
+                          <th style="width: 14%">Project</th></ng-container
+                        >
+                        <ng-container
+                          *ngIf="invoicePaymentDetailsBasedType == 'consultant'"
+                          ><th style="width: 14%">Consultant</th>
+                        </ng-container>
+                        <ng-container
+                          *ngIf="invoicePaymentDetailsBasedType == 'product'"
+                          ><th style="width: 14%">Product</th>
+                        </ng-container>
+                        <th style="width: 0%">Description</th>
+                        <th style="width: 8%">Quantity</th>
+                        <th style="width: 12%">Rate</th>
+                        <th style="width: 12%">Discount</th>
+                        <th style="width: 12%">Tax</th>
+                        <th style="width: 12%">Amount</th>
+                        <th style="width: 6%">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        *ngFor="let invoice of invoicesEntries; let i = index"
+                      >
+                        <td style="vertical-align: middle">{{ i + 1 }}</td>
+                        <td
+                          class="align-middle"
+                          style="position: absolute"
+                          *ngIf="invoicePaymentDetailsBasedType != 'product'"
+                        >
+                          <ng-container
+                            *ngIf="
+                              invoicePaymentDetailsBasedType == 'consultant'
+                            "
+                          >
+                            <div style="width: 125px">
+                              <p-dropdown
+                                [options]="consultantOption"
+                                [(ngModel)]="invoice.employeeDetails"
+                                optionLabel="label"
+                                name="consultant{{ i }}"
+                                (onChange)="onConsultant($event.value, i)"
+                                required
+                                [filter]="true"
+                              ></p-dropdown>
+                            </div>
+                          </ng-container>
+                          <ng-container
+                            *ngIf="invoicePaymentDetailsBasedType == 'project'"
+                          >
+                            <div style="width: 125px">
+                              <p-dropdown
+                                [options]="projectOption"
+                                [(ngModel)]="invoice.projectDetails"
+                                optionLabel="label"
+                                name="project{{ i }}"
+                                (onChange)="onProject($event.value, i)"
+                                required
+                                [filter]="true"
+                              ></p-dropdown>
+                            </div>
+                          </ng-container>
+                        </td>
+                        <td *ngIf="invoicePaymentDetailsBasedType == 'product'">
+                          <input
+                            class="form-control"
+                            name="product{{ i }}"
+                            type="text"
+                            (keyup)="onProduct(invoice, i)"
+                            required
+                          />
+                        </td>
+                        <td class="align-middle">
+                          <textarea
+                            class="form-control"
+                            pInputTextarea
+                            name="description{{ i }}"
+                            style="min-width: 150px"
+                            [(ngModel)]="invoice.description"
+                          ></textarea>
+                        </td>
+                        <td class="align-middle">
+                          <p-inputNumber
+                            name="quantity{{ i }}"
+                            [(ngModel)]="invoice.quantity"
+                            maxlength="12"
+                            [minFractionDigits]="2"
+                            [useGrouping]="false"
+                            (onBlur)="onInputKeyUp($event.value, invoice, i)"
+                            ariaRequired="true"
+                            required
+                            [disabled]="invoice.disableQuantity"
+                          ></p-inputNumber>
+                          <!-- <input
+                            class="form-control"
+                            name="quantity{{ i }}"
+                            type="number"
+                            step="any"
+                            min="1"
+                            max="999999999"
+                            oninput="validity.valid||(value='');"
+                            [(ngModel)]="invoice.quantity"
+                            (keyup)="getAmount(invoice, i)"
+                            [disabled]="invoice.disableQuantity"
+                            required
+                          /> -->
+                        </td>
+                        <td class="align-middle">
+                          <div
+                            class="
+                              d-flex
+                              align-items-center
+                              justify-content-center
+                            "
+                          >
+                            <p-inputNumber
+                              name="rate{{ i }}"
+                              [(ngModel)]="invoice.rate"
+                              maxlength="12"
+                              [minFractionDigits]="2"
+                              [useGrouping]="false"
+                              (onBlur)="onInputKeyUp($event.value, invoice, i)"
+                              ariaRequired="true"
+                              required
+                              [disabled]="invoice.disableQuantity"
+                            ></p-inputNumber>
+                            <div
+                              class="dropdown pr-1"
+                              *ngIf="
+                                !+invoice.overtimeExemption &&
+                                invoice.ratestypes
+                              "
+                            >
+                              <button
+                                class="dropdown-toggle border-0"
+                                type="button"
+                                data-toggle="modal"
+                                data-target="#rates"
+                                (click)="onSelectInvoiceRate(invoice, i)"
+                                style="background-color: none"
+                              ></button>
+                            </div>
+                          </div>
+                        </td>
+
+                        <td class="align-middle">
+                          <div class="d-flex align-items-center">
+                            <p-checkbox
+                              name="discount{{ i }}"
+                              [binary]="true"
+                              [(ngModel)]="invoice.isDiscount"
+                              (onChange)="onDiscountChange($event, i)"
+                              [disabled]="!invoice.amount"
+                            ></p-checkbox>
+                            <p-inputNumber
+                              name="discountAmount{{ i }}"
+                              [(ngModel)]="invoice.discount"
+                              maxlength="12"
+                              [minFractionDigits]="2"
+                              [useGrouping]="false"
+                              (onBlur)="onInputKeyUp($event.value, invoice, i)"
+                              ariaRequired="true"
+                              required
+                              [disabled]="!invoice.isDiscount"
+                            ></p-inputNumber>
+                            <!-- <input
+                              class="form-control mr-1"
+                              name="discountAmount{{ i }}"
+                              type="number"
+                              step="any"
+                              min="0"
+                              max="999999999"
+                              oninput="validity.valid||(value='');"
+                              (keyup)="getAmount(invoice, i)"
+                              [(ngModel)]="invoice.discount"
+                              [disabled]="!invoice.isDiscount"
+                            /> -->
+                            <ng-container *ngIf="invoice.isDiscount">
+                              <p-selectButton
+                                [options]="deductionType"
+                                [(ngModel)]="invoice.discountType"
+                                name="selectedDiscount {{ i }}"
+                                (onChange)="getAmount(invoice, i)"
+                              ></p-selectButton>
+                            </ng-container>
+                          </div>
+                        </td>
+                        <td class="align-middle">
+                          <div class="d-flex align-items-center">
+                            <p-checkbox
+                              name="tax{{ i }}"
+                              [binary]="true"
+                              [(ngModel)]="invoice.isTax"
+                              (onChange)="onTaxChange($event, i)"
+                              [disabled]="!invoice.amount"
+                            ></p-checkbox>
+                            <p-inputNumber
+                              name="taxAmount{{ i }}"
+                              [(ngModel)]="invoice.tax"
+                              maxlength="12"
+                              [minFractionDigits]="2"
+                              [useGrouping]="false"
+                              (onBlur)="onInputKeyUp($event.value, invoice, i)"
+                              ariaRequired="true"
+                              required
+                              [disabled]="!invoice.isTax"
+                            ></p-inputNumber>
+                            <!-- <input
+                              class="form-control mr-1"
+                              name="taxAmount{{ i }}"
+                              type="number"
+                              step="any"
+                              min="0"
+                              max="999999999"
+                              oninput="validity.valid||(value='');"
+                              (keyup)="getAmount(invoice, i)"
+                              [(ngModel)]="invoice.tax"
+                              [disabled]="!invoice.isTax"
+                            /> -->
+                            <ng-container *ngIf="invoice.isTax">
+                              <p-selectButton
+                                name="selectedTax{{ i }}"
+                                [options]="deductionType"
+                                [(ngModel)]="invoice.taxType"
+                                (onChange)="getAmount(invoice, i)"
+                              ></p-selectButton>
+                            </ng-container>
+                          </div>
+                        </td>
+                        <td class="align-middle">
+                          <input
+                            class="form-control"
+                            name="amount{{ i }}"
+                            type="number"
+                            disabled
+                            [(ngModel)]="invoice.amount"
+                          />
+                        </td>
+                        <td class="align-middle">
+                          <a
+                            href="javascript:void(0)"
+                            class="text-success font-18 mr-3"
+                            (click)="onAddPaymentDetails()"
+                            title="Add"
+                            ><i class="fa fa-plus"></i
+                          ></a>
+                          <a
+                            href="javascript:void(0)"
+                            class="text-danger font-18"
+                            data-target="#confirmModel"
+                            data-toggle="modal"
+                            (click)="onRemovePaymentDetails(invoice, i)"
+                            title="Delete"
+                            *ngIf="invoicesEntries.length > 1"
+                            ><i class="fa fa-trash-o"></i
+                          ></a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-hover table-white">
+                    <tbody>
+                      <!-- <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">Total</td>
+                        <td
+                          style="
+                            text-align: right;
+                            padding-right: 30px;
+                            width: 230px;
+                          "
+                        >
+                          0
+                        </td>
+                      </tr> -->
+                      <!-- <tr>
+                        <td colspan="5" class="text-right">Tax</td>
+                        <td
+                          style="
+                            text-align: right;
+                            padding-right: 30px;
+                            width: 230px;
+                          "
+                        >
+                          <input
+                            class="form-control text-right"
+                            value="0"
+                            readonly=""
+                            type="text"
+                          />
+                        </td>
+                      </tr> -->
+                      <!-- <tr>
+                        <td colspan="5" class="text-right">Discount %</td>
+                        <td
+                          style="
+                            text-align: right;
+                            padding-right: 30px;
+                            width: 230px;
+                          "
+                        >
+                          <input class="form-control text-right" type="text" />
+                        </td>
+                      </tr> -->
+
+                      <tr>
+                        <td
+                          colspan="5"
+                          style="text-align: right; font-weight: 500"
+                        >
+                          Total Discount (-)
+                        </td>
+                        <td
+                          style="
+                            text-align: right;
+                            padding-right: 30px;
+                            font-weight: 500;
+                            font-size: 16px;
+                            width: 230px;
+                          "
+                        >
+                          <span class="currencyIcon">{{ currencyIcon }}</span>
+                          {{ totalDiscount }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          colspan="5"
+                          style="text-align: right; font-weight: 500"
+                        >
+                          Total Tax (+)
+                        </td>
+                        <td
+                          style="
+                            text-align: right;
+                            padding-right: 30px;
+                            font-weight: 500;
+                            font-size: 16px;
+                            width: 230px;
+                          "
+                        >
+                          <span class="currencyIcon">{{ currencyIcon }}</span>
+                          {{ totalTax }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          colspan="5"
+                          style="text-align: right; font-weight: 500"
+                        >
+                          Total Amount
+                        </td>
+                        <td
+                          style="
+                            text-align: right;
+                            padding-right: 30px;
+                            font-weight: 500;
+                            font-size: 16px;
+                            width: 230px;
+                          "
+                        >
+                          <span class="currencyIcon">{{ currencyIcon }}</span>
+                          {{ grandTotal }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label>Additional Notes</label>
+                      <textarea
+                        class="form-control"
+                        name="notes"
+                        [(ngModel)]="invoicesDetails.notes"
+                      ></textarea>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div
+                      class="
+                        row
+                        d-flex
+                        justify-content-start
+                        align-items-center
+                      "
+                      style="
+                        background-color: #f4f4f4;
+                        margin: 0px;
+                        margin-top: 15px;
+                      "
+                      *ngIf="invoicesDetails.companyDetailsId"
+                    >
+                      <div class="total-logged-time mr-0">Approvers :</div>
+                      <div class="total-logged-time p-0 pt-1">
+                        <p-multiSelect
+                          name="approver-email"
+                          [options]="approverEmailList"
+                          optionLabel="approverEmail"
+                          (onChange)="emailChoosen($event.itemValue)"
+                          maxSelectedLabels="0"
+                          [showToggleAll]="false"
+                          [showHeader]="false"
+                        ></p-multiSelect>
+                      </div>
+                      <ng-container *ngIf="selectedApproverEmailList">
+                        <div
+                          class="total-logged-time pl-0"
+                          *ngFor="
+                            let item of selectedApproverEmailList;
+                            let i = index
+                          "
+                        >
+                          {{ item }}
+                          <i
+                            class="fa fa-times removeChosenEmailId text-danger"
+                            aria-hidden="true"
+                            (click)="removeChosenEmailId(i)"
+                          ></i>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div
+                      class="
+                        row
+                        d-flex
+                        justify-content-start
+                        attachmentssection
+                      "
+                      style="
+                        background-color: #f4f4f4;
+                        margin: 0px;
+                        margin-top: 15px;
+                      "
+                      *ngIf="
+                        invoicesDetails.companyDetailsId &&
+                        selectedApproverEmailList.length &&
+                        f.valid
+                      "
+                    >
+                      <div class="total-logged-time mr-0">Attachment :</div>
+                      <ng-container
+                        *ngIf="
+                          invoicesAttachmentDetails &&
+                            invoicesAttachmentDetails.length;
+                          else addAttachment
+                        "
+                      >
+                        <div class="total-logged-time pl-0">
+                          <a class="mr-4" (click)="uploadAttachemnts()"
+                            ><i
+                              class="fa fa-upload fa-fw"
+                              aria-hidden="true"
+                            ></i
+                            >Upload More
+                          </a>
+                        </div>
+                        <div
+                          class="total-logged-time pl-0"
+                          *ngFor="let item of invoicesAttachmentDetails"
+                        >
+                          <a
+                            data-target="#confirmModel"
+                            data-toggle="modal"
+                            class="attachment-file"
+                            (click)="onDeleteAttachment(item)"
+                          >
+                            <i
+                              class="fa fa-paperclip"
+                              style="cursor: pointer"
+                            ></i>
+                            {{ item.documentTitle }}
+                            <i
+                              class="fa fa-times text-danger"
+                              style="cursor: pointer"
+                            ></i>
+                          </a>
+                        </div>
+                      </ng-container>
+                      <ng-template #addAttachment>
+                        <div class="total-logged-time pl-0">
+                          <a class="mr-4" (click)="uploadAttachemnts()"
+                            ><i
+                              class="fa fa-upload fa-fw"
+                              aria-hidden="true"
+                            ></i
+                            >Upload
+                          </a>
+                        </div>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="submit-section">
+              <!-- <button
+                class="btn btn-primary submit-btn m-r-10"
+                (click)="uploadAttachemnts()"
+                [disabled]="!f.valid"
+              >
+                Attachemnts
+              </button> -->
+              <button
+                class="btn btn-info submit-btn m-r-10"
+                (click)="saveSend()"
+                [disabled]="!f.valid || !selectedApproverEmailList.length"
+              >
+                <i class="fa fa-paper-plane"></i>&nbsp;Save &amp; Send
+              </button>
+              <button
+                class="btn btn-success submit-btn m-r-10"
+                (click)="save()"
+                [disabled]="!f.valid || !selectedApproverEmailList.length"
+              >
+                <i class="fa fa-save"></i>&nbsp; Save
+              </button>
+              <a
+                [routerLink]="['/admin/invoices']"
+                class="btn btn-danger submit-btn"
+              >
+                <i class="fa fa-times"></i>&nbsp;Cancel
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- /page body -->
+  </div>
+  <!-- /Page Content -->
+</div>
+<!-- Email List  Modal -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: approverInfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Invoice Approvers</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeUploadmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="approverEmailList != null">
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let item of approverEmailList">
+              <p-checkbox
+                name="approverEmail"
+                value="{{ item.approverEmail }}"
+                label="{{ item.approverEmail }}"
+                [(ngModel)]="selectedApproverEmailList"
+              ></p-checkbox>
+            </li>
+          </ul>
+          <button
+            type="button"
+            (click)="closeUploadmodal()"
+            class="btn btn-info mt-3"
+          >
+            <i class="fa fa-check"></i>&nbsp;OK
+          </button>
+        </div>
+        <div *ngIf="approverEmailList == null">No Approvers Found</div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /
+  email List  Modal -->
+<!-- confirm model-->
+<div
+  class="modal custom-modal fade"
+  id="confirmModel"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <!-- <h3>Confirm</h3> -->
+          <p>Are you sure ? Do you want to Delete ?</p>
+        </div>
+        <div class="modal-btn">
+          <div class="row">
+            <div class="col-6 d-flex justify-content-end">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                (click)="confirm(confirmType)"
+                class="btn btn-info submit-btn"
+                ><i class="fa fa-check"></i>&nbsp;Confirm</a
+              >
+            </div>
+            <div class="col-6 d-flex justify-content-start">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                class="btn btn-danger submit-btn"
+                ><i class="fa fa-times"></i>&nbsp;Cancel</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /confirm model-->
+<!-- Upload file Modal -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: uploadFileInfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Upload Document</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeUploadmodal(uploadForm)"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form (ngSubmit)="saveUploadFile(uploadForm)" #uploadForm="ngForm">
+            <div class="row" *ngIf="errorLabel">
+              <div class="col-sm-6" style="color: red">
+                {{ errorLabel }}
+              </div>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-12">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Title <span class="text-danger">*</span></label
+                  >
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="title"
+                    maxlength="100"
+                    [(ngModel)]="uploadedFileTitle"
+                    (keypress)="sharedService.keyPressAlphaNumaric($event)"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >File To Upload <span class="text-danger">*</span></label
+                  >
+                  <div class="d-flex align-items-center">
+                    <input
+                      class="form-control"
+                      type="file"
+                      name="file"
+                      id="fileToUpload"
+                      (change)="onFileChange($event)"
+                      #fileInput
+                    />
+                    <div *ngIf="fileToUpload">
+                      <a
+                        class="btn btn-danger btn-clear-file"
+                        href="javascript:void(0)"
+                        aria-label="Remove"
+                        (click)="clearFile()"
+                      >
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="submit-section">
+              <button
+                type="submit"
+                class="btn btn-success submit-btn"
+                [disabled]="!uploadForm.valid || !fileToUpload"
+              >
+                <i class="fa fa-upload"></i>&nbsp;Upload
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Upload file Modal -->
+<!-- Unsaved confirm model-->
+<div
+  [ngStyle]="{ display: unSavedModel }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <h3>Confirm</h3>
+          <p>You have Unsaved changes. Do you want to leave ?</p>
+        </div>
+        <div class="modal-btn delete-action">
+          <div class="row">
+            <div class="col-6 d-flex justify-content-end">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                (click)="unSavedConfirm(true)"
+                class="btn btn-info submit-btn"
+                ><i class="fa fa-check"></i>&nbsp;Confirm</a
+              >
+            </div>
+            <div class="col-6 d-flex justify-content-start">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                (click)="unSavedConfirm(false)"
+                class="btn btn-danger submit-btn"
+                ><i class="fa fa-times"></i>&nbsp;Cancel</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Unsaved confirm model-->
+<!-- custome Email  model-->
+<div
+  [ngStyle]="{ display: customEmailModel }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <h5 class="modal-title">Custom Email</h5> -->
+        <button
+          type="button"
+          class="close"
+          (click)="closeUploadmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form
+            (ngSubmit)="saveCustomEmail(customeEmailForm)"
+            #customeEmailForm="ngForm"
+          >
+            <div class="row" *ngIf="errorLabel">
+              <div class="col-sm-6" style="color: red">
+                {{ errorLabel }}
+              </div>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Approver Email <span class="text-danger">*</span></label
+                  >
+                  <input
+                    pInputText
+                    class="form-control"
+                    [(ngModel)]="customEmail"
+                    type="email"
+                    name="email"
+                    #email="ngModel"
+                    maxlength="150"
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                    (keypress)="sharedService.keyPressEmail($event)"
+                    required
+                  />
+                  <small
+                    class="text-danger"
+                    *ngIf="email.touched && email.invalid"
+                    >The given value is not a valid format.</small
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="submit-section">
+              <button
+                type="submit"
+                class="btn btn-info submit-btn"
+                [disabled]="!customeEmailForm.valid"
+              >
+                <i class="fa fa-plus"></i>&nbsp;Add
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Custom Email  model-->
+<div class="modal custom-modal fade" id="rates" role="dialog" aria-modal="true">
+  <div
+    class="modal-dialog modal-dialog-centered modal-lg"
+    style="width: 800px; font-size: 90%"
+  >
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header mt-2">
+          <h4>Employee Rate Details</h4>
+          <table class="table rateTypes">
+            <thead>
+              <tr style="background-color: #f7f7f7">
+                <th scope="col" style="text-align: left">Project Name</th>
+                <th scope="col" style="width: 14%">Start Date</th>
+                <th scope="col" style="width: 14%">End Date</th>
+                <th scope="col" style="width: 14%; text-align: center">Rate</th>
+                <th scope="col" style="width: 14%; text-align: center">
+                  Overtime Rate
+                </th>
+                <th scope="col" style="width: 14%; text-align: center">
+                  Double Overtime Rate
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let item of selectedIinvoiceRate.ratestypes;
+                  let index = index
+                "
+              >
+                <td style="text-align: left">
+                  {{ item.projectName }}
+                </td>
+                <td>
+                  {{ item.startDate }}
+                </td>
+                <td>{{ item.endDate }}</td>
+                <td style="text-align: right">
+                  <span
+                    (click)="
+                      onRatestypeSelect(item?.rate, selectedIinvoiceRateIndex)
+                    "
+                    data-dismiss="modal"
+                    >$ {{ item.rate }}</span
+                  >
+                </td>
+                <td style="text-align: right">
+                  <span
+                    (click)="
+                      onRatestypeSelect(
+                        item?.overtimeRate,
+                        selectedIinvoiceRateIndex
+                      )
+                    "
+                    data-dismiss="modal"
+                    >$ {{ item.overtimeRate }}</span
+                  >
+                </td>
+                <td style="text-align: right">
+                  <span
+                    (click)="
+                      onRatestypeSelect(
+                        item?.doubleOvertimeRate,
+                        selectedIinvoiceRateIndex
+                      )
+                    "
+                    data-dismiss="modal"
+                    >$ {{ item.doubleOvertimeRate }}</span
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-btn">
+          <div class="row">
+            <div class="col-12 d-flex justify-content-center">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                class="btn btn-danger submit-btn"
+                ><i class="fa fa-times"></i>&nbsp;Cancel</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

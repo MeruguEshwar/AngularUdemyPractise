@@ -1,0 +1,84 @@
+<h2>From Angular 9 DATA BINDING</h2>
+<div class="nani">
+<h4>Property Binding Example</h4>
+<img [src]="abc" (click)="pqr($event)">
+</div>
+
+<h2>Realtime senario</h2>
+<input type="radio" name="person" value="c" [(ngModel)]="b">CusomerForm
+<input type="radio" name="person" value="s" [(ngModel)]="b">SellerForm
+
+<h4 *ngIf="b=='c'">CustomerForm</h4>
+<h4 *ngIf="b=='s'">SellerForm</h4>
+
+<hr>
+
+<h4>Both Senarios are same</h4>
+<span *ngIf="b=='c' then t1;else t2"></span>
+<ng-template #t1>CustomerForm</ng-template>
+<ng-template #t2>SellerForm</ng-template>
+
+<hr><br>
+<h4>Angular Pipes Example</h4>
+
+<div style="width:100%">
+    <div style="width:98%;float:left;border:solid 1px black;">
+        <h4>Upper Case Pipes Example</h4>
+        <b>{{ name | uppercase }}</b>
+    </div>
+</div>
+<hr><br>
+<div style="width:100%">
+    <div style="width:98%;float:left;border:solid 1px black;">
+        <h4>lOWERCase Pipes Example</h4>
+        <b>{{ name | lowercase }}</b>
+    </div>
+</div>
+
+<div style="width:100%">
+    <div style="width:98%;float:left;border:solid 1px black;">
+        <h4>Currency Pipes Example</h4>
+        <b>{{ 1000 | currency:"USD":true }}</b>
+    </div>
+</div>
+
+<div style="width:100%">
+    <div style="width:98%;float:left;border:solid 1px black;">
+        <h4>Date Pipes Example</h4>
+        <b>{{ todayDate | date:'dd/mm/yy' }}</b><br>
+        <b>{{ todayDate | date:'shortTime' }}</b>
+    </div>
+</div>
+
+
+<div style="width:100%">
+    <div style="width:98%;float:left;border:solid 1px black;">
+        <h4>Json Data Pipes Example</h4>
+        <b>{{ jsonvalue | json }}</b>
+    </div>
+</div>
+
+
+<div style="width:100%">
+    <div style="width:98%;float:left;border:solid 1px black;">
+        <h4>Percent Pipes Example</h4>
+        <b>{{ 00.76 | percent }}</b>
+    </div>
+</div>
+
+<div style="width:100%">
+    <div style="width:98%;float:left;border:solid 1px black;">
+        <h4>Slice Pipes Example</h4>
+        <b>{{ month | slice:3:8}}</b>
+    </div>
+</div>
+
+<h2>Custom Pipes</h2>
+<div style="width:100%">
+    <div style="width:98%;float:left;border:solid 1px black;">
+        <h4>Custom Pipes Example</h4>
+        <b>{{ number | myPipe }}</b>
+    </div>
+</div> 
+<p>kushfl</p>
+<a href="{{MyWebsiteURL | myPipe}}">Visit My Website</a> 

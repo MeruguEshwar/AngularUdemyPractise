@@ -1,0 +1,67 @@
+.filter-row .btn {
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #00a88e;
+  border-color: #00a88e;
+}
+.filter-row .btn:hover {
+  background-color: #03927c;
+  border-color: #03927c;
+}
+.line-item tbody tr > td:nth-child(2) {
+  position: relative;
+}
+:host ::ng-deep .fixed-width .ui-dropdown label.ui-dropdown-label {
+  width: 460px;
+}
+.action-label > a {
+  min-width: 75px;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="totalAmount"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="expenseDate"] {
+  width: 13%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="totalAmount"],
+:host ::ng-deep .ui-table-customers .ui-table-tbody > tr > td:nth-child(4) {
+  text-align: right;
+}
+:host ::ng-deep .ui-table-customers .ui-table-thead > tr > th:last-child {
+  width: 8%;
+}
+.table thead th:first-child {
+  width: 7%;
+}
+:host ::ng-deep .ui-table-customers .ui-table-caption {
+  /* padding: 5px 5px 18px 12px; */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.571em 0.857em;
+}
+.table td {
+  padding: 5px 10px 5px 0px !important;
+  border: none;
+}
+.table tr {
+  border-top: 1px solid #dee2e6;
+}
+:host ::ng-deep .p-inputnumber {
+  width: 100%;
+}

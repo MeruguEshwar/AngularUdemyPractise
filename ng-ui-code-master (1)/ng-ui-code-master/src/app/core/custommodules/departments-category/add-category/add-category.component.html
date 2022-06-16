@@ -1,0 +1,140 @@
+<div
+  id="add_employee"
+  class="modal custom-modal backdrop"
+  [ngStyle]="{ display: addemployeeDisplay }"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Document Category Details</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #f="ngForm" (ngSubmit)="save()">
+          <div>
+            <div class="row" *ngIf="errLabel">
+              <div class="col-sm-6" style="color: red">
+                {{ errLabel }}
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Document Category Name
+                    <span class="text-danger">*</span></label
+                  >
+                  <input
+                    pInputText
+                    class="form-control"
+                    (blur)="checkProjectAlreadyExist()"
+                    name="projectName"
+                    [(ngModel)]="category.documentCategory"
+                    placeholder=""
+                    type="text"
+                    minlength="1"
+                    maxlength="50"
+                    required
+                    #projectName="ngModel"
+                    (keypress)="
+                      sharedService.keyPressAlphaNumericWithSpecialChar($event)
+                    "
+                  />
+                  <small
+                    class="text-danger"
+                    *ngIf="projectName.touched && projectName.invalid"
+                    >The given value is not a valid format</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <h3 class="card-title">Document Category Access</h3>
+                <div class="row module-div">
+                  <div class="col-6">
+                    <div>
+                      <span class="role"> Role </span>
+                    </div>
+                  </div>
+                  <div class="col-2 check-box-div">Read</div>
+                  <div class="col-2 check-box-div">Write</div>
+                  <div class="col-2 check-box-div">Delete</div>
+                </div>
+
+                <ng-container
+                  *ngFor="let document of lstDocumentCategory; let i = index"
+                >
+                  <div class="row module-div">
+                    <div class="col-6">
+                      <div>
+                        <span>
+                          {{ document.documentCategory }}
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-2 check-box-div">
+                      <div>
+                        <p-checkbox
+                          binary="true"
+                          (onChange)="
+                            documentCategoryChange(document, 'read', $event)
+                          "
+                          [(ngModel)]="document.read"
+                          [ngModelOptions]="{ standalone: true }"
+                        ></p-checkbox>
+                      </div>
+                    </div>
+                    <div class="col-2 check-box-div">
+                      <div>
+                        <p-checkbox
+                          binary="true"
+                          (onChange)="
+                            documentCategoryChange(document, 'write', $event)
+                          "
+                          [(ngModel)]="document.write"
+                          [ngModelOptions]="{ standalone: true }"
+                        ></p-checkbox>
+                      </div>
+                    </div>
+                    <div class="col-2 check-box-div">
+                      <div>
+                        <p-checkbox
+                          binary="true"
+                          (onChange)="
+                            documentCategoryChange(document, 'delete', $event)
+                          "
+                          [(ngModel)]="document.delete"
+                          [ngModelOptions]="{ standalone: true }"
+                        ></p-checkbox>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="submit-section">
+            <button type="submit" class="btn btn-success" [disabled]="!f.valid">
+              <i class="fa fa-save"></i>&nbsp;Save
+            </button>
+            <button class="btn btn-danger ml-2" (click)="closeAddmodal()">
+              <i class="fa fa-times"></i>&nbsp;Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

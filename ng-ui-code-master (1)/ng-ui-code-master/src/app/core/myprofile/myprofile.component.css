@@ -1,0 +1,21 @@
+.nav-link {
+  padding: 8px;
+  font-size: 14;
+}
+:host ::ng-deep form .ui-tabview-panels {
+  max-height: 400px;
+  min-height: 360px;
+}
+.badge {
+  color: #fff;
+  font-weight: 600;
+  position: absolute;
+  top: -15px;
+  background-color: #dc3545;
+  right: 0px;
+  border-radius: 25%;
+  padding: 5px 5px;
+}
+.nav-tabs.nav-tabs-bottom > li {
+  position: relative;
+}

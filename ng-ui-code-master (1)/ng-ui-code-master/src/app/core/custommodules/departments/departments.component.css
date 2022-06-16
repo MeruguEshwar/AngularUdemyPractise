@@ -1,0 +1,21 @@
+:host ::ng-deep .ui-table-customers .ui-table-thead > tr > th.actions {
+  width: 14%;
+}
+:host ::ng-deep .ui-table-customers .ui-table-caption {
+  color: transparent;
+}
+
+:host ::ng-deep .ui-tabview .ui-tabview-panels {
+  padding: 0;
+}
+:host ::ng-deep .ui-table-customers .ui-table-caption {
+  border: 0px;
+}
+:host ::ng-deep .ui-table-customers .ui-table-globalfilter-container input {
+  width: 250px;
+  margin-right: 10px;
+  margin-bottom: 12px;
+}
+:host ::ng-deep .ui-table-customers .ui-table-thead > tr > th {
+  border-top: 2px solid #dee2e6;
+}

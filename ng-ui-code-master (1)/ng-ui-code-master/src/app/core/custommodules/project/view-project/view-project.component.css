@@ -1,0 +1,424 @@
+#accordionExample .card-header {
+  /* background: linear-gradient(to right, #013893 0%, #00a2e3 100%); */
+  background-color: #f7f7f7;
+  padding: 0px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  text-decoration: none;
+  font-size: inherit;
+  font-weight: 500;
+}
+#accordionExample .card-header[aria-expanded="true"] {
+  background-color: #00a88e;
+}
+#accordionExample .card-header[aria-expanded="true"] button {
+  font-weight: 500;
+}
+#accordionExample .card-header:hover {
+  /* background: linear-gradient(to right, #013893 0%, #00a2e3 100%); */
+  color: inherit;
+}
+#accordionExample .card-header button {
+  color: inherit;
+  width: 100%;
+  text-align: left;
+  text-decoration: none;
+  padding-left: 5px;
+  font-size: inherit;
+  font-weight: 500;
+}
+#accordionExample .card {
+  margin-bottom: 25px;
+}
+#accordionExample .card-header button::after {
+  border-top: 0;
+  border-left: 0;
+  border-bottom: 2px solid #fff;
+  border-right: 2px solid #fff;
+  content: "";
+  height: 8px;
+  display: inline-block;
+  pointer-events: none;
+  -webkit-transform-origin: 66% 66%;
+  transform-origin: 66% 66%;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+  -webkit-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+  width: 8px;
+  border-color: #1f1f1f;
+  vertical-align: 2px;
+  margin-left: 2px;
+  position: absolute;
+  right: 10px;
+  top: 15px;
+}
+#accordionExample .card-header[aria-expanded="true"] button::after {
+  -webkit-transform: rotate(-135deg);
+  transform: rotate(-135deg);
+}
+.list-group-item {
+  padding: 5px;
+}
+#approvers .card-body {
+  max-height: 150px;
+  overflow: auto;
+}
+:host ::ng-deep .ui-table-customers .ui-table-caption,
+:host ::ng-deep .ui-table-customers .ui-treetable-caption {
+  color: inherit;
+  padding: 0.571em 1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+:host ::ng-deep .ui-table-customers .ui-table-thead > tr > th.actions {
+  width: 10%;
+}
+
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="commentDateTime"] {
+  width: 20%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="employeeName"] {
+  width: 25%;
+}
+
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > .ProjectViewResources,
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="startDate"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="endDate"] {
+  width: 11%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="rate"] {
+  width: 10%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-tbody
+  > tr
+  > td[ng-reflect-field="rate"] {
+  text-align: right;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="commentDateTime"] {
+  width: 14%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="documentNumber"] {
+  width: 17%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="documentExpiryDate"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="alertRequired"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="alertBeforeNoOfDays"] {
+  width: 14%;
+}
+:host ::ng-deep #documents .ui-tabview .ui-tabview-panels {
+  padding: 0px;
+}
+:host
+  ::ng-deep
+  #documents
+  .ui-table-customers
+  .ui-table-tbody
+  > tr
+  > td[ng-reflect-field="alertRequired"],
+:host
+  ::ng-deep
+  #documents
+  .ui-table-customers
+  .ui-table-tbody
+  > tr
+  > td[ng-reflect-field="alertBeforeNoOfDays"] {
+  text-align: center;
+}
+:host
+  ::ng-deep
+  #documents
+  .ui-table-customers
+  .ui-table-tbody
+  > tr
+  > td[ng-reflect-field="sharedWithOthers"],
+:host
+  ::ng-deep
+  #documents
+  .ui-table-customers
+  .ui-table-tbody
+  > tr
+  > td[ng-reflect-field="taggedDocument"] {
+  text-transform: capitalize;
+  text-align: center;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="employeeFullName"] {
+  width: 16%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="startDate"] {
+  width: 10%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="endDate"] {
+  width: 10%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="invoiceFrequency"] {
+  width: 11%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="rate"] {
+  width: 9%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="overtimeRate"] {
+  width: 9%;
+}
+
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="doubleOvertimeRate"] {
+  width: 13%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="sharedWithOthers"] {
+  width: 12%;
+}
+.netDue {
+  color: #8e8e8e;
+}
+.leave-info-box {
+  padding: 10px 15px;
+  border-radius: 15px;
+}
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-thead
+  > tr
+  > th[ng-reflect-field="employeeFullName"] {
+  width: 20%;
+}
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-thead
+  > tr
+  > th[ng-reflect-field="startDate"] {
+  width: 8%;
+}
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-thead
+  > tr
+  > th[ng-reflect-field="endDate"] {
+  width: 8%;
+}
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-thead
+  > tr
+  > th[ng-reflect-field="invoiceFrequency"] {
+  width: 7%;
+}
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-thead
+  > tr
+  > th[ng-reflect-field="rate"] {
+  width: 7%;
+}
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-thead
+  > tr
+  > th[ng-reflect-field="overtimeRate"] {
+  width: 7%;
+}
+
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-thead
+  > tr
+  > th[ng-reflect-field="doubleOvertimeRate"] {
+  width: 7%;
+}
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-thead
+  > tr
+  > th[ng-reflect-field="showInInvoice"] {
+  width: 6%;
+}
+
+/* :host
+  ::ng-deep
+  .ui-treetable .ui-treetable-thead > tr > th[ng-reflect-field='actions'] {
+  width: 10%;
+} */
+:host ::ng-deep .ui-table-customers .ui-table-thead > tr > th.actions {
+  text-align: center;
+  width: 10%;
+}
+.bg-inverse-completed {
+  background-color: #55e779 !important;
+  vertical-align: middle;
+}
+.bg-inverse-in-progress {
+  background-color: #90c1f5 !important;
+  vertical-align: middle;
+}
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-tbody
+  > tr
+  > td[ng-reflect-row-node="rate"],
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-tbody
+  > tr
+  > td[ng-reflect-row-node="overtimeRate"],
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-tbody
+  > tr
+  > td[ng-reflect-row-node="doubleOvertimeRate"],
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-thead
+  > tr
+  > th[ng-reflect-field="rate"],
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-thead
+  > tr
+  > th[ng-reflect-field="overtimeRate"],
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-thead
+  > tr
+  > th[ng-reflect-field="doubleOvertimeRate"] {
+  text-align: right;
+}
+:host ::ng-deep .ui-inputswitch {
+  font-size: 10px;
+}
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-tbody
+  > tr
+  > td[ng-reflect-row-node="employeeFullName"] {
+  display: flex;
+  align-items: center;
+}
+:host ::ng-deep .ui-treetable .ui-treetable-tbody > tr.has-children-node,
+:host ::ng-deep .has-children-node .bg-inverse-completed,
+:host ::ng-deep .has-children-node .bg-inverse-in-progress {
+  font-weight: bold;
+}
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-tbody
+  > tr
+  > td
+  .ui-treetable-toggler {
+  color: #00a88e;
+}

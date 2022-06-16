@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col-xs-10">
+        <app-shoping-edit></app-shoping-edit>
+    </div>
+    <hr>
+   <ul class="list-group">
+        <a
+        class="list-group-item"
+        style="cursor: pointer;"
+        *ngFor="let ingdnts of ingrident"
+        >
+            {{ingdnts.name}}{{ingdnts.amont}}
+        </a>
+   </ul>
+</div>

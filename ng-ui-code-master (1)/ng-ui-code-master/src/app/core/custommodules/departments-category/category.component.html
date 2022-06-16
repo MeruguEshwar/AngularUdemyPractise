@@ -1,0 +1,273 @@
+<div class="page-wrapper">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">Dashboard</li>
+            <li class="breadcrumb-item active">Document Category</li>
+          </ul>
+        </div>
+        <div class="col-auto float-right ml-auto">
+          <a href="javascript:void(0)" (click)="showDialogToAdd()"
+            ><button [disabled]="!isAddDocCategoryEnable" class="btn add-btn">
+              <i class="fa fa-plus"></i>
+              Add Document Category
+            </button></a
+          >
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <!-- /Search Filter -->
+    <p-tabView (onChange)="handleChange($event)">
+      <p-tabPanel header="Active Document Categories">
+        <div class="col pl-0 pr-0 mt-2" *ngIf="!loading">
+          <p-table
+            [columns]="cols"
+            [value]="documentCategories"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            styleClass="ui-table-customers"
+            #dt
+            [paginator]="true"
+            [rows]="10"
+            [showCurrentPageReport]="true"
+            [alwaysShowPaginator]="false"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [filterDelay]="0"
+            [globalFilterFields]="['documentCategory']"
+          >
+            <ng-template pTemplate="caption">
+              .
+              <div class="ui-table-globalfilter-container">
+                <input
+                  pInputText
+                  type="text"
+                  (input)="dt.filterGlobal($event.target.value, 'contains')"
+                  placeholder="Search"
+                />
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                  {{ col.header }}
+                  <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+                <th class="actions">Actions</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <tr [pSelectableRow]="rowData">
+                <td *ngFor="let col of columns">
+                  <ng-container *ngIf="rowData.defaultCategory != 1">
+                    <a href="javascript:void(0)" (click)="onRowSelect(rowData)">
+                      {{ rowData[col.field] }}</a
+                    >
+                  </ng-container>
+                  <ng-container *ngIf="rowData.defaultCategory == 1">
+                    {{ rowData[col.field] }}</ng-container
+                  >
+                </td>
+                <!-- <td class="actions">
+                                  <div class="btn-group" role="group" aria-label="Basic example">
+                                      <button title="Edit" (click)="onRowSelect(rowData)" type="button" class="mr-2 btn btn-secondary"><i  class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                                      <button title="Delete" (click)="delete(rowData)" type="button" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                    </div>
+
+
+                              </td> -->
+                <td class="actions">
+                  <ng-container *ngIf="rowData.defaultCategory != 1">
+                    <a
+                      class="dropdown-item delete"
+                      href="#"
+                      data-toggle="modal"
+                      (click)="onAction(rowData)"
+                      data-target="#delete_employee"
+                      ><i class="fa fa-trash-o m-r-5"></i> Deactivate</a
+                    >
+                  </ng-container>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td [attr.colspan]="cols.length" style="text-align: center">
+                  No Records found.
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Deactivated Document Categories">
+        <div class="col pl-0 pr-0 mt-2" *ngIf="!loading">
+          <p-table
+            [columns]="cols"
+            [value]="documentCategories"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            styleClass="ui-table-customers"
+            #dt
+            [paginator]="true"
+            [rows]="10"
+            [showCurrentPageReport]="true"
+            [alwaysShowPaginator]="false"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [filterDelay]="0"
+            [globalFilterFields]="['documentCategory']"
+          >
+            <ng-template pTemplate="caption">
+              .
+              <div class="ui-table-globalfilter-container">
+                <input
+                  pInputText
+                  type="text"
+                  (input)="dt.filterGlobal($event.target.value, 'contains')"
+                  placeholder="Search"
+                />
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                  {{ col.header }}
+                  <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+                <th class="actions">Actions</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <tr [pSelectableRow]="rowData">
+                <td *ngFor="let col of columns">
+                  {{ rowData[col.field] }}
+                </td>
+                <!-- <td class="actions">
+                                          <div class="btn-group" role="group" aria-label="Basic example">
+                                              <button title="Edit" (click)="onRowSelect(rowData)" type="button" class="mr-2 btn btn-secondary"><i  class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                                              <button title="Delete" (click)="delete(rowData)" type="button" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                            </div>
+
+
+                                      </td> -->
+                <td class="actions">
+                  <ng-container *ngIf="rowData.defaultCategory != 1">
+                    <a
+                      class="success"
+                      href="#"
+                      data-toggle="modal"
+                      (click)="onAction(rowData)"
+                      data-target="#activate-document"
+                      ><i class="fa fa-check m-r-5"></i> Activate</a
+                    >
+                  </ng-container>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td [attr.colspan]="cols.length" style="text-align: center">
+                  No Records found.
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+  <!-- /Page Content -->
+  <div
+    class="modal custom-modal fade"
+    id="delete_employee"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="form-header">
+            <h3>Deactivate Document Category</h3>
+            <p>Are you sure ? Do you want to Deactivate the Category ?</p>
+          </div>
+          <div class="modal-btn delete-action">
+            <div class="row">
+              <div class="col-6 d-flex justify-content-end">
+                <a
+                  href="javascript:void(0);"
+                  data-dismiss="modal"
+                  (click)="delete(documentCategory)"
+                  class="btn btn-info"
+                  ><i class="fa fa-check"></i>&nbsp;Deactivate</a
+                >
+              </div>
+              <div class="col-6 d-flex justify-content-start">
+                <a
+                  href="javascript:void(0);"
+                  data-dismiss="modal"
+                  class="btn btn-danger"
+                  ><i class="fa fa-times"></i>&nbsp;Cancel</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="modal custom-modal fade"
+    id="activate-document"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="form-header">
+            <h3>Activate Document Category</h3>
+            <p>Are you sure ? Do you want to Activate the Category ?</p>
+          </div>
+          <div class="modal-btn">
+            <div class="row">
+              <div class="col-6 d-flex justify-content-end">
+                <a
+                  href="javascript:void(0);"
+                  data-dismiss="modal"
+                  (click)="delete(documentCategory)"
+                  class="btn btn-info"
+                  ><i class="fa fa-check"></i>&nbsp;Activate</a
+                >
+              </div>
+              <div class="col-6 d-flex justify-content-start">
+                <a
+                  href="javascript:void(0);"
+                  data-dismiss="modal"
+                  class="btn btn-danger"
+                  ><i class="fa fa-times"></i>&nbsp;Cancel</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-container *ngIf="categoryType == 'Add'">
+    <app-add-category
+      [categoryType]="categoryType"
+      (onClose)="onDeptAddCloseClick($event)"
+    >
+    </app-add-category>
+  </ng-container>
+  <ng-container *ngIf="categoryType == 'Edit'">
+    <app-add-category
+      [categoryType]="categoryType"
+      [category]="documentCategory"
+      (onClose)="onDeptAddCloseClick($event)"
+    >
+    </app-add-category>
+  </ng-container>
+</div>

@@ -1,0 +1,734 @@
+<div class="page-wrapper" style="min-height: 188px">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="javascript:void(0)">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">AP Invoices</li>
+          </ul>
+        </div>
+        <div class="col-auto float-right ml-auto">
+          <button
+            (click)="createInvoice()"
+            type="button"
+            [disabled]="invoicesToogleType != 0"
+            class="btn add-btn"
+          >
+            <i class="fa fa-plus"></i> Create AP Invoice
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+
+    <!-- Search Filter -->
+    <div class="row filter-row mt-5">
+      <div class="col-sm-6 col-md-2">
+        <div class="form-group form-focus select-focus focused">
+          <p-calendar
+            showIcon="true"
+            placeholder="From"
+            [(ngModel)]="fromDate"
+            dateFormat="mm-dd-yy"
+            dataType="string"
+          ></p-calendar>
+          <!-- <label class="focus-label">From</label> -->
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-2">
+        <div class="form-group form-focus select-focus focused">
+          <p-calendar
+            showIcon="true"
+            placeholder="To"
+            [(ngModel)]="toDate"
+            dateFormat="mm-dd-yy"
+            dataType="string"
+          ></p-calendar>
+          <!-- <label class="focus-label">To</label> -->
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <div class="form-group form-focus select-focus focused">
+          <p-dropdown
+            [options]="clientOptions"
+            [(ngModel)]="selectedClientOptions"
+            optionLabel="companyName"
+            [filter]="true"
+            [showClear]="true"
+          ></p-dropdown>
+
+          <label class="focus-label"></label>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <div class="form-group form-focus select-focus focused">
+          <p-dropdown
+            [options]="statusOptions"
+            [(ngModel)]="selectedStatusOption"
+            optionLabel="label"
+            [filter]="true"
+            [showClear]="true"
+          ></p-dropdown>
+
+          <label class="focus-label"></label>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-2">
+        <a
+          href="javascript:void(0)"
+          class="btn btn-info btn-block"
+          (click)="
+            search(
+              fromDate,
+              toDate,
+              selectedClientOptions,
+              selectedStatusOption
+            )
+          "
+        >
+          <i class="fa fa-search"></i>&nbsp;Search
+        </a>
+      </div>
+    </div>
+    <!-- /Search Filter -->
+    <div
+      *ngIf="
+        selectedInvoiceList &&
+        selectedInvoiceList.length &&
+        invoicesToogleType == 1
+      "
+      class="action-for-selected-list"
+    >
+      <a
+        class="btn btn-default pl-1 text-success"
+        href="javascript:void(0)"
+        title="Undo Delete"
+        (click)="delete(selectedInvoiceList, 'undo invoices')"
+      >
+        <i class="fa fa-undo fa-lg" aria-hidden="true"></i>
+      </a>
+      <a
+        class="btn btn-default pl-1 text-danger"
+        href="javascript:void(0)"
+        title="Delete Permanantly"
+        (click)="delete(selectedInvoiceList, 'Delete Permanantly')"
+      >
+        <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+      </a>
+    </div>
+    <div
+      *ngIf="
+        selectedInvoiceList &&
+        selectedInvoiceList.length &&
+        invoicesToogleType != 1
+      "
+      class="action-for-selected-list"
+    >
+      <a
+        class="btn btn-default pl-1 text-danger"
+        href="javascript:void(0)"
+        title="Delete"
+        (click)="delete(selectedInvoiceList, 'Delete')"
+      >
+        <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+      </a>
+    </div>
+    <p-tabView
+      (onChange)="handleChange($event)"
+      [(activeIndex)]="invoicesToogleType"
+    >
+      <p-tabPanel header="Invoices">
+        <ng-container *ngTemplateOutlet="invoices"></ng-container>
+      </p-tabPanel>
+      <p-tabPanel header="Deleted Invoices">
+        <ng-container *ngTemplateOutlet="invoices"></ng-container>
+      </p-tabPanel>
+    </p-tabView>
+    <ng-template #invoices>
+      <div class="col pl-0 pr-0 mt-2" *ngIf="!loading">
+        <p-table
+          [columns]="cols"
+          [value]="invoiceList"
+          [rowsPerPageOptions]="[10, 25, 50]"
+          styleClass="ui-table-customers"
+          #dt
+          [paginator]="true"
+          [rows]="10"
+          [showCurrentPageReport]="true"
+          [alwaysShowPaginator]="false"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          [filterDelay]="0"
+          [globalFilterFields]="['department', 'description', 'status']"
+          class="invoice-list"
+          [(selection)]="selectedInvoiceList"
+        >
+          <!-- <ng-template pTemplate="caption">
+          .
+          <div class="ui-table-globalfilter-container">
+            <input
+              pInputText
+              type="text"
+              (input)="dt.filterGlobal($event.target.value, 'contains')"
+              placeholder="Search"
+            />
+          </div>
+        </ng-template> -->
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th style="width: 3%">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{ col.header }}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+              <th class="actions" style="width: 4%"></th>
+            </tr>
+          </ng-template>
+          <ng-template
+            pTemplate="body"
+            let-rowData
+            let-columns="columns"
+            let-rowIndex="rowIndex"
+          >
+            <!-- To display as due date passed need to add ng class
+        <tr
+            [pSelectableRow]="rowData"
+            [ngClass]="rowData.dueDatePassed ? 'mark' : 'unmark'"
+          ></tr> -->
+            <tr>
+              <td>
+                <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+              </td>
+              <td *ngFor="let col of columns" [pSelectableRow]="col.field">
+                <ng-container *ngIf="col.field == 'paymentStatus'">
+                  <div
+                    class="d-flex align-items-center"
+                    pTooltip="{{ rowData.comments }}"
+                    tooltipPosition="top"
+                  >
+                    <div>
+                      <span
+                        class="badge bg-inverse-yellow"
+                        *ngIf="rowData.paymentStatus.toLowerCase() == 'pending'"
+                      >
+                        {{ rowData[col.field] || "-" }}
+                      </span>
+
+                      <span
+                        class="badge bg-inverse-red"
+                        *ngIf="
+                          rowData.paymentStatus.toLowerCase() ==
+                          'due date expired'
+                        "
+                        >{{ rowData[col.field] }}</span
+                      >
+                      <span
+                        class="badge bg-inverse-orange"
+                        *ngIf="
+                          rowData.paymentStatus.toLowerCase() ==
+                          'partially paid'
+                        "
+                        >{{ rowData[col.field] }}</span
+                      >
+                      <span
+                        class="badge bg-inverse-blue"
+                        *ngIf="rowData.paymentStatus.toLowerCase() == 'paid'"
+                        >{{ rowData[col.field] }}</span
+                      >
+                      <span
+                        class="badge bg-inverse-blue"
+                        *ngIf="
+                          rowData.paymentStatus.toLowerCase() == 'over paid'
+                        "
+                        >{{ rowData[col.field] }}</span
+                      >
+                    </div>
+                    <div>
+                      <span
+                        (click)="viewStatusComment(rowData.comments)"
+                        *ngIf="rowData.comments != null"
+                        class="d-flex align-items-center comment-info"
+                      >
+                        <i class="fa fa-info-circle ml-3" aria-hidden="true"></i
+                      ></span>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="col.field == 'invoiceNumber'">
+                  <a
+                    [routerLink]="['/admin/ap_invoices/ap_invoice/view']"
+                    [state]="{ invoiceDetailsId: rowData.invoiceDetailsId }"
+                    >#{{ rowData[col.field] }}</a
+                  >
+                </ng-container>
+                <ng-container *ngIf="col.field == 'status'">
+                  <span class="badge bg-inverse-status">{{
+                    InvoiceStatus[rowData[col.field]]
+                  }}</span>
+                </ng-container>
+                <ng-container *ngIf="col.field == 'amount'">
+                  {{ organizationCurrency }} {{ rowData[col.field] }}
+                </ng-container>
+                <ng-container *ngIf="col.field == 'amountPaid'">
+                  {{ organizationCurrency }} {{ rowData[col.field] }}
+                </ng-container>
+                <ng-container *ngIf="col.field == 'balanceAmount'">
+                  {{ organizationCurrency }} {{ rowData[col.field] }}
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    col.field != 'paymentStatus' &&
+                    col.field != 'invoiceNumber' &&
+                    col.field != 'status' &&
+                    col.field != 'amount' &&
+                    col.field != 'amountPaid' &&
+                    col.field != 'balanceAmount'
+                  "
+                >
+                  {{ rowData[col.field] }}
+                </ng-container>
+              </td>
+
+              <td class="actions" *ngIf="invoicesToogleType == 0">
+                <div class="dropdown dropdown-action">
+                  <a
+                    href="#"
+                    class="action-icon dropdown-toggle"
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                    ><i class="material-icons">more_vert</i></a
+                  >
+                  <div
+                    class="dropdown-menu dropdown-menu-right"
+                    x-placement="top-end"
+                    style="
+                      position: absolute;
+                      will-change: transform;
+                      top: 0px;
+                      left: 0px;
+                      transform: translate3d(72px, -2px, 0px);
+                    "
+                  >
+                    <!-- <a
+                    class="dropdown-item"
+                    [routerLink]="['/admin/invoices/invoice']"
+                    [state]="{ invoiceDetailsId: rowData.invoiceDetailsId }"
+                    ><i class="fa fa-pencil m-r-5"></i> Edit</a
+                  > -->
+                    <!-- <a
+                    class="dropdown-item"
+                    [routerLink]="['/admin/invoices/invoice/view']"
+                    [state]="{ invoiceDetailsId: rowData.invoiceDetailsId }"
+                    ><i class="fa fa-eye m-r-5"></i> View</a
+                  > -->
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      (click)="delete(rowData, 'delete invoice')"
+                      ><i class="fa fa-trash-o m-r-5"></i> Delete</a
+                    >
+                    <a
+                      class="dropdown-item"
+                      (click)="downloadInvoicePDF(rowData)"
+                      ><i class="fa fa-file-pdf-o m-r-5"></i> Download</a
+                    >
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      data-toggle="modal"
+                      data-target="#add_payments"
+                      (click)="addPayments(rowData)"
+                      ><i class="fa fa-money m-r-5"></i>View/Manage Payments</a
+                    >
+                  </div>
+                </div>
+              </td>
+              <td class="actions" *ngIf="invoicesToogleType == 1">
+                <div class="dropdown dropdown-action">
+                  <a
+                    href="#"
+                    class="action-icon dropdown-toggle"
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                    ><i class="material-icons">more_vert</i></a
+                  >
+                  <div
+                    class="dropdown-menu dropdown-menu-right"
+                    x-placement="top-end"
+                    style="
+                      position: absolute;
+                      will-change: transform;
+                      top: 0px;
+                      left: 0px;
+                      transform: translate3d(72px, -2px, 0px);
+                    "
+                  >
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      (click)="delete(rowData, 'delete permanantly')"
+                      ><i class="fa fa-trash-o m-r-5"></i> Delete Permanantly</a
+                    >
+                    <a
+                      class="dropdown-item"
+                      (click)="downloadInvoicePDF(rowData)"
+                      ><i class="fa fa-file-pdf-o m-r-5"></i> Download</a
+                    >
+                    <a
+                      class="dropdown-item"
+                      (click)="delete(rowData, 'undo invoice')"
+                      ><i class="fa fa-undo m-r-5"></i> Undo Delete</a
+                    >
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td [attr.colspan]="cols.length + 2" style="text-align: center">
+                No Records found.
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </ng-template>
+  </div>
+  <!-- /Page Content -->
+</div>
+<!-- add payment model-->
+<div
+  class="modal custom-modal fade"
+  id="add_payments"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="form-header my-3">
+        <h3>Payments Details</h3>
+      </div>
+      <div class="row justify-content-md-center">
+        <div class="col-sm-10">
+          <div class="" *ngIf="!loading">
+            <p-table
+              [columns]="Paymentcols"
+              [value]="paymentList"
+              [rowsPerPageOptions]="[10, 25, 50]"
+              styleClass="ui-table-customers paymentDetails"
+              #dt
+              [paginator]="true"
+              [rows]="10"
+              [showCurrentPageReport]="true"
+              [alwaysShowPaginator]="false"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [filterDelay]="0"
+              [globalFilterFields]="['department', 'description', 'status']"
+            >
+              <!-- <ng-template pTemplate="caption">
+                  .
+                  <div class="ui-table-globalfilter-container">
+                    <input
+                      pInputText
+                      type="text"
+                      (input)="dt.filterGlobal($event.target.value, 'contains')"
+                      placeholder="Search"
+                    />
+                  </div>
+                </ng-template> -->
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                    {{ col.header }}
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                  </th>
+                  <th class="actions">Actions</th>
+                </tr>
+              </ng-template>
+              <ng-template
+                pTemplate="body"
+                let-rowData
+                let-columns="columns"
+                let-rowIndex="rowIndex"
+              >
+                <tr [pSelectableRow]="rowData">
+                  <td *ngFor="let col of columns" [pSelectableRow]="col.field">
+                    <ng-container *ngIf="col.field == 'status'">
+                      <span class="badge bg-inverse-warning">{{
+                        rowData[col.field]
+                      }}</span>
+                    </ng-container>
+                    <ng-container *ngIf="col.field == 'invoiceNumber'">
+                      <a
+                        [routerLink]="['/admin/invoices/invoice/view']"
+                        [state]="{
+                          invoiceDetailsId: rowData.invoiceDetailsId
+                        }"
+                        ># {{ rowData[col.field] }}</a
+                      >
+                    </ng-container>
+                    <ng-container *ngIf="col.field == 'amount'">
+                      {{ organizationCurrency }} {{ rowData[col.field] }}
+                    </ng-container>
+                    <ng-container
+                      *ngIf="
+                        col.field != 'status' &&
+                        col.field != 'invoiceNumber' &&
+                        col.field != 'amount'
+                      "
+                    >
+                      {{ rowData[col.field] }}
+                    </ng-container>
+                  </td>
+
+                  <td class="actions">
+                    <div class="dropdown dropdown-action">
+                      <a
+                        href="#"
+                        class="action-icon dropdown-toggle"
+                        data-toggle="dropdown"
+                        aria-expanded="false"
+                        ><i class="material-icons">more_vert</i></a
+                      >
+                      <div
+                        class="dropdown-menu dropdown-menu-right"
+                        x-placement="top-end"
+                        style="
+                          position: absolute;
+                          will-change: transform;
+                          top: 0px;
+                          left: 0px;
+                          transform: translate3d(72px, -2px, 0px);
+                        "
+                      >
+                        <a
+                          class="dropdown-item"
+                          href="#"
+                          data-toggle="modal"
+                          (click)="editPaymentEntry(rowData)"
+                          ><i class="fa fa-pencil m-r-5"></i> Edit</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          href="#"
+                          data-toggle="modal"
+                          (click)="delete(rowData, 'payment')"
+                          ><i class="fa fa-trash-o m-r-5"></i>Delete</a
+                        >
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td
+                    [attr.colspan]="Paymentcols.length + 1"
+                    style="text-align: center"
+                  >
+                    No Records found.
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+        <div class="col-sm-10">
+          <div class="card">
+            <form #paymentForm="ngForm">
+              <div class="modal-body">
+                <div class="row pt-3">
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label
+                        >{{ organizationCurrency }} Amount Sent
+                        <span class="text-danger"> *</span></label
+                      >
+                      <p-inputNumber
+                        name="amount"
+                        [(ngModel)]="payment.amount"
+                        maxlength="12"
+                        [minFractionDigits]="2"
+                        [useGrouping]="false"
+                        ariaRequired="true"
+                        required
+                      ></p-inputNumber>
+                    </div>
+                  </div>
+
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label
+                        >Date Sent <span class="text-danger"> *</span></label
+                      >
+                      <p-calendar
+                        id="dateReceived"
+                        showIcon="true"
+                        dateFormat="mm-dd-yy"
+                        name="invoiceDueDate"
+                        dataType="string"
+                        [(ngModel)]="payment.dateReceived"
+                        required
+                      ></p-calendar>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label
+                        >Payment Type <span class="text-danger"> *</span></label
+                      >
+                      <p-dropdown
+                        [options]="paymentOptions"
+                        [(ngModel)]="selectedPaymentOptions"
+                        optionLabel="label"
+                        (onChange)="onPaymentOption($event.value)"
+                        name="customersName"
+                        [filter]="true"
+                      ></p-dropdown>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label>Description</label>
+                      <textarea
+                        class="form-control"
+                        [(ngModel)]="payment.description"
+                        rows="6"
+                        name="description"
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="submit-section">
+                  <button
+                    class="btn btn-success submit-btn m-r-10"
+                    (click)="savePayments(selectedInvoice, paymentForm)"
+                    [disabled]="!paymentForm.valid"
+                  >
+                    <i class="fa fa-save"></i>&nbsp;Save
+                  </button>
+                  <button
+                    class="btn btn-danger submit-btn"
+                    href="javascript:void(0);"
+                    data-dismiss="modal"
+                    (click)="closePaymentsModal(paymentForm)"
+                  >
+                    <i class="fa fa-times"></i>&nbsp;Cancel
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /add payment model-->
+<!-- confirm model -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: model }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          (click)="closeUploadmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-header">
+          <!-- <h3>Delete Record</h3> -->
+          <p>Are you sure ? Do you want to {{ modelType }} ?</p>
+        </div>
+        <div class="submit-section d-flex justify-content-around">
+          <div>
+            <button
+              class="btn btn-info submit-btn"
+              (click)="confirm(rowData, modelType)"
+            >
+              <ng-container
+                *ngIf="
+                  modelType != 'Delete Permanantly' &&
+                  modelType != 'delete permanantly' &&
+                  modelType != 'undo invoice' &&
+                  modelType != 'undo invoices'
+                "
+                ><i class="fa fa-trash-o"></i>&nbsp;Delete</ng-container
+              >
+              <ng-container
+                *ngIf="
+                  modelType == 'Delete Permanantly' ||
+                  modelType == 'delete permanantly'
+                "
+                ><i class="fa fa-trash-o"></i>&nbsp;Delete
+                Permanantly</ng-container
+              >
+              <ng-container
+                *ngIf="
+                  modelType == 'undo invoice' || modelType == 'undo invoices'
+                "
+                ><i class="fa fa-undo"></i>&nbsp;Undo</ng-container
+              >
+            </button>
+          </div>
+          <div>
+            <button
+              class="btn btn-danger submit-btn"
+              (click)="closeUploadmodal()"
+            >
+              <i class="fa fa-times"></i>&nbsp;Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /confirm model -->
+<!-- Status View model -->
+<div
+  id="statusView_info"
+  [ngStyle]="{ display: statusViewModel }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          (click)="closeUploadmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding-top: 0px">
+        <div class="form-header">
+          <h3>Comments</h3>
+          <p>{{ comments }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Status View model -->

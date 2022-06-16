@@ -1,0 +1,51 @@
+<title>
+  /* You can add global styles to this file, and also import other style files */
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</title>
+
+<form class="contact100-form validate-form" #chintu="ngForm">
+  <h2 style="text-align: center;">Log In Form</h2>
+  <table id="nani">
+    <tr>
+      <td>*Name</td>
+      <td>:<input type="text" class="form-control" name="name" #name="ngModel" [ngModel] required></td>
+    </tr>
+
+    <tr>
+      <td>age</td>
+      <td>:<input type="text" class="form-control" name="age" #age="ngModel" [ngModel]></td>
+    </tr>
+
+    <tr>
+      <td>male<input type="radio" name="male"></td>
+      <td>female:<input type="radio" name="male"  class="form-control" #female="ngModel" [ngModel]></td>
+    </tr>
+
+    <tr>
+      <td>*EmailId</td>
+      <td>:<input type="text" class="form-control" name="EmailId" #EmailId="ngModel" [ngModel] required></td>
+    </tr>
+
+    <tr>
+      <td>*Phone</td>
+      <td>:<input type="text" class="form-control" name="Phone" #Phone="ngModel" [ngModel] required minlength="10"></td><br>
+      <div *ngIf="Phone.errors && Phone.touched">
+        <span *ngIf="Phone.errors.required">Phone number is must</span>
+        <span *ngIf="Phone.errors.minlength">Phone number must be 10digits</span>
+      </div>
+
+    </tr>
+
+    <tr>
+      <td><button type="button"  [disabled]="!chintu.valid"  class="btn btn-danger" >Proceed to pay</button></td>
+      <td><button type="button" (click)="chintu.resetForm()" class="btn btn-info">Reset</button></td>
+    </tr>
+  </table>
+  <button (click)="xyz(chintu)">Click Me</button>
+</form>
+
+<app-reasturant></app-reasturant>

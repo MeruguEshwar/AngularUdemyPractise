@@ -1,0 +1,393 @@
+<div
+  id="timecard"
+  class="modal custom-modal backdrop"
+  [ngStyle]="{ display: timecardDisplay }"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Timesheet Details</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #f="ngForm">
+          <div class="row" *ngIf="errLabel">
+            <div class="col-sm-6" style="color: red">
+              {{ errLabel }}
+            </div>
+          </div>
+          <section>
+            <div class="row justify-content-start">
+              <div class="col col-lg-3">
+                Timesheet Period <span class="text-danger">*</span>
+                <p-dropdown
+                  name="timesheetsDates"
+                  [options]="timesheetsDates"
+                  [(ngModel)]="selectedPeriod"
+                  (onChange)="getperiod($event)"
+                  [filter]="true"
+                ></p-dropdown>
+              </div>
+              <div class="col col-lg-3">
+                Project
+                <p-dropdown
+                  name="assignproject"
+                  [options]="assignProjects"
+                  [(ngModel)]="selectedProjectId"
+                  (onChange)="getproject($event)"
+                  required
+                  [filter]="true"
+                ></p-dropdown>
+              </div>
+              <div class="col col-lg-3">
+                Approver Email Id <span class="text-danger">*</span>
+                <p-autoComplete
+                  type="email"
+                  name="approverEmailId"
+                  [(ngModel)]="approverEmailId"
+                  [suggestions]="filterEmails"
+                  (completeMethod)="emailList($event)"
+                  email="true"
+                  required
+                ></p-autoComplete>
+              </div>
+              <div class="col col-lg-3 d-flex align-items-center">
+                <div class="textmuted timesheet-status btn">
+                  {{ status }}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col pl-0 pr-0 mt-2" *ngIf="!loading">
+                <p-table
+                  [columns]="cols"
+                  [value]="listOfDates"
+                  [rowsPerPageOptions]="[10, 25, 50]"
+                  styleClass="ui-table-customers"
+                  #dt
+                  [paginator]="false"
+                  [rows]="10"
+                  [alwaysShowPaginator]="false"
+                  [showCurrentPageReport]="true"
+                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                  [filterDelay]="0"
+                  [globalFilterFields]="[]"
+                >
+                  <!-- <ng-template pTemplate="caption">
+                  .
+
+                  <div class="ui-table-globalfilter-container">
+                    <input
+                      pInputText
+                      type="text"
+                      (input)="dt.filterGlobal($event.target.value, 'contains')"
+                      placeholder="Search"
+                    />
+                  </div>
+                </ng-template> -->
+                  <ng-template pTemplate="header" let-columns>
+                    <tr>
+                      <ng-container *ngFor="let col of columns">
+                        <ng-container *ngIf="col.header == 'Description'">
+                          <th colspan="2">
+                            {{ col.header }}
+                          </th>
+                        </ng-container>
+                        <ng-container *ngIf="col.header != 'Description'">
+                          <ng-container *ngIf="col.header != 'Date'">
+                            <th>
+                              {{ col.header }}
+                            </th>
+                          </ng-container>
+                          <ng-container *ngIf="col.header == 'Date'">
+                            <th [pSortableColumn]="col.field">
+                              {{ col.header }}
+                              <p-sortIcon [field]="col.field"></p-sortIcon>
+                            </th>
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+                      <!-- <th
+                      *ngFor="let col of columns"
+                      [pSortableColumn]="col.field"
+                    >
+                      {{ col.header }}
+                      <p-sortIcon [field]="col.field"></p-sortIcon>
+                    </th> -->
+                      <th class="actions">Actions</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template
+                    pTemplate="body"
+                    let-rowData
+                    let-columns="columns"
+                    let-rowIndex="rowIndex"
+                  >
+                    <tr
+                      [pSelectableRow]="rowData"
+                      *ngIf="rowData.status == '1'"
+                    >
+                      <ng-container *ngFor="let col of columns">
+                        <ng-container *ngIf="col.field == 'entryDate'">
+                          <td>
+                            {{ rowData[col.field] | date: "dd MMM yyyy" }}
+                          </td>
+                        </ng-container>
+                        <ng-container *ngIf="col.field == 'entryType'">
+                          <td class="entryTypeDropDown">
+                            <p-dropdown
+                              name="entryType{{ rowIndex }}"
+                              [options]="entryType"
+                              [(ngModel)]="rowData[col.field]"
+                              required
+                              [filter]="true"
+                            ></p-dropdown>
+                          </td>
+                        </ng-container>
+                        <ng-container *ngIf="col.field == 'loggedTime'">
+                          <td class="loggedTime">
+                            <input
+                              type="text"
+                              pInputText
+                              (keyup)="changeLoggedTimeCalculation(listOfDates)"
+                              name="loggedTime{{ rowIndex }}"
+                              [(ngModel)]="rowData[col.field]"
+                              maxlength="5"
+                              pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){1}"
+                              required
+                            />
+                          </td>
+                        </ng-container>
+                        <ng-container *ngIf="col.field == 'description'">
+                          <td colspan="2">
+                            <textarea
+                              name="description{{ rowIndex }}"
+                              pInputTextarea
+                              [(ngModel)]="rowData[col.field]"
+                            ></textarea>
+                          </td>
+                        </ng-container>
+                      </ng-container>
+                      <td class="actions">
+                        <div class="action_Button">
+                          <a
+                            class="dropdown-item"
+                            (click)="addRecord(rowData, rowIndex)"
+                            ><i class="fa fa-plus m-r-5"></i>
+                          </a>
+                          <ng-container
+                            *ngIf="hasDuplicates(listOfDates, rowData)"
+                          >
+                            <a
+                              class="dropdown-item"
+                              (click)="removeRecord(rowData, rowIndex)"
+                              ><i class="fa fa-trash m-r-5"></i> </a
+                          ></ng-container>
+                        </div>
+                        <!-- <div class="dropdown dropdown-action">
+                        <a
+                          href="#"
+                          class="action-icon dropdown-toggle"
+                          data-toggle="dropdown"
+                          aria-expanded="false"
+                          ><i class="material-icons">more_vert</i></a
+                        >
+                        <div
+                          class="dropdown-menu dropdown-menu-right"
+                          x-placement="top-end"
+                          style="
+                            position: absolute;
+                            will-change: transform;
+                            top: 0px;
+                            left: 0px;
+                            transform: translate3d(72px, -2px, 0px);
+                          "
+                        >
+                          <a
+                            class="dropdown-item"
+                            href="#"
+                            data-toggle="modal"
+                            (click)="showDialogToEdit(rowData)"
+                            ><i class="fa fa-pencil m-r-5"></i> Edit</a
+                          >
+                          <a
+                            class="dropdown-item"
+                            href="#"
+                            data-toggle="modal"
+                            (click)="downloadFile(rowData)"
+                            ><i class="fa fa-download m-r-5"></i>Download</a
+                          >
+                        </div>
+                      </div> -->
+                      </td>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="emptymessage">
+                    <tr>
+                      <td
+                        [attr.colspan]="cols.length"
+                        style="text-align: center"
+                      >
+                        No Records Found.
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+            </div>
+            <div class="row d-flex justify-content-between">
+              <div class="total-logged-time">
+                Total Logged Time : {{ totalLoggedTime | minuteSeconds }}
+              </div>
+              <div class="total-logged-time downloadScreenShot">
+                <a
+                  class=""
+                  *ngIf="timesheetsDetails?.screenShotLocation"
+                  (click)="downloadScreenShot(timesheetsDetails)"
+                  ><i class="fa fa-download fa-fw" aria-hidden="true"></i>&nbsp;
+                  Download Screenshot</a
+                >
+              </div>
+            </div>
+            <div class="row" *ngIf="timesheetsDetails?.status != 2">
+              <div class="col-sm-12">
+                <div class="submit-section">
+                  <button
+                    type="button"
+                    (click)="uploadScreenshot()"
+                    class="btn btn-primary submit-btn mr-2"
+                    [disabled]="f.invalid"
+                  >
+                    Upload Screenshot
+                  </button>
+                  <button
+                    type="button"
+                    (click)="submitTimesheet()"
+                    class="btn btn-primary submit-btn mr-2"
+                    [disabled]="f.invalid"
+                  >
+                    Submit
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-success submit-btn mr-2"
+                    (click)="save()"
+                    [disabled]="f.invalid"
+                  >
+                    <i class="fa fa-save"></i>&nbsp;Save
+                  </button>
+                  <!-- <ng-container
+                    *ngIf="
+                      timesheetsDetails?.timesheetDetailsId &&
+                      timesheetsDetails != null &&
+                      timesheetsDetails?.status == '1'
+                    "
+                  >
+
+                  </ng-container>
+
+                  <ng-container
+                    *ngIf="
+                      timesheetsDetails?.status == '1' ||
+                      timesheetsDetails == null
+                    "
+                  >
+
+                  </ng-container> -->
+                </div>
+              </div>
+            </div>
+          </section>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Upload File Modal -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: uploadFileInfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          *ngIf="errorLabel"
+          style="position: absolute; left: 15px"
+          class="text-danger"
+        >
+          {{ errorLabel }}
+        </h5>
+        <h5 class="modal-title">Upload Document</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeUploadmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form (ngSubmit)="saveUploadFile()">
+            <div class="row" *ngIf="errorLabel">
+              <div class="col-sm-6" style="color: red">
+                {{ errorLabel }}
+              </div>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >File To Upload <span class="text-danger">*</span></label
+                  >
+
+                  <div class="d-flex align-items-center">
+                    <input
+                      class="form-control"
+                      type="file"
+                      id="fileToUpload"
+                      (change)="onFileChange($event)"
+                      #fileInput
+                    />
+                    <div *ngIf="fileToUpload">
+                      <a
+                        class="btn btn-danger btn-clear-file"
+                        href="javascript:void(0)"
+                        aria-label="Remove"
+                        (click)="clearFile()"
+                      >
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="submit-section">
+              <button type="submit" class="btn btn-success submit-btn">
+                <i class="fa fa-upload"></i>&nbsp;Upload
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Upload file Modal -->

@@ -1,0 +1,115 @@
+.btn-success {
+  background-color: #00a2e3;
+  border: 1px solid #00a2e3;
+}
+.btn-success:hover,
+.btn-success:not(:disabled):not(.disabled):active {
+  background-color: #013893;
+  border: 1px solid #013893;
+}
+.filter-row .btn {
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #00a88e;
+  border-color: #00a88e;
+}
+/* tabview css*/
+
+:host ::ng-deep .ui-tabview-left > .ui-tabview-panels {
+  border-left: none;
+  height: 382px;
+}
+
+:host ::ng-deep .ui-tabview.ui-tabview-left .ui-tabview-nav {
+  overflow: overlay;
+  background-color: white;
+  height: 382px;
+  border: 1px solid #c8c8c8;
+  border-radius: 0px;
+}
+
+/* /tabview css*/
+
+/* Document tabview css*/
+:host ::ng-deep .ui-table-customers .ui-table-caption {
+  padding: 5px 5px 18px 0px;
+}
+:host ::ng-deep #immgrations .ui-table-customers .ui-table-caption {
+  padding: 0px 5px 0px 0px;
+}
+#documents .actions .action_Button a {
+  display: inline;
+  padding: 4px;
+}
+
+/* /Document tabview css*/
+.msform {
+  min-height: 380px;
+  overflow: overlay;
+}
+/* time line */
+.custom-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  z-index: 1;
+  position: relative;
+  top: 10px;
+}
+:host ::ng-deep .p-timeline-event-content .card {
+  width: 200px;
+}
+:host ::ng-deep .p-timeline-event-content .card-title {
+  padding: 10px;
+  border-radius: 0.25rem 0.25rem 0 0;
+  color: white;
+}
+:host ::ng-deep .p-timeline-horizontal .p-timeline-event:last-child {
+  display: none;
+}
+:host ::ng-deep .p-timeline-event-separator {
+  flex-direction: inherit !important;
+}
+:host ::ng-deep .p-timeline .p-timeline-event-connector {
+  background-color: transparent;
+  border: 1px dashed #dee2e6;
+}
+/* /time line */
+:host ::ng-deep .p-timeline-event-opposite .immigrations-widget-icon {
+  background-color: #f7f7f7;
+  border-radius: 100%;
+  display: inline-block;
+  font-size: 30px;
+  height: 60px;
+  line-height: 60px;
+  margin-right: 10px;
+  text-align: center;
+  width: 60px;
+}
+:host ::ng-deep .p-timeline-event-opposite .half-circle {
+  position: absolute;
+  top: 37px;
+  left: 66px;
+  height: 46px;
+  width: 75px;
+  border-radius: 0px 0px 80px 80px;
+  background-color: transparent;
+  border: 2px solid #000;
+  border-top: transparent;
+}
+:host ::ng-deep .p-timeline-event-opposite .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  position: absolute;
+  top: 33px;
+}
+:host ::ng-deep .p-timeline-event-opposite .left-dot {
+  left: 62px;
+}
+:host ::ng-deep .p-timeline-event-opposite .right-dot {
+  left: 135px;
+}

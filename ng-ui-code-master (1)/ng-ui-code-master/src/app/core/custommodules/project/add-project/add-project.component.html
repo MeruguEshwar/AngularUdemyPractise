@@ -1,0 +1,440 @@
+<div
+  id="add_employee"
+  class="modal custom-modal backdrop"
+  [ngStyle]="{ display: addemployeeDisplay }"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Project Details</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form #f="ngForm">
+          <section>
+            <div class="row">
+              <div class="col-sm-6" style="color: red">
+                {{ errLabel }}
+              </div>
+            </div>
+          </section>
+          <section>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label class="col-form-label"
+                            >Project Name
+                            <span class="text-danger">*</span></label
+                          >
+                          <input
+                            pInputText
+                            class="form-control"
+                            (blur)="checkProjectAlreadyExist()"
+                            name="projectName"
+                            [(ngModel)]="project.projectName"
+                            placeholder=""
+                            type="text"
+                            maxlength="150"
+                            required
+                            (keypress)="
+                              sharedService.keyPressProject_SupplierName($event)
+                            "
+                          />
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-group">
+                          <label class="col-form-label"
+                            >Start Date<span class="text-danger">
+                              *</span
+                            ></label
+                          >
+                          <p-calendar
+                            name="startDate"
+                            [(ngModel)]="project.startDate"
+                            #minimumDate
+                            showIcon="true"
+                            [yearNavigator]="true"
+                            [monthNavigator]="true"
+                            yearRange="1980:2050"
+                            readonlyInput="true"
+                            dateFormat="mm-dd-yy"
+                            dataType="string"
+                            required
+                          ></p-calendar>
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-group">
+                          <label class="col-form-label">End Date</label>
+                          <p-calendar
+                            name="endDate"
+                            [(ngModel)]="project.endDate"
+                            [minDate]="minimumDate.value"
+                            [yearNavigator]="true"
+                            [monthNavigator]="true"
+                            yearRange="1980:2050"
+                            readonlyInput="true"
+                            showIcon="true"
+                            dateFormat="mm-dd-yy"
+                            dataType="string"
+                            showButtonBar="true"
+                          ></p-calendar>
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
+                        <div class="form-group">
+                          <label class="col-form-label">Description </label>
+                          <textarea
+                            class="form-control"
+                            [(ngModel)]="project.description"
+                            name="desc"
+                            placeholder="Enter Your description here..."
+                            maxlength="2500"
+                            cols="3"
+                            (keypress)="sharedService.keyPressAddress($event)"
+                          >
+                          </textarea>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label class="col-form-label">In House </label>
+                          <div>
+                            <p-inputSwitch
+                              [(ngModel)]="inHouseChecked"
+                              name="inHouse"
+                            ></p-inputSwitch>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label class="col-form-label"
+                            >Net Due <span class="text-danger">*</span></label
+                          >
+                          <p-dropdown
+                            [options]="creditDaysOptions"
+                            name="netDue"
+                            [(ngModel)]="project.creditDays"
+                            required
+                            [filter]="true"
+                            placeholder="Select Net Due"
+                          ></p-dropdown>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label class="col-form-label"
+                            >Timesheet Notification Config
+                            <span class="text-danger">*</span></label
+                          >
+                          <div>
+                            <div class="form-check form-check-inline">
+                              <input
+                                class="form-check-input"
+                                type="radio"
+                                name="timesheetNotificationConfig"
+                                value="1"
+                                checked
+                                [(ngModel)]="
+                                  project.timesheetNotificationConfig
+                                "
+                                required
+                              />
+                              <label
+                                class="form-check-label"
+                                for="timesheetNotificationConfig"
+                                >By Authorization Code</label
+                              >
+                            </div>
+                            <div class="form-check form-check-inline">
+                              <input
+                                class="form-check-input"
+                                type="radio"
+                                name="timesheetNotificationConfig"
+                                value="2"
+                                [(ngModel)]="
+                                  project.timesheetNotificationConfig
+                                "
+                              />
+                              <label
+                                class="form-check-label"
+                                for="timesheetNotificationConfig"
+                                >By email reply</label
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </form>
+        <section *ngIf="!inHouseChecked">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="card">
+                <div class="card-header">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <h5 class="modal-title">Project - Customer Mapping</h5>
+                    </div>
+                  </div>
+                </div>
+                <section>
+                  <div class="card-body pb-0">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <div class="form-group">
+                          <label class="col-form-label">
+                            {{
+                              getAstnType(customerMapping.associationType) !=
+                              "SELF"
+                                ? getAstnType(customerMapping.associationType)
+                                : "Customer"
+                            }}
+                            <span class="text-danger">*</span></label
+                          >
+                          <p-dropdown
+                            name="company"
+                            [options]="currentCompanyList"
+                            placeholder="Select"
+                            [(ngModel)]="customerMapping.companyDetailsId"
+                            required
+                            [filter]="true"
+                          >
+                          </p-dropdown>
+                        </div>
+                      </div>
+                      <div class="col-sm-5">
+                        <div class="form-group">
+                          <label class="col-form-label"
+                            >Association Type
+                            <span class="text-danger">*</span></label
+                          >
+                          <div>
+                            <div class="form-check form-check-inline">
+                              <input
+                                class="form-check-input"
+                                type="radio"
+                                name="associationType"
+                                value="1"
+                                [(ngModel)]="customerMapping.associationType"
+                                required
+                              />
+                              <label
+                                class="form-check-label"
+                                for="associationType"
+                                >Client</label
+                              >
+                            </div>
+                            <div class="form-check form-check-inline">
+                              <input
+                                class="form-check-input"
+                                type="radio"
+                                name="associationType"
+                                value="2"
+                                [(ngModel)]="customerMapping.associationType"
+                              />
+                              <label
+                                class="form-check-label"
+                                for="associationType"
+                                >Vendor</label
+                              >
+                            </div>
+                            <div class="form-check form-check-inline">
+                              <input
+                                class="form-check-input"
+                                type="radio"
+                                name="associationType"
+                                value="3"
+                                [(ngModel)]="customerMapping.associationType"
+                              />
+                              <label
+                                class="form-check-label"
+                                for="associationType"
+                                >Implementation Partner</label
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-2">
+                        <ng-container *ngIf="showAddButton">
+                          <div class="form-group">
+                            <label
+                              class="col-form-label"
+                              style="color: transparent"
+                              >Add</label
+                            >
+                            <button
+                              class="btn add-btn"
+                              (click)="addCustomerMapping()"
+                            >
+                              <i class="fa fa-plus"></i>&nbsp;Add
+                            </button>
+                            <p
+                              style="
+                                color: red;
+                                float: right;
+                                margin: 10px 15px;
+                              "
+                            >
+                              {{ addErrLabel }}
+                            </p>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <hr />
+                <section class="pb-5">
+                  <p-pickList
+                    [source]="sourceCustomerMapping"
+                    sourceHeader="Project- Customer Mapping"
+                    [dragdrop]="true"
+                    [responsive]="true"
+                    [sourceStyle]="{ height: '20rem' }"
+                    filterBy="name"
+                    [showTargetControls]="false"
+                    [showSourceFilter]="false"
+                  >
+                    <ng-template let-projectCompanyMapping pTemplate="item">
+                      <div class="product-item">
+                        <div class="image-container">
+                          <img
+                            src="assets/img/company-icon.png"
+                            alt="company"
+                            class="company"
+                          />
+                        </div>
+                        <div class="product-list-detail">
+                          <h4 class="p-mb-2">
+                            {{
+                              getPredessorType(
+                                projectCompanyMapping.companyDetailsId
+                              )
+                            }}
+                          </h4>
+                          <div>
+                            <span class="product-category"
+                              ><i class="fa fa-tag product-category-icon mr-1">
+                              </i
+                              >{{
+                                getAstnType(
+                                  projectCompanyMapping.associationType
+                                )
+                              }}</span
+                            >
+                          </div>
+                        </div>
+                        <div
+                          class="product-list-action"
+                          *ngIf="projectCompanyMapping.associationType != 4"
+                        >
+                          <a
+                            href="javascript:void(0)"
+                            (click)="
+                              deleteCustomerMapping(projectCompanyMapping)
+                            "
+                            class="edit-icon"
+                          >
+                            <i class="fa fa-times" aria-hidden="true"></i
+                          ></a>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </p-pickList>
+                </section>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="submit-section">
+                <button
+                  type="button"
+                  class="btn btn-success"
+                  (click)="save()"
+                  [disabled]="!project.projectName || !f.valid"
+                >
+                  <i class="fa fa-save"></i>&nbsp;Save
+                </button>
+                <button class="btn btn-danger ml-2" (click)="closeAddmodal()">
+                  <i class="fa fa-times"></i>&nbsp;Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- confirm model-->
+<div
+  id="delete_info"
+  [ngStyle]="{ display: deleteModelInfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+  *ngIf="deleteModelInfo == 'block'"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <h3>Confirm</h3>
+          <p>Are you sure ? Do you want to Delete ?</p>
+        </div>
+        <div class="modal-btn">
+          <div class="row">
+            <div class="col-6 d-flex justify-content-end">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                (click)="confirm()"
+                class="btn btn-info"
+                ><i class="fa fa-check"></i>&nbsp;Confirm</a
+              >
+            </div>
+            <div class="col-6 d-flex justify-content-start">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                (click)="cancel()"
+                class="btn btn-danger"
+                ><i class="fa fa-times"></i>&nbsp;Cancel</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /confirm model-->

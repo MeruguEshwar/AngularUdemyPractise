@@ -1,0 +1,65 @@
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: imageViewer }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ​<picture>
+          <img
+            *ngIf="
+              imageType == 'png' ||
+              imageType == 'jpg' ||
+              imageType == 'jpeg' ||
+              imageType == 'gif'
+            "
+            [src]="imageURL | safe"
+            class="img-fluid img-thumbnail"
+            alt="..."
+          />
+          <iframe
+            *ngIf="imageType == 'pdf' || imageType == 'mp4'"
+            [src]="imageURL | safe"
+            frameborder="0"
+            class="img-fluid img-thumbnail"
+          ></iframe>
+          <div
+            *ngIf="
+              imageType != 'png' &&
+              imageType != 'jpg' &&
+              imageType != 'jpeg' &&
+              imageType != 'pdf' &&
+              imageType != 'mp4'
+            "
+            class="text-center"
+          >
+            <h5 class="mt-5 mr-5 ml-5 mb-0">
+              Unable to load file please download to view
+            </h5>
+          </div>
+          <div class="mt-3 mr-5 ml-5 mb-0 text-center">
+            <a
+              href="javascript:void(0)"
+              class="btn add-btn"
+              (click)="downloadFile()"
+              ><i class="fa fa-download"></i>Download</a
+            >
+          </div>
+        </picture>
+      </div>
+    </div>
+  </div>
+</div>

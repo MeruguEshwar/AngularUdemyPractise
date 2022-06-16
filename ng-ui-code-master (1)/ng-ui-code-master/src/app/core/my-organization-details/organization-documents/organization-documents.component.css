@@ -1,0 +1,83 @@
+:host
+  ::ng-deep
+  p-calendar
+  .ui-calendar.ui-calendar-w-btn
+  .ui-datepicker-trigger.ui-button,
+:host
+  ::ng-deep
+  p-calendar
+  .ui-calendar.ui-calendar-w-btn
+  .ui-datepicker-trigger.ui-button {
+  height: 35px;
+  position: absolute;
+}
+.project-title,
+.text-muted {
+  text-transform: capitalize;
+}
+.actions .action_Button a {
+  display: inline;
+  padding: 4px;
+}
+/* Document tabview css*/
+a:not([href]):not([tabindex]) {
+  cursor: pointer;
+  color: #013893;
+}
+/* /Document tabview css*/
+:host ::ng-deep .ui-tabview.ui-tabview-left .ui-tabview-nav {
+  overflow: overlay;
+  background-color: white;
+  height: 382px;
+  border: 1px solid #c8c8c8;
+  border-radius: 0px;
+}
+:host ::ng-deep .ui-tabview-left > .ui-tabview-panels {
+  border-left: none;
+  /* height: 382px; */
+}
+:host ::ng-deep .ui-tabview.ui-tabview-left > .ui-tabview-nav li {
+  margin: 0 1px 0px 1px;
+}
+:host ::ng-deep .ui-table-customers .ui-table-caption {
+  color: transparent;
+  justify-content: flex-end;
+}
+:host ::ng-deep .ui-table-customers .ui-table-thead > tr > th.actions {
+  width: 10%;
+}
+:host ::ng-deep .ui-multiselect {
+  width: 100%;
+}
+:host ::ng-deep .ui-tabview.ui-tabview-top .ui-tabview-nav {
+  height: inherit;
+}
+:host ::ng-deep .sub-table-view .ui-tabview .ui-tabview-panels {
+  padding: 0px;
+}
+:host ::ng-deep .ui-table-customers .ui-table-caption {
+  color: transparent;
+  padding: 0px;
+}
+.file-wrap .file-scroll {
+  min-height: 200px;
+  max-height: calc(100vh - 335px);
+}
+
+.file-wrap .file-cont-wrap .file-cont-inner .file-cont-header,
+.file-wrap .file-sidebar .file-header {
+  height: 40px;
+}
+.file-menu li a:hover,
+.file-menu li.active a,
+.file-menu li a:focus {
+  background: #00a88e;
+  color: white;
+}
+.file-wrap .file-sidebar .file-pro-list {
+  padding: 5px;
+}
+.file-wrap .file-cont-wrap .file-cont-inner .file-cont-header > span,
+.file-wrap .file-sidebar .file-header span {
+  font-size: inherit;
+}

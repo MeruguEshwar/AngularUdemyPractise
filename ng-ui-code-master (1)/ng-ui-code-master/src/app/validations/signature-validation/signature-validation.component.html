@@ -1,0 +1,49 @@
+<div class="main-wrapper">
+  <div class="account-content">
+    <a href="/" class="btn btn-primary apply-btn"
+      ><i class="fa fa-home fa-fw" aria-hidden="true"></i>Home</a
+    >
+    <div class="container">
+      <!-- Account Logo -->
+      <div class="account-logo">
+        <a href="javascript:void(0)">
+          <img src="assets/img/logo2.png" class="inv-logo" alt=""
+        /></a>
+      </div>
+      <!-- /Account Logo -->
+      <!-- Authorization Form -->
+      <ng-container>
+        <div class="account-box">
+          <div class="account-wrapper">
+            <h3 class="account-title">Verify and Activate your Signature</h3>
+            <p class="account-subtitle">
+              Hey you just configured Signature! Please Verify and Activate your
+              Signature
+            </p>
+
+            <!-- Authorization Code -->
+            <!-- <div
+              class="signBox d-flex justify-content-center align-items-center"
+              font
+              [ngStyle]="{ 'font-family': signatureStyle }"
+            >
+              {{ signature }}
+            </div> -->
+            <div class="form-group text-center mt-5">
+              <button
+                class="btn btn-primary account-btn"
+                type="button"
+                (click)="submitStatus()"
+              >
+                Verify and Activate your Signature
+              </button>
+            </div>
+            <!-- /Authorization Code -->
+          </div>
+        </div>
+      </ng-container>
+      <!-- /Authorization Form -->
+    </div>
+  </div>
+</div>
+<!-- /Main Wrapper -->

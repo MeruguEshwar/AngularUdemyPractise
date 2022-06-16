@@ -1,0 +1,49 @@
+.page_content {
+  border: 1px solid #c8c8c8;
+  background-color: white;
+}
+.nav-tabs.nav-tabs-bottom > li > a.active {
+  background-color: #013893;
+  color: white;
+}
+.tab-content {
+  padding: 0px;
+}
+:host ::ng-deep .ui-table-customers .ui-table-thead > tr > th.actions {
+  text-align: end;
+}
+/* tabview css*/
+
+:host ::ng-deep .ui-tabview-left > .ui-tabview-panels {
+  border-left: none;
+}
+
+:host ::ng-deep .ui-tabview.ui-tabview-left .ui-tabview-nav {
+  overflow: overlay;
+  background-color: white;
+  height: 382px;
+  border: 1px solid #c8c8c8;
+  border-radius: 0px;
+}
+
+/* /tabview css*/
+
+/* Document tabview css*/
+:host ::ng-deep .ui-table-customers .ui-table-caption {
+  padding: 5px 5px 18px 0px;
+}
+#documents .actions .action_Button a {
+  display: inline;
+  padding: 4px;
+}
+.actions a {
+  color: inherit;
+}
+.actions a:hover {
+  color: #013893;
+}
+a:not([href]):not([tabindex]) {
+  cursor: pointer;
+  color: #013893;
+}
+/* /Document tabview css*/

@@ -1,0 +1,1648 @@
+<div
+  [ngStyle]="{ display: showVerify }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <h5 class="modal-title">Custom Email</h5> -->
+        <button
+          type="button"
+          class="close"
+          (click)="closeVerify()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card-body">
+          <div>
+            <div class="text-center">
+              <h4>LISTS OF ACCEPTABLE DOCUMENTS</h4>
+              <h4>All documents must be UNEXPIRED</h4>
+              <p>
+                Employees may present one selection from List Aor a combination
+                of one selection from List B and one selection from List C
+              </p>
+            </div>
+            <table>
+              <tr>
+                <th>
+                  <div>
+                    <p><strong> LIST A </strong></p>
+                    <p>
+                      <strong>
+                        Documents that Establish Both <br />
+                        Identity and Employment Authorization
+                      </strong>
+                    </p>
+                  </div>
+                </th>
+                <th style="border-right: none">
+                  <div>
+                    <p><strong> LIST B </strong></p>
+                    <p>
+                      <strong> Documents that Establish Identity </strong>
+                    </p>
+                  </div>
+                </th>
+                <th style="border-left: none">
+                  <div>
+                    <p><strong> LIST C </strong></p>
+                    <p>
+                      <strong>
+                        Documents that Establish <br />Employment Authorization
+                      </strong>
+                    </p>
+                  </div>
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  <div>
+                    <ol type="">
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listA"
+                            name="listA"
+                            inputId="listA1"
+                            value="1"
+                            [(disabled)]="listADisabled"
+                            class="mr-2"
+                            (onClick)="handleList($event, 'A')"
+                          ></p-radioButton>
+                        </div>
+                        <div>U.S. Passport or U.S. Passport Card</div>
+                      </li>
+                      <hr />
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listA"
+                            name="listA"
+                            inputId="listA2"
+                            value="2"
+                            [(disabled)]="listADisabled"
+                            class="mr-2"
+                            (onClick)="handleList($event, 'A')"
+                          ></p-radioButton>
+                        </div>
+                        <div>
+                          Permanent Resident Card or Alien Registration Receipt
+                          Card(Form I-551)
+                        </div>
+                      </li>
+                      <hr />
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listA"
+                            name="listA"
+                            inputId="listA3"
+                            value="3"
+                            [(disabled)]="listADisabled"
+                            class="mr-2"
+                            (onClick)="handleList($event, 'A')"
+                          ></p-radioButton>
+                        </div>
+                        <div>
+                          Foreign passport that contains a temporary I-551 stamp
+                          or temporary I-551 printed notation on a machine-
+                          readable immigrant visa
+                        </div>
+                      </li>
+                      <hr />
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listA"
+                            name="listA"
+                            inputId="listA4"
+                            value="4"
+                            [(disabled)]="listADisabled"
+                            class="mr-2"
+                            (onClick)="handleList($event, 'A')"
+                          ></p-radioButton>
+                        </div>
+                        <div>
+                          Employment Authorization Document that contains a
+                          photograph (Form I-766)
+                        </div>
+                      </li>
+                      <hr />
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listA"
+                            name="listA"
+                            inputId="listA5"
+                            value="5"
+                            [(disabled)]="listADisabled"
+                            (onClick)="handleList($event, 'A')"
+                            class="mr-2"
+                          ></p-radioButton>
+                        </div>
+                        <div>
+                          For a nonimmigrant alien authorized to work for a
+                          specific employer because of his or her status:
+                          <ol type="A">
+                            <li>Foreign passport; and</li>
+                            <li>
+                              Form I-94 or Form I-94A that has the following:
+                              <ol type="1">
+                                <li>The same name as the passport; and</li>
+                                <li>
+                                  An endorsement of the alien's nonimmigrant
+                                  status as long as that period of endorsement
+                                  has not yet expired and the proposed
+                                  employment is not in conflict with any
+                                  restrictions or limitations identified on the
+                                  form.
+                                </li>
+                              </ol>
+                            </li>
+                          </ol>
+                        </div>
+                      </li>
+                      <hr />
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listA"
+                            name="listA"
+                            inputId="listA6"
+                            value="6"
+                            [(disabled)]="listADisabled"
+                            class="mr-2"
+                            (onClick)="handleList($event, 'A')"
+                          ></p-radioButton>
+                        </div>
+                        <div>
+                          Passport from the Federated States of Micronesia (FSM)
+                          or the Republic of the Marshall Islands (RMI) with
+                          Form I-94 or Form I-94A indicating nonimmigrant
+                          admission under the Compact of Free Association
+                          Between the United States and the FSM or RMI
+                        </div>
+                      </li>
+                    </ol>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <ol>
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listB"
+                            name="listB"
+                            inputId="listB1"
+                            value="1"
+                            [(disabled)]="listBDisabled"
+                            class="mr-2"
+                            (onClick)="handleList($event, 'B')"
+                          ></p-radioButton>
+                        </div>
+                        <div>
+                          Driver's license or ID card issued by a State or
+                          outlying possession of the United States provided it
+                          contains a photograph or information such as name,
+                          date of birth, gender, height, eye color, and address
+                        </div>
+                      </li>
+                      <hr />
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listB"
+                            name="listB"
+                            inputId="listB2"
+                            value="2"
+                            [(disabled)]="listBDisabled"
+                            class="mr-2"
+                            (onClick)="handleList($event, 'B')"
+                          ></p-radioButton>
+                        </div>
+                        <div>
+                          ID card issued by federal, state or local government
+                          agencies or entities, provided it contains a
+                          photograph or information such as name, date of birth,
+                          gender, height, eye color, and address
+                        </div>
+                      </li>
+                      <hr />
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listB"
+                            name="listB"
+                            inputId="listB3"
+                            value="3"
+                            [(disabled)]="listBDisabled"
+                            class="mr-2"
+                            (onClick)="handleList($event, 'B')"
+                          ></p-radioButton>
+                        </div>
+                        <div>School ID card with a photograph</div>
+                      </li>
+                      <hr />
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listB"
+                            name="listB"
+                            inputId="listB4"
+                            value="4"
+                            [(disabled)]="listBDisabled"
+                            class="mr-2"
+                            (onClick)="handleList($event, 'B')"
+                          ></p-radioButton>
+                        </div>
+                        <div>Voter's registration card</div>
+                      </li>
+                      <hr />
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listB"
+                            name="listB"
+                            inputId="listB5"
+                            value="5"
+                            [(disabled)]="listBDisabled"
+                            class="mr-2"
+                            (onClick)="handleList($event, 'B')"
+                          ></p-radioButton>
+                        </div>
+                        <div>U.S. Military card or draft record</div>
+                      </li>
+                      <hr />
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listB"
+                            name="listB"
+                            inputId="listB6"
+                            value="6"
+                            [(disabled)]="listBDisabled"
+                            class="mr-2"
+                            (onClick)="handleList($event, 'B')"
+                          ></p-radioButton>
+                        </div>
+                        <div>Military dependent's ID card</div>
+                      </li>
+                      <hr />
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listB"
+                            name="listB"
+                            inputId="listB7"
+                            value="7"
+                            [(disabled)]="listBDisabled"
+                            class="mr-2"
+                            (onClick)="handleList($event, 'B')"
+                          ></p-radioButton>
+                        </div>
+                        <div>U.S. Coast Guard Merchant Mariner Card</div>
+                      </li>
+                      <hr />
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listB"
+                            name="listB"
+                            inputId="listB8"
+                            value="8"
+                            [(disabled)]="listBDisabled"
+                            class="mr-2"
+                            (onClick)="handleList($event, 'B')"
+                          ></p-radioButton>
+                        </div>
+                        <div>Native American tribal document</div>
+                      </li>
+                      <hr />
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listB"
+                            name="listB"
+                            inputId="listB9"
+                            value="9"
+                            [(disabled)]="listBDisabled"
+                            class="mr-2"
+                            (onClick)="handleList($event, 'B')"
+                          ></p-radioButton>
+                        </div>
+                        <div>
+                          Driver's license issued by a Canadian government
+                          authority
+                        </div>
+                      </li>
+                      <hr />
+                      <strong class="text-center d-flex"
+                        >For persons under age 18 who are unable to present a
+                        document listed above:</strong
+                      >
+                      <hr />
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listB"
+                            name="listB"
+                            inputId="listB10"
+                            value="10"
+                            [(disabled)]="listBDisabled"
+                            class="mr-2"
+                            (onClick)="handleList($event, 'B')"
+                          ></p-radioButton>
+                        </div>
+                        <div>School record or report card</div>
+                      </li>
+                      <hr />
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listB"
+                            name="listB"
+                            inputId="listB11"
+                            value="11"
+                            [(disabled)]="listBDisabled"
+                            class="mr-2"
+                            (onClick)="handleList($event, 'B')"
+                          ></p-radioButton>
+                        </div>
+                        <div>Clinic, doctor, or hospital record</div>
+                      </li>
+                      <hr />
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listB"
+                            name="listB"
+                            inputId="listB12"
+                            value="12"
+                            [(disabled)]="listBDisabled"
+                            class="mr-2"
+                            (onClick)="handleList($event, 'B')"
+                          ></p-radioButton>
+                        </div>
+                        <div>Day-care or nursery school record</div>
+                      </li>
+                    </ol>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <ol>
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listC"
+                            name="listC"
+                            inputId="listC1"
+                            value="1"
+                            [(disabled)]="listCDisabled"
+                            (onClick)="handleList($event, 'C')"
+                            class="mr-2"
+                          ></p-radioButton>
+                        </div>
+                        <div>
+                          A Social Security Account Number card, unless the card
+                          includes one of the following restrictions:
+                          <ol type="A">
+                            <li>NOT VALID FOR EMPLOYMENT</li>
+                            <li>VALID FOR WORK ONLY WITH INS AUTHORIZATION</li>
+                            <li>VALID FOR WORK ONLY WITH DHS AUTHORIZATION</li>
+                          </ol>
+                        </div>
+                      </li>
+                      <hr />
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listC"
+                            name="listC"
+                            inputId="listC2"
+                            value="2"
+                            [(disabled)]="listCDisabled"
+                            (onClick)="handleList($event, 'C')"
+                            class="mr-2"
+                          ></p-radioButton>
+                        </div>
+                        <div>
+                          Certification of report of birth issued by the
+                          Department of State (Forms DS-1350, FS-545, FS-240)
+                        </div>
+                      </li>
+                      <hr />
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listC"
+                            name="listC"
+                            inputId="listC3"
+                            value="3"
+                            [(disabled)]="listCDisabled"
+                            (onClick)="handleList($event, 'C')"
+                            class="mr-2"
+                          ></p-radioButton>
+                        </div>
+                        <div>
+                          Original or certified copy of birth certificate issued
+                          by a State, county, municipal authority, or territory
+                          of the United States bearing an official seal
+                        </div>
+                      </li>
+                      <hr />
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listC"
+                            name="listC"
+                            inputId="listC4"
+                            value="4"
+                            [(disabled)]="listCDisabled"
+                            (onClick)="handleList($event, 'C')"
+                            class="mr-2"
+                          ></p-radioButton>
+                        </div>
+                        <div>Native American tribal document</div>
+                      </li>
+                      <hr />
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listC"
+                            name="listC"
+                            inputId="listC5"
+                            value="5"
+                            [(disabled)]="listCDisabled"
+                            (onClick)="handleList($event, 'C')"
+                            class="mr-2"
+                          ></p-radioButton>
+                        </div>
+                        <div>U.S. Citizen ID Card (Form I-197)</div>
+                      </li>
+                      <hr />
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listC"
+                            name="listC"
+                            inputId="listC6"
+                            value="6"
+                            [(disabled)]="listCDisabled"
+                            (onClick)="handleList($event, 'C')"
+                            class="mr-2"
+                          ></p-radioButton>
+                        </div>
+                        <div>
+                          Identification Card for Use of Resident Citizen in the
+                          United States (Form I-179)
+                        </div>
+                      </li>
+                      <hr />
+                      <li
+                        class="d-flex justify-content-start align-items-start"
+                      >
+                        <div>
+                          <p-radioButton
+                            [(ngModel)]="listC"
+                            name="listC"
+                            inputId="listC7"
+                            value="7"
+                            [(disabled)]="listCDisabled"
+                            (onClick)="handleList($event, 'C')"
+                            class="mr-2"
+                          ></p-radioButton>
+                        </div>
+                        <div>
+                          Employment authorization document issued by the
+                          Department of Homeland Security
+                        </div>
+                      </li>
+                    </ol>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <section>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="submit-section m-0">
+                <button
+                  type="button"
+                  class="btn btn-primary submit-btn mr-2"
+                  (click)="next()"
+                  [(disabled)]="nextDisabled"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- verification -->
+<section *ngIf="editType == 'verify'">
+  <div
+    id="i9_verify"
+    class="modal custom-modal backdrop"
+    [ngStyle]="{ display: verifyDisplay }"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button
+            type="button"
+            class="close"
+            (click)="closeVerifyModel()"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form #f="ngForm">
+          <div class="modal-body">
+            <section>
+              <div class="row">
+                <div class="col-sm-6" style="color: red">
+                  {{ errLabel }}
+                </div>
+              </div>
+            </section>
+            <section>
+              <div class="row">
+                <div class="col-2 pb-2">
+                  <img
+                    src="assets/img/homeland-security-2.png"
+                    alt="logo"
+                    class="rounded"
+                  />
+                </div>
+                <div
+                  class="
+                    col-8
+                    text-center
+                    d-flex
+                    align-items-center
+                    flex-column
+                  "
+                >
+                  <h3><b>Employment Eligibility Verification</b></h3>
+                  <h3 class="m-0">
+                    <b>Department of Homeland Security </b>
+                  </h3>
+                  <h3 style="font-weight: 400">
+                    U.S. Citizenship and Immigration Services
+                  </h3>
+                </div>
+                <div class="col-2 text-center">
+                  <h3 class="m-0">USCIS</h3>
+                  <h3 class="m-0">Form I-9</h3>
+                  <p>OMB No. 1615-0047</p>
+                  <p>Expires 10/31/2022</p>
+                </div>
+              </div>
+              <div style="border: 5px solid"></div>
+              <div class="row pt-3">
+                <div class="col-12 border">
+                  <div class="row" style="background-color: #f7f7f7">
+                    <div class="col-12 border">
+                      <p>
+                        <b style="font-size: large"
+                          >Section 2. Employer or Authorized Representative
+                          Review and Verification</b
+                        ><br />
+                        (Employers or their authorized representative must
+                        complete and sign Section 2 within 3 business days of
+                        the employee's first day of employment. You must
+                        physically examine one document from List A OR a
+                        combination of one document from List B and one document
+                        from List C as listed on the "Lists of Acceptable
+                        Documents.")
+                      </p>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-2 col-sm-2 col-md-2 form-group">
+                      <b>Employee Info from Section 1</b>
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-md-3 form-group">
+                      <label class="text-muted"
+                        >Last Name<span> (Family Name)</span>
+                        <span class="text-danger"> *</span>
+                      </label>
+                      <div class="d-flex align-items-center">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="employeeLastName"
+                          [(ngModel)]="verifyDetails.employeeLastName"
+                          pattern="[A-Za-z ]{1,150}"
+                          (keypress)="sharedService.keyPressAlphabet($event)"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-md-3 form-group">
+                      <label class="text-muted"
+                        >First Name<span> (Given Name)</span>
+                        <span class="text-danger"> *</span>
+                      </label>
+                      <div class="d-flex align-items-center">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="employeeFirstName"
+                          minlength="2"
+                          maxlength="150"
+                          [(ngModel)]="verifyDetails.employeeFirstName"
+                          pattern="[A-Za-z ]{1,150}"
+                          (keypress)="sharedService.keyPressAlphabet($event)"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-xs-1 col-sm-1 col-md-1 form-group">
+                      <label class="text-muted"
+                        >MI<span class="text-danger">* </span>
+                        <p-checkbox
+                          [(ngModel)]="isMiddleInitial"
+                          label=""
+                          name="isMiddleInitial"
+                          binary="ture"
+                          class="checkboxlebal"
+                          (onChange)="
+                            checkApplicable($event, 'isMiddleInitial')
+                          "
+                        ></p-checkbox>
+                      </label>
+                      <div class="d-flex align-items-center">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="employeeMiddleName"
+                          pattern="[A-Za-z ]{1,150}"
+                          [(ngModel)]="verifyDetails.employeeMiddleName"
+                          (keypress)="sharedService.keyPressAlphabet($event)"
+                          required
+                          [(disabled)]="isMiddleInitial"
+                          placeholder="Middle Initial"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-md-3 form-group">
+                      <label class="text-muted"
+                        >Citizenship/Immigration Status<span
+                          class="text-danger pr-2"
+                        >
+                          *</span
+                        >
+                      </label>
+                      <div class="d-flex align-items-center">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="employeeImmigrationStatus"
+                          pattern="[A-Za-z ]{1,150}"
+                          [(ngModel)]="verifyDetails.employeeImmigrationStatus"
+                          (keypress)="sharedService.keyPressAlphabet($event)"
+                          required
+                          placeholder="Other Last Names"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 py-3 px-0">
+                  <table>
+                    <tr>
+                      <th>
+                        <div>
+                          <p><strong> LIST A </strong></p>
+                          <p>
+                            <strong>
+                              Identity and Employment Authorization <br />
+                            </strong>
+                          </p>
+                        </div>
+                      </th>
+                      <th style="width: 5px">OR</th>
+                      <th style="border-right: none">
+                        <div>
+                          <p><strong> LIST B </strong></p>
+                          <p>
+                            <strong> Identity </strong>
+                          </p>
+                        </div>
+                      </th>
+                      <th style="border-left: none">
+                        <div>
+                          <p><strong> LIST C </strong></p>
+                          <p>
+                            <strong> Employment Authorization <br /> </strong>
+                          </p>
+                        </div>
+                      </th>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div>
+                          <div class="form-group">
+                            <label class="text-muted"
+                              >Document Title<span class="text-danger pr-2">
+                                *</span
+                              >
+                            </label>
+                            <div class="d-flex align-items-center">
+                              <input
+                                type="text"
+                                class="form-control"
+                                name="listADocumentTitle"
+                                pattern="[A-Za-z ]{1,150}"
+                                (keypress)="
+                                  sharedService.keyPressAlphabet($event)
+                                "
+                                [(ngModel)]="verifyDetails.listADocumentTitle"
+                                required
+                                placeholder="Document Title"
+                                [(disabled)]="listADisabled"
+                              />
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="text-muted"
+                              >Issuing Authority<span class="text-danger pr-2">
+                                *</span
+                              >
+                            </label>
+                            <div class="d-flex align-items-center">
+                              <input
+                                type="text"
+                                class="form-control"
+                                name="listAIssuingAuthority"
+                                [(ngModel)]="
+                                  verifyDetails.listAIssuingAuthority
+                                "
+                                pattern="[A-Za-z ]{1,150}"
+                                (keypress)="
+                                  sharedService.keyPressAlphabet($event)
+                                "
+                                required
+                                placeholder="Issuing Authority"
+                                [(disabled)]="listADisabled"
+                              />
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="text-muted"
+                              >Document Number<span class="text-danger pr-2">
+                                *</span
+                              >
+                            </label>
+                            <div class="d-flex align-items-center">
+                              <input
+                                type="text"
+                                class="form-control"
+                                name="listADocumentNumber"
+                                [(ngModel)]="verifyDetails.listADocumentNumber"
+                                placeholder="Document Number"
+                                required
+                                [(disabled)]="listADisabled"
+                              />
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="text-muted"
+                              >Expiration Date (if any)
+                              <span class="text-danger pr-2"> *</span>
+                            </label>
+                            <div class="">
+                              <p-calendar
+                                [yearNavigator]="true"
+                                [monthNavigator]="true"
+                                yearRange="1980:2050"
+                                readonlyInput="true"
+                                name="listADocumentExpiryDate"
+                                [(ngModel)]="
+                                  verifyDetails.listADocumentExpiryDate
+                                "
+                                dateFormat="mm-dd-yy"
+                                dataType="string"
+                                aria-required="true"
+                                required
+                                [(disabled)]="listADisabled"
+                                (onSelect)="onDocExp($event)"
+                              ></p-calendar>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td></td>
+                      <td>
+                        <div>
+                          <div class="form-group">
+                            <label class="text-muted"
+                              >Document Title<span class="text-danger pr-2">
+                                *</span
+                              >
+                            </label>
+                            <div class="d-flex align-items-center">
+                              <input
+                                type="text"
+                                class="form-control"
+                                name="listBDocumentTitle"
+                                pattern="[A-Za-z ]{1,150}"
+                                (keypress)="
+                                  sharedService.keyPressAlphabet($event)
+                                "
+                                [(ngModel)]="verifyDetails.listBDocumentTitle"
+                                required
+                                placeholder="Document Title"
+                                [(disabled)]="listBDisabled"
+                              />
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="text-muted"
+                              >Issuing Authority<span class="text-danger pr-2">
+                                *</span
+                              >
+                            </label>
+                            <div class="d-flex align-items-center">
+                              <input
+                                type="text"
+                                class="form-control"
+                                name="listBIssuingAuthority"
+                                [(ngModel)]="
+                                  verifyDetails.listBIssuingAuthority
+                                "
+                                pattern="[A-Za-z ]{1,150}"
+                                (keypress)="
+                                  sharedService.keyPressAlphabet($event)
+                                "
+                                required
+                                placeholder="Issuing Authority"
+                                [(disabled)]="listBDisabled"
+                              />
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="text-muted"
+                              >Document Number<span class="text-danger pr-2">
+                                *</span
+                              >
+                            </label>
+                            <div class="d-flex align-items-center">
+                              <input
+                                type="text"
+                                class="form-control"
+                                name="listBDocumentNumber"
+                                [(ngModel)]="verifyDetails.listBDocumentNumber"
+                                placeholder="Document Number"
+                                required
+                                [(disabled)]="listBDisabled"
+                              />
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="text-muted"
+                              >Expiration Date (if any)
+                              <span class="text-danger pr-2"> *</span>
+                            </label>
+                            <div class="">
+                              <p-calendar
+                                [yearNavigator]="true"
+                                [monthNavigator]="true"
+                                yearRange="1980:2050"
+                                readonlyInput="true"
+                                name="listBDocumentExpiryDate"
+                                [(ngModel)]="
+                                  verifyDetails.listBDocumentExpiryDate
+                                "
+                                dateFormat="mm-dd-yy"
+                                dataType="string"
+                                aria-required="true"
+                                required
+                                [(disabled)]="listBDisabled"
+                                (onSelect)="onDocExp($event)"
+                              ></p-calendar>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div>
+                          <div class="form-group">
+                            <label class="text-muted"
+                              >Document Title<span class="text-danger pr-2">
+                                *</span
+                              >
+                            </label>
+                            <div class="d-flex align-items-center">
+                              <input
+                                type="text"
+                                class="form-control"
+                                name="listCDocumentTitle"
+                                pattern="[A-Za-z ]{1,150}"
+                                (keypress)="
+                                  sharedService.keyPressAlphabet($event)
+                                "
+                                [(ngModel)]="verifyDetails.listCDocumentTitle"
+                                required
+                                placeholder="Document Title"
+                                [(disabled)]="listCDisabled"
+                              />
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="text-muted"
+                              >Issuing Authority<span class="text-danger pr-2">
+                                *</span
+                              >
+                            </label>
+                            <div class="d-flex align-items-center">
+                              <input
+                                type="text"
+                                class="form-control"
+                                name="listCIssuingAuthority"
+                                [(ngModel)]="
+                                  verifyDetails.listCIssuingAuthority
+                                "
+                                pattern="[A-Za-z ]{1,150}"
+                                (keypress)="
+                                  sharedService.keyPressAlphabet($event)
+                                "
+                                required
+                                placeholder="Issuing Authority"
+                                [(disabled)]="listCDisabled"
+                              />
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="text-muted"
+                              >Document Number<span class="text-danger pr-2">
+                                *</span
+                              >
+                            </label>
+                            <div class="d-flex align-items-center">
+                              <input
+                                type="text"
+                                class="form-control"
+                                name="listCDocumentNumber"
+                                [(ngModel)]="verifyDetails.listCDocumentNumber"
+                                placeholder="Document Number"
+                                required
+                                [(disabled)]="listCDisabled"
+                              />
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="text-muted"
+                              >Expiration Date (if any)
+                              <span class="text-danger pr-2"> *</span>
+                            </label>
+                            <div class="">
+                              <p-calendar
+                                [yearNavigator]="true"
+                                [monthNavigator]="true"
+                                yearRange="1980:2050"
+                                readonlyInput="true"
+                                name="listCDocumentExpiryDate"
+                                [(ngModel)]="
+                                  verifyDetails.listCDocumentExpiryDate
+                                "
+                                dateFormat="mm-dd-yy"
+                                dataType="string"
+                                aria-required="true"
+                                required
+                                [(disabled)]="listCDisabled"
+                                (onSelect)="onDocExp($event)"
+                              ></p-calendar>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+                <div class="col-12 border">
+                  <label class="text-muted pt-1">Additional Information </label>
+                  <textarea
+                    pInputTextarea
+                    autoResize="autoResize"
+                    [rows]="3"
+                    name="additionalInformation"
+                    [(ngModel)]="verifyDetails.additionalInformation"
+                  ></textarea>
+                </div>
+                <div class="col-12 py-3">
+                  <p class="mb-1">
+                    <b
+                      >Certification: I attest, under penalty of perjury, that
+                      (1) I have examined the document(s) presented by the
+                      above-named employee, (2) the above-listed document(s)
+                      appear to be genuine and to relate to the employee named,
+                      and (3) to the best of my knowledge the employee is
+                      authorized to work in the United States.</b
+                    >
+                  </p>
+                </div>
+                <div class="col-12">
+                  <p class="mb-1 d-flex flex-row align-items-center">
+                    <b class="mr-3"
+                      >The employee's first day of employment (mm-dd-yyyy):</b
+                    >
+                    <p-calendar
+                      [yearNavigator]="true"
+                      [monthNavigator]="true"
+                      yearRange="1980:2050"
+                      readonlyInput="true"
+                      name="employeeFirstDateOfEmployment"
+                      [(ngModel)]="verifyDetails.employeeFirstDateOfEmployment"
+                      dateFormat="mm-dd-yy"
+                      dataType="string"
+                      aria-required="true"
+                      required
+                    ></p-calendar>
+                    <b class="ml-3">(See instructions for exemptions)</b>
+                  </p>
+                </div>
+                <div class="col-12 py-3">
+                  <div class="row">
+                    <div class="form-group col-xs-5 col-sm-5 col-md-5">
+                      <label class="text-muted"
+                        >Signature of Employer or Authorized Representative
+                        <span class="text-danger">*</span>
+                      </label>
+                      <div class="d-flex align-items-center">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="electronicSignatureOfTheEmployer"
+                          [(ngModel)]="
+                            verifyDetails.electronicSignatureOfTheEmployer
+                          "
+                          pattern="[A-Za-z ]{1,150}"
+                          (keypress)="sharedService.keyPressAlphabet($event)"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group col-xs-2 col-sm-2 col-md-2">
+                      <label class="text-muted"
+                        >Today's Date <span class="text-danger">*</span>
+                      </label>
+                      <div class="">
+                        <p-calendar
+                          [yearNavigator]="true"
+                          [monthNavigator]="true"
+                          yearRange="1980:2050"
+                          readonlyInput="true"
+                          name="verifiedDate"
+                          [(ngModel)]="verifyDetails.verifiedDate"
+                          dateFormat="mm-dd-yy"
+                          dataType="string"
+                          aria-required="true"
+                          required
+                        ></p-calendar>
+                      </div>
+                    </div>
+                    <div class="form-group col-xs-5 col-sm-5 col-md-5">
+                      <label class="text-muted"
+                        >Title of Employer or Authorized Representative
+                        <span class="text-danger">*</span>
+                      </label>
+                      <div class="d-flex align-items-center">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="titleOfTheEmployer"
+                          [(ngModel)]="verifyDetails.titleOfTheEmployer"
+                          pattern="[A-Za-z ]{1,150}"
+                          (keypress)="sharedService.keyPressAlphabet($event)"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-xs-4 col-sm-4 col-md-4">
+                      <label class="text-muted"
+                        >Last Name of Employer or Authorized Representative
+                        <span class="text-danger">*</span>
+                      </label>
+                      <div class="d-flex align-items-center">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="lastNameOfTheEmployer"
+                          [(ngModel)]="verifyDetails.lastNameOfTheEmployer"
+                          pattern="[A-Za-z ]{1,150}"
+                          (keypress)="sharedService.keyPressAlphabet($event)"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group col-xs-4 col-sm-4 col-md-4">
+                      <label class="text-muted"
+                        >First Name of Employer or Authorized Representative
+                        <span class="text-danger">*</span>
+                      </label>
+                      <div class="d-flex align-items-center">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="firstNameOfTheEmployer"
+                          [(ngModel)]="verifyDetails.firstNameOfTheEmployer"
+                          minlength="2"
+                          maxlength="150"
+                          pattern="[A-Za-z ]{1,150}"
+                          (keypress)="sharedService.keyPressAlphabet($event)"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group col-xs-4 col-sm-4 col-md-4">
+                      <label class="text-muted"
+                        >Employer's Business or<br />
+                        Organization Name
+                        <span class="text-danger">*</span>
+                      </label>
+                      <div class="d-flex align-items-center">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="organizationNameOfTheEmployer"
+                          [(ngModel)]="
+                            verifyDetails.organizationNameOfTheEmployer
+                          "
+                          pattern="[A-Za-z ]{1,150}"
+                          (keypress)="sharedService.keyPressAlphabet($event)"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-xs-6 col-sm-6 col-md-6">
+                      <label class="text-muted"
+                        >Employer's Business or Organization Address (Street
+                        Number and Name)
+                        <span class="text-danger">*</span>
+                      </label>
+                      <div class="d-flex align-items-center">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="organizationAddressOfTheEmployer"
+                          [(ngModel)]="
+                            verifyDetails.organizationAddressOfTheEmployer
+                          "
+                          pattern="[A-Za-z ]{1,150}"
+                          (keypress)="sharedService.keyPressAlphabet($event)"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group col-xs-3 col-sm-3 col-md-3">
+                      <label class="text-muted"
+                        >City or Town<span class="text-danger">*</span>
+                      </label>
+                      <div class="d-flex align-items-center">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="cityOrTown"
+                          [(ngModel)]="verifyDetails.cityOrTown"
+                          pattern="[A-Za-z ]{1,150}"
+                          (keypress)="sharedService.keyPressAlphabet($event)"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group col-xs-1 col-sm-1 col-md-1">
+                      <label class="text-muted"
+                        >State
+                        <span class="text-danger">*</span>
+                      </label>
+                      <div class="d-flex align-items-center">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="state"
+                          [(ngModel)]="verifyDetails.state"
+                          pattern="[A-Za-z ]{1,150}"
+                          (keypress)="sharedService.keyPressAlphabet($event)"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group col-xs-2 col-sm-2 col-md-2">
+                      <label class="text-muted"
+                        >ZIP Code
+                        <span class="text-danger">*</span>
+                      </label>
+                      <div class="d-flex align-items-center">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="zipCode"
+                          [(ngModel)]="verifyDetails.zipCode"
+                          pattern="[0-9]{10,15}"
+                          (keypress)="sharedService.keyPressNumber($event)"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 py-3">
+                  <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 form-group">
+                      <div
+                        class="
+                          col-12
+                          py-2
+                          d-flex
+                          justify-content-around
+                          align-items-center
+                        "
+                      >
+                        <p-radioButton
+                          name="verificationType"
+                          value="1"
+                          [(ngModel)]="verifyDetails.verificationType"
+                          label="In Person Verification"
+                          aria-required="true"
+                          class="mr-3"
+                          required
+                        ></p-radioButton>
+                        <p-radioButton
+                          name="verificationType"
+                          value="2"
+                          [(ngModel)]="verifyDetails.verificationType"
+                          label="Verified Remotely"
+                          aria-required="true"
+                          required
+                          class="mr-3"
+                        ></p-radioButton>
+                        <p-radioButton
+                          name="verificationType"
+                          value="3"
+                          [(ngModel)]="verifyDetails.verificationType"
+                          label="Verified through 3rd Party"
+                          aria-required="true"
+                          required
+                          class="mr-3"
+                        ></p-radioButton>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div
+                    class="row d-flex justify-content-start attachmentssection"
+                    style="
+                      background-color: #f4f4f4;
+                      margin: 0px;
+                      margin-top: 15px;
+                    "
+                    *ngIf="verifyDetails.verificationType == '3'"
+                  >
+                    <div class="total-logged-time mr-0">Attachment :</div>
+                    <ng-container>
+                      <div class="total-logged-time pl-0">
+                        <a
+                          class="mr-4"
+                          href="javascript:void(0)"
+                          (click)="uploadAttachemnts()"
+                          ><i class="fa fa-upload fa-fw" aria-hidden="true"></i
+                          >Upload
+                        </a>
+                      </div>
+                      <div
+                        class="total-logged-time pl-0"
+                        *ngFor="let item of verificationAttachmentDetails"
+                      >
+                        <a
+                          class="attachment-file"
+                          (click)="onDeleteAttachment(item)"
+                        >
+                          <i
+                            class="fa fa-paperclip"
+                            style="cursor: pointer"
+                          ></i>
+                          {{ item.documentTitle }}
+                          <i
+                            class="fa fa-times text-danger"
+                            style="cursor: pointer"
+                          ></i>
+                        </a>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="submit-section">
+                    <button
+                      type="button"
+                      class="btn btn-success submit-btn"
+                      (click)="approve()"
+                      [disabled]="!f.valid"
+                    >
+                      <i class="fa fa-check"></i>&nbsp;Approve
+                    </button>
+                    &nbsp;&nbsp;
+                    <button
+                      type="button"
+                      class="btn btn-danger submit-btn"
+                      (click)="reject()"
+                      [disabled]="!f.valid"
+                    >
+                      <i class="fa fa-times"></i>&nbsp;Reject
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- verification -->
+<!-- Add Reject Message -->
+<section *ngIf="addMessage == 'message'">
+  <div
+    id="w4_addRejectMessage"
+    class="modal custom-modal backdrop"
+    [ngStyle]="{ display: messageDisplay }"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">I9 Reject Reason</h5>
+          <button
+            type="button"
+            class="close"
+            (click)="addMessageCancel()"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form #f="ngForm">
+          <div class="modal-body">
+            <section>
+              <div class="row">
+                <div class="col-sm-6" style="color: red">
+                  {{ errLabel }}
+                </div>
+              </div>
+            </section>
+            <section>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="form-group">
+                            <label class="col-form-label"
+                              >Reject Reason
+                              <span class="text-danger">*</span></label
+                            >
+                            <input
+                              pInputText
+                              class="form-control"
+                              [(ngModel)]="verifyDetails.rejectReason"
+                              name="rejectReason"
+                              placeholder=""
+                              type="text"
+                              maxlength="250"
+                              required
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="submit-section">
+                    <button
+                      type="button"
+                      class="btn btn-success submit-btn"
+                      (click)="submit()"
+                      [disabled]="f.invalid"
+                    >
+                      <i class="fa fa-save"></i>&nbsp;Submit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Add Reject Message -->
+
+<!-- Upload file Modal -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: uploadFileInfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Upload Document</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeUploadmodal(uploadForm)"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form (ngSubmit)="saveUploadFile(uploadForm)" #uploadForm="ngForm">
+            <div class="row" *ngIf="errLabel">
+              <div class="col-sm-6" style="color: red">
+                {{ errLabel }}
+              </div>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-12">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Title <span class="text-danger">*</span></label
+                  >
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="title"
+                    maxlength="100"
+                    [(ngModel)]="uploadedFileTitle"
+                    (keypress)="sharedService.keyPressAlphaNumaric($event)"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >File To Upload <span class="text-danger">*</span></label
+                  >
+                  <div class="">
+                    <input
+                      class="form-control"
+                      type="file"
+                      name="file"
+                      id="fileToUpload"
+                      (change)="onFileChange($event)"
+                      #fileInput
+                    />
+                    <div *ngIf="fileToUpload">
+                      <a
+                        class="btn btn-danger btn-clear-file"
+                        href="javascript:void(0)"
+                        aria-label="Remove"
+                        (click)="clearFile()"
+                      >
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="submit-section">
+              <button
+                type="submit"
+                class="btn btn-success submit-btn"
+                [disabled]="!uploadForm.valid || !fileToUpload"
+              >
+                <i class="fa fa-upload"></i>&nbsp;Upload
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Upload file Modal -->
+
+<!-- confirm model-->
+<div
+  id="deleteConfirmModel"
+  [ngStyle]="{ display: deleteConfirmModel }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <!-- <h3>Confirm</h3> -->
+          <p>Are you sure ? Do you want to Delete ?</p>
+        </div>
+        <div class="modal-btn">
+          <div class="row">
+            <div class="col-6 d-flex justify-content-end">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                (click)="confirmOnDeleteAttachment(deleteAttachmentRowData)"
+                class="btn btn-info submit-btn"
+                ><i class="fa fa-check"></i>&nbsp;Confirm</a
+              >
+            </div>
+            <div class="col-6 d-flex justify-content-start">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal "
+                (click)="cancelConfirmOnDeleteAttachment()"
+                class="btn btn-danger submit-btn"
+                ><i class="fa fa-times"></i>&nbsp;Cancel</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /confirm model-->

@@ -1,0 +1,9 @@
+:host ::ng-deep p-fileupload .ui-button,
+:host ::ng-deep .ui-fileupload-choose:not(.ui-state-disabled):active,
+:host ::ng-deep .ui-fileupload-choose:not(.ui-state-disabled):hover,
+:host ::ng-deep .ui-fileupload-choose.ui-state-focus {
+  color: #fff;
+  background-color: transparent;
+  border: 1px solid transparent;
+  box-shadow: none;
+}

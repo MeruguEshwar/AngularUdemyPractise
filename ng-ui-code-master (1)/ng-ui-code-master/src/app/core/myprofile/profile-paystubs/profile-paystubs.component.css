@@ -1,0 +1,21 @@
+:host ::ng-deep .ui-table-customers .ui-table-caption {
+  background-color: white;
+  color: inherit;
+}
+:host ::ng-deep .ui-table-customers .ui-table-globalfilter-container input,
+:host ::ng-deep p-dropdown .ui-dropdown {
+  width: 200px;
+  height: 33px;
+}
+:host ::ng-deep p-dropdown .ui-dropdown .ui-dropdown-label {
+  height: 31px;
+  line-height: unset;
+}
+
+:host ::ng-deep p-dropdown .ui-dropdown {
+  margin-right: 15px;
+}
+.username {
+  color: #6c757d;
+  text-transform: capitalize;
+}

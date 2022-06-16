@@ -1,0 +1,92 @@
+.sidebar-menu li.upmenu.active a {
+  color: #b7c0cd;
+  /* background-color: rgba(0, 0, 0, 0.2); */
+}
+.sidebar-menu li.upmenu.active > a,
+.sidebar-menu li.innermenu.active a {
+  color: white;
+  font-weight: 500;
+  /* background-color: rgba(0, 0, 0, 0.2); */
+}
+.sidebar .sidebar-menu .collapse.show li > a span,
+.sidebar .sidebar-menu .collapsing li > a span {
+  transition: all 0.2s ease-in-out 0s;
+  display: inline-block;
+  margin-left: 15px;
+  white-space: nowrap;
+  margin-top: 5px;
+  text-transform: capitalize;
+}
+.sidebar-menu .collapse.show li a,
+.sidebar .sidebar-menu .collapsing li > a {
+  padding: 3px 0px;
+  padding-left: 30px;
+}
+.sidebar-menu li a.dropdown-toggle-menu > span::after {
+  border-top: 0;
+  border-left: 0;
+  border-bottom: 2px solid #fff;
+  border-right: 2px solid #fff;
+  content: "";
+  height: 8px;
+  display: inline-block;
+  pointer-events: none;
+  -webkit-transform-origin: 66% 66%;
+  transform-origin: 66% 66%;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+  -webkit-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+  width: 8px;
+  border-color: inherit;
+  vertical-align: 2px;
+  margin-left: 2px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+.sidebar-menu li a.dropdown-toggle-menu[aria-expanded="true"] > span::after {
+  transform: rotate(-135deg);
+}
+
+/* organization logo and name */
+.org-details .org-name {
+  color: #fff;
+  font-size: inherit;
+}
+.org-details .profile-img {
+  width: auto;
+  margin: 0px;
+}
+.profile-img .avatar {
+  height: 30px;
+  width: 30px;
+  line-height: initial;
+}
+.profile-img {
+  height: 30px;
+  width: 30px;
+}
+.org-details {
+  padding-left: 15px;
+}
+.avatar > img {
+  border-radius: 15%;
+}
+.footer.fixed-bottom {
+  width: inherit;
+  text-align: center;
+  color: #b7c0cd;
+  font-weight: 300;
+  background-color: #00203f;
+  padding: 10px;
+}
+.bottom-logo {
+  width: inherit;
+  position: relative;
+  left: 0px;
+  right: 0px;
+}
+.sidebar-menu {
+  padding-bottom: 40%;
+}

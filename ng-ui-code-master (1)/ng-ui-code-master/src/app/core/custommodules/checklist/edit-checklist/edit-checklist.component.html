@@ -1,0 +1,171 @@
+<div
+  id="edit_employee"
+  [ngStyle]="{ display: editemployeeDisplay }"
+  data-backdrop="static"
+  class="modal custom-modal backdrop"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Checklist Details</h5>
+        <button type="button" class="close" (click)="modalClose()">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card m-0">
+          <div class="card-body">
+            <div *ngIf="department">
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="col-form-label"
+                      >Checklist Name <span class="text-danger">*</span></label
+                    >
+                    <input
+                      pInputText
+                      class="form-control"
+                      type="text"
+                      name="department"
+                      [(ngModel)]="department.checklistName"
+                      placeholder=""
+                      maxlength="50"
+                      (blur)="checkDepartmentAlreadyExist()"
+                      required
+                      #checklistName="ngModel"
+                      (keypress)="
+                        sharedService.keyPressAlphaNumericWithSpecialChar(
+                          $event
+                        )
+                      "
+                    />
+                    <small
+                      class="text-danger"
+                      *ngIf="checklistName.touched && checklistName.invalid"
+                      >The given value is not a valid format</small
+                    >
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="col-form-label">Description</label>
+                    <input
+                      pInputText
+                      class="form-control"
+                      [(ngModel)]="department.description"
+                      name="employeeid"
+                      value=""
+                      type="text"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <h5>Checklist Entries</h5>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-5">
+                  <div class="form-group">
+                    <label class="col-form-label"
+                      >Entry Name <span class="text-danger">*</span></label
+                    >
+                    <input
+                      pInputText
+                      class="form-control"
+                      type="text"
+                      name="entryName"
+                      [(ngModel)]="entryName"
+                      placeholder=""
+                    />
+                  </div>
+                </div>
+                <div class="col-sm-5">
+                  <div class="form-group">
+                    <label class="col-form-label">Description </label>
+                    <input
+                      pInputText
+                      class="form-control"
+                      [(ngModel)]="description1"
+                      name="description1"
+                      placeholder=""
+                      type="text"
+                      maxlength="255"
+                    />
+                  </div>
+                </div>
+                <div class="col-sm-2">
+                  <a
+                    href="javascript:void(0)"
+                    class="btn btn-sm add-btn"
+                    style="margin-top: 35px"
+                    (click)="addEntry()"
+                    ><i class="fa fa-plus"></i>&nbsp;Add</a
+                  >
+                </div>
+              </div>
+
+              <div class="ui-table-customers ui-table ui-widget">
+                <table class="table table-condensed table-bordered">
+                  <thead class="ui-table-thead">
+                    <tr>
+                      <th>Entry Name</th>
+                      <th>Description</th>
+                      <!-- <th>Status</th> -->
+                      <th style="width: 50px"></th>
+                    </tr>
+                  </thead>
+                  <tr
+                    *ngFor="
+                      let row of department.checklistEntries;
+                      let sno = index
+                    "
+                  >
+                    <td>{{ row.entryName }}</td>
+                    <td>{{ row.description }}</td>
+                    <!-- <td>
+                                        <p-dropdown name="statusOptions" [options]="statusOptions" [(ngModel)]="row.status" [filter]="true"></p-dropdown>
+                                    </td> -->
+                    <td class="action-td">
+                      <a
+                        href=" javascript:void(0)"
+                        class="mr-2 delete text-info"
+                        (click)="editEntry(row, sno)"
+                        ><i class="fa fa-pencil-square-o" aria-hidden="true"></i
+                      ></a>
+                      <a
+                        href=" javascript:void(0)"
+                        *ngIf="department.checklistEntries.length > 1"
+                        class="delete text-danger"
+                        (click)="deleteEntry(row, sno)"
+                        ><i class="fa fa-trash-o" aria-hidden="true"></i
+                      ></a>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div class="submit-section">
+                <button
+                  type="button"
+                  [disabled]="!department?.checklistName"
+                  class="btn btn-success"
+                  data-dismiss="modal"
+                  (click)="save()"
+                >
+                  <i class="fa fa-save"></i>&nbsp;Update
+                </button>
+                <button class="btn btn-danger ml-2" (click)="modalClose()">
+                  <i class="fa fa-times"></i>&nbsp;Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

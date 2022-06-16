@@ -1,0 +1,104 @@
+<div
+  id="add_employee"
+  class="modal custom-modal backdrop"
+  [ngStyle]="{ display: addemployeeDisplay }"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Designation Details</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card m-0">
+          <div class="card-body">
+            <form #f="ngForm" (ngSubmit)="save()">
+              <div>
+                <div class="row" *ngIf="errLabel">
+                  <div class="col-sm-6" style="color: red">
+                    {{ errLabel }}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="col-form-label"
+                        >Name <span class="text-danger">*</span></label
+                      >
+                      <input
+                        pInputText
+                        class="form-control"
+                        [(ngModel)]="designation.designation"
+                        placeholder=""
+                        type="text"
+                        name="designation"
+                        maxlength="50"
+                        required
+                        #designationName="ngModel"
+                        (keypress)="
+                          sharedService.keyPressAlphaNumericWithSpecialChar(
+                            $event
+                          )
+                        "
+                      />
+                      <small
+                        class="text-danger"
+                        *ngIf="
+                          designationName.touched && designationName.invalid
+                        "
+                        >The given value is not a valid format.</small
+                      >
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="col-form-label">Description </label>
+                      <input
+                        pInputText
+                        class="form-control"
+                        [(ngModel)]="designation.description"
+                        name="desc"
+                        placeholder=""
+                        type="text"
+                        maxlength="255"
+                        (keypress)="sharedService.keyPressAddress($event)"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="submit-section">
+                  <button
+                    type="submit"
+                    [disabled]="!designation.designation || !f.valid"
+                    class="btn btn-success"
+                  >
+                    <i class="fa fa-save"></i>&nbsp;Save
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger ml-2"
+                    (click)="closeAddmodal()"
+                  >
+                    <i class="fa fa-times"></i>&nbsp;Cancel
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

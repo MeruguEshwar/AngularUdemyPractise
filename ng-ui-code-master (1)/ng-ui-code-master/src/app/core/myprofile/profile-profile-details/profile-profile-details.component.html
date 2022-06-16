@@ -1,0 +1,182 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="profile-view">
+      <div class="profile-img-wrap">
+        <div class="profile-img">
+          <a href="javascript:void(0)">
+            <img alt="" src="{{ pictureUrl + profile?.photoPath }}" />
+            <!-- <img alt="" [src]="profile?.photoPath" /> -->
+          </a>
+        </div>
+      </div>
+      <div class="profile-basic">
+        <div class="row">
+          <div class="col-md-5">
+            <div class="profile-info-left">
+              <h3 class="user-name m-t-0 mb-0">
+                {{ profile?.fullName }}
+              </h3>
+              <h6 class="text-muted">{{ profile?.department }}</h6>
+              <small class="text-muted">{{ profile?.designation }}</small>
+              <div class="staff-id">
+                Employee Id :
+                <span class="text-muted">{{ profile?.employeeId }}</span>
+              </div>
+              <div class="small doj text-muted">
+                Date of Join :
+                {{ profile.dateOfJoining }} ({{ profile.duration }})
+              </div>
+              <div class="staff-id text-muted m-0">
+                <div class="d-flex">
+                  <div class="mr-3">
+                    <i class="fa fa-briefcase" aria-hidden="true"></i>
+                    {{ EmployeeType[profile?.employeeType] }}
+                  </div>
+                  <div>
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                    {{ getEmploymentType(profile?.employmentType) }}
+                  </div>
+                </div>
+              </div>
+              <div class="staff-id m-0">
+                <i class="fa fa-sitemap mr-1 text-muted" aria-hidden="true"></i
+                >Supervisor :
+                <span class="text-muted">{{
+                  profile?.reportingToEmployeeName
+                }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-7">
+            <ul class="personal-info">
+              <li class="clearfix">
+                <div class="title">Email</div>
+                <div class="text">
+                  <span>: {{ profile?.email || "-" }}</span>
+                </div>
+              </li>
+              <li class="clearfix">
+                <div class="title">Date Of Birth</div>
+                <div class="text">
+                  <span>: {{ profile?.dateOfBirth || "-" }}</span>
+                </div>
+              </li>
+              <li class="clearfix">
+                <div class="title">Nationality</div>
+                <div class="text">
+                  <span>: {{ profile?.nationality || "-" }}</span>
+                </div>
+              </li>
+              <li class="clearfix">
+                <div class="title">Marital status</div>
+                <div class="text" *ngIf="profile?.maritalStatus">
+                  : {{ MaritalStatus[profile?.maritalStatus] || "-" }}
+                  <span *ngIf="profile?.dateOfMarriage" class="ml-3">
+                    ({{ profile?.dateOfMarriage }})</span
+                  >
+                </div>
+              </li>
+              <li class="clearfix">
+                <div class="title">Gender</div>
+                <div class="text">
+                  <span *ngIf="profile?.gender"
+                    >: {{ Gender[profile?.gender] }}</span
+                  >
+                  <span *ngIf="!profile.gender">-</span>
+                  <div class="social-media d-flex text-center float-right">
+                    <ng-container
+                      *ngFor="let socialNetwork of profile.socialNetworks"
+                    >
+                      <a
+                        [href]="
+                          socialNetwork.socialNetworkLink
+                            ? (socialNetwork.socialNetworkLink | safe)
+                            : ('javascript:void(0)' | safe)
+                        "
+                        class="pr-2"
+                        [attr.target]="
+                          socialNetwork.socialNetworkLink ? '_blank' : null
+                        "
+                        rel="noopener"
+                        [ngClass]="{
+                          deactive: socialNetwork.socialNetworkLink == null
+                        }"
+                      >
+                        <i
+                          [class]="
+                            getSocialNetworkIcon(socialNetwork.socialNetwork)
+                          "
+                          aria-hidden="true"
+                        ></i>
+                      </a>
+                    </ng-container>
+                    <!-- <a href="javascript:void(0)" class="pr-2">
+                      <i
+                        (click)="editSocialNetwork()"
+                        class="fa fa-pencil-square"
+                        aria-hidden="true"
+                        style="color: #03927c"
+                      ></i>
+                    </a> -->
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="pro-edit" *ngIf="profile?.status">
+        <a href="javascript:void(0)" (click)="editprofile()" class="edit-icon"
+          ><i class="fa fa-pencil"></i
+        ></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Profile Modal -->
+<div
+  id="profile_info"
+  [ngStyle]="{ display: profileinfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+  *ngIf="profileinfo == 'block'"
+>
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          *ngIf="errorLabel"
+          style="position: absolute; left: 15px"
+          class="text-danger"
+        >
+          {{ errorLabel }}
+        </h5>
+        <h5 class="modal-title">
+          Profile Details<ng-container
+            >: {{ profile?.firstName }} {{ profile?.lastName }}</ng-container
+          >
+        </h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-profile-edit
+          [activeTabIndex]="activeTabIndex"
+          [profile]="profile"
+          (errorMessage)="errorMessage($event)"
+          (updateProfile)="updateProfile()"
+          (onClose)="closeAddmodal()"
+        ></app-profile-edit>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Profile Modal -->

@@ -1,0 +1,12 @@
+.social-media a.deactive {
+  color: #dddddd;
+}
+.profile-view .profile-basic {
+  padding-right: 0px;
+}
+.social-media .fa {
+  font-size: 24px !important;
+}
+.personal-info li .text {
+  width: 60%;
+}

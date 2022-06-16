@@ -1,0 +1,40 @@
+.username {
+  color: #6c757d;
+  text-transform: capitalize;
+}
+
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+}
+:host ::ng-deep p-calendar input {
+  width: 85%;
+}
+.downloadW4Form .nav-item {
+  cursor: pointer;
+  margin: 0px 10px;
+}
+
+.downloadI9Form .list-group-item {
+  border: none;
+  color: #013893;
+}
+.downloadI9Form .list-group-item:hover {
+  color: #00a2e3;
+}
+a:not([href]):not([tabindex]) {
+  cursor: pointer;
+}
+.cShip_info .personal-info li .title {
+  width: 50%;
+}
+.personal-info li .title {
+  width: 30%;
+  font-weight: inherit;
+}
+.alert-info {
+  border-color: #f2fafb;
+  background-color: #f2fafb;
+  font-size: 13px;
+  font-style: italic;
+}

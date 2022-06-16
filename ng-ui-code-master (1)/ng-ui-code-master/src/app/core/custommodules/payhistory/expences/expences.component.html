@@ -1,0 +1,509 @@
+<div class="page-wrapper">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">Dashboard</li>
+            <li class="breadcrumb-item active">Expenses</li>
+          </ul>
+        </div>
+        <div class="col-auto float-right ml-auto">
+          <button
+            type="button"
+            class="btn add-btn"
+            (click)="showDialogToAdd()"
+            [disabled]="
+              !employeeSelectedToaddexpensesPayRate?.employeeDetailsId
+            "
+          >
+            <i class="fa fa-plus"></i> Add Expense
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- /page Header-->
+    <!-- Search Filter -->
+    <div class="row filter-row">
+      <div class="col-sm-6 col-md-3">
+        <div class="form-group form-focus select-focus focused">
+          <p-dropdown
+            [options]="employeeList"
+            [(ngModel)]="selectedEmployee"
+            [filter]="true"
+            optionLabel="fullName"
+          ></p-dropdown>
+
+          <label class="focus-label"></label>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-2">
+        <a
+          href="javascript:void(0)"
+          class="btn btn-info btn-block"
+          (click)="getDetails(selectedEmployee)"
+        >
+          <i class="fa fa-search"></i>&nbsp;Get Expenses</a
+        >
+      </div>
+    </div>
+    <!-- /Search Filter -->
+    <div
+      class="col pl-0 pr-0"
+      *ngIf="employeeSelectedToaddexpensesPayRate?.employeeDetailsId"
+    >
+      <p-table
+        [columns]="cols"
+        [value]="expensesPayRateList"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        styleClass="ui-table-customers"
+        #dt
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [alwaysShowPaginator]="false"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [filterDelay]="0"
+        [globalFilterFields]="[
+          'description',
+          'amount',
+          'employeeName',
+          'advancePaidDate'
+        ]"
+      >
+        <ng-template pTemplate="caption">
+          <div>
+            Employee Expenses -
+            <span class="username">{{
+              employeeSelectedToaddexpensesPayRate?.fullName
+            }}</span>
+          </div>
+
+          <!-- <div class="ui-table-globalfilter-container">
+            <input
+              pInputText
+              type="text"
+              (input)="dt.filterGlobal($event.target.value, 'contains')"
+              placeholder="Search"
+            />
+          </div> -->
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th style="width: 12%; text-align: center">#</th>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{ col.header }}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+            <th></th>
+            <!-- <th class="actions">Actions</th> -->
+          </tr>
+        </ng-template>
+        <ng-template
+          pTemplate="body"
+          let-rowData
+          let-columns="columns"
+          let-rowIndex="rowIndex"
+        >
+          <tr [pSelectableRow]="rowData">
+            <td>
+              <a
+                href="javascript:void(0)"
+                href="javascript:void(0)"
+                [routerLink]="['/admin/expenses/expence/view']"
+                [state]="{
+                  details: rowData
+                }"
+                >#EXP-0000{{ rowIndex + 1 }}
+              </a>
+              <!-- <a href="javascript:void(0)" (click)="showDialogToEdit(rowData)"
+                >#EXP-0000{{ rowIndex + 1 }}
+              </a> -->
+            </td>
+            <ng-container *ngFor="let col of columns">
+              <td *ngIf="col.field != 'status' && col.field != 'totalAmount'">
+                {{ rowData[col.field] }}
+              </td>
+              <td *ngIf="col.field == 'totalAmount'">
+                {{ organizationCurrency }} {{ rowData[col.field] }}
+              </td>
+            </ng-container>
+            <td>
+              <i
+                class="fa fa-trash-o ml-3 text-danger"
+                style="cursor: pointer"
+                data-toggle="modal"
+                data-target="#confirmModel"
+                (click)="statusUpdate(rowData)"
+                aria-hidden="true"
+              ></i>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td [attr.colspan]="cols.length + 2" style="text-align: center">
+              No Records Found.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <div
+      class="col pl-0 pr-0"
+      *ngIf="!employeeSelectedToaddexpensesPayRate?.employeeDetailsId"
+    >
+      <p-table
+        [columns]="cols"
+        [value]="expensesPayRateList"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        styleClass="ui-table-customers"
+        #dt
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [alwaysShowPaginator]="false"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [filterDelay]="0"
+        [globalFilterFields]="[
+          'description',
+          'amount',
+          'employeeName',
+          'advancePaidDate'
+        ]"
+      >
+        <ng-template pTemplate="caption">
+          <div>
+            Employee Expenses -
+            <span class="username">{{
+              employeeSelectedToaddexpensesPayRate?.fullName
+            }}</span>
+          </div>
+
+          <!-- <div class="ui-table-globalfilter-container">
+          <input
+            pInputText
+            type="text"
+            (input)="dt.filterGlobal($event.target.value, 'contains')"
+            placeholder="Search"
+          />
+        </div> -->
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{ col.header }}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+            <th></th>
+            <!-- <th class="actions">Actions</th> -->
+          </tr>
+        </ng-template>
+        <ng-template
+          pTemplate="body"
+          let-rowData
+          let-columns="columns"
+          let-rowIndex="rowIndex"
+        >
+          <tr [pSelectableRow]="rowData">
+            <ng-container *ngFor="let col of columns">
+              <td
+                *ngIf="
+                  col.field != 'employeeName' && col.field != 'totalAmount'
+                "
+              >
+                {{ rowData[col.field] }}
+              </td>
+              <td *ngIf="col.field == 'totalAmount'">
+                <div *ngIf="rowData[col.field]; else noAmount">
+                  {{ organizationCurrency }} {{ rowData[col.field] }}
+                </div>
+                <ng-template #noAmount> &nbsp; </ng-template>
+              </td>
+              <td *ngIf="col.field == 'employeeName'">
+                <h2 class="table-avatar">
+                  <a
+                    href="javascript:void(0)"
+                    href="javascript:void(0)"
+                    [routerLink]="['/admin/expenses/expence/view']"
+                    [state]="{
+                      details: rowData
+                    }"
+                    >{{ rowData[col.field] }}
+                  </a>
+                </h2>
+              </td>
+            </ng-container>
+            <td>
+              <i
+                class="fa fa-trash-o ml-3 text-danger"
+                style="cursor: pointer"
+                data-toggle="modal"
+                data-target="#confirmModel"
+                (click)="statusUpdate(rowData)"
+                aria-hidden="true"
+              ></i>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td [attr.colspan]="cols.length + 1" style="text-align: center">
+              No Records Found.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+<!-- Add or edit deductions -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: expenseModel }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Expense Details : {{ selectedEmployee?.fullName }}
+        </h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeUploadmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card m-0">
+          <div class="card-body">
+            <div class="line-item">
+              <form (ngSubmit)="save(f)" #f="ngForm">
+                <div class="row" *ngIf="errorLabel">
+                  <div class="col-sm-6" style="color: red">
+                    {{ errorLabel }}
+                  </div>
+                </div>
+                <div class="row">
+                  <!-- <div class="form-group col-4">
+                    <label
+                      >Select Employee
+                      <span class="text-danger"> *</span></label
+                    >
+                    <p-dropdown
+                      [options]="employeeList"
+                      [filter]="true"
+                      [(ngModel)]="employeeSelectedToaddexpensesPayRate"
+                      name="employeeSelectedToaddexpensesPayRate"
+                      (onChange)="selectEmployeeToAddexpensesPayRate()"
+                      optionLabel="fullName"
+                    ></p-dropdown>
+                  </div> -->
+                  <div class="form-group col-4">
+                    <label
+                      >Expense Name <span class="text-danger"> *</span>
+                    </label>
+                    <p-autoComplete
+                      [(ngModel)]="expensesPayRateDetails.expenseName"
+                      [suggestions]="filteredExpenses"
+                      (completeMethod)="filterExpenses($event)"
+                      name="expenseName"
+                      required
+                      (keypress)="sharedService.keyPressAlphabet($event)"
+                    ></p-autoComplete>
+                  </div>
+                  <div class="form-group col-4">
+                    <label
+                      >Expense Date <span class="text-danger"> *</span></label
+                    >
+                    <p-calendar
+                      [yearNavigator]="true"
+                      [monthNavigator]="true"
+                      yearRange="1980:2050"
+                      readonlyInput="true"
+                      showIcon="true"
+                      dateFormat="mm-dd-yy"
+                      name="expanceDate"
+                      dataType="string"
+                      [(ngModel)]="expensesPayRateDetails.expenseDate"
+                      required
+                    ></p-calendar>
+                  </div>
+                  <div class="col-md-12 col-sm-12">
+                    <div class="table-responsive">
+                      <table class="table table-hover table-white">
+                        <thead>
+                          <tr>
+                            <th style="width: 50%">
+                              Expense Line Item<span class="text-danger">
+                                *</span
+                              >
+                            </th>
+                            <th style="width: 25%">
+                              {{ organizationCurrency }} Amount<span
+                                class="text-danger"
+                              >
+                                *</span
+                              >
+                            </th>
+                            <th style="width: 6%">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            *ngFor="
+                              let expense of expensesEntries;
+                              let i = index
+                            "
+                          >
+                            <ng-container *ngIf="expense.status != '0'">
+                              <td
+                                class="align-middle"
+                                style="position: absolute; width: 59%"
+                              >
+                                <ng-container>
+                                  <div>
+                                    <p-autoComplete
+                                      [(ngModel)]="expense.description"
+                                      [suggestions]="filteredDescriptions"
+                                      (completeMethod)="
+                                        filterDescription($event)
+                                      "
+                                      name="description{{ i }}"
+                                    ></p-autoComplete>
+                                  </div>
+                                </ng-container>
+                              </td>
+                              <td class="align-middle">
+                                <p-inputNumber
+                                  name="amount{{ i }}"
+                                  [(ngModel)]="expense.amount"
+                                  maxlength="12"
+                                  [minFractionDigits]="2"
+                                  [useGrouping]="false"
+                                  (onBlur)="
+                                    onInputKeyUp($event.value, expensesEntries)
+                                  "
+                                  ariaRequired="true"
+                                  required
+                                ></p-inputNumber>
+                                <!-- <input
+                                  class="form-control text-right"
+                                  name="amount{{ i }}"
+                                  [(ngModel)]="expense.amount"
+                                  type="number"
+                                  min="0"
+                                  oninput="validity.valid||(value='');"
+                                  required
+                                  (keyup)="getAmount(expensesEntries)"
+                                /> -->
+                              </td>
+
+                              <td class="align-middle">
+                                <a
+                                  href="javascript:void(0)"
+                                  class="text-success font-18 mr-3"
+                                  (click)="onAddexpenseLineItem()"
+                                  title="Add"
+                                  ><i class="fa fa-plus"></i
+                                ></a>
+                                <a
+                                  *ngIf="expensesEntries.length > 1"
+                                  href="javascript:void(0)"
+                                  class="text-danger font-18"
+                                  (click)="onRemoveexpenseLineItem(expense, i)"
+                                  title="Delete"
+                                  ><i class="fa fa-trash-o"></i
+                                ></a>
+                              </td>
+                            </ng-container>
+                          </tr>
+                          <tr>
+                            <td></td>
+                            <th colspan="2">
+                              Total Amount:
+                              <span class="text-primary">
+                                {{ organizationCurrency }}
+                                {{ expensesPayRateDetails.totalAmount }}</span
+                              >
+                            </th>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="submit-section">
+                  <button
+                    type="submit"
+                    class="btn btn-success submit-btn"
+                    [disabled]="!f.valid"
+                  >
+                    <i class="fa fa-save"></i>&nbsp;Save
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger submit-btn ml-2"
+                    (click)="closeUploadmodal()"
+                  >
+                    <i class="fa fa-times"></i>&nbsp;Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Add or edit deductions -->
+<!-- confirm model-->
+<div
+  class="modal custom-modal fade"
+  id="confirmModel"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <h3>Delete Expense</h3>
+          <p>Are you sure ? Do you want to Delete Expense ?</p>
+        </div>
+        <div class="modal-btn">
+          <div class="row">
+            <div class="col-6 d-flex justify-content-end">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                (click)="confirm()"
+                class="btn btn-info submit-btn"
+                ><i class="fa fa-check"></i>&nbsp;Confirm</a
+              >
+            </div>
+            <div class="col-6 d-flex justify-content-start">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                class="btn btn-danger submit-btn"
+                ><i class="fa fa-times"></i>&nbsp;Cancel</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /confirm model-->

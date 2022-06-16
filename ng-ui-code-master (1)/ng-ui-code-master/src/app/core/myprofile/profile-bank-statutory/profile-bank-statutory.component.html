@@ -1,0 +1,214 @@
+<div class="card">
+  <div class="card-body">
+    <form
+      #bankDetailsForm="ngForm"
+      (ngSubmit)="save(bankDetailsForm)"
+      novalidate
+      autocomplete="off"
+    >
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Country <span class="text-danger">*</span></label>
+            <p-dropdown
+              name="remittanceCountryDetails"
+              [options]="countryDetails"
+              [(ngModel)]="selectedCountryDetails"
+              placeholder="Select Country"
+              optionLabel="name"
+              (onChange)="selectCountry($event.value)"
+              required
+              maxlength="150"
+              (keypress)="sharedService.keyPressAlphabet($event)"
+              [filter]="true"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="col-md-6"></div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Bank Name <span class="text-danger">*</span></label>
+            <input
+              class="form-control"
+              type="text"
+              name="bankName"
+              [(ngModel)]="bankAcountDetails.bankName"
+              required
+              minlength="2"
+              maxlength="150"
+              (keypress)="sharedService.keyPressAlphabet($event)"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Account Name <span class="text-danger">*</span></label>
+            <input
+              class="form-control"
+              type="text"
+              name="accountName"
+              [(ngModel)]="bankAcountDetails.accountName"
+              required
+              maxlength="150"
+              minlength="2"
+              (keypress)="sharedService.keyPressAlphabet($event)"
+            />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Account Number <span class="text-danger">*</span></label>
+            <input
+              class="form-control"
+              type="password"
+              name="accountNumber"
+              [(ngModel)]="bankAcountDetails.accountNumber"
+              #accountNumber="ngModel"
+              maxlength="150"
+              minlength="8"
+              (keypress)="sharedService.keyPressNumber($event)"
+              required
+            />
+            <small
+              class="text-danger"
+              *ngIf="accountNumber.touched && accountNumber.errors?.required"
+              >Account Number is required</small
+            >
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="bankAcountDetails.accountNumber">
+          <div class="form-group">
+            <label
+              >Confirm Account Number <span class="text-danger">*</span></label
+            >
+            <input
+              class="form-control"
+              type="text"
+              name="confirmAccountNumber"
+              [(ngModel)]="bankAcountDetails.confirmAccountNumber"
+              #confirmAccountNumber="ngModel"
+              pattern="{{ bankAcountDetails.accountNumber }}"
+              (blur)="confirmAccountNumberValidation()"
+              minlength="8"
+              maxlength="150"
+              required
+              (keypress)="sharedService.keyPressNumber($event)"
+            />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Other Details </label>
+            <textarea
+              cols="3"
+              rows="3"
+              class="form-control"
+              name="otherDetails"
+              [(ngModel)]="bankAcountDetails.otherDetails"
+              maxlength="150"
+              (keypress)="sharedService.keyPressAddress($event)"
+            >
+            </textarea>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="bankAcountDetails.country == 101">
+          <div class="form-group">
+            <label>IFSC Code <span class="text-danger">*</span> </label>
+            <input
+              class="form-control"
+              type="text"
+              name="ifscCode"
+              [(ngModel)]="bankAcountDetails.ifscCode"
+              required
+              maxlength="10"
+              minlength="5"
+              (keypress)="sharedService.keyPressAlphaNumaric($event)"
+            />
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="bankAcountDetails.country == 233">
+          <div class="form-group">
+            <label>Routing Number <span class="text-danger">*</span></label>
+            <input
+              class="form-control"
+              type="text"
+              name="routingNumber"
+              [(ngModel)]="bankAcountDetails.routingNumber"
+              required
+              maxlength="25"
+              minlength="5"
+              (keypress)="sharedService.keyPressAlphaNumaric($event)"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="submit-section">
+        <button
+          class="btn btn-success submit-btn"
+          type="submit"
+          [disabled]="!bankDetailsForm.valid"
+        >
+          <i class="fa fa-save"></i>&nbsp;Save
+        </button>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col pt-3" *ngIf="!loading && bankAcountDetailsList">
+        <p-table
+          [columns]="cols"
+          [value]="bankAcountDetailsList"
+          [rowsPerPageOptions]="[10, 25, 50]"
+          styleClass="ui-table-customers"
+          class="supplier-details"
+          #dt
+          [paginator]="true"
+          [rows]="10"
+          [showCurrentPageReport]="true"
+          [alwaysShowPaginator]="false"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          [filterDelay]="0"
+          [globalFilterFields]="[]"
+        >
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{ col.header }}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+              <th class="actions" style="width: 7%"></th>
+            </tr>
+          </ng-template>
+          <ng-template
+            pTemplate="body"
+            let-rowData
+            let-columns="columns"
+            let-rowIndex="rowIndex"
+          >
+            <tr [pSelectableRow]="rowData">
+              <td *ngFor="let col of columns">{{ rowData[col.field] }}</td>
+              <td class="actions">
+                <div class="d-flex justify-content-center">
+                  <a
+                    href="javascript:void(0)"
+                    data-toggle="modal"
+                    (click)="editBankAcount(rowData)"
+                    ><i class="fa fa-pencil-square-o m-r-5"></i>
+                  </a>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td [attr.colspan]="cols.length" style="text-align: center">
+                No Records found.
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</div>

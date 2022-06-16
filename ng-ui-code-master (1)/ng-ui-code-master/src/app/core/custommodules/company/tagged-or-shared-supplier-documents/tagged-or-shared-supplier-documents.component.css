@@ -1,0 +1,15 @@
+.total-logged-time {
+  padding: 10px;
+  font-size: 13px;
+  margin-right: 10px;
+  font-weight: 500;
+}
+
+.total-logged-time .attachment-file {
+  border: 1px solid #00a88e;
+  padding: 5px;
+  border-radius: 10px;
+}
+.total-logged-time .attachment-file .fa {
+  color: #00a88e;
+}

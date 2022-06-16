@@ -1,0 +1,114 @@
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<a class="navbar-brand" href="#">Navbar</a>
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+<ul class="navbar-nav mr-auto">
+<li class="nav-item active">
+<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="#">Link</a>
+</li>
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+Dropdown
+</a>
+<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+<a class="dropdown-item" href="#">Action</a>
+<a class="dropdown-item" href="#">Another action</a>
+<div class="dropdown-divider"></div>
+<a class="dropdown-item" href="#">Something else here</a>
+</div>
+</li>
+</ul>
+<form class="form-inline my-2 my-lg-0">
+<button type="button" class="btn btn-outline-primary my-2 my-sm-0" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add Employees</button>
+</form>
+</div>
+</nav>
+<table class="table">
+<thead>
+<th scope="col">Employee ID</th>
+<th scope="col">First name</th>
+<th scope="col">Last name</th>
+<th scope="col">Email ID</th>
+<th scope="col">Mobile Number</th>
+<th scope="col">Salery</th>
+<th scope="col">Action</th>
+</thead>
+<!-- <tbody>
+<tr>
+<td>1</td>
+<td>Merugu</td>
+<td>Eshwar</td>
+<td>merugu@gmail.com</td>
+<td>1215645664</td>
+<td>15000</td>
+<td>
+<button class="btn btn-info">Edit</button>
+<button class="btn btn-danger">Delete</button>
+</td>
+</tr>
+</tbody> --> <tbody>
+<tr *ngFor="let eshu of employData">
+<!-- <td>{{eshu.id}}</td> -->
+<td>{{eshu.firstName}}</td>
+<td>{{eshu.lastName}}</td>
+<td>{{eshu.email}}</td>
+<td>{{eshu.mobile}}</td>
+<td>{{eshu.salery}}</td>
+<td>
+<button class="btn btn-info">Edit</button>
+<button class="btn btn-danger">Delete</button>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="exampleModalLabel">Employee Details</h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body">
+    <form [formGroup]="formValue">
+        <div class="form-group">
+        <label for="recipient-name" class="col-form-label">First name</label>
+        <input type="text" formControlName="firstName" class="form-control" id="recipient-name">
+        </div> 
+        
+        <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Last name</label>
+            <input type="text" formControlName="lastName" class="form-control" id="recipient-name">
+        </div> 
+        
+        <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Email ID</label>
+            <input type="text" formControlName="email" class="form-control" id="recipient-name">
+        </div> 
+        
+        <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Mobile Number</label>
+            <input type="text" formControlName="mobile" class="form-control" id="recipient-name">
+        </div> 
+        
+        <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Salery</label>
+            <input type="text" formControlName="salery" class="form-control" id="recipient-name">
+        </div> 
+    </form>
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+<button type="button" class="btn btn-primary" (click)="postEmployeeDetails()">Add</button>
+</div>
+</div>
+</div>
+</div>
+

@@ -1,0 +1,1114 @@
+<div
+  id="timecard"
+  class="modal custom-modal backdrop"
+  [ngStyle]="{ display: timecardDisplay }"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Timesheet Details<span *ngIf="timesheetsDetails?.employeeName"
+            >:{{ timesheetsDetails?.employeeName }}</span
+          >
+        </h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #f="ngForm" class="card">
+          <div class="row" *ngIf="errLabel">
+            <div class="col-sm-6" style="color: red">
+              {{ errLabel }}
+            </div>
+          </div>
+          <section class="card-body pt-0">
+            <div class="row">
+              <div class="col">
+                <div
+                  class="
+                    tmshtlbl
+                    d-flex
+                    align-items-center
+                    justify-content-start
+                  "
+                >
+                  <div>
+                    <span class="text-danger">*</span>
+                    <span class="mr-3"> Timesheet Period:</span>
+                  </div>
+
+                  <div>
+                    <p-dropdown
+                      name="timesheetsDates"
+                      [options]="timesheetsDates"
+                      [(ngModel)]="selectedPeriod"
+                      (onChange)="getperiod($event)"
+                      [filter]="true"
+                    ></p-dropdown>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div
+                  class="
+                    tmshtlbl
+                    d-flex
+                    align-items-center
+                    justify-content-start
+                  "
+                >
+                  <div>
+                    <span class="text-danger">*</span>
+                    <span class="mr-3"> Project:</span>
+                  </div>
+
+                  <div class="drpdwn">
+                    <p-dropdown
+                      name="assignproject"
+                      [options]="assignProjects"
+                      [(ngModel)]="selectedProjectId"
+                      (onChange)="getproject($event)"
+                      required
+                      [filter]="true"
+                    ></p-dropdown>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="
+                  col-2
+                  d-flex
+                  justify-content-end
+                  align-items-center
+                  tmshtlbl
+                "
+              >
+                <div class="btn btn-white btn-sm btn-roundedl aprover-status">
+                  <i
+                    class="fa fa-dot-circle-o text-{{ getStatusColor(status) }}"
+                  ></i>
+                  {{ status }}
+                </div>
+              </div>
+              <!-- <div class="col-6">
+                <div
+                  class="d-flex justify-content-between align-items-center tmshtlbl"
+                >
+                  <div>
+                    Approver Email Id(s) <span class="text-danger">*</span>
+                  </div>
+
+                  <div class="approver-link">
+                    <a
+                      (click)="approverList(selectedProjectId, '1')"
+                      *ngIf="selectedProjectId"
+                    >
+                      Timesheet Approvers</a
+                    >
+                  </div>
+                  <div class="btn btn-white btn-sm btn-roundedl aprover-status">
+                    <i
+                      class="fa fa-dot-circle-o text-{{
+                        getStatusColor(status)
+                      }}"
+                    ></i>
+                    {{ status }}
+                  </div>
+                </div>
+
+                <p-chips
+                  [(ngModel)]="selectedApproverEmailList"
+                  name="approverEmailId"
+                  separator=","
+                  inputId="approverEmailIds"
+                  allowDuplicate="false"
+                  (onFocus)="onfocus($event, selectedApproverEmailList)"
+                >
+                </p-chips>
+              </div> -->
+            </div>
+            <div class="row">
+              <div class="col mt-2" *ngIf="!loading">
+                <p-table
+                  [columns]="cols"
+                  [value]="listOfDates"
+                  [rowsPerPageOptions]="[10, 25, 50]"
+                  styleClass="ui-table-customers timecard"
+                  #dt
+                  [paginator]="false"
+                  [rows]="10"
+                  [showCurrentPageReport]="true"
+                  [alwaysShowPaginator]="false"
+                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                  [filterDelay]="0"
+                  [globalFilterFields]="[]"
+                >
+                  <!-- <ng-template pTemplate="caption">
+                  .
+
+                  <div class="ui-table-globalfilter-container">
+                    <input
+                      pInputText
+                      type="text"
+                      (input)="dt.filterGlobal($event.target.value, 'contains')"
+                      placeholder="Search"
+                    />
+                  </div>
+                </ng-template> -->
+                  <ng-template pTemplate="header" let-columns>
+                    <tr>
+                      <ng-container *ngFor="let col of columns">
+                        <ng-container *ngIf="col.field == 'description'">
+                          <th colspan="2" [pSortableColumn]="col.field">
+                            {{ col.header }}
+                          </th>
+                        </ng-container>
+                        <ng-container *ngIf="col.field == 'entryDate'">
+                          <th [pSortableColumn]="col.field">
+                            {{ col.header }}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                          </th>
+                        </ng-container>
+                        <ng-container *ngIf="col.field == 'loggedTime'">
+                          <th [pSortableColumn]="col.field">
+                            {{ col.header }}
+                            <small class="text-muted">(HH:MM)</small>
+                          </th>
+                        </ng-container>
+                        <ng-container
+                          *ngIf="col.field == 'loggedTimeWithFraction'"
+                        >
+                          <th [pSortableColumn]="col.field">
+                            {{ col.header }}
+                            <small class="text-muted">(HH:FRACTION)</small>
+                          </th>
+                        </ng-container>
+
+                        <ng-container
+                          *ngIf="
+                            col.field != 'description' &&
+                            col.field != 'entryDate' &&
+                            col.field != 'loggedTime' &&
+                            col.field != 'loggedTimeWithFraction'
+                          "
+                        >
+                          <th [pSortableColumn]="col.field">
+                            {{ col.header }}
+                          </th>
+                        </ng-container>
+                      </ng-container>
+                      <!-- <th
+                      *ngFor="let col of columns"
+                      [pSortableColumn]="col.field"
+                    >
+                      {{ col.header }}
+                      <p-sortIcon [field]="col.field"></p-sortIcon>
+                    </th> -->
+                      <th class="actions">Actions</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template
+                    pTemplate="body"
+                    let-rowData
+                    let-columns="columns"
+                    let-rowIndex="rowIndex"
+                  >
+                    <tr
+                      [pSelectableRow]="rowData"
+                      *ngIf="rowData.status == '1'"
+                    >
+                      <ng-container *ngFor="let col of columns">
+                        <ng-container *ngIf="col.field == 'entryDate'">
+                          <td>
+                            <div>
+                              {{ rowData[col.field] | date: "dd MMM yy" }}
+                              <br />
+                              <span class="text-muted weekday"
+                                >({{ rowData[col.field] | date: "EEE" }})</span
+                              >
+                            </div>
+                          </td>
+                        </ng-container>
+                        <ng-container *ngIf="col.field == 'entryType'">
+                          <td style="overflow: visible">
+                            <div>
+                              <p-dropdown
+                                name="entryType{{ rowIndex }}"
+                                [options]="entryType"
+                                [(ngModel)]="rowData[col.field]"
+                                (onChange)="
+                                  calculateTotalLoggedTimeInHours(listOfDates)
+                                "
+                                [style]="{
+                                  'min-width': '100%'
+                                }"
+                                required
+                                [filter]="true"
+                              ></p-dropdown>
+                            </div>
+                          </td>
+                        </ng-container>
+                        <ng-container *ngIf="col.field == 'startTime'">
+                          <td class="loggedTime" style="overflow: visible">
+                            <p-calendar
+                              [(ngModel)]="rowData[col.field]"
+                              [timeOnly]="true"
+                              inputId="startTime {{ rowIndex }}"
+                              timeSeparator=":"
+                              name="startTime{{ rowIndex }}"
+                              (onBlur)="onCalculateTimeDiff(rowData, rowIndex)"
+                              dataType="string"
+                              hourFormat="12"
+                              [readonlyInput]="true"
+                            ></p-calendar>
+                            <!-- <input
+                              type="text"
+                              pInputText
+                              (keyup)="changeLoggedTimeCalculation(listOfDates)"
+                              name="loggedTime{{ rowIndex }}"
+                              [(ngModel)]="rowData[col.field]"
+                              maxlength="5"
+                              pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){1}"
+                              required
+                            /> -->
+                          </td>
+                        </ng-container>
+                        <ng-container *ngIf="col.field == 'endTime'">
+                          <td class="loggedTime" style="overflow: visible">
+                            <p-calendar
+                              [(ngModel)]="rowData[col.field]"
+                              [timeOnly]="true"
+                              inputId="endTime {{ rowIndex }}"
+                              timeSeparator=":"
+                              name="endTime{{ rowIndex }}"
+                              required="true"
+                              (onBlur)="
+                                onCalculateTimeDiff(rowData, rowIndex);
+                                calculateTotalLoggedTimeInHours(
+                                  listOfDates,
+                                  rowIndex
+                                )
+                              "
+                              dataType="string"
+                              hourFormat="12"
+                              [disabled]="!rowData.startTime"
+                              [readonlyInput]="true"
+                            ></p-calendar>
+                          </td>
+                        </ng-container>
+                        <ng-container *ngIf="col.field == 'loggedTime'">
+                          <td class="loggedTime" style="overflow: visible">
+                            <p-calendar
+                              [(ngModel)]="rowData[col.field]"
+                              [timeOnly]="true"
+                              inputId="timeonly {{ rowIndex }}"
+                              timeSeparator=":"
+                              name="loggedTime{{ rowIndex }}"
+                              required="true"
+                              (onBlur)="
+                                onLoggedTimeChange(rowData, rowIndex);
+                                calculateTotalLoggedTimeInHours(
+                                  listOfDates,
+                                  rowIndex
+                                )
+                              "
+                              [readonlyInput]="true"
+                              dataType="string"
+                            ></p-calendar>
+                          </td>
+                        </ng-container>
+                        <ng-container
+                          *ngIf="col.field == 'loggedTimeWithFraction'"
+                        >
+                          <td class="loggedTime" style="overflow: visible">
+                            <input
+                              name="loggedTimeWithFraction{{ rowIndex }}"
+                              class="form-control text-center"
+                              [(ngModel)]="rowData[col.field]"
+                              (keypress)="
+                                sharedService.keyPressAlphaNumericWithSpecialChar(
+                                  $event
+                                )
+                              "
+                              (blur)="
+                                onLoggedFractionTimeChange(rowData, rowIndex);
+                                calculateTotalLoggedTimeInHours(
+                                  listOfDates,
+                                  rowIndex
+                                )
+                              "
+                              maxlength="5"
+                              required="true"
+                            />
+                            <!-- <p-inputMask
+                              [(ngModel)]="rowData[col.field]"
+                              mask="99.99"
+                              name="loggedTimeWithFraction{{ rowIndex }}"
+                              inputId="loggedTimeWithFraction {{ rowIndex }}"
+                              (onBlur)="
+                                onLoggedFractionTimeChange(rowData, rowIndex);
+                                calculateTotalLoggedTimeInHours(
+                                  listOfDates,
+                                  rowIndex
+                                )
+                              "
+                              required="true"
+                            ></p-inputMask> -->
+                            <!-- <p-calendar
+                              [(ngModel)]="rowData[col.field]"
+                              [timeOnly]="false"
+                              inputId="loggedTimeWithFraction {{ rowIndex }}"
+                              timeSeparator="."
+                              name="loggedTimeWithFraction{{ rowIndex }}"
+                              required="true"
+                              (onBlur)="
+                                calculateTotalLoggedTimeInHours(
+                                  listOfDates,
+                                  rowIndex
+                                )
+                              "
+                              dataType="string"
+                            ></p-calendar> -->
+                          </td>
+                        </ng-container>
+                        <ng-container *ngIf="col.field == 'description'">
+                          <td colspan="2">
+                            <textarea
+                              name="description{{ rowIndex }}"
+                              pInputTextarea
+                              [(ngModel)]="rowData[col.field]"
+                              (keypress)="sharedService.keyPressAddress($event)"
+                              style="margin-top: 5px"
+                            ></textarea>
+                          </td>
+                        </ng-container>
+                      </ng-container>
+                      <td class="actions p-0">
+                        <div class="action_Button">
+                          <a
+                            class="dropdown-item"
+                            (click)="addRecord(rowData, rowIndex)"
+                            ><i class="fa fa-plus m-r-5"></i>
+                          </a>
+                          <ng-container
+                            *ngIf="hasDuplicates(listOfDates, rowData)"
+                          >
+                            <a
+                              class="dropdown-item"
+                              (click)="removeRecord(rowData, rowIndex)"
+                              ><i class="fa fa-trash m-r-5"></i> </a
+                          ></ng-container>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="emptymessage">
+                    <tr>
+                      <td
+                        [attr.colspan]="cols.length + 1"
+                        style="text-align: center"
+                      >
+                        No Records found.
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+            </div>
+            <div class="table-responsive mt-4">
+              <table class="table table-bordered mb-0">
+                <thead style="background-color: #f4f4f4">
+                  <tr>
+                    <th></th>
+                    <th>Total Logged Time</th>
+                    <th style="color: '#28a745'">Regular</th>
+                    <th style="color: '#007bff'">Overtime</th>
+                    <th style="color: '#0040fd'">Double Overtime</th>
+                    <th style="color: '#dc3545'">Sick</th>
+                    <th style="color: '#17a2b8'">PTO</th>
+                    <th style="color: '#ffc107'">Break</th>
+                    <th style="color: '#ffc107'">Meal Premium</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      Total Logged Time
+                      <small class="text-muted">(HH:MM)</small>
+                    </td>
+                    <td>{{ totalLoggedTime | minuteSeconds }}</td>
+                    <td style="color: '#28a745'">
+                      {{ totalRegularTime | minuteSeconds }}
+                    </td>
+                    <td style="color: '#007bff'">
+                      {{ totalOvertimeTime | minuteSeconds }}
+                    </td>
+                    <td style="color: '#0040fd'">
+                      {{ totalDoubleOverTime | minuteSeconds }}
+                    </td>
+                    <td style="color: '#dc3545'">
+                      {{ totalSickTime | minuteSeconds }}
+                    </td>
+                    <td style="color: '#17a2b8'">
+                      {{ totalOTPTime | minuteSeconds }}
+                    </td>
+                    <td style="color: '#ffc107'">
+                      {{ totalBreakTime | minuteSeconds }}
+                    </td>
+                    <td style="color: '#ffc107'">
+                      {{ totalMealPremiumTime | minuteSeconds }}
+                    </td>
+                  </tr>
+                  <tr style="background-color: #f4f4f4">
+                    <td>
+                      Total Logged Time
+                      <small class="text-muted">(HH.FRACTION)</small>
+                    </td>
+                    <td>
+                      {{ calculateTotalLoggedTimeInFraction(totalLoggedTime) }}
+                    </td>
+                    <td style="color: '#28a745'">
+                      {{ calculateTotalLoggedTimeInFraction(totalRegularTime) }}
+                    </td>
+                    <td style="color: '#007bff'">
+                      {{
+                        calculateTotalLoggedTimeInFraction(totalOvertimeTime)
+                      }}
+                    </td>
+                    <td style="color: '#0040fd'">
+                      {{
+                        calculateTotalLoggedTimeInFraction(totalDoubleOverTime)
+                      }}
+                    </td>
+                    <td style="color: '#dc3545'">
+                      {{ calculateTotalLoggedTimeInFraction(totalSickTime) }}
+                    </td>
+                    <td style="color: '#17a2b8'">
+                      {{ calculateTotalLoggedTimeInFraction(totalOTPTime) }}
+                    </td>
+                    <td style="color: '#ffc107'">
+                      {{ calculateTotalLoggedTimeInFraction(totalBreakTime) }}
+                    </td>
+                    <td style="color: '#ffc107'">
+                      {{
+                        calculateTotalLoggedTimeInFraction(totalMealPremiumTime)
+                      }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- <div
+              class="row d-flex justify-content-between"
+              style="background-color: #f4f4f4; margin: 0px; margin-top: 15px"
+            >
+              <div class="total-logged-time">
+                <i class="fa fa-dot-circle-o mr-1" style="color: inherit"></i
+                >Total Logged Time(HH:MM) :
+                <span *ngIf="totalLoggedTime">{{
+                  totalLoggedTime | minuteSeconds
+                }}</span>
+              </div>
+              <div class="total-logged-time" style="color: '#28a745'">
+                <i class="fa fa-dot-circle-o text-success mr-1"></i>Regular :
+                <span *ngIf="totalRegularTime">{{
+                  totalRegularTime | minuteSeconds
+                }}</span>
+              </div>
+              <div class="total-logged-time" style="color: '#007bff'">
+                <i class="fa fa-dot-circle-o text-info mr-1"></i>Overtime :
+                <span *ngIf="totalOvertimeTime">{{
+                  totalOvertimeTime | minuteSeconds
+                }}</span>
+              </div>
+              <div class="total-logged-time" style="color: '#0040fd'">
+                <i class="fa fa-dot-circle-o text-info dblot mr-1"></i>Double
+                Overtime :
+                <span *ngIf="totalDoubleOverTime">{{
+                  totalDoubleOverTime | minuteSeconds
+                }}</span>
+              </div>
+              <div class="total-logged-time" style="color: '#dc3545'">
+                <i class="fa fa-dot-circle-o text-danger mr-1"></i>Sick :
+                <span *ngIf="totalSickTime">{{
+                  totalSickTime | minuteSeconds
+                }}</span>
+              </div>
+              <div class="total-logged-time" style="color: '#17a2b8'">
+                <i class="fa fa-dot-circle-o text-info pto mr-1"></i>PTO :
+                <span *ngIf="totalOTPTime">{{
+                  totalOTPTime | minuteSeconds
+                }}</span>
+              </div>
+              <div class="total-logged-time" style="color: '#ffc107'">
+                <i class="fa fa-dot-circle-o text-warning mr-1"></i>Break :
+                <span *ngIf="totalBreakTime">{{
+                  totalBreakTime | minuteSeconds
+                }}</span>
+              </div>
+            </div>
+            <div
+              class="row d-flex justify-content-between"
+              style="background-color: #f4f4f4; margin: 0px; margin-top: 15px"
+            >
+              <div class="total-logged-time">
+                <i class="fa fa-dot-circle-o mr-1" style="color: inherit"></i
+                >Total Logged Time(HH:Fraction) :
+                <span *ngIf="totalLoggedTime">{{
+                  calculateTotalLoggedTimeInFraction(totalLoggedTime)
+                }}</span>
+              </div>
+              <div class="total-logged-time" style="color: '#28a745'">
+                <i class="fa fa-dot-circle-o text-success mr-1"></i>Regular :
+                <span *ngIf="totalRegularTime">{{
+                  calculateTotalLoggedTimeInFraction(totalRegularTime)
+                }}</span>
+              </div>
+              <div class="total-logged-time" style="color: '#007bff'">
+                <i class="fa fa-dot-circle-o text-info mr-1"></i>Overtime :
+                <span *ngIf="totalOvertimeTime">{{
+                  calculateTotalLoggedTimeInFraction(totalOvertimeTime)
+                }}</span>
+              </div>
+              <div class="total-logged-time" style="color: '#0040fd'">
+                <i class="fa fa-dot-circle-o text-info dblot mr-1"></i>Double
+                Overtime :
+                <span *ngIf="totalDoubleOverTime">{{
+                  calculateTotalLoggedTimeInFraction(totalDoubleOverTime)
+                }}</span>
+              </div>
+              <div class="total-logged-time" style="color: '#dc3545'">
+                <i class="fa fa-dot-circle-o text-danger mr-1"></i>Sick :
+                <span *ngIf="totalSickTime">{{
+                  calculateTotalLoggedTimeInFraction(totalSickTime)
+                }}</span>
+              </div>
+              <div class="total-logged-time" style="color: '#17a2b8'">
+                <i class="fa fa-dot-circle-o text-info pto mr-1"></i>PTO :
+                <span *ngIf="totalOTPTime">{{
+                  calculateTotalLoggedTimeInFraction(totalOTPTime)
+                }}</span>
+              </div>
+              <div class="total-logged-time" style="color: '#ffc107'">
+                <i class="fa fa-dot-circle-o text-warning mr-1"></i>Break :
+                <span *ngIf="totalBreakTime">{{
+                  calculateTotalLoggedTimeInFraction(totalBreakTime)
+                }}</span>
+              </div>
+            </div> -->
+
+            <div
+              class="row d-flex justify-content-start align-items-center"
+              style="background-color: #f4f4f4; margin: 0px; margin-top: 15px"
+              *ngIf="selectedProjectId"
+            >
+              <div class="total-logged-time mr-0">Approvers :</div>
+              <div *ngIf="!approverEmailList.length">
+                You Don't have approver to approve your timesheet, please assign
+                approver
+              </div>
+              <div
+                class="total-logged-time p-0 pt-1"
+                *ngIf="approverEmailList.length > 0"
+              >
+                <p-multiSelect
+                  name="approver-email"
+                  [options]="approverEmailList"
+                  optionLabel="approverEmail"
+                  (onChange)="emailChoosen($event.itemValue)"
+                  maxSelectedLabels="0"
+                  [showToggleAll]="false"
+                  [showHeader]="false"
+                ></p-multiSelect>
+              </div>
+              <ng-container *ngIf="selectedApproverEmailList">
+                <div
+                  class="total-logged-time pl-0"
+                  *ngFor="let item of selectedApproverEmailList; let i = index"
+                >
+                  {{ item }}
+                  <i
+                    class="fa fa-times removeChosenEmailId text-danger"
+                    aria-hidden="true"
+                    (click)="removeChosenEmailId(i)"
+                  ></i>
+                </div>
+              </ng-container>
+            </div>
+            <div
+              class="row d-flex justify-content-start attachmentssection"
+              style="background-color: #f4f4f4; margin: 0px; margin-top: 15px"
+              *ngIf="selectedProjectId"
+            >
+              <div class="total-logged-time mr-0">Attachment :</div>
+              <div class="total-logged-time pl-0">
+                <a
+                  class="mr-4"
+                  (click)="uploadScreenshot()"
+                  style="cursor: pointer"
+                  ><i class="fa fa-upload fa-fw" aria-hidden="true"></i>Upload
+                </a>
+              </div>
+              <ng-container
+                *ngIf="
+                  timesheetsDetails?.attachments &&
+                  timesheetsDetails?.attachments.length
+                "
+              >
+                <div
+                  class="total-logged-time pl-0"
+                  *ngFor="
+                    let row of timesheetsDetails?.attachments;
+                    let sno = index
+                  "
+                >
+                  <a
+                    class="attachment-file"
+                    style="cursor: auto"
+                    class="attachment-file"
+                  >
+                    <i class="fa fa-paperclip"></i>
+                    {{ row.documentTitle }}
+                    <i
+                      class="fa fa-download btnColor mr-2"
+                      (click)="downloadScreenShot(row)"
+                    ></i>
+                    <i
+                      class="fa fa-times text-danger"
+                      (click)="deleteScreenShot(row, sno)"
+                    ></i>
+                  </a>
+                </div>
+              </ng-container>
+              <!-- <ng-container *ngIf="timesheetsDetails?.attachments">
+                <div class="total-logged-time pl-0">
+                  <a
+                    class="mr-4"
+                    (click)="downloadScreenShot(timesheetsDetails)"
+                    ><i class="fa fa-download fa-fw" aria-hidden="true"></i
+                    >{{ timesheetsDetails.screenShotLocation }}</a
+                  >
+                </div>
+                <div class="total-logged-time">
+                  <a class="mr-4" (click)="uploadScreenshot()"
+                    ><i class="fa fa-pencil fa-fw" aria-hidden="true"></i
+                    >Edit</a
+                  >
+                </div>
+                <div class="total-logged-time">
+                  <a class="" (click)="deleteScreenShot(timesheetsDetails)"
+                    ><i class="fa fa-trash-o fa-fw" aria-hidden="true"></i
+                    >Delete</a
+                  >
+                </div>
+              </ng-container> -->
+            </div>
+
+            <!--
+              this logic to hide buttons add buttons
+               <div
+              class="row"
+              *ngIf="
+                timesheetsDetails?.status == 1 ||
+                timesheetsDetails?.status == 5 ||
+                timesheetsDetails?.status == null
+              "
+            ></div>
+          -->
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="submit-section">
+                  <!-- <button
+                    type="button"
+                    (click)="uploadScreenshot()"
+                    class="btn btn-primary mr-2"
+                    [disabled]="f.invalid"
+                  >
+                    Upload Screenshot
+                  </button> -->
+                  <button
+                    type="button"
+                    (click)="submitTimesheet()"
+                    class="btn btn-info mr-2"
+                    [disabled]="
+                      !selectedApproverEmailList.length ||
+                      f.invalid ||
+                      !totalLoggedTime
+                    "
+                  >
+                    <ng-container *ngIf="timesheetsDetails?.status == 2">
+                      <i class="fa fa-check"></i>&nbsp;Resubmit
+                    </ng-container>
+                    <ng-container *ngIf="timesheetsDetails?.status != 2">
+                      <i class="fa fa-check"></i>&nbsp;Submit
+                    </ng-container>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-success mr-2"
+                    (click)="save()"
+                    [disabled]="f.invalid || !totalLoggedTime"
+                  >
+                    <i class="fa fa-save"></i>&nbsp;Save
+                  </button>
+                  <button class="btn btn-danger ml-2" (click)="closeAddmodal()">
+                    <i class="fa fa-times"></i>&nbsp;Cancel
+                  </button>
+                  <!-- <ng-container
+                    *ngIf="
+                      timesheetsDetails?.timesheetDetailsId &&
+                      timesheetsDetails != null &&
+                      timesheetsDetails?.status == '1'
+                    "
+                  >
+
+                  </ng-container>
+
+                  <ng-container
+                    *ngIf="
+                      timesheetsDetails?.status == '1' ||
+                      timesheetsDetails == null
+                    "
+                  >
+
+                  </ng-container> -->
+                </div>
+              </div>
+            </div>
+          </section>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Upload File Modal -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: uploadFileInfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Upload Attachment</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeUploadmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form
+            (ngSubmit)="saveUploadFile(uploadFileInfoForm)"
+            #uploadFileInfoForm="ngForm"
+          >
+            <div class="row" *ngIf="errorLabel">
+              <div class="col-sm-6" style="color: red">
+                {{ errorLabel }}
+              </div>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-12">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Title <span class="text-danger">*</span></label
+                  >
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="title"
+                    [(ngModel)]="uploadedFileTitle"
+                    (keypress)="sharedService.keyPressAlphaNumaric($event)"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group d-flex align-items-center">
+                  <input
+                    class="form-control"
+                    type="file"
+                    id="fileToUpload"
+                    name="fileToUpload"
+                    (change)="onFileChange($event)"
+                    #fileInput
+                    required
+                  />
+                  <div *ngIf="fileToUpload">
+                    <a
+                      class="btn btn-danger btn-clear-file"
+                      href="javascript:void(0)"
+                      aria-label="Remove"
+                      (click)="clearFile()"
+                    >
+                      <i class="fa fa-times" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="submit-section">
+              <button
+                type="submit"
+                class="btn btn-success"
+                [disabled]="!uploadFileInfoForm.valid || !fileToUpload"
+              >
+                <i class="fa fa-upload"></i>&nbsp;Upload
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger ml-2"
+                (click)="closeUploadmodal(uploadFileInfoForm)"
+              >
+                <i class="fa fa-times"></i>&nbsp;Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Upload file Modal -->
+<!-- Email List  Modal -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: approverInfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          *ngIf="errorLabel"
+          style="position: absolute; left: 15px"
+          class="text-danger"
+        >
+          {{ errorLabel }}
+        </h5>
+        <h5 class="modal-title">Timesheet Approvers</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeUploadmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="approverEmailList != null">
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let item of approverEmailList">
+              <p-checkbox
+                name="approverEmail"
+                value="{{ item.approverEmail }}"
+                label="{{ item.approverEmail }}"
+                [(ngModel)]="selectedApproverEmailList"
+              ></p-checkbox>
+            </li>
+          </ul>
+          <button
+            type="button"
+            (click)="closeUploadmodal()"
+            class="btn btn-primary mt-3"
+          >
+            OK
+          </button>
+        </div>
+        <div *ngIf="approverEmailList == null">No Approvers Found</div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /
+  email List  Modal -->
+
+<!-- Image view file Modal -->
+<ng-container *ngIf="viewImage">
+  <app-imageviwer
+    [imageBlob]="imageBlob"
+    (onClose)="onImageViewCloseClick($event)"
+  >
+  </app-imageviwer>
+</ng-container>
+
+<!-- /Image view file Modal -->
+<!-- Unsaved confirm model-->
+<div
+  [ngStyle]="{ display: unSavedModel }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <h3>Confirm</h3>
+          <p>You have Unsaved changes. Do you want to leave ?</p>
+        </div>
+        <div class="modal-btn delete-action">
+          <div class="row">
+            <div class="col-6 d-flex justify-content-end">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                (click)="unSavedConfirm(true)"
+                class="btn btn-info"
+                ><i class="fa fa-check"></i>&nbsp;Confirm</a
+              >
+            </div>
+            <div class="col-6 d-flex justify-content-start">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                (click)="unSavedConfirm(false)"
+                class="btn btn-danger"
+                ><i class="fa fa-times"></i>&nbsp;Cancel</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Unsaved confirm model-->
+<!-- custome Email  model-->
+<div
+  [ngStyle]="{ display: customEmailModel }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <h5 class="modal-title">Custom Email</h5> -->
+        <button
+          type="button"
+          class="close"
+          (click)="closeUploadmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form
+            (ngSubmit)="saveCustomEmail(customeEmailForm)"
+            #customeEmailForm="ngForm"
+          >
+            <div class="row" *ngIf="errorLabel">
+              <div class="col-sm-6" style="color: red">
+                {{ errorLabel }}
+              </div>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Approver Email <span class="text-danger">*</span></label
+                  >
+                  <input
+                    pInputText
+                    class="form-control"
+                    [(ngModel)]="customEmail"
+                    type="email"
+                    name="email"
+                    #email="ngModel"
+                    maxlength="150"
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                    (keypress)="sharedService.keyPressEmail($event)"
+                    required
+                  />
+                  <small
+                    class="text-danger"
+                    *ngIf="email.touched && email.invalid"
+                    >The given value is not a valid format.</small
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="submit-section">
+              <button
+                type="submit"
+                class="btn btn-success"
+                [disabled]="!customeEmailForm.valid"
+              >
+                <i class="fa fa-plus"></i>&nbsp;Add
+              </button>
+              <button class="btn btn-danger ml-2" (click)="closeUploadmodal()">
+                <i class="fa fa-times"></i>&nbsp;Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Custom Email  model-->
+<!-- confirm model-->
+<div
+  [ngStyle]="{ display: confirmModel }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <!-- <h3>Confirm</h3> -->
+          <p>Are you sure ? Do you want to Delete ?</p>
+        </div>
+        <div class="modal-btn">
+          <div class="row">
+            <div class="col-6 d-flex justify-content-end">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                (click)="
+                  confirm(deleteAttachmentRowData, deleteAttachmentRowDataIndex)
+                "
+                class="btn btn-info"
+                ><i class="fa fa-check"></i>&nbsp;Confirm</a
+              >
+            </div>
+            <div class="col-6 d-flex justify-content-start">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                (click)="closeUploadmodal()"
+                class="btn btn-danger"
+                ><i class="fa fa-times"></i>&nbsp;Cancel</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /confirm model-->

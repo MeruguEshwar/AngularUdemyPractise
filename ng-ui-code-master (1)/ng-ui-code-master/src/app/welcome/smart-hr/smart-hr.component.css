@@ -1,0 +1,16 @@
+:host ::ng-deep .accelerate_transparency {
+  color: #009ce7;
+}
+:host ::ng-deep .boost_culture {
+  color: #6ac069;
+}
+:host ::ng-deep .improve_communication {
+  color: #8484d7;
+}
+:host ::ng-deep .humanize_ecosystem {
+  color: #e44c7d;
+}
+h3 {
+  color: #00a88e;
+  font-size: 16px;
+}

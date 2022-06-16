@@ -1,0 +1,1239 @@
+<div class="page-wrapper" style="min-height: 283px">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="javascript:void(0)">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Customer</li>
+            <li class="breadcrumb-item">View</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="card mb-0">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card mb-0">
+              <div class="card-body">
+                <h3 class="card-title">
+                  Customer Details
+                  <!-- <a
+                    href="#"
+                    data-toggle="modal"
+                    (click)="onEditSupplier()"
+                    class="edit-icon"
+                    ><i class="fa fa-pencil"></i
+                  ></a> -->
+                  <a
+                    href="javascript:void(0)"
+                    [routerLink]="['/admin/company/edit']"
+                    [state]="{
+                      companyDetailsId: companyDetailsId,
+                      tabIndex: 0
+                    }"
+                    class="edit-icon"
+                    ><i class="fa fa-pencil"></i
+                  ></a>
+                </h3>
+                <div class="profile-view">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <ul class="personal-info">
+                        <li class="clearfix" *ngIf="company?.companyName">
+                          <div class="title">Customer Name</div>
+                          <div class="text">
+                            <strong> {{ company?.companyName }}</strong>
+                          </div>
+                        </li>
+                        <li class="clearfix" *ngIf="company?.einNumber">
+                          <div class="title">EIN Number</div>
+                          <div class="text">
+                            {{ company?.einNumber }}
+                          </div>
+                        </li>
+                        <li class="clearfix" *ngIf="company?.companyWebsite">
+                          <div class="title">Website</div>
+                          <div class="text">{{ company?.companyWebsite }}</div>
+                        </li>
+                        <li class="clearfix" *ngIf="company?.description">
+                          <div class="title">Description</div>
+                          <div class="text">{{ company?.description }}</div>
+                        </li>
+                        <li class="clearfix" *ngIf="company?.companyAddress">
+                          <div class="title">Address</div>
+                          <div class="text">{{ company?.companyAddress }}</div>
+                        </li>
+                        <li class="clearfix" *ngIf="company?.creditDays">
+                          <div class="title">Net Due</div>
+                          <div
+                            class="text"
+                            *ngIf="company.creditDays == 0; else netDue"
+                          >
+                            Immediate
+                          </div>
+                          <ng-template class="text" #netDue
+                            ><div class="netDue">
+                              {{ commonNetDueString }} {{ company.creditDays }}
+                            </div></ng-template
+                          >
+                        </li>
+                        <li
+                          class="clearfix"
+                          *ngIf="company?.invoiceNotificationConfigValue"
+                        >
+                          <div class="title">Invoice Notification Config</div>
+                          <div class="text">
+                            {{ company.invoiceNotificationConfigValue }}
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 p-0 mt-4">
+            <section>
+              <div class="accordion" id="accordionExample">
+                <div class="card">
+                  <div
+                    class="card-header"
+                    id="approversHeading"
+                    data-toggle="collapse"
+                    data-target="#approvers"
+                    aria-expanded="false"
+                    aria-controls="approvers"
+                  >
+                    <i class="fa fa-check-square-o pl-3" aria-hidden="true"></i>
+                    <button class="btn btn-link" type="button">
+                      Approvers
+                    </button>
+                  </div>
+
+                  <div
+                    id="approvers"
+                    class="collapse"
+                    aria-labelledby="approversHeading"
+                    data-parent="#accordionExample"
+                  >
+                    <div class="card-body">
+                      <a
+                        href="javascript:void(0)"
+                        [routerLink]="['/admin/company/edit']"
+                        [state]="{
+                          companyDetailsId: companyDetailsId,
+                          tabIndex: 1
+                        }"
+                        class="edit-icon"
+                        ><i class="fa fa-pencil"></i
+                      ></a>
+                      <ul class="list-group list-group-flush">
+                        <ng-container *ngIf="approverList.length">
+                          <li
+                            class="list-group-item"
+                            *ngFor="let approver of approverList"
+                          >
+                            {{ approver.approverEmail }}
+                          </li>
+                        </ng-container>
+                        <ng-container *ngIf="!approverList.length">
+                          No Approvers Found
+                        </ng-container>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div
+                    class="card-header"
+                    id="paymentsHeading"
+                    data-toggle="collapse"
+                    data-target="#payments"
+                    aria-expanded="false"
+                    aria-controls="payments"
+                  >
+                    <i class="fa fa-money pl-3" aria-hidden="true"></i>
+                    <button class="btn btn-link" type="button">Payments</button>
+                  </div>
+                  <div
+                    id="payments"
+                    class="collapse"
+                    aria-labelledby="paymentsHeading"
+                    data-parent="#accordionExample"
+                  >
+                    <div class="">
+                      <div class="col pl-0 pr-0" *ngIf="!loading">
+                        <p-table
+                          [columns]="paymentsCols"
+                          [value]="paymentList"
+                          [rowsPerPageOptions]="[5, 10, 25, 50]"
+                          styleClass="ui-table-customers"
+                          #dt
+                          [paginator]="true"
+                          [rows]="5"
+                          [showCurrentPageReport]="true"
+                          [alwaysShowPaginator]="false"
+                          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                          [filterDelay]="0"
+                          [globalFilterFields]="[
+                            'department',
+                            'description',
+                            'status'
+                          ]"
+                          class="invoice-list"
+                          ><ng-template pTemplate="caption">
+                            <div>
+                              Customer:
+                              <span class="username">{{
+                                company?.companyName
+                              }}</span>
+                            </div>
+                            <div>
+                              <a
+                                href="javascript:void(0)"
+                                [routerLink]="['/admin/company/edit']"
+                                [state]="{
+                                  companyDetailsId: companyDetailsId,
+                                  tabIndex: 2
+                                }"
+                                class="edit-icon"
+                                ><i class="fa fa-pencil"></i
+                              ></a>
+                            </div>
+                            <!-- <div class="ui-table-globalfilter-container">
+                            <input
+                              pInputText
+                              type="text"
+                              (input)="
+                                dt.filterGlobal($event.target.value, 'contains')
+                              "
+                              placeholder="Search"
+                            />
+                          </div> -->
+                          </ng-template>
+
+                          <ng-template pTemplate="header" let-columns>
+                            <tr>
+                              <th
+                                *ngFor="let col of columns"
+                                [pSortableColumn]="col.field"
+                              >
+                                {{ col.header }}
+                                <p-sortIcon [field]="col.field"></p-sortIcon>
+                              </th>
+                            </tr>
+                          </ng-template>
+                          <ng-template
+                            pTemplate="body"
+                            let-rowData
+                            let-columns="columns"
+                            let-rowIndex="rowIndex"
+                          >
+                            <tr [pSelectableRow]="rowData">
+                              <ng-container *ngFor="let col of columns">
+                                <td
+                                  *ngIf="col.field == 'amount'"
+                                  class="amount"
+                                  [pSortableColumn]="col.field"
+                                >
+                                  {{ organizationCurrency }}
+                                  {{ rowData[col.field] }}
+                                </td>
+                                <td *ngIf="col.field !== 'amount'">
+                                  {{ rowData[col.field] }}
+                                </td></ng-container
+                              >
+                            </tr>
+                          </ng-template>
+                          <ng-template pTemplate="emptymessage">
+                            <tr>
+                              <td
+                                [attr.colspan]="paymentsCols.length"
+                                style="text-align: center"
+                              >
+                                No Records found.
+                              </td>
+                            </tr>
+                          </ng-template>
+                        </p-table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div
+                    class="card-header"
+                    id="commentsHeading"
+                    data-toggle="collapse"
+                    data-target="#comments"
+                    aria-expanded="false"
+                    aria-controls="comments"
+                  >
+                    <i class="fa fa-comments pl-3" aria-hidden="true"></i>
+                    <button class="btn btn-link" type="button">Comments</button>
+                  </div>
+                  <div
+                    id="comments"
+                    class="collapse"
+                    aria-labelledby="commentsHeading"
+                    data-parent="#accordionExample"
+                  >
+                    <div class="">
+                      <div class="col pl-0 pr-0" *ngIf="!loading">
+                        <p-table
+                          [columns]="commentCols"
+                          [value]="commentsList"
+                          [rowsPerPageOptions]="[5, 10, 25, 50]"
+                          styleClass="ui-table-customers"
+                          #dt
+                          [paginator]="true"
+                          [rows]="5"
+                          [showCurrentPageReport]="true"
+                          [alwaysShowPaginator]="false"
+                          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                          [filterDelay]="0"
+                          [globalFilterFields]="[]"
+                        >
+                          <ng-template pTemplate="caption">
+                            <div>
+                              Customer:
+                              <span class="username">{{
+                                company?.companyName
+                              }}</span>
+                            </div>
+                            <div>
+                              <a
+                                href="javascript:void(0)"
+                                [routerLink]="['/admin/company/edit']"
+                                [state]="{
+                                  companyDetailsId: companyDetailsId,
+                                  tabIndex: 3
+                                }"
+                                class="edit-icon"
+                                ><i class="fa fa-pencil"></i
+                              ></a>
+                            </div>
+                          </ng-template>
+                          <ng-template pTemplate="header" let-columns>
+                            <tr>
+                              <th
+                                *ngFor="let col of columns"
+                                [pSortableColumn]="col.field"
+                              >
+                                {{ col.header }}
+                                <p-sortIcon [field]="col.field"></p-sortIcon>
+                              </th>
+                            </tr>
+                          </ng-template>
+                          <ng-template
+                            pTemplate="body"
+                            let-rowData
+                            let-columns="columns"
+                          >
+                            <tr [pSelectableRow]="rowData">
+                              <td *ngFor="let col of columns">
+                                {{ rowData[col.field] }}
+                              </td>
+                            </tr>
+                          </ng-template>
+                          <ng-template pTemplate="emptymessage">
+                            <tr>
+                              <td
+                                [attr.colspan]="commentCols.length"
+                                style="text-align: center"
+                              >
+                                No Records found.
+                              </td>
+                            </tr>
+                          </ng-template>
+                        </p-table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div
+                    class="card-header"
+                    id="invoicesHistoryHeading"
+                    data-toggle="collapse"
+                    data-target="#invoicesHistory"
+                    aria-expanded="false"
+                    aria-controls="invoicesHistory"
+                  >
+                    <i class="fa fa-briefcase pl-3" aria-hidden="true"></i>
+                    <button class="btn btn-link" type="button">Invoices</button>
+                  </div>
+                  <div
+                    id="invoicesHistory"
+                    class="collapse"
+                    aria-labelledby="invoicesHistoryHeading"
+                    data-parent="#accordionExample"
+                  >
+                    <div class="">
+                      <div class="col pl-0 pr-0" *ngIf="!loading">
+                        <p-table
+                          [columns]="invoicesCols"
+                          [value]="invoicesList"
+                          [rowsPerPageOptions]="[5, 10, 25, 50]"
+                          styleClass="ui-table-customers"
+                          #dt
+                          [paginator]="true"
+                          [rows]="5"
+                          [showCurrentPageReport]="true"
+                          [alwaysShowPaginator]="false"
+                          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                          [filterDelay]="0"
+                          [globalFilterFields]="[
+                            'department',
+                            'description',
+                            'status'
+                          ]"
+                          class="invoice-list"
+                        >
+                          <ng-template pTemplate="caption">
+                            <div>
+                              Customer:
+                              <span class="username">{{
+                                company?.companyName
+                              }}</span>
+                            </div>
+                            <div>
+                              <a
+                                href="javascript:void(0)"
+                                [routerLink]="['/admin/company/edit']"
+                                [state]="{
+                                  companyDetailsId: companyDetailsId,
+                                  tabIndex: 4
+                                }"
+                                class="edit-icon"
+                                ><i class="fa fa-pencil"></i
+                              ></a>
+                            </div>
+
+                            <!-- <div class="ui-table-globalfilter-container">
+                              <input
+                                pInputText
+                                type="text"
+                                (input)="
+                                  dt.filterGlobal($event.target.value, 'contains')
+                                "
+                                placeholder="Search"
+                              />
+                            </div> -->
+                          </ng-template>
+                          <ng-template pTemplate="header" let-columns>
+                            <tr>
+                              <th
+                                *ngFor="let col of columns"
+                                [pSortableColumn]="col.field"
+                              >
+                                {{ col.header }}
+                                <p-sortIcon [field]="col.field"></p-sortIcon>
+                              </th>
+                            </tr>
+                          </ng-template>
+                          <ng-template
+                            pTemplate="body"
+                            let-rowData
+                            let-columns="columns"
+                            let-rowIndex="rowIndex"
+                          >
+                            <tr
+                              [pSelectableRow]="rowData"
+                              [ngClass]="
+                                rowData.dueDatePassed ? 'mark' : 'unmark'
+                              "
+                            >
+                              <td
+                                *ngFor="let col of columns"
+                                [attr.ng-reflect-field]="col.field"
+                              >
+                                <ng-container
+                                  *ngIf="col.field == 'paymentStatus'"
+                                >
+                                  <div
+                                    class="d-flex align-items-center"
+                                    pTooltip="{{ rowData.comments }}"
+                                    tooltipPosition="top"
+                                  >
+                                    <div>
+                                      <span
+                                        class="badge bg-inverse-orange"
+                                        *ngIf="
+                                          rowData.paymentStatus.toLowerCase() ==
+                                          'waiting'
+                                        "
+                                      >
+                                        {{ rowData[col.field] || "-" }}
+                                      </span>
+
+                                      <span
+                                        class="badge bg-inverse-red"
+                                        *ngIf="
+                                          rowData.paymentStatus.toLowerCase() ==
+                                          'due date passed'
+                                        "
+                                        >{{ rowData[col.field] }}</span
+                                      >
+                                      <span
+                                        class="badge bg-inverse-green"
+                                        *ngIf="
+                                          rowData.paymentStatus.toLowerCase() ==
+                                          'partially paid'
+                                        "
+                                        >{{ rowData[col.field] }}</span
+                                      >
+                                      <span
+                                        class="badge bg-inverse-blue"
+                                        *ngIf="
+                                          rowData.paymentStatus.toLowerCase() ==
+                                          'paid'
+                                        "
+                                        >{{ rowData[col.field] }}</span
+                                      >
+                                    </div>
+                                    <div>
+                                      <span
+                                        (click)="
+                                          viewStatusComment(rowData.comments)
+                                        "
+                                        *ngIf="rowData.comments != null"
+                                        class="
+                                          d-flex
+                                          align-items-center
+                                          comment-info
+                                        "
+                                      >
+                                        <i
+                                          class="fa fa-info-circle ml-3"
+                                          aria-hidden="true"
+                                        ></i
+                                      ></span>
+                                    </div>
+                                  </div>
+                                </ng-container>
+                                <ng-container
+                                  *ngIf="col.field == 'invoiceNumber'"
+                                >
+                                  <!-- <a
+                                    [routerLink]="[
+                                      '/admin/invoices/invoice/view'
+                                    ]"
+                                    [state]="{
+                                      invoiceDetailsId: rowData.invoiceDetailsId
+                                    }"
+                                    ># {{ rowData[col.field] }}</a
+                                  > -->
+                                  # {{ rowData[col.field] }}
+                                </ng-container>
+                                <ng-container
+                                  *ngIf="
+                                    col.field != 'paymentStatus' &&
+                                    col.field != 'invoiceNumber'
+                                  "
+                                >
+                                  {{ rowData[col.field] }}
+                                </ng-container>
+                              </td>
+                            </tr>
+                          </ng-template>
+                          <ng-template pTemplate="emptymessage">
+                            <tr>
+                              <td
+                                [attr.colspan]="invoicesCols.length"
+                                style="text-align: center"
+                              >
+                                No Records found.
+                              </td>
+                            </tr>
+                          </ng-template>
+                        </p-table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div
+                    class="card-header"
+                    id="documentsHeading"
+                    data-toggle="collapse"
+                    data-target="#documents"
+                    aria-expanded="false"
+                    aria-controls="documents"
+                  >
+                    <i class="fa fa-files-o pl-3" aria-hidden="true"></i>
+                    <button class="btn btn-link" type="button">
+                      Documents
+                    </button>
+                  </div>
+                  <div
+                    id="documents"
+                    class="collapse"
+                    aria-labelledby="documentsHeading"
+                    data-parent="#accordionExample"
+                  >
+                    <div class="">
+                      <div class="col pl-0 pr-0">
+                        <p-table
+                          [columns]="CompanyDocCols"
+                          [value]="documentList"
+                          [rowsPerPageOptions]="[5, 10, 25, 50]"
+                          styleClass="ui-table-customers"
+                          #dt
+                          [paginator]="true"
+                          [rows]="5"
+                          [showCurrentPageReport]="true"
+                          [alwaysShowPaginator]="false"
+                          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                          [filterDelay]="0"
+                          [globalFilterFields]="[
+                            'documentTitle',
+                            'documentExpiryDate',
+                            'alertRequired',
+                            'sharedWithOthers',
+                            'projectName',
+                            'employeeName'
+                          ]"
+                        >
+                          <ng-template pTemplate="caption">
+                            <div>
+                              Customer:
+                              <span class="username">{{
+                                company?.companyName
+                              }}</span>
+                            </div>
+                            <div
+                              class="ui-table-globalfilter-container"
+                              style="float: none; text-align: right"
+                            >
+                              <input
+                                pInputText
+                                type="text"
+                                (input)="
+                                  dt.filterGlobal(
+                                    $event.target.value,
+                                    'contains'
+                                  )
+                                "
+                                class="mr-2"
+                                placeholder="Search"
+                              />
+                              <a
+                                href="javascript:void(0)"
+                                [routerLink]="['/admin/company/edit']"
+                                [state]="{
+                                  companyDetailsId: companyDetailsId,
+                                  tabIndex: 5
+                                }"
+                                class="edit-icon"
+                                ><i class="fa fa-pencil"></i
+                              ></a>
+                            </div>
+
+                            <!-- <div class="ui-table-globalfilter-container">
+                                  <input
+                                    pInputText
+                                    type="text"
+                                    (input)="
+                                      dt.filterGlobal($event.target.value, 'contains')
+                                    "
+                                    placeholder="Search"
+                                  />
+                                </div> -->
+                          </ng-template>
+                          <ng-template pTemplate="header" let-columns>
+                            <tr>
+                              <th
+                                *ngFor="let col of columns"
+                                [pSortableColumn]="col.field"
+                              >
+                                {{ col.header }}
+                                <p-sortIcon [field]="col.field"></p-sortIcon>
+                              </th>
+                              <th class="actions">Actions</th>
+                            </tr>
+                          </ng-template>
+                          <ng-template
+                            pTemplate="body"
+                            let-rowData
+                            let-columns="columns"
+                          >
+                            <tr [pSelectableRow]="rowData">
+                              <td
+                                *ngFor="let col of columns"
+                                [attr.ng-reflect-field]="col.field"
+                              >
+                                <ng-container
+                                  *ngIf="col.field == 'documentTitle'"
+                                >
+                                  <a
+                                    href="javascript:void(0)"
+                                    (click)="onImageViewOpenClick(rowData)"
+                                  >
+                                    {{ rowData[col.field] }}</a
+                                  >
+                                </ng-container>
+                                <ng-container
+                                  *ngIf="col.field == 'alertRequired'"
+                                  >{{ +rowData[col.field] ? "Yes" : "No" }}
+                                </ng-container>
+                                <ng-container
+                                  *ngIf="col.field == 'alertBeforeNoOfDays'"
+                                >
+                                  <ng-container *ngIf="+rowData.alertRequired">
+                                    {{ rowData[col.field] }}
+                                  </ng-container>
+                                </ng-container>
+                                <ng-container
+                                  *ngIf="col.field == 'sharedWithOthers'"
+                                >
+                                  <ng-container *ngIf="!rowData[col.field]">
+                                    <i class="fa fa-dot-circle-o"></i>
+                                    {{ rowData[col.field] }}
+                                  </ng-container>
+                                  <ng-container *ngIf="rowData[col.field]">
+                                    <a
+                                      href="javascript:void(0)"
+                                      data-toggle="modal"
+                                      class="is-shared"
+                                      (click)="taggedDocumentModel(rowData)"
+                                      ><i class="fa fa-dot-circle-o"></i>
+                                      {{ rowData[col.field] }}
+                                    </a>
+                                  </ng-container>
+                                </ng-container>
+                                <ng-container
+                                  *ngIf="col.field == 'taggedDocument'"
+                                >
+                                  <ng-container *ngIf="!rowData[col.field]">
+                                    <i class="fa fa-dot-circle-o"></i>
+                                    {{ rowData[col.field] }}
+                                  </ng-container>
+                                  <ng-container *ngIf="rowData[col.field]">
+                                    <a
+                                      href="javascript:void(0)"
+                                      data-toggle="modal"
+                                      class="is-shared"
+                                      (click)="taggedProjectModel(rowData)"
+                                      ><i class="fa fa-dot-circle-o"></i>
+                                      {{ rowData[col.field] }}
+                                    </a>
+                                  </ng-container>
+                                </ng-container>
+                                <ng-container
+                                  *ngIf="
+                                    col.field != 'alertRequired' &&
+                                    col.field != 'taggedDocument' &&
+                                    col.field != 'sharedWithOthers' &&
+                                    col.field != 'documentTitle'
+                                  "
+                                >
+                                  {{ rowData[col.field] }}
+                                </ng-container>
+                              </td>
+                              <td class="actions">
+                                <div class="">
+                                  <a
+                                    href="javascript:void(0)"
+                                    data-toggle="modal"
+                                    (click)="fileToDownload(rowData, 'doc')"
+                                    ><i class="fa fa-download m-r-5"></i>
+                                  </a>
+                                </div>
+                              </td>
+                            </tr>
+                          </ng-template>
+                          <ng-template pTemplate="emptymessage">
+                            <tr>
+                              <td
+                                [attr.colspan]="CompanyDocCols.length"
+                                style="text-align: center"
+                              >
+                                No Records found.
+                              </td>
+                            </tr>
+                          </ng-template>
+                        </p-table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div
+                    class="card-header"
+                    id="employeesworkedHeading"
+                    data-toggle="collapse"
+                    data-target="#employeesworked"
+                    aria-expanded="false"
+                    aria-controls="employeesworked"
+                  >
+                    <i class="fa fa-id-badge pl-3" aria-hidden="true"></i>
+                    <button class="btn btn-link" type="button">
+                      Employees Worked
+                    </button>
+                  </div>
+                  <div
+                    id="employeesworked"
+                    class="collapse"
+                    aria-labelledby="employeesworkedHeading"
+                    data-parent="#accordionExample"
+                  >
+                    <div class="">
+                      <div class="col pl-0 pr-0" *ngIf="!loading">
+                        <p-table
+                          [columns]="employeeWorkCols"
+                          [value]="employeesWorkList"
+                          [rowsPerPageOptions]="[5, 10, 25, 50]"
+                          styleClass="ui-table-customers"
+                          #dt
+                          [paginator]="true"
+                          [rows]="5"
+                          [showCurrentPageReport]="true"
+                          [alwaysShowPaginator]="false"
+                          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                          [filterDelay]="0"
+                          [globalFilterFields]="[
+                            'department',
+                            'description',
+                            'status'
+                          ]"
+                          ><ng-template pTemplate="caption">
+                            <div>
+                              Customer:
+                              <span class="username">{{
+                                company?.companyName
+                              }}</span>
+                            </div>
+                            <div>
+                              <a
+                                href="javascript:void(0)"
+                                [routerLink]="['/admin/company/edit']"
+                                [state]="{
+                                  companyDetailsId: companyDetailsId,
+                                  tabIndex: 6
+                                }"
+                                class="edit-icon"
+                                ><i class="fa fa-pencil"></i
+                              ></a>
+                            </div>
+
+                            <!-- <div class="ui-table-globalfilter-container">
+                              <input
+                                pInputText
+                                type="text"
+                                (input)="
+                                  dt.filterGlobal($event.target.value, 'contains')
+                                "
+                                placeholder="Search"
+                              />
+                            </div> -->
+                          </ng-template>
+
+                          <ng-template pTemplate="header" let-columns>
+                            <tr>
+                              <th
+                                *ngFor="let col of columns"
+                                [pSortableColumn]="col.field"
+                              >
+                                {{ col.header }}
+                                <p-sortIcon [field]="col.field"></p-sortIcon>
+                              </th>
+                              <th id="EmployeesWorkedStatus">Status</th>
+                            </tr>
+                          </ng-template>
+                          <ng-template
+                            pTemplate="body"
+                            let-rowData
+                            let-columns="columns"
+                            let-rowIndex="rowIndex"
+                          >
+                            <tr [pSelectableRow]="rowData">
+                              <td *ngFor="let col of columns">
+                                {{ rowData[col.field] }}
+                              </td>
+                              <td>
+                                <ng-container *ngIf="rowData.endDate">
+                                  <span class="badge bg-inverse-completed"
+                                    >COMPLETE</span
+                                  >
+                                </ng-container>
+                                <ng-container *ngIf="!rowData.endDate">
+                                  <span class="badge bg-inverse-in-progress"
+                                    >IN PROGRESS</span
+                                  >
+                                </ng-container>
+                              </td>
+                            </tr>
+                          </ng-template>
+                          <ng-template pTemplate="emptymessage">
+                            <tr>
+                              <td
+                                [attr.colspan]="employeeWorkCols.length"
+                                style="text-align: center"
+                              >
+                                No Records found.
+                              </td>
+                            </tr>
+                          </ng-template>
+                        </p-table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div
+                    class="card-header"
+                    id="suppliercontactsHeading"
+                    data-toggle="collapse"
+                    data-target="#suppliercontacts"
+                    aria-expanded="false"
+                    aria-controls="suppliercontacts"
+                  >
+                    <i class="fa fa-address-card pl-3" aria-hidden="true"></i>
+                    <button class="btn btn-link" type="button">
+                      Customer Contacts
+                    </button>
+                  </div>
+                  <div
+                    id="suppliercontacts"
+                    class="collapse"
+                    aria-labelledby="suppliercontactsHeading"
+                    data-parent="#accordionExample"
+                  >
+                    <div class="">
+                      <div class="col pl-0 pr-0" *ngIf="!loading">
+                        <p-table
+                          [columns]="supplierContactCols"
+                          [value]="supplierContactList"
+                          [rowsPerPageOptions]="[5, 10, 25, 50]"
+                          styleClass="ui-table-customers"
+                          #dt
+                          [paginator]="true"
+                          [rows]="5"
+                          [showCurrentPageReport]="true"
+                          [alwaysShowPaginator]="false"
+                          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                          [filterDelay]="0"
+                          [globalFilterFields]="[
+                            'department',
+                            'description',
+                            'status'
+                          ]"
+                          ><ng-template pTemplate="caption">
+                            <div>
+                              Customer:
+                              <span class="username">{{
+                                company?.companyName
+                              }}</span>
+                            </div>
+                            <div>
+                              <a
+                                href="javascript:void(0)"
+                                [routerLink]="['/admin/company/edit']"
+                                [state]="{
+                                  companyDetailsId: companyDetailsId,
+                                  tabIndex: 7
+                                }"
+                                class="edit-icon"
+                                ><i class="fa fa-pencil"></i
+                              ></a>
+                            </div>
+
+                            <!-- <div class="ui-table-globalfilter-container">
+                            <input
+                              pInputText
+                              type="text"
+                              (input)="
+                                dt.filterGlobal($event.target.value, 'contains')
+                              "
+                              placeholder="Search"
+                            />
+                          </div> -->
+                          </ng-template>
+
+                          <ng-template pTemplate="header" let-columns>
+                            <tr>
+                              <th
+                                *ngFor="let col of columns"
+                                [pSortableColumn]="col.field"
+                              >
+                                {{ col.header }}
+                                <p-sortIcon [field]="col.field"></p-sortIcon>
+                              </th>
+                            </tr>
+                          </ng-template>
+                          <ng-template
+                            pTemplate="body"
+                            let-rowData
+                            let-columns="columns"
+                            let-rowIndex="rowIndex"
+                          >
+                            <tr [pSelectableRow]="rowData">
+                              <td *ngFor="let col of columns">
+                                {{ rowData[col.field] }}
+                              </td>
+                            </tr>
+                          </ng-template>
+                          <ng-template pTemplate="emptymessage">
+                            <tr>
+                              <td
+                                [attr.colspan]="supplierContactCols.length"
+                                style="text-align: center"
+                              >
+                                No Records found.
+                              </td>
+                            </tr>
+                          </ng-template>
+                        </p-table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div
+                    class="card-header"
+                    id="projectHeading"
+                    data-toggle="collapse"
+                    data-target="#supllierProjects"
+                    aria-expanded="false"
+                    aria-controls="supllierProjects"
+                  >
+                    <i class="fa fa-cubes pl-3" aria-hidden="true"></i>
+                    <button class="btn btn-link" type="button">Projects</button>
+                  </div>
+                  <div
+                    id="supllierProjects"
+                    class="collapse"
+                    aria-labelledby="projectHeading"
+                    data-parent="#accordionExample"
+                  >
+                    <div class="">
+                      <div class="col pl-0 pr-0" *ngIf="!loading">
+                        <p-table
+                          [columns]="projectCols"
+                          [value]="projectsList"
+                          [rowsPerPageOptions]="[5, 10, 25, 50]"
+                          styleClass="ui-table-customers"
+                          #dt
+                          [paginator]="true"
+                          [rows]="5"
+                          [showCurrentPageReport]="true"
+                          [alwaysShowPaginator]="false"
+                          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                          [filterDelay]="0"
+                          [globalFilterFields]="['department', 'description']"
+                          class="invoice-list"
+                          ><ng-template pTemplate="caption">
+                            <div>
+                              Customer:
+                              <span class="username">{{
+                                company?.companyName
+                              }}</span>
+                            </div>
+                          </ng-template>
+
+                          <ng-template pTemplate="header" let-columns>
+                            <tr>
+                              <th
+                                *ngFor="let col of columns"
+                                [pSortableColumn]="col.field"
+                              >
+                                {{ col.header }}
+                                <p-sortIcon [field]="col.field"></p-sortIcon>
+                              </th>
+                              <th style="width: 13%">Status</th>
+                            </tr>
+                          </ng-template>
+                          <ng-template
+                            pTemplate="body"
+                            let-rowData
+                            let-columns="columns"
+                            let-rowIndex="rowIndex"
+                          >
+                            <tr [pSelectableRow]="rowData">
+                              <td *ngFor="let col of columns">
+                                {{ rowData[col.field] }}
+                              </td>
+                              <td>
+                                <span
+                                  class="badge"
+                                  [ngClass]="
+                                    rowData.endDate
+                                      ? 'bg-inverse-completed'
+                                      : 'bg-inverse-in-progress'
+                                  "
+                                  >{{
+                                    rowData.endDate
+                                      ? "Completed"
+                                      : "In Progress"
+                                  }}</span
+                                >
+                              </td>
+                            </tr>
+                          </ng-template>
+                          <ng-template pTemplate="emptymessage">
+                            <tr>
+                              <td
+                                [attr.colspan]="projectCols.length"
+                                style="text-align: center"
+                              >
+                                No Records found.
+                              </td>
+                            </tr>
+                          </ng-template>
+                        </p-table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Page Content -->
+</div>
+<!-- Image view file Modal -->
+<ng-container *ngIf="viewImage">
+  <app-imageviwer
+    [imageBlob]="imageBlob"
+    (onClose)="onImageViewCloseClick($event)"
+  >
+  </app-imageviwer>
+</ng-container>
+
+<!-- /Image view file Modal -->
+<!-- Status View model -->
+<div
+  id="statusView_info"
+  [ngStyle]="{ display: statusViewModel }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          (click)="closeUploadmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding-top: 0px">
+        <div class="form-header">
+          <h3>Comments</h3>
+          <p>{{ comments }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Status View model -->
+<!-- Tagged Documents Modal -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: taggedModelInfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+  *ngIf="taggedModelInfo == 'block'"
+>
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Tagged Details</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-tagged-or-shared-supplier-documents
+          [companyDocumentDetailsId]="selectedCompanyDocumentDetailsId"
+        ></app-tagged-or-shared-supplier-documents>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Tagged Documents Modal -->
+<!-- Tagged Project Modal -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: taggedProjectModelInfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+  *ngIf="taggedProjectModelInfo == 'block'"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Tagged Projects</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card flex-fill m-0">
+          <div class="card-body">
+            <div class="row" *ngIf="selectedTaggedProjects">
+              <div
+                class="col-md-auto"
+                *ngFor="let item of selectedTaggedProjects.taggedProjects"
+              >
+                <div class="leave-info-box">
+                  <div class="media align-items-center">
+                    <!-- <a href="javascript:void(0)" class="avatar">
+                  <img src="{{ pictureUrl + report.photoPath }}" alt="user" />
+                </a> -->
+                    <div class="media-body">
+                      <div class="text-sm my-0">
+                        {{ item }}
+                        <!-- <small class="text-muted"
+                      >( {{ report.employeeId }} )</small
+                    > -->
+                      </div>
+                      <!-- <div>
+                    <small class="text-muted">{{ report.department }}</small
+                    >,
+                    <small class="text-muted">{{ report.designation }}</small>
+                  </div> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!selectedTaggedProjects?.taggedProjects">
+              No Project Found
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Tagged Documents Modal -->

@@ -1,0 +1,88 @@
+
+
+<div class="container" id="container" style="width: 70rem;height:35rem;">
+	<div class="form-container sign-up-container">
+		<form action="#" class="seccard">
+			<a href="javascript:void(0)">
+				<img src="assets/Img/ojas-logo.png" class="inv-logo2" alt="NetworkError"
+			  /></a>
+            <div class="card border-light" style="width: 30rem;height:25rem;">
+                <div class="card-header font-weight-bolder">Register</div>
+				<form>
+					<div class="row" id="frtandlast">
+						<div class="col">
+						  <input type="text" class="form-control " id="frtname" placeholder="First name">
+						</div>
+						<div class="col">
+						  <input type="text" class="form-control" id="lastname" placeholder="Last name">
+						</div>
+					  </div>
+
+						<div class="form-group">
+							<input type="email" class="form-control" id="fullname" placeholder="Full Name">
+						</div>
+
+						<div class="form-group">
+							<input type="email" class="form-control" id="fullname" placeholder="Email">
+						</div>
+
+						<div class="form-group">
+							<input type="email" class="form-control" id="fullname" placeholder="Password">
+						</div>
+
+						<div class="form-group">
+							<input type="email" class="form-control" id="fullname" placeholder="Conform Password">
+						</div>
+						<button type="submit" class="btn btn-primary mb-3" id="submitbtn">Register</button>
+				</form>
+              </div>
+		</form>
+	</div>
+	<div class="form-container sign-in-container">
+		<div class="account-logo mt-4 text-center">
+           
+          </div>
+		<form action="#" class="frtcard">
+			<a href="javascript:void(0)">
+				<img src="assets/Img/ojas-logo.png" class="inv-logo mb-3" alt="NetworkError"
+			  /></a>
+            <div class="card border-light mb-3" style="width: 30rem;height:25rem;">
+                <div class="card-header font-weight-bolder">SignIn</div>
+				<form>
+				  <div class="form-group">
+					<label for="exampleInputEmail1" class="float-left" id="EmailAddress">Email address</label>
+					<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+				  </div>
+				  <div class="form-group">
+					<label for="exampleInputPassword1" class="float-left">Password</label>
+					<input type="password" class="form-control" id="exampleInputPassword1">
+				  </div>
+				  <button type="submit" class="btn btn-primary mb-3" id="submitbtn">Submit</button>
+				  <div class="text-primary">
+					<a href="javascript:void(0)" class="text-primary font-weight-normal" id="fontsize"
+					  >Forgot your password?</a
+					>
+				  </div>
+				</form>
+              </div>
+		</form>
+	</div>
+
+
+
+	<div class="overlay-container">
+		<div class="overlay">
+			<div class="overlay-panel overlay-left">
+				<h1>Welcome Back!</h1>
+				<p>To keep connected with us please login with your personal info</p>
+				<button class="ghost" id="signIn" (click)="onsignIn()">Sign In</button>
+			</div>
+			<div class="overlay-panel overlay-right">
+				<h1>Hello, Friend!</h1>
+				<p>Enter your personal details and start journey with us</p>
+				<button class="ghost" id="signUp" (click)="onsignUp()">Sign Up</button>
+			</div>
+		</div>
+	</div>
+</div>
+

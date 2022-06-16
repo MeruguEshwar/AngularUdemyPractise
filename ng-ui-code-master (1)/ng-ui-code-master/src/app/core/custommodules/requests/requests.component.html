@@ -1,0 +1,301 @@
+<div class="page-wrapper">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">Dashboard</li>
+            <li class="breadcrumb-item active">Requests</li>
+          </ul>
+        </div>
+        <div class="col-auto float-right ml-auto" *ngIf="!switchedView">
+          <button
+            href="javascript:void(0)"
+            class="btn add-btn"
+            (click)="showDialogToAdd()"
+          >
+            <i class="fa fa-plus"></i>Create Request
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="col pl-0 pr-0 mt-2">
+      <p-table
+        [columns]="cols"
+        [value]="empRequestList"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        styleClass="ui-table-customers"
+        #dt
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [alwaysShowPaginator]="false"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [filterDelay]="0"
+        [globalFilterFields]="['projectName', 'description', 'startDate']"
+      >
+        <ng-template pTemplate="caption">
+          .
+          <div class="ui-table-globalfilter-container">
+            <input
+              pInputText
+              type="text"
+              (input)="dt.filterGlobal($event.target.value, 'contains')"
+              placeholder="Search"
+            />
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{ col.header }}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+            <th class="actions">Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr
+            [pSelectableRow]="rowData"
+            [ngClass]="rowData.read ? 'record-read' : 'record-unRead'"
+          >
+            <td *ngFor="let col of columns" [pSelectableRow]="col.field">
+              <ng-container *ngIf="col.field == 'requestType'">
+                {{ EmpRequestType[rowData[col.field]] }}
+              </ng-container>
+              <ng-container *ngIf="col.field == 'status' && !switchedView">
+                <span class="badge bg-inverse-status">
+                  {{ EmployeeRequestStatus[rowData[col.field]] }}</span
+                >
+              </ng-container>
+              <ng-container *ngIf="col.field == 'status' && switchedView">
+                <div class="dropdown action-label">
+                  <a
+                    class="btn btn-white btn-sm btn-rounded dropdown-toggle"
+                    href="#"
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <i
+                      class="fa fa-dot-circle-o text-info"
+                      *ngIf="rowData[col.field] == '1'"
+                    ></i>
+                    <i
+                      class="fa fa-dot-circle-o text-danger"
+                      *ngIf="rowData[col.field] == '3'"
+                    ></i>
+                    <i
+                      class="fa fa-dot-circle-o text-success"
+                      *ngIf="rowData[col.field] == '2'"
+                    ></i>
+                    {{ EmployeeRequestStatus[rowData[col.field]] }}
+                  </a>
+                  <div
+                    class="dropdown-menu dropdown-menu-right"
+                    x-placement="bottom-end"
+                    style="
+                      position: relative;
+                      will-change: transform;
+                      top: 0px;
+                      left: 0px;
+                      transform: translate3d(-17px, 31px, 0px);
+                    "
+                  >
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      (click)="statusUpdate(rowData, '1', 'Pending')"
+                      data-target="#confirmModel"
+                      data-toggle="modal"
+                      *ngIf="rowData[col.field] != '1'"
+                      ><i class="fa fa-dot-circle-o text-info"></i> Pending
+                    </a>
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      data-target="#confirmModel"
+                      (click)="statusUpdate(rowData, '2', 'Approve')"
+                      data-toggle="modal"
+                      *ngIf="rowData[col.field] != '2'"
+                      ><i class="fa fa-dot-circle-o text-success"></i> Approved
+                    </a>
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      data-target="#confirmModel"
+                      (click)="statusUpdate(rowData, '3', 'Deny')"
+                      data-toggle="modal"
+                      *ngIf="rowData[col.field] != '3'"
+                      ><i class="fa fa-dot-circle-o text-danger"></i> Denied
+                    </a>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container
+                *ngIf="col.field != 'requestType' && col.field != 'status'"
+              >
+                {{ rowData[col.field] }}
+              </ng-container>
+            </td>
+            <td class="action-td">
+              <a
+                [routerLink]="['request/view']"
+                [state]="{
+                  requestDetails: rowData
+                }"
+                ><i class="fa fa-eye m-r-5 text-view"></i
+              ></a>
+              <!-- <a href="javascript:void(0)"
+                ><i class="fa fa-eye m-r-5 text-view"></i
+              ></a> -->
+              <a href="javascript:void(0)">
+                <i
+                  class="fa fa-trash-o m-r-5 text-danger"
+                  style="cursor: pointer"
+                  (click)="onDeleteRequest(rowData)"
+                ></i>
+              </a>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td [attr.colspan]="cols.length + 1" style="text-align: center">
+              No records found.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+  <!-- /Page Content -->
+  <ng-container *ngIf="empRequestType == 'Add'">
+    <app-edit-request
+      [empRequestType]="empRequestType"
+      [selectedEmpRequestList]="selectedEmpRequestList"
+      [userId]="userId"
+      (onClose)="onEditAddCloseClick($event)"
+    >
+    </app-edit-request>
+  </ng-container>
+</div>
+<!-- confirm model -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: confirmModel }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          (click)="closeModal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-header">
+          <h3>Delete Employee Request</h3>
+          <p>Are you sure ? Do you want to Delete Employee Request?</p>
+        </div>
+        <div class="modal-btn">
+          <div class="row">
+            <div class="col-6 d-flex justify-content-end">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                (click)="confirmDelete()"
+                class="btn btn-info submit-btn"
+                ><i class="fa fa-check"></i>&nbsp;Confirm</a
+              >
+            </div>
+            <div class="col-6 d-flex justify-content-start">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                class="btn btn-danger submit-btn"
+                (click)="closeModal()"
+                ><i class="fa fa-times"></i>&nbsp;Cancel</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /confirm model -->
+<!-- confirm model-->
+<div
+  class="modal custom-modal fade"
+  id="confirmModel"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <h3>{{ confirmType }} Request</h3>
+          <p>Are you sure ? Do you want to {{ confirmType }} Request ?</p>
+          <form #cm="ngForm">
+            <div class="form-group">
+              <label class="col-form-label"
+                >Comments <span class="text-danger">*</span></label
+              >
+              <textarea
+                class="form-control"
+                name="comments"
+                maxlength="2500"
+                (keypress)="sharedService.keyPressAlphabet($event)"
+                [(ngModel)]="statusComments"
+                required
+              ></textarea>
+              <!-- <input
+                  class="form-control"
+                  type="text"
+                  name="title"
+                  [(ngModel)]="uploadedFileTitle"
+                  maxlength="150"
+                  pattern="[A-Za-z ]{1,150}"
+                  (keypress)="sharedService.keyPressAlphabet($event)"
+                  required
+                /> -->
+            </div>
+          </form>
+        </div>
+        <div class="modal-btn">
+          <div class="row">
+            <div class="col-6 d-flex justify-content-end">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                (click)="confirm(cm)"
+                class="btn btn-info submit-btn"
+                ><i class="fa fa-check"></i>&nbsp;Confirm</a
+              >
+            </div>
+            <div class="col-6 d-flex justify-content-start">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                class="btn btn-danger submit-btn"
+                ><i class="fa fa-times"></i>&nbsp;Cancel</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /confirm model-->

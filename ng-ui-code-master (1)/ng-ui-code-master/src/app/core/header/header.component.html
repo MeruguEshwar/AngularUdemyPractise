@@ -1,0 +1,888 @@
+<div class="header" [ngClass]="{ viewChanged: switchedView }">
+  <!-- Organization name -->
+  <div class="header-left" *ngIf="!hasMultipullOrg">
+    <a href="javascript:void(0);" class="logo" title="{{ organizationName }}">
+      <span class="user-name org-name"> {{ organizationName }}</span>
+    </a>
+  </div>
+  <!-- /Logo -->
+  <!-- Organization name with dropdown -->
+  <div class="header-left" style="width: auto" *ngIf="hasMultipullOrg">
+    <ul class="nav user-menu">
+      <li class="nav-item dropdown has-arrow main-drop">
+        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+          <span class="user-name org-name" title="{{ organizationName }}">
+            {{ organizationName }}</span
+          >
+        </a>
+        <div class="dropdown-menu organization-dropdown-menu m-0">
+          <a
+            href="javascript:void(0);"
+            class="dropdown-item"
+            *ngFor="let item of employeeAccounts"
+            (click)="onChangeOrg(item.value)"
+          >
+            {{ item.label }}
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <!-- Organization Logo -->
+  <a id="toggle_btn" href="javascript:void(0);">
+    <span class="bar-icon">
+      <!-- <span></span>
+      <span></span>
+      <span></span> -->
+    </span>
+  </a>
+
+  <!-- /Header Title -->
+
+  <a id="mobile_btn" class="mobile_btn"><i class="fa fa-bars"></i></a>
+
+  <!-- Header Menu -->
+  <div class="switchedView" *ngIf="switchedView">
+    <nav class="navbar navbar-expand-lg">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarText"
+        aria-controls="navbarText"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+          <li
+            class="nav-item"
+            [ngClass]="{ active: enableActiveClass == 1 ? true : false }"
+          >
+            <a
+              class="nav-link"
+              href="javascript:void(0);"
+              (click)="onMenuType(1)"
+            >
+              <i class="fa fa-puzzle-piece fa-fw" aria-hidden="true"></i>&nbsp;
+              HR 360
+            </a>
+          </li>
+          <li
+            class="nav-item"
+            [ngClass]="{ active: enableActiveClass == 2 ? true : false }"
+            *ngIf="user.roleId != 5"
+          >
+            <a
+              class="nav-link"
+              href="javascript:void(0);"
+              (click)="onMenuType(2)"
+            >
+              <i class="fa fa-university fa-fw" aria-hidden="true"></i
+              >&nbsp;Procure to Pay</a
+            >
+          </li>
+          <!-- <li
+            class="nav-item"
+            [ngClass]="{ active: enableActiveClass == 3 ? true : false }"
+          >
+            <a
+              class="nav-link"
+              href="javascript:void(0);"
+              (click)="onMenuType(3)"
+            >
+              <i class="fa fa-line-chart fa-fw" aria-hidden="true"></i
+              >&nbsp;Record to Report</a
+            >
+          </li>
+          <li
+            class="nav-item"
+            [ngClass]="{ active: enableActiveClass == 4 ? true : false }"
+          >
+            <a
+              class="nav-link"
+              href="javascript:void(0);"
+              (click)="onMenuType(4)"
+            >
+              <i class="fa fa-shopping-cart fa-fw" aria-hidden="true"></i
+              >&nbsp;Lead to Sale</a
+            >
+          </li>
+          <li
+            class="nav-item"
+            [ngClass]="{ active: enableActiveClass == 5 ? true : false }"
+          >
+            <a
+              class="nav-link"
+              href="javascript:void(0);"
+              (click)="onMenuType(5)"
+            >
+              <i class="fa fa-plane fa-fw" aria-hidden="true"></i
+              >&nbsp;Immigration</a
+            >
+          </li> -->
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  <ul class="nav user-menu">
+    <!-- Search -->
+
+    <li
+      class="nav-item dropdown"
+      routerLinkActive="active"
+      *ngIf="user.roleId != 1 && user.roleId != 7"
+    >
+      <a
+        [routerLink]="[user.role + '/requests']"
+        class="dropdown-toggle nav-link"
+        title="Requests"
+        *ngIf="switchedView"
+        ><i class="fa fa-pencil-square-o"></i>
+        <span class="badge badge-pill">{{
+          unreadRequestCount ? unreadRequestCount : 0
+        }}</span></a
+      >
+      <a
+        [routerLink]="['/employee/requests']"
+        class="dropdown-toggle nav-link"
+        title="Requests"
+        *ngIf="!switchedView"
+        ><i class="fa fa-pencil-square-o"></i>
+        <span class="badge badge-pill">{{
+          unreadRequestCount ? unreadRequestCount : 0
+        }}</span></a
+      >
+    </li>
+
+    <!-- Notifications -->
+    <li class="nav-item dropdown" *ngIf="user.roleId != 1 && user.roleId != 7">
+      <a
+        href="#"
+        class="dropdown-toggle nav-link"
+        data-toggle="dropdown"
+        title="Notifications"
+      >
+        <i class="fa fa-bell-o"></i>
+        <!-- <span class="badge badge-pill">{{
+          dashboardDetails.birthDays ? dashboardDetails.birthDays.length : 0
+        }}</span> -->
+        <div *ngIf="switchedView; else noNotifications">
+          <span class="badge badge-pill">{{
+            notifications ? notifications.length : 0
+          }}</span>
+        </div>
+        <ng-template #noNotifications>
+          <span class="badge badge-pill">0</span>
+        </ng-template>
+      </a>
+      <div class="dropdown-menu notifications">
+        <div *ngIf="switchedView">
+          <div class="topnav-dropdown-header">
+            <span class="notification-title">Notifications</span>
+            <!-- <a href="javascript:void(0)" class="clear-noti"> Clear All </a> -->
+          </div>
+        </div>
+        <div class="noti-content">
+          <ul class="notification-list">
+            <div *ngIf="switchedView">
+              <li
+                class="notification-message"
+                *ngFor="let notification of notifications"
+              >
+                <a href="javascript:void(0)">
+                  <div class="media">
+                    <span class="avatar">
+                      <img alt="" src="assets/img/user.jpg" />
+                    </span>
+                    <div class="media-body">
+                      <p class="noti-details">
+                        <span class="noti-title">{{
+                          notification.notificationMessage
+                        }}</span>
+                      </p>
+                      <p class="noti-time">
+                        <span class="notification-time">{{
+                          notification.dateTime
+                        }}</span>
+                      </p>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            </div>
+            <!-- <li class="notification-message">
+              <a href="javascript:void(0)">
+                <div class="media">
+                  <span class="avatar">
+                    <img alt="" src="assets/img/profiles/avatar-03.jpg" />
+                  </span>
+                  <div class="media-body">
+                    <p class="noti-details">
+                      <span class="noti-title">Tarah Shropshire</span> changed
+                      the task name
+                      <span class="noti-title"
+                        >Appointment booking with payment gateway</span
+                      >
+                    </p>
+                    <p class="noti-time">
+                      <span class="notification-time">6 mins ago</span>
+                    </p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li class="notification-message">
+              <a href="javascript:void(0)">
+                <div class="media">
+                  <span class="avatar">
+                    <img alt="" src="assets/img/profiles/avatar-06.jpg" />
+                  </span>
+                  <div class="media-body">
+                    <p class="noti-details">
+                      <span class="noti-title">Misty Tison</span> added
+                      <span class="noti-title">Domenic Houston</span> and
+                      <span class="noti-title">Claire Mapes</span> to project
+                      <span class="noti-title">Doctor available module</span>
+                    </p>
+                    <p class="noti-time">
+                      <span class="notification-time">8 mins ago</span>
+                    </p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li class="notification-message">
+              <a href="javascript:void(0)">
+                <div class="media">
+                  <span class="avatar">
+                    <img alt="" src="assets/img/profiles/avatar-17.jpg" />
+                  </span>
+                  <div class="media-body">
+                    <p class="noti-details">
+                      <span class="noti-title">Rolland Webber</span> completed
+                      task
+                      <span class="noti-title"
+                        >Patient and Doctor video conferencing</span
+                      >
+                    </p>
+                    <p class="noti-time">
+                      <span class="notification-time">12 mins ago</span>
+                    </p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li class="notification-message">
+              <a href="javascript:void(0)">
+                <div class="media">
+                  <span class="avatar">
+                    <img alt="" src="assets/img/profiles/avatar-13.jpg" />
+                  </span>
+                  <div class="media-body">
+                    <p class="noti-details">
+                      <span class="noti-title">Bernardo Galaviz</span> added new
+                      task <span class="noti-title">Private chat module</span>
+                    </p>
+                    <p class="noti-time">
+                      <span class="notification-time">2 days ago</span>
+                    </p>
+                  </div>
+                </div>
+              </a>
+            </li> -->
+          </ul>
+        </div>
+        <div *ngIf="switchedView">
+          <div class="topnav-dropdown-footer">
+            <a href="javascript:void(0)">View all Notifications</a>
+          </div>
+        </div>
+      </div>
+    </li>
+    <!-- /Notifications -->
+
+    <!-- Message Notifications -->
+    <!-- <li class="nav-item dropdown">
+      <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+        <i class="fa fa-comment-o"></i> <span class="badge badge-pill">8</span>
+      </a>
+      <div class="dropdown-menu notifications">
+        <div class="topnav-dropdown-header">
+          <span class="notification-title">Messages</span>
+          <a href="javascript:void(0)" class="clear-noti"> Clear All </a>
+        </div>
+        <div class="noti-content">
+          <ul class="notification-list">
+            <li class="notification-message">
+              <a href="javascript:void(0)">
+                <div class="list-item">
+                  <div class="list-left">
+                    <span class="avatar">
+                      <img alt="" src="assets/img/profiles/avatar-09.jpg" />
+                    </span>
+                  </div>
+                  <div class="list-body">
+                    <span class="message-author">Richard Miles </span>
+                    <span class="message-time">12:28 AM</span>
+                    <div class="clearfix"></div>
+                    <span class="message-content"
+                      >Lorem ipsum dolor sit amet, consectetur adipiscing</span
+                    >
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li class="notification-message">
+              <a href="javascript:void(0)">
+                <div class="list-item">
+                  <div class="list-left">
+                    <span class="avatar">
+                      <img alt="" src="assets/img/profiles/avatar-02.jpg" />
+                    </span>
+                  </div>
+                  <div class="list-body">
+                    <span class="message-author">John Doe</span>
+                    <span class="message-time">6 Mar</span>
+                    <div class="clearfix"></div>
+                    <span class="message-content"
+                      >Lorem ipsum dolor sit amet, consectetur adipiscing</span
+                    >
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li class="notification-message">
+              <a href="javascript:void(0)">
+                <div class="list-item">
+                  <div class="list-left">
+                    <span class="avatar">
+                      <img alt="" src="assets/img/profiles/avatar-03.jpg" />
+                    </span>
+                  </div>
+                  <div class="list-body">
+                    <span class="message-author"> Tarah Shropshire </span>
+                    <span class="message-time">5 Mar</span>
+                    <div class="clearfix"></div>
+                    <span class="message-content"
+                      >Lorem ipsum dolor sit amet, consectetur adipiscing</span
+                    >
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li class="notification-message">
+              <a href="chat.html">
+                <div class="list-item">
+                  <div class="list-left">
+                    <span class="avatar">
+                      <img alt="" src="assets/img/profiles/avatar-05.jpg" />
+                    </span>
+                  </div>
+                  <div class="list-body">
+                    <span class="message-author">Mike Litorus</span>
+                    <span class="message-time">3 Mar</span>
+                    <div class="clearfix"></div>
+                    <span class="message-content"
+                      >Lorem ipsum dolor sit amet, consectetur adipiscing</span
+                    >
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li class="notification-message">
+              <a href="javascript:void(0)">
+                <div class="list-item">
+                  <div class="list-left">
+                    <span class="avatar">
+                      <img alt="" src="assets/img/profiles/avatar-08.jpg" />
+                    </span>
+                  </div>
+                  <div class="list-body">
+                    <span class="message-author"> Catherine Manseau </span>
+                    <span class="message-time">27 Feb</span>
+                    <div class="clearfix"></div>
+                    <span class="message-content"
+                      >Lorem ipsum dolor sit amet, consectetur adipiscing</span
+                    >
+                  </div>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="topnav-dropdown-footer">
+          <a href="javascript:void(0)">View all Messages</a>
+        </div>
+      </div>
+    </li> -->
+    <!-- /Message Notifications -->
+
+    <li class="nav-item dropdown has-arrow main-drop">
+      <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+        <span class="user-img"
+          ><img src="{{ pictureUrl + user.photoPath }}" alt="user" />
+          <!-- <span class="status online"></span> -->
+        </span>
+        <span class="user-name"> {{ user.fistName }} {{ user.lastName }}</span>
+      </a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" [routerLink]="[user.role + '/myprofile']"
+          ><i class="fa fa-user drop-down-icons" aria-hidden="true"></i>My
+          Profile</a
+        >
+        <!-- <a class="dropdown-item" href="javascript:void(0)">Configurations</a> -->
+        <div *ngIf="switchedView">
+          <a
+            class="dropdown-item"
+            [routerLink]="[user.role + '/organizationDetails']"
+            *ngIf="
+              user.roleId == 2 ||
+              user.roleId == 3 ||
+              user.roleId == 4 ||
+              user.roleId == 5
+            "
+            ><i class="fa fa-globe drop-down-icons" aria-hidden="true"></i>My
+            Organization Details</a
+          >
+          <a
+            class="dropdown-item"
+            [routerLink]="[user.role + '/configurations']"
+            *ngIf="
+              user.roleId == 2 ||
+              user.roleId == 3 ||
+              user.roleId == 4 ||
+              user.roleId == 5
+            "
+            ><i class="fa fa-cogs drop-down-icons" aria-hidden="true"></i
+            >Configurations</a
+          >
+        </div>
+        <a
+          class="dropdown-item"
+          href="javascript:void(0)"
+          *ngIf="
+            user.roleId == 2 ||
+            user.roleId == 3 ||
+            user.roleId == 4 ||
+            user.roleId == 5
+          "
+          (click)="changeView()"
+          ><i class="fa fa-retweet drop-down-icons" aria-hidden="true"></i
+          >Switch to {{ switchedView ? "Personal" : user.role }} view</a
+        >
+        <a
+          class="dropdown-item"
+          href="javascript:void(0)"
+          data-toggle="modal"
+          data-target="#change_password"
+          (click)="onChangePasswordClick()"
+          ><i class="fa fa-key drop-down-icons" aria-hidden="true"></i>Change
+          Password</a
+        >
+        <a
+          [routerLink]="[user.role + '/feature_requests']"
+          class="dropdown-item"
+          *ngIf="switchedView"
+          ><i
+            class="fa fa-pencil-square-o drop-down-icons"
+            aria-hidden="true"
+          ></i
+          >Feature Requests</a
+        >
+        <a
+          class="dropdown-item"
+          href="javascript:void(0)"
+          (click)="onLogoutClick()"
+          ><i class="fa fa-sign-out drop-down-icons" aria-hidden="true"></i
+          >Logout</a
+        >
+      </div>
+    </li>
+  </ul>
+  <!-- /Header Menu -->
+
+  <!-- Mobile Menu -->
+  <div class="dropdown mobile-user-menu">
+    <a
+      href="#"
+      class="nav-link dropdown-toggle"
+      data-toggle="dropdown"
+      aria-expanded="false"
+      ><i class="fa fa-ellipsis-v"></i
+    ></a>
+    <div class="dropdown-menu dropdown-menu-right">
+      <a class="dropdown-item" [routerLink]="[user.role + '/myprofile']"
+        >My Profile</a
+      >
+      <a class="dropdown-item" href="javascript:void(0)">Configurations</a>
+      <a class="dropdown-item" (click)="onLogoutClick()">Logout</a>
+    </div>
+  </div>
+  <!-- /Mobile Menu -->
+</div>
+<div
+  class="modal custom-modal fade"
+  id="change_password"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <form
+        [formGroup]="changepasswordForm"
+        (ngSubmit)="onChangePassword(changepasswordForm.value)"
+      >
+        <div class="modal-body">
+          <div class="form-header mt-3 mb-0">
+            <h5 class="modal-title">Change Password</h5>
+            <div class="card mt-3 mb-0">
+              <div class="card-body">
+                <div class="row change-form">
+                  <div class="col-4">
+                    <div class="form-row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <div class="label_text">
+                            <label class="col-form-label"
+                              >Current Password
+                              <span class="text-danger">*</span></label
+                            >
+                          </div>
+                          <input
+                            class="form-control"
+                            autocomplete="off"
+                            formControlName="currentPassword"
+                            placeholder="Current Password"
+                            type="password"
+                            (keypress)="sharedService.keyPressPassword($event)"
+                          />
+                          <div class="label_text">
+                            <div
+                              *ngIf="
+                                changepasswordForm.get('currentPassword')
+                                  .invalid &&
+                                changepasswordForm.get('currentPassword')
+                                  .touched
+                              "
+                            >
+                              <small
+                                class="text-danger"
+                                *ngIf="
+                                  changepasswordForm.get('currentPassword')
+                                    .errors?.required
+                                "
+                                >Current password should be required</small
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <div class="label_text">
+                            <label class="col-form-label"
+                              >New Password
+                              <span class="text-danger">*</span></label
+                            >
+                          </div>
+                          <input
+                            class="form-control"
+                            autocomplete="off"
+                            formControlName="newPassword"
+                            placeholder="New Password"
+                            type="password"
+                            (keypress)="sharedService.keyPressPassword($event)"
+                          />
+                          <div class="label_text">
+                            <div
+                              *ngIf="
+                                changepasswordForm.get('newPassword').invalid &&
+                                changepasswordForm.get('newPassword').touched
+                              "
+                            >
+                              <div
+                                *ngIf="
+                                  changepasswordForm.get('newPassword').errors
+                                    ?.required
+                                "
+                              >
+                                <small class="text-danger"
+                                  >New password should be required</small
+                                >
+                              </div>
+                              <div
+                                *ngIf="
+                                  changepasswordForm.get('newPassword').errors
+                                    ?.minlength
+                                "
+                              >
+                                <small class="text-danger"
+                                  >New password should be atleast 12
+                                  characters</small
+                                >
+                              </div>
+                              <div
+                                *ngIf="
+                                  changepasswordForm.get('newPassword').errors
+                                    ?.maxlength
+                                "
+                              >
+                                <small class="text-danger"
+                                  >New password should not exceed 32
+                                  characters</small
+                                >
+                              </div>
+                              <div
+                                *ngIf="
+                                  changepasswordForm.get('newPassword').errors
+                                    ?.hasRepeatedLetters
+                                "
+                              >
+                                <small
+                                  class="text-danger"
+                                  *ngIf="
+                                    changepasswordForm.get('newPassword').errors
+                                      ?.hasRepeatedLetters
+                                  "
+                                  >New password should not be contineous
+                                  repeated characters (EX: 1111 or aaaa
+                                  etc.)</small
+                                >
+                              </div>
+                              <div
+                                *ngIf="
+                                  changepasswordForm.get('newPassword').errors
+                                    ?.isMatchPattern
+                                "
+                              >
+                                <small class="text-danger"
+                                  >Password should contain each of the following
+                                  groups: uppercase, lowercase, special, and
+                                  numeric</small
+                                >
+                              </div>
+                              <div
+                                *ngIf="
+                                  changepasswordForm.get('newPassword').errors
+                                    ?.validateSequence
+                                "
+                              >
+                                <small class="text-danger"
+                                  >New password should not be sequence
+                                  characters (EX: abcd or 1234 etc.)</small
+                                >
+                              </div>
+                              <div
+                                *ngIf="
+                                  changepasswordForm.get('newPassword').errors
+                                    ?.newPasswordMisMatch
+                                "
+                              >
+                                <small class="text-danger"
+                                  >New Password should not match with Current
+                                  Password</small
+                                >
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <div class="label_text">
+                            <label class="col-form-label label_text"
+                              >Confirm Password
+                              <span class="text-danger">*</span></label
+                            >
+                          </div>
+                          <input
+                            class="form-control"
+                            autocomplete="off"
+                            formControlName="confnewPassword"
+                            placeholder="Confirm Password"
+                            type="password"
+                            (keypress)="sharedService.keyPressPassword($event)"
+                          />
+                          <div class="label_text">
+                            <div
+                              *ngIf="
+                                changepasswordForm.get('confnewPassword')
+                                  .invalid &&
+                                changepasswordForm.get('confnewPassword')
+                                  .touched
+                              "
+                            >
+                              <div
+                                *ngIf="
+                                  changepasswordForm.get('confnewPassword')
+                                    .errors?.required
+                                "
+                              >
+                                <small class="text-danger"
+                                  >Confirm password should be required</small
+                                >
+                              </div>
+                              <div
+                                *ngIf="
+                                  changepasswordForm.get('confnewPassword')
+                                    .errors?.minLength
+                                "
+                              >
+                                <small class="text-danger"
+                                  >Confirm password should be atleast 12
+                                  characters</small
+                                >
+                              </div>
+                              <div
+                                *ngIf="
+                                  changepasswordForm.get('confnewPassword')
+                                    .errors?.maxLength
+                                "
+                              >
+                                <small class="text-danger"
+                                  >Confirm password should not exceed 32
+                                  characters</small
+                                >
+                              </div>
+                              <div
+                                *ngIf="
+                                  changepasswordForm.get('confnewPassword')
+                                    .errors?.hasRepeatedLetters
+                                "
+                              >
+                                <small
+                                  class="text-danger"
+                                  *ngIf="
+                                    changepasswordForm.get('confnewPassword')
+                                      .errors?.hasRepeatedLetters
+                                  "
+                                  >Confirm password should not be contineous
+                                  repeated characters (EX: 1111 or aaaa
+                                  etc.)</small
+                                >
+                              </div>
+                              <div
+                                *ngIf="
+                                  changepasswordForm.get('confnewPassword')
+                                    .errors?.isMatchPattern
+                                "
+                              >
+                                <small class="text-danger"
+                                  >Password should contain each of the following
+                                  groups: uppercase, lowercase, special, and
+                                  numeric</small
+                                >
+                              </div>
+                              <div
+                                *ngIf="
+                                  changepasswordForm.get('confnewPassword')
+                                    .errors?.validateSequence
+                                "
+                              >
+                                <small class="text-danger"
+                                  >Confirm password should not be sequence
+                                  characters (EX: abcd or 1234 etc.)</small
+                                >
+                              </div>
+                              <div
+                                *ngIf="
+                                  changepasswordForm.get('confnewPassword')
+                                    .errors?.passwordMisMatch
+                                "
+                              >
+                                <small class="text-danger"
+                                  >Confirm Password not matched with New
+                                  Password</small
+                                >
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="col-md-12">
+                        <div class="form-group form-row mt-3 mb-0">
+                          <button
+                            type="submit"
+                            class="btn btn-success mr-2"
+                            [disabled]="!changepasswordForm.valid"
+                          >
+                            <i class="fa fa-save"></i>&nbsp; Save</button
+                          >&nbsp;&nbsp;
+                          <a
+                            href="javascript:void(0);"
+                            data-dismiss="modal"
+                            class="btn btn-danger"
+                            role="button"
+                            ><i class="fa fa-times"></i>&nbsp;Cancel</a
+                          >
+                        </div>
+                      </div>
+                      <!-- <div class="col-6 d-flex justify-content-start">
+                      </div> -->
+                    </div>
+                    <!-- <div class="modal-btn">
+                    </div> -->
+                  </div>
+                  <div class="col-8 policy-block">
+                    <h2>Password Policy</h2>
+                    <h1>Password Policy Rules for Account Users</h1>
+                    <p>
+                      HRX requires a minimum set of security standards for
+                      password policy rules. Account owners and security
+                      administrators can set stricter password rules.
+                      <a href="javascript:void(0)"
+                        >Learn more about password policy rules.</a
+                      >
+                    </p>
+                    <ul>
+                      <li>Password expires every 90 days.</li>
+                      <li>
+                        Password cannot be reset more thatn 5 times every 24
+                        hours
+                      </li>
+                      <li>
+                        Password must:
+                        <ul>
+                          <li>Include 12 characters minimum</li>
+                          <li>
+                            Include characters from each of the following
+                            groups: uppercase, lowercase, special, and numeric
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        Password must not:
+                        <ul>
+                          <li>
+                            Be solely a sequence, such as 123456789 or abcdefgh
+                          </li>
+                          <li>
+                            Be solely a single repeated character, such as
+                            1111111 or aaaaaaa
+                          </li>
+                          <li>
+                            Be solely a keyboard pattern, such as qwertyui
+                          </li>
+                          <li>
+                            Be solely a common password, such as password or
+                            changename
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

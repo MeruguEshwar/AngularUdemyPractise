@@ -1,0 +1,70 @@
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="startDate"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="endDate"] {
+  width: 12%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="statusVal"] {
+  width: 12%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="inHouse"] {
+  width: 10%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-tbody
+  > tr
+  > td[ng-reflect-data="inHouse"] {
+  text-align: center;
+}
+:host ::ng-deep .ui-table-customers .ui-table-caption {
+  color: transparent;
+}
+
+:host ::ng-deep .ui-tabview .ui-tabview-panels {
+  padding: 0;
+}
+:host ::ng-deep .ui-table-customers .ui-table-caption {
+  border: 0px;
+}
+:host ::ng-deep .ui-table-customers .ui-table-globalfilter-container input {
+  width: 250px;
+  margin-right: 10px;
+  margin-bottom: 12px;
+}
+:host ::ng-deep .ui-table-customers .ui-table-thead > tr > th {
+  border-top: 2px solid #dee2e6;
+}
+.btn-white {
+  color: white;
+}
+.badge {
+  padding: 5px;
+  text-transform: uppercase;
+  color: inherit !important;
+}
+.bg-inverse-completed {
+  background-color: #55e779 !important;
+}
+.bg-inverse-in-progress {
+  background-color: #90c1f5 !important;
+}

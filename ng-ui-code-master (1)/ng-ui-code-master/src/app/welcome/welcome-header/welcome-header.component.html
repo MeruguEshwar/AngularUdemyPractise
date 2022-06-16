@@ -1,0 +1,354 @@
+<section class="welcome">
+  <div>
+    <nav
+      id="welcom-header"
+      class="navbar fixed-top navbar-expand-lg navbar-light bg-light starting"
+      [ngClass]="{ 'fixed-top': fixedTop }"
+    >
+      <div class="container">
+        <a href="/" class="colour-logo">
+          <img
+            src="assets/img/logo2.png"
+            style="height: 50px; width: 50px"
+            class="inv-logo"
+            alt=""
+        /></a>
+        <a href="/" class="white-logo">
+          <img
+            src="assets/img/logo.png"
+            style="height: 50px; width: 50px"
+            class="inv-logo"
+            alt=""
+        /></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div
+          class="collapse navbar-collapse overlay"
+          id="navbarSupportedContent"
+          style="font-weight: 500"
+        >
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle active"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Products
+              </a>
+              <div
+                class="dropdown-menu products-dropdown"
+                aria-labelledby="navbarDropdown"
+                style="width: 600px"
+              >
+                <div class="d-flex">
+                  <a
+                    class="dropdown-item bg-ptp-on-hover"
+                    [routerLink]="['/people']"
+                  >
+                    <div class="feature-item d-flex">
+                      <div class="dot dot-md bg-ptp-light mr-2">
+                        <span class="icon icon-sm ic-finance text-ptp"
+                          ><i class="fa fa-users" aria-hidden="true"></i
+                        ></span>
+                      </div>
+                      <div>
+                        <h4>People</h4>
+                        <p class="text-muted">
+                          Empower your people-centric operations with sleek
+                          automation and dynamic integrations
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                  <a
+                    class="dropdown-item bg-hr-on-hover"
+                    [routerLink]="['/work_desk']"
+                  >
+                    <div class="feature-item d-flex">
+                      <div class="dot dot-md bg-hr-light mr-2">
+                        <span class="icon icon-sm ic-finance text-hr"
+                          ><i class="fa fa-desktop" aria-hidden="true"></i
+                        ></span>
+                      </div>
+                      <div>
+                        <h4>Work Desk</h4>
+                        <p class="text-muted">
+                          Organize and define your unique payroll, invoice, and
+                          accounting processes with our AI-driven solutions
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div class="d-flex">
+                  <a
+                    class="dropdown-item bg-aqua-on-hover"
+                    [routerLink]="['/smart_hr']"
+                  >
+                    <div class="feature-item d-flex">
+                      <div class="dot dot-md bg-aqua-light mr-2">
+                        <span class="icon icon-sm ic-finance text-aqua"
+                          ><i class="fa fa-user" aria-hidden="true"></i
+                        ></span>
+                      </div>
+                      <div>
+                        <h4>Smart HR</h4>
+                        <p class="text-muted">
+                          Organize your employee experiences and define AN
+                          onboard-exit strategy with Smart HR
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                  <a
+                    class="dropdown-item bg-yellow-on-hover"
+                    [routerLink]="['/compliance']"
+                    id="time"
+                  >
+                    <div class="feature-item d-flex">
+                      <div class="dot dot-md bg-pp-light mr-2">
+                        <span class="icon icon-sm ic-finance text-pp"
+                          ><i class="fa fa-bar-chart" aria-hidden="true"></i
+                        ></span>
+                      </div>
+                      <div>
+                        <h4>Compliance</h4>
+                        <p class="text-muted">
+                          Integrate tax compliance and regulatory reporting
+                          processes within your workspace framework
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div class="d-flex border-bottom pb-2">
+                  <a
+                    class="dropdown-item bg-pt-on-hover"
+                    [routerLink]="['/work_force']"
+                  >
+                    <div class="feature-item d-flex">
+                      <div class="dot dot-md bg-pt-light mr-2">
+                        <span class="icon icon-sm ic-finance text-pt"
+                          ><i class="fa fa-cubes" aria-hidden="true"></i
+                        ></span>
+                      </div>
+                      <div>
+                        <h4>Workforce</h4>
+                        <p class="text-muted">
+                          Manage employees, designate roles and
+                          responsibilities, and do more with HRX Workforce
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                  <a
+                    class="dropdown-item bg-onBoarding-on-hover"
+                    [routerLink]="['/productivity']"
+                  >
+                    <div class="feature-item d-flex">
+                      <div class="dot dot-md bg-onBoarding-light mr-2">
+                        <span class="icon icon-sm ic-finance text-onBoarding"
+                          ><i class="fa fa-handshake-o" aria-hidden="true"></i
+                        ></span>
+                      </div>
+                      <div>
+                        <h4>Productivity</h4>
+                        <p class="text-muted">
+                          A productivity management platform built to help you
+                          perform and scale up
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div class="d-flex pt-2">
+                  <!-- <a
+                  class="dropdown-item bg-aqua-on-hover"
+                  [routerLink]="['/payrole']"
+                  id="integration"
+                >
+                  <div class="feature-item d-flex">
+                    <div class="dot dot-md bg-aqua-light mr-2">
+                      <span class="icon icon-sm ic-finance text-aqua"
+                        ><i class="fa fa-usd" aria-hidden="true"></i
+                      ></span>
+                    </div>
+                    <div>
+                      <h4>Onboarding & Exit</h4>
+                      <p class="text-muted">
+                        Adapt to change by removing the complexities of talent
+                        onboarding and resource exit with predefined experiences
+                      </p>
+                    </div>
+                  </div>
+                </a> -->
+                  <a
+                    class="dropdown-item bg-aqua-on-hover"
+                    [routerLink]="['/people']"
+                    id="security"
+                  >
+                    <div class="feature-item d-flex">
+                      <div class="dot dot-md bg-fdx-light mr-2">
+                        <span class="icon icon-sm ic-finance text-fdx"
+                          ><i class="fa fa-recycle" aria-hidden="true"></i
+                        ></span>
+                      </div>
+                      <div>
+                        <h4>FDX</h4>
+                        <p class="text-muted">
+                          Identify, validate, and manage legal and
+                          tax-sensitized information with in-built systemic
+                          regulatory verifications
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </li>
+
+            <!-- <li class="nav-item dropdown small-dropdown active">
+            <a
+              class="nav-link dropdown-toggle"
+              id="customers"
+              href="#"
+              role="button"
+              data-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <span>Customers</span
+              ><span class="icon icon-xs ic-chevron-down"></span>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="customers">
+              <li>
+                <a class="dropdown-item" href="javascript:void(0)"
+                  >Customer Experience</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="javascript:void(0)"
+                  >Customer Stories</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="javascript:void(0)"
+                  >Onboarding Support</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="javascript:void(0)"
+                  >Wall of Love</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="javascript:void(0)">Support</a>
+              </li>
+            </ul>
+          </li> -->
+
+            <li class="nav-item dropdown small-dropdown active">
+              <a
+                class="nav-link dropdown-toggle"
+                id="about"
+                href="#"
+                role="button"
+                data-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <span>About</span
+                ><span class="icon icon-xs ic-chevron-down"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="about">
+                <li>
+                  <a class="dropdown-item" href="javascript:void(0)"
+                    >Our story</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="javascript:void(0)"
+                    >Our team</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="javascript:void(0)">Blog</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="javascript:void(0)"
+                    >Resources</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="javascript:void(0)"
+                    >Contact Us</a
+                  >
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item active">
+              <a class="nav-link" href="javascript:void(0)"
+                >Careers <span class="sr-only">(current)</span></a
+              >
+            </li>
+          </ul>
+          <div class="form-inline my-2 my-lg-0">
+            <a
+              (click)="onLoginClick('login')"
+              class="mr-4"
+              style="cursor: pointer"
+              >Login</a
+            >
+            <a href="javascript:void(0)" (click)="onLoginClick('register')"
+              ><button class="btn add-btn border-0">Get Started >></button></a
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+</section>
+<div
+  class="modal custom-modal backdrop"
+  role="dialog"
+  id="getstarted"
+  [ngStyle]="{ display: getLoginDisplay }"
+  *ngIf="getLoginDisplay == 'block'"
+>
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-lg">
+    <div class="modal-content container no-gutters p-0">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-login
+          [nonRoutingModule]="true"
+          [actionType]="actionType"
+          (onClose)="onClose($event)"
+        ></app-login>
+      </div>
+    </div>
+  </div>
+</div>

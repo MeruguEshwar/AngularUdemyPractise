@@ -1,0 +1,33 @@
+
+<div class="container">
+  <div class="row">
+    <div class="col-xm-12 p-5">
+      <button
+      class="btn btn-primary"
+      (click)="onlyodd = !onlyodd"
+      >Only Show odd Numbers</button>
+      <br><br>
+      <ul class="list-group">
+        <div *ngIf="onlyodd">
+          <li class="list-group-item"
+          [ngClass]="{odd : odd % 2 !== 0}"
+          [ngStyle]="{backgroundColor: odd % 2 !== 0 ? 'yellow' : 'red'}"
+          *ngFor="let odd of oddnum">
+             {{odd}}
+          </li>
+        </div>
+        <div *ngIf ="!onlyodd">
+          <li class="list-group-item"
+          [ngClass]="{even : even % 2 == 0}"
+          [ngStyle]="{backgroundColor: even % 2 == 0 ? 'red' : 'transparent'}"
+            *ngFor="let even of evennum">
+            {{even}}
+          </li>
+        </div>
+      </ul>
+      <p appbasichighlightdirective>This is nani</p>
+
+      <p [appBetterComponentModule]="'red'" [defaultColor]="'yellow'">This is better approach</p>
+    </div>
+  </div>
+</div>

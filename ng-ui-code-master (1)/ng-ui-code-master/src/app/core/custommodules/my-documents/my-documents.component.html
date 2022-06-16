@@ -1,0 +1,375 @@
+<div class="page-wrapper">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="javscript:void(0)">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Documents</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <!-- /Page content -->
+    <div class="page_content">
+      <ng-container *ngIf="documentCategoryList.length">
+        <p-tabView (onChange)="handleDocChange($event)" orientation="left">
+          <p-tabPanel
+            [header]="item.documentCategoryDetails.documentCategory"
+            *ngFor="let item of documentCategoryList; let i = index"
+            [selected]="i == 0"
+          >
+            <ng-template pTemplate="content">
+              <!-- <div class="page-header">
+              <div class="row align-items-center">
+                <div class="col">
+                  <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a>Dashboard</a></li>
+                    <li class="breadcrumb-item"><a>Profile</a></li>
+                    <li class="breadcrumb-item"><a>Documents</a></li>
+                    <li class="breadcrumb-item active">
+                      {{ item.documentCategoryDetails.documentCategory }}
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-auto float-right ml-auto">
+                  <a
+                    href="javascript:void(0)"
+                    class="btn add-btn"
+                    (click)="uploadDocCatg(item)"
+                    ><i class="fa fa-upload"></i> Upload Document</a
+                  >
+                </div>
+              </div>
+            </div> -->
+              <div class="col pl-0 pr-0 mt-2" *ngIf="!loading">
+                <p-table
+                  [columns]="docCols"
+                  [value]="documentCategoryDetails"
+                  [rowsPerPageOptions]="[10, 25, 50]"
+                  styleClass="ui-table-customers"
+                  #dt
+                  [paginator]="true"
+                  [rows]="5"
+                  [showCurrentPageReport]="true"
+                  [alwaysShowPaginator]="false"
+                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                  [filterDelay]="0"
+                  [globalFilterFields]="[
+                    'documentTitle',
+                    'documentNumber',
+                    'documentExpiryDate',
+                    'alertRequired',
+                    'alertBeforeNoOfDays'
+                  ]"
+                >
+                  <ng-template pTemplate="caption">
+                    <div class="ui-table-globalfilter-container">
+                      <input
+                        pInputText
+                        type="text"
+                        (input)="
+                          dt.filterGlobal($event.target.value, 'contains')
+                        "
+                        placeholder="Search"
+                      />
+                      <a
+                        href="javascript:void(0)"
+                        class="btn add-btn"
+                        (click)="uploadDocCatg(item)"
+                        ><i class="fa fa-upload"></i> Upload Document</a
+                      >
+                    </div>
+                  </ng-template>
+                  <ng-template pTemplate="header" let-columns>
+                    <tr>
+                      <th
+                        *ngFor="let col of columns"
+                        [pSortableColumn]="col.field"
+                      >
+                        {{ col.header }}
+                        <p-sortIcon [field]="col.field"></p-sortIcon>
+                      </th>
+                      <th class="actions">Actions</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template
+                    pTemplate="body"
+                    let-rowData
+                    let-columns="columns"
+                  >
+                    <tr [pSelectableRow]="rowData">
+                      <td *ngFor="let col of columns">
+                        <ng-container *ngIf="col.field == 'alertRequired'">
+                          {{ getAlertType(rowData[col.field]) }}
+                        </ng-container>
+                        <ng-container *ngIf="col.field == 'documentTitle'">
+                          <a (click)="onImageViewOpenClick(rowData)">
+                            {{ rowData[col.field] }}</a
+                          >
+                        </ng-container>
+                        <ng-container
+                          *ngIf="col.field == 'alertBeforeNoOfDays'"
+                        >
+                          <ng-container *ngIf="rowData[col.field] != 0">
+                            {{ rowData[col.field] }}
+                          </ng-container>
+                        </ng-container>
+                        <ng-container
+                          *ngIf="
+                            col.field != 'alertRequired' &&
+                            col.field != 'documentTitle' &&
+                            col.field != 'alertBeforeNoOfDays'
+                          "
+                        >
+                          {{ rowData[col.field] }}
+                        </ng-container>
+                      </td>
+                      <!-- <td class="actions">
+                                      <div class="btn-group" role="group" aria-label="Basic example">
+                                          <button title="Edit" (click)="onRowSelect(rowData)" type="button" class="mr-2 btn btn-secondary"><i  class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                                          <button title="Delete" (click)="delete(rowData)" type="button" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                        </div>
+
+
+                                  </td> -->
+                      <td class="actions">
+                        <!-- <div class="action_Button">
+                          <a
+                            class="dropdown-item"
+                            title="Download File"
+                            (click)="fileToDownload(rowData)"
+                            ><i class="fa fa-download m-r-5"></i>
+                          </a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal" title="Delete File"><i class="fa fa-trash m-r-5"></i>
+                          </a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal" title="Edit File" (click)="fileToEdit(rowData)"><i class="fa fa-pencil-square-o m-r-5"></i>
+                          </a>
+                                        </div> -->
+
+                        <div class="dropdown dropdown-action">
+                          <a
+                            href="#"
+                            class="action-icon dropdown-toggle"
+                            data-toggle="dropdown"
+                            aria-expanded="false"
+                            ><i class="material-icons">more_vert</i></a
+                          >
+                          <div
+                            class="dropdown-menu dropdown-menu-right"
+                            x-placement="top-end"
+                            style="
+                              position: absolute;
+                              will-change: transform;
+                              top: 0px;
+                              left: 0px;
+                              transform: translate3d(72px, -2px, 0px);
+                            "
+                          >
+                            <a
+                              class="dropdown-item"
+                              href="#"
+                              data-toggle="modal"
+                              (click)="fileToEdit(rowData)"
+                              ><i class="fa fa-pencil-square-o m-r-5"></i>
+
+                              Edit
+                            </a>
+                            <a
+                              class="dropdown-item"
+                              href="#"
+                              data-toggle="modal"
+                              (click)="fileToDownload(rowData)"
+                              ><i class="fa fa-download m-r-5"></i> Download
+                            </a>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="emptymessage">
+                    <tr>
+                      <td
+                        [attr.colspan]="docCols.length"
+                        style="text-align: center"
+                      >
+                        No Records Found.
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+            </ng-template>
+          </p-tabPanel>
+        </p-tabView>
+      </ng-container>
+      <ng-container *ngIf="!documentCategoryList.length">
+        <div>No Records Found</div>
+      </ng-container>
+    </div>
+  </div>
+  <!-- /Page Content -->
+</div>
+<!-- Upload File Modal -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: uploadFileInfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          *ngIf="errorLabel"
+          style="position: absolute; left: 15px"
+          class="text-danger"
+        >
+          {{ errorLabel }}
+        </h5>
+        <h5 class="modal-title">Upload Document</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form
+            (ngSubmit)="saveUploadFile(selectedDocumentCategoryDetails)"
+            #f="ngForm"
+          >
+            <div class="row" *ngIf="errorLabel">
+              <div class="col-sm-12" style="color: red">
+                {{ errorLabel }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Document Title <span class="text-danger">*</span></label
+                  >
+                  <input
+                    class="form-control"
+                    name="documentTitle"
+                    [(ngModel)]="fileUpload.documentTitle"
+                    type="text"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="col-form-label">Document Number </label>
+                  <input
+                    class="form-control"
+                    name="documentNumber"
+                    [(ngModel)]="fileUpload.documentNumber"
+                    type="text"
+                  />
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="col-form-label">Document Expiry Date </label>
+                  <p-calendar
+                    name="documentExpiryDate"
+                    [(ngModel)]="fileUpload.documentExpiryDate"
+                    showIcon="true"
+                    dateFormat="mm-dd-yy"
+                    dataType="string"
+                  ></p-calendar>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >File To Upload <span class="text-danger">*</span></label
+                  >
+                  <div class="d-flex align-items-center">
+                    <input
+                      (change)="onFileChange($event)"
+                      name="fileToUpload"
+                      class="form-control"
+                      type="file"
+                      required
+                      #fileInput
+                    />
+                    <div *ngIf="fileUpload.fileToUpload">
+                      <a
+                        class="btn btn-danger btn-clear-file"
+                        href="javascript:void(0)"
+                        aria-label="Remove"
+                        (click)="clearFile()"
+                      >
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="col-form-label">Alert Required</label>
+                  <div>
+                    <p-inputSwitch
+                      name="alertRequired"
+                      [(ngModel)]="fileUpload.checked"
+                    ></p-inputSwitch>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12" *ngIf="fileUpload.checked">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Alert Before No Of Days
+                    <span class="text-danger">*</span></label
+                  >
+                  <p-dropdown
+                    name="alertBeforeNoOfDays"
+                    [options]="noOfAlertsList"
+                    [(ngModel)]="fileUpload.alertBeforeNoOfDays"
+                    required
+                    [filter]="true"
+                  ></p-dropdown>
+                </div>
+              </div>
+            </div>
+
+            <div class="submit-section">
+              <button
+                type="submit"
+                class="btn btn-primary submit-btn"
+                [disabled]="!f.valid"
+              >
+                Upload
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Upload file Modal -->
+<!-- Image view file Modal -->
+<ng-container *ngIf="viewImage">
+  <app-imageviwer
+    [imageBlob]="imageBlob"
+    (onClose)="onImageViewCloseClick($event)"
+  >
+  </app-imageviwer>
+</ng-container>
+
+<!-- /Image view file Modal -->

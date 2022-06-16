@@ -1,0 +1,23 @@
+.form-group {
+  margin-bottom: 0px;
+  border: 1px solid #e1e1e1;
+  padding: 0px 5px 0px 5px;
+}
+:host ::ng-deep .ui-inputtext,
+:host ::ng-deep .ui-calendar .ui-calendar-button,
+:host ::ng-deep .ui-calendar,
+.form-control {
+  border-color: transparent;
+  box-shadow: none;
+  height: 25px;
+  background: transparent;
+  padding: 0px;
+}
+input::placeholder {
+  color: transparent;
+}
+.signature-box {
+  font-weight: bold;
+  font-size: 40px;
+  height: 60px;
+}

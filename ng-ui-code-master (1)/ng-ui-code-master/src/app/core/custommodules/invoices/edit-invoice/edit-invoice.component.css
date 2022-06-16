@@ -1,0 +1,134 @@
+.page-body {
+  padding: 8px 20px 20px 20px;
+  background-color: white;
+  border: 1px solid #a6a6a6;
+}
+.card {
+  min-height: 305px;
+}
+:host ::ng-deep .ui-inputtext,
+input[type="text"],
+:host
+  ::ng-deep
+  .ui-calendar.ui-calendar-w-btn
+  .ui-datepicker-trigger.ui-button {
+  height: 35px;
+}
+:host ::ng-deep .ui-dropdown .ui-dropdown-label {
+  line-height: 1.8;
+}
+.top .form-group {
+  margin-bottom: 8px;
+}
+.card-title {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+label,
+.card {
+  margin-bottom: 0px;
+  font-size: 14px;
+}
+.card-body {
+  padding: 12px;
+  height: 380px;
+  overflow: auto;
+}
+.text-success {
+  color: #00a2e3 !important;
+}
+.text-success:focus,
+.text-success:hover {
+  color: #013893 !important;
+}
+:host ::ng-deep .btm .ui-dropdown {
+  min-width: 125px;
+}
+.table thead th {
+  text-align: center;
+  vertical-align: middle;
+}
+td input[type="number"] {
+  height: 35px;
+  text-align: right;
+}
+:host ::ng-deep .ui-selectbutton {
+  display: flex;
+  align-items: center;
+}
+:host ::ng-deep .ui-button.ui-button-text-only .ui-button-text {
+  padding: 0.429em 0.3em;
+}
+:host ::ng-deep .ui-chips > ul.ui-inputtext {
+  overflow: auto;
+  height: 40px;
+}
+
+:host ::ng-deep .ui-chips.ui-widget {
+  height: 38px;
+}
+:host ::ng-deep .ui-chips > ul.ui-inputtext .ui-chips-token {
+  margin: 3px;
+}
+:host ::ng-deep p-button[ng-reflect-label="Upload"] {
+  display: none;
+}
+.top .personal-info li .title {
+  width: 40%;
+}
+a:not([href]):not([tabindex]) {
+  cursor: pointer;
+}
+.approver-link a:not([href]):not([tabindex]) {
+  margin-top: 20px;
+  color: #013893;
+}
+.gen-Inv-Num {
+  color: #00a2e3;
+  font-size: 12px;
+  cursor: pointer;
+  margin-left: 25px;
+}
+
+:host ::ng-deep .ui-datepicker table th,
+:host ::ng-deep .ui-datepicker table td {
+  font-size: 85%;
+}
+.total-logged-time {
+  padding: 10px;
+  font-size: 13px;
+  margin-right: 10px;
+  font-weight: 500;
+}
+.total-logged-time .attachment-file {
+  border: 1px solid #00a88e;
+  padding: 5px;
+  border-radius: 10px;
+}
+:host ::ng-deep .ui-multiselect {
+  min-width: 300px;
+}
+:host
+  ::ng-deep
+  .ui-multiselect-panel
+  .ui-multiselect-items
+  .ui-multiselect-item
+  .ui-chkbox {
+  display: none;
+}
+.table-responsive .table td {
+  padding: 5px 10px 10px 10px !important;
+}
+.rateTypes.table td span:hover {
+  background-color: #012258;
+}
+.rateTypes.table td span {
+  background-color: #00a88e;
+  cursor: pointer;
+  padding: 2px 10px;
+  color: white;
+  border-radius: 8px;
+}
+.rateTypes.table td {
+  padding: 10px !important;
+}

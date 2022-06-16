@@ -1,0 +1,788 @@
+<div class="page-wrapper" style="min-height: 283px">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="javascript:void(0)">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Project</li>
+            <li class="breadcrumb-item">View</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="card mb-0">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card mb-0">
+              <div class="card-body">
+                <h3 class="card-title">
+                  Project Details
+
+                  <a
+                    href="javascript:void(0)"
+                    [routerLink]="['/admin/projects/project/edit']"
+                    [state]="{
+                      projectDetailsId: project.projectDetailsId,
+                      tabIndex: 0
+                    }"
+                    class="edit-icon"
+                    ><i class="fa fa-pencil"></i
+                  ></a>
+                </h3>
+                <section>
+                  <ul class="personal-info">
+                    <li class="clearfix">
+                      <div class="title">Project Name</div>
+                      <div class="text">
+                        {{ project.projectName }}
+                      </div>
+                    </li>
+                    <li class="clearfix">
+                      <div class="title">Description</div>
+                      <div class="text">
+                        {{ project.description }}
+                      </div>
+                    </li>
+                    <li class="clearfix">
+                      <div class="title">Start Date</div>
+                      <div class="text">
+                        {{ project.startDate }}
+                      </div>
+                    </li>
+                    <li class="clearfix">
+                      <div class="title">End Date</div>
+                      <div class="text">
+                        {{ project.endDate }}
+                      </div>
+                    </li>
+                    <li class="clearfix">
+                      <div class="title">Net Due</div>
+                      <div
+                        class="text"
+                        *ngIf="project.creditDays == 0; else netDue"
+                      >
+                        Immediate
+                      </div>
+                      <ng-template #netDue
+                        ><div class="netDue">
+                          {{ commonNetDueString }} {{ project.creditDays }}
+                        </div></ng-template
+                      >
+                    </li>
+                    <li class="clearfix">
+                      <div class="title">Timesheet Notification Config</div>
+                      <div class="text">
+                        {{ project.timesheetNotificationConfigValue }}
+                      </div>
+                    </li>
+                  </ul>
+                </section>
+                <hr />
+                <section *ngIf="!+project.inHouse">
+                  <h3 class="card-title">Project - Customer Mapping</h3>
+                  <div class="experience-box">
+                    <ul class="experience-list">
+                      <!-- <li>
+                        <div class="experience-user">
+                          <div class="before-circle"></div>
+                        </div>
+                        <div class="experience-content">
+                          <div class="timeline-content">
+                            <a class="name">{{ currentOrganization }}</a>
+                          </div>
+                        </div>
+                      </li> -->
+                      <ng-container
+                        *ngFor="
+                          let item of projectCompanyMappings;
+                          let index = index
+                        "
+                      >
+                        <li>
+                          <div class="experience-user">
+                            <div class="before-circle"></div>
+                          </div>
+                          <div class="experience-content">
+                            <div class="timeline-content">
+                              <a class="name">{{
+                                getPredessor(item.companyDetailsId)
+                              }}</a>
+                              <div>
+                                {{ getAstnType(item.associationType) }}
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      </ng-container>
+                    </ul>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 p-0 mt-4">
+          <section>
+            <div class="accordion" id="accordionExample">
+              <div class="card">
+                <div
+                  class="card-header"
+                  id="approversHeading"
+                  data-toggle="collapse"
+                  data-target="#approvers"
+                  aria-expanded="false"
+                  aria-controls="approvers"
+                >
+                  <i class="fa fa-check-square-o pl-3" aria-hidden="true"></i>
+                  <button class="btn btn-link" type="button">Approvers</button>
+                </div>
+
+                <div
+                  id="approvers"
+                  class="collapse"
+                  aria-labelledby="approversHeading"
+                  data-parent="#accordionExample"
+                >
+                  <div class="card-body">
+                    <a
+                      href="javascript:void(0)"
+                      [routerLink]="['/admin/projects/project/edit']"
+                      [state]="{
+                        projectDetailsId: project.projectDetailsId,
+                        tabIndex: 1
+                      }"
+                      class="edit-icon"
+                      ><i class="fa fa-pencil"></i
+                    ></a>
+                    <ul class="list-group list-group-flush">
+                      <ng-container *ngIf="approverList.length">
+                        <li
+                          class="list-group-item"
+                          *ngFor="let approver of approverList"
+                        >
+                          {{ approver.approverEmail }}
+                        </li>
+                      </ng-container>
+                      <ng-container *ngIf="!approverList.length">
+                        No Approvers Found
+                      </ng-container>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div
+                  class="card-header"
+                  id="resourceHeading"
+                  data-toggle="collapse"
+                  data-target="#resource"
+                  aria-expanded="false"
+                  aria-controls="resource"
+                >
+                  <i class="fa fa-user-plus pl-3" aria-hidden="true"></i>
+                  <button class="btn btn-link" type="button">Resources</button>
+                </div>
+
+                <div
+                  id="resource"
+                  class="collapse"
+                  aria-labelledby="resourceHeading"
+                  data-parent="#accordionExample"
+                >
+                  <div
+                    class="col pl-0 pr-0"
+                    style="font-size: 90%"
+                    *ngIf="!loading"
+                  >
+                    <p-treeTable
+                      [columns]="projectResrCols"
+                      [value]="resourcesList"
+                      [rowsPerPageOptions]="[5, 10, 25, 50]"
+                      styleClass="ui-table-customers"
+                      #dt
+                      [paginator]="true"
+                      [rows]="5"
+                      [showCurrentPageReport]="true"
+                      [alwaysShowPaginator]="false"
+                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      [filterDelay]="0"
+                      [globalFilterFields]="[]"
+                    >
+                      <ng-template pTemplate="caption">
+                        <div>
+                          Project:
+                          <span class="username">{{
+                            project.projectName
+                          }}</span>
+                        </div>
+
+                        <a
+                          href="javascript:void(0)"
+                          [routerLink]="['/admin/projects/project/edit']"
+                          [state]="{
+                            projectDetailsId: project.projectDetailsId,
+                            tabIndex: 2
+                          }"
+                          class="edit-icon"
+                          ><i class="fa fa-pencil"></i
+                        ></a>
+                      </ng-template>
+                      <ng-template pTemplate="header" let-columns>
+                        <tr>
+                          <th
+                            *ngFor="let col of columns"
+                            [ttSortableColumn]="col.field"
+                          >
+                            {{ col.header }}
+                            <p-treeTableSortIcon
+                              [field]="col.field"
+                            ></p-treeTableSortIcon>
+                          </th>
+                          <th style="width: 7%">Status</th>
+                        </tr>
+                      </ng-template>
+                      <ng-template
+                        pTemplate="body"
+                        let-rowNode
+                        let-rowData="rowData"
+                        let-columns="columns"
+                      >
+                        <!-- <tr [ngClass]="getRowData(rowNode)"> -->
+                        <tr>
+                          <td
+                            *ngFor="let col of columns; let i = index"
+                            [ttSelectableRow]="col.field"
+                          >
+                            <p-treeTableToggler
+                              [rowNode]="rowNode"
+                              class="mr-2"
+                              *ngIf="i == 0"
+                            ></p-treeTableToggler>
+                            <ng-container *ngIf="col.field == 'rate'">
+                              {{ organizationCurrency }}
+                              {{ rowData[col.field] }}
+                            </ng-container>
+                            <ng-container *ngIf="col.field == 'overtimeRate'">
+                              {{ organizationCurrency }}
+                              {{ rowData[col.field] }}
+                            </ng-container>
+                            <ng-container
+                              *ngIf="col.field == 'doubleOvertimeRate'"
+                            >
+                              {{ organizationCurrency }}
+                              {{ rowData[col.field] }}
+                            </ng-container>
+                            <ng-container
+                              *ngIf="col.field == 'invoiceFrequency'"
+                            >
+                              <div *ngIf="rowData[col.field] == '1'">
+                                Weelkly
+                              </div>
+                              <div *ngIf="rowData[col.field] == '2'">
+                                Semi Weekly
+                              </div>
+                              <div *ngIf="rowData[col.field] == '3'">
+                                Monthly
+                              </div>
+                            </ng-container>
+                            <ng-container *ngIf="col.field == 'showInInvoice'">
+                              <p-inputSwitch
+                                [(ngModel)]="+rowData[col.field]"
+                                name="updateShowInInvoice"
+                                readonly="true"
+                              ></p-inputSwitch>
+                            </ng-container>
+                            <ng-container
+                              *ngIf="
+                                col.field != 'rate' &&
+                                col.field != 'doubleOvertimeRate' &&
+                                col.field != 'overtimeRate' &&
+                                col.field != 'invoiceFrequency' &&
+                                col.field != 'showInInvoice'
+                              "
+                            >
+                              {{ rowData[col.field] }}
+                            </ng-container>
+                          </td>
+                          <td>
+                            <ng-container *ngIf="rowData.endDate">
+                              <span class="badge bg-inverse-completed"
+                                >COMPLETE</span
+                              >
+                            </ng-container>
+                            <ng-container *ngIf="!rowData.endDate">
+                              <span class="badge bg-inverse-in-progress"
+                                >IN PROGRESS</span
+                              >
+                            </ng-container>
+                          </td>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="emptymessage">
+                        <tr>
+                          <td
+                            [attr.colspan]="projectResrCols.length"
+                            style="text-align: center"
+                          >
+                            No Records Found.
+                          </td>
+                        </tr>
+                      </ng-template>
+                    </p-treeTable>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div
+                  class="card-header"
+                  id="commentsHeading"
+                  data-toggle="collapse"
+                  data-target="#comments"
+                  aria-expanded="false"
+                  aria-controls="comments"
+                >
+                  <i class="fa fa-comments pl-3" aria-hidden="true"></i>
+                  <button class="btn btn-link">Comments</button>
+                </div>
+                <div
+                  id="comments"
+                  class="collapse"
+                  aria-labelledby="commentsHeading"
+                  data-parent="#accordionExample"
+                >
+                  <div class="">
+                    <div class="col pl-0 pr-0" *ngIf="!loading">
+                      <p-table
+                        [columns]="commentCols"
+                        [value]="commentsList"
+                        [rowsPerPageOptions]="[5, 10, 25, 50]"
+                        styleClass="ui-table-customers"
+                        #dt
+                        [paginator]="true"
+                        [rows]="5"
+                        [showCurrentPageReport]="true"
+                        [alwaysShowPaginator]="false"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [filterDelay]="0"
+                        [globalFilterFields]="[]"
+                      >
+                        <ng-template pTemplate="caption">
+                          <div>
+                            Project:
+                            <span class="username">{{
+                              project.projectName
+                            }}</span>
+                          </div>
+                          <a
+                            href="javascript:void(0)"
+                            [routerLink]="['/admin/projects/project/edit']"
+                            [state]="{
+                              projectDetailsId: project.projectDetailsId,
+                              tabIndex: 3
+                            }"
+                            class="edit-icon"
+                            ><i class="fa fa-pencil"></i
+                          ></a>
+                        </ng-template>
+                        <ng-template pTemplate="header" let-columns>
+                          <tr>
+                            <th
+                              *ngFor="let col of columns"
+                              [pSortableColumn]="col.field"
+                            >
+                              {{ col.header }}
+                              <p-sortIcon [field]="col.field"></p-sortIcon>
+                            </th>
+                          </tr>
+                        </ng-template>
+                        <ng-template
+                          pTemplate="body"
+                          let-rowData
+                          let-columns="columns"
+                        >
+                          <tr [pSelectableRow]="rowData">
+                            <td *ngFor="let col of columns">
+                              {{ rowData[col.field] }}
+                            </td>
+                          </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                          <tr>
+                            <td
+                              [attr.colspan]="commentCols.length"
+                              style="text-align: center"
+                            >
+                              No Records Found.
+                            </td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="card">
+                <div class="card-header" id="invoicesHistoryHeading">
+                  <i class="fa fa-briefcase pl-3" aria-hidden="true"></i>
+                  <button
+                    class="btn btn-link collapsed"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#invoicesHistory"
+                    aria-expanded="false"
+                    aria-controls="invoicesHistory"
+                  >
+                    Invoices
+                  </button>
+                </div>
+                <div
+                  id="invoicesHistory"
+                  class="collapse"
+                  aria-labelledby="invoicesHistoryHeading"
+                  data-parent="#accordionExample"
+                >
+                  <div class="card-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life
+                    accusamus terry richardson ad squid. 3 wolf moon officia
+                    aute, non cupidatat skateboard dolor brunch. Food truck
+                    quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                    sunt aliqua put a bird on it squid single-origin coffee
+                    nulla assumenda shoreditch et. Nihil anim keffiyeh
+                    helvetica, craft beer labore wes anderson cred nesciunt
+                    sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                    Leggings occaecat craft beer farm-to-table, raw denim
+                    aesthetic synth nesciunt you probably haven't heard of them
+                    accusamus labore sustainable VHS.
+                  </div>
+                </div>
+              </div> -->
+              <div class="card">
+                <div
+                  class="card-header btn btn-link collapsed"
+                  id="documentsHeading"
+                  data-toggle="collapse"
+                  data-target="#documents"
+                  aria-expanded="false"
+                  aria-controls="documents"
+                >
+                  <i class="fa fa-files-o pl-3" aria-hidden="true"></i>
+                  <button class="btn btn-link">Documents</button>
+                </div>
+                <div
+                  id="documents"
+                  class="collapse"
+                  aria-labelledby="documentsHeading"
+                  data-parent="#accordionExample"
+                >
+                  <div class="">
+                    <div class="col pl-0 pr-0" *ngIf="!loading">
+                      <p-table
+                        [columns]="projectDocCols"
+                        [value]="documentList"
+                        [rowsPerPageOptions]="[5, 10, 25, 50]"
+                        styleClass="ui-table-customers"
+                        #dt
+                        [paginator]="true"
+                        [rows]="5"
+                        [showCurrentPageReport]="true"
+                        [alwaysShowPaginator]="false"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [filterDelay]="0"
+                        [globalFilterFields]="[
+                          'documentTitle',
+                          'documentExpiryDate',
+                          'alertRequired',
+                          'sharedWithOthers',
+                          'projectName',
+                          'employeeName',
+                          'awsS3UniqueKey'
+                        ]"
+                      >
+                        <ng-template pTemplate="caption">
+                          <div>
+                            Project:
+                            <span class="username">{{
+                              project.projectName
+                            }}</span>
+                          </div>
+                          <div
+                            class="ui-table-globalfilter-container"
+                            style="float: none; text-align: right"
+                          >
+                            <input
+                              pInputText
+                              type="text"
+                              (input)="
+                                dt.filterGlobal($event.target.value, 'contains')
+                              "
+                              class="mr-2"
+                              placeholder="Search"
+                            />
+                            <a
+                              href="javascript:void(0)"
+                              [routerLink]="['/admin/projects/project/edit']"
+                              [state]="{
+                                projectDetailsId: project.projectDetailsId,
+                                tabIndex: 4
+                              }"
+                              class="edit-icon"
+                              ><i class="fa fa-pencil"></i
+                            ></a>
+                          </div>
+                        </ng-template>
+                        <!-- <ng-template pTemplate="caption">
+                          <div
+                            class="ui-table-globalfilter-container"
+                            style="float: none; text-align: right"
+                          >
+                            Project:
+                            <span class="username">{{
+                              project.projectName
+                            }}</span>
+                            <input
+                              pInputText
+                              type="text"
+                              (input)="
+                                dt.filterGlobal($event.target.value, 'contains')
+                              "
+                              placeholder="Search"
+                            />
+                          </div>
+                        </ng-template> -->
+                        <ng-template pTemplate="header" let-columns>
+                          <tr>
+                            <th
+                              *ngFor="let col of columns"
+                              [pSortableColumn]="col.field"
+                            >
+                              {{ col.header }}
+                              <p-sortIcon [field]="col.field"></p-sortIcon>
+                            </th>
+                            <th class="actions" style="width: 8%">Actions</th>
+                          </tr>
+                        </ng-template>
+                        <ng-template
+                          pTemplate="body"
+                          let-rowData
+                          let-columns="columns"
+                        >
+                          <tr [pSelectableRow]="rowData">
+                            <td
+                              *ngFor="let col of columns"
+                              [attr.ng-reflect-field]="col.field"
+                            >
+                              <ng-container
+                                *ngIf="col.field == 'documentTitle'"
+                              >
+                                <a
+                                  href="javascript:void(0)"
+                                  (click)="onImageViewOpenClick(rowData)"
+                                >
+                                  {{ rowData[col.field] }}</a
+                                >
+                              </ng-container>
+                              <ng-container *ngIf="col.field == 'alertRequired'"
+                                >{{ +rowData[col.field] ? "Yes" : "No" }}
+                              </ng-container>
+                              <ng-container
+                                *ngIf="col.field == 'alertBeforeNoOfDays'"
+                              >
+                                <ng-container *ngIf="+rowData.alertRequired">
+                                  {{ rowData[col.field] }}
+                                </ng-container>
+                              </ng-container>
+                              <ng-container
+                                *ngIf="col.field == 'sharedWithOthers'"
+                              >
+                                <ng-container *ngIf="!rowData[col.field]">
+                                  <i class="fa fa-dot-circle-o"></i>
+                                  {{ rowData[col.field] }}
+                                </ng-container>
+                                <ng-container *ngIf="rowData[col.field]">
+                                  <a
+                                    href="javascript:void(0)"
+                                    data-toggle="modal"
+                                    class="is-shared"
+                                    (click)="taggedDocumentModel(rowData)"
+                                    ><i class="fa fa-dot-circle-o"></i>
+                                    {{ rowData[col.field] }}
+                                  </a>
+                                </ng-container>
+                              </ng-container>
+                              <ng-container
+                                *ngIf="col.field == 'taggedDocument'"
+                              >
+                                <ng-container *ngIf="!rowData[col.field]">
+                                  <i class="fa fa-dot-circle-o"></i>
+                                  {{ rowData[col.field] }}
+                                </ng-container>
+                                <ng-container *ngIf="rowData[col.field]">
+                                  <a
+                                    href="javascript:void(0)"
+                                    data-toggle="modal"
+                                    class="is-shared"
+                                    (click)="taggedProjectModel(rowData)"
+                                    ><i class="fa fa-dot-circle-o"></i>
+                                    {{ rowData[col.field] }}
+                                  </a>
+                                </ng-container>
+                              </ng-container>
+                              <ng-container
+                                *ngIf="
+                                  col.field != 'alertRequired' &&
+                                  col.field != 'taggedDocument' &&
+                                  col.field != 'sharedWithOthers' &&
+                                  col.field != 'documentTitle'
+                                "
+                              >
+                                {{ rowData[col.field] }}
+                              </ng-container>
+                            </td>
+                            <td class="actions">
+                              <div class="">
+                                <a
+                                  href="javascript:void(0)"
+                                  data-toggle="modal"
+                                  (click)="fileToDownload(rowData, 'doc')"
+                                  ><i class="fa fa-download m-r-5"></i>
+                                </a>
+                              </div>
+                            </td>
+                          </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                          <tr>
+                            <td
+                              [attr.colspan]="projectDocCols.length"
+                              style="text-align: center"
+                            >
+                              No Records Found.
+                            </td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- /Page Content -->
+</div>
+<!-- Image view file Modal -->
+<ng-container *ngIf="viewImage">
+  <app-imageviwer
+    [imageBlob]="imageBlob"
+    (onClose)="onImageViewCloseClick($event)"
+  >
+  </app-imageviwer>
+</ng-container>
+
+<!-- /Image view file Modal -->
+<!-- Tagged Documents Modal -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: taggedModelInfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+  *ngIf="taggedModelInfo == 'block'"
+>
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Tagged Details</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-tagged-or-shared-documents
+          [projectDocumentDetailsId]="selectedProjectDocumentDetailsId"
+        ></app-tagged-or-shared-documents>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Tagged Documents Modal -->
+
+<!-- Tagged Project Modal -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: taggedProjectModelInfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+  *ngIf="taggedProjectModelInfo == 'block'"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Tagged Customers</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card flex-fill m-0">
+          <div class="card-body">
+            <div class="row" *ngIf="selectedTaggedSuppliers">
+              <div
+                class="col-md-auto"
+                *ngFor="let item of selectedTaggedSuppliers.taggedSuppliers"
+              >
+                <div class="leave-info-box">
+                  <div class="media align-items-center">
+                    <!-- <a href="javascript:void(0)" class="avatar">
+                  <img src="{{ pictureUrl + report.photoPath }}" alt="user" />
+                </a> -->
+                    <div class="media-body">
+                      <div class="text-sm my-0">
+                        {{ item }}
+                        <!-- <small class="text-muted"
+                      >( {{ report.employeeId }} )</small
+                    > -->
+                      </div>
+                      <!-- <div>
+                    <small class="text-muted">{{ report.department }}</small
+                    >,
+                    <small class="text-muted">{{ report.designation }}</small>
+                  </div> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!selectedTaggedSuppliers?.taggedSuppliers">
+              No Project Found
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Tagged Documents Modal -->

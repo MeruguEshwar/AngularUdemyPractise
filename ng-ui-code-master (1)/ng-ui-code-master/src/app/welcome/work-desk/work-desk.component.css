@@ -1,0 +1,12 @@
+:host ::ng-deep .organize_paperwork {
+  color: #009ce7;
+}
+:host ::ng-deep .simplify_accounting_processes {
+  color: #6ac069;
+}
+:host ::ng-deep .record_process_company_data {
+  color: #8484d7;
+}
+:host ::ng-deep .automate_employee_processes {
+  color: #e44c7d;
+}

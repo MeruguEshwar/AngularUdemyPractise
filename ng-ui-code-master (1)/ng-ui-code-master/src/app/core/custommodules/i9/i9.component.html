@@ -1,0 +1,1772 @@
+<div [ngClass]="{ 'page-wrapper': !isEmp }">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <ul class="breadcrumb" *ngIf="!isEmp">
+            <li class="breadcrumb-item">Dashboard</li>
+            <li class="breadcrumb-item active">I9</li>
+          </ul>
+        </div>
+        <div class="col-auto float-right ml-auto"></div>
+      </div>
+    </div>
+    <section *ngIf="editType == 'View'" class="view">
+      <div class="row">
+        <div class="col-lg-12" [ngClass]="{ 'p-0': isEmp }">
+          <div class="card">
+            <div class="card-header">
+              <div
+                class="row d-flex justify-content-between align-items-center"
+              >
+                <div class="col">
+                  <h4 class="card-title mb-0">
+                    Employee I-9 Form -
+                    <span class="username">{{ userName }}</span>
+                  </h4>
+                </div>
+                <div class="col">
+                  <button
+                    *ngIf="+webI9Details?.i9Status != 3"
+                    type="button"
+                    class="btn btn-primary submit-btn float-right mr-2"
+                    (click)="showType()"
+                  >
+                    <i class="fa fa-plus"></i>&nbsp;New
+                  </button>
+                  <button
+                    *ngIf="+webI9Details?.i9Status == 3"
+                    type="button"
+                    class="btn btn-primary submit-btn float-right mr-2"
+                    (click)="showEditType()"
+                  >
+                    <i class="fa fa-pencil"></i>&nbsp;Edit
+                  </button>
+                  <div
+                    *ngIf="
+                      isEmp &&
+                      webI9Details.i9DetailsId &&
+                      webI9Details.i9Status == '1' &&
+                      sharedService.userRole == 'admin'
+                    "
+                  >
+                    <button
+                      type="button"
+                      class="btn btn-info submit-btn float-right mr-2"
+                      (click)="verifyForm(webI9Details)"
+                    >
+                      <i class="fa fa-check"></i>&nbsp;Verify
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body" *ngIf="webI9Details?.i9DetailsId">
+              <h1 class="card-title pb-3">
+                <div
+                  class="
+                    d-flex
+                    justify-content-center
+                    align-items-center
+                    float-right
+                  "
+                  *ngIf="webI9Details?.i9DetailsId"
+                >
+                  <span
+                    class="badge mr-2"
+                    [ngClass]="{
+                      ' bg-inverse-danger ': webI9Details?.i9Status == '0',
+                      ' bg-inverse-success': webI9Details?.i9Status == '2',
+                      ' bg-inverse-info': webI9Details?.i9Status == '1',
+                      ' bg-inverse-draft': webI9Details?.i9Status == '3'
+                    }"
+                  >
+                    <i
+                      class="fa fa-dot-circle-o mr-1"
+                      [ngClass]="{
+                        ' text-danger ': webI9Details?.i9Status == '0',
+                        ' text-success': webI9Details?.i9Status == '2',
+                        ' text-info': webI9Details?.i9Status == '1',
+                        ' text-draft': webI9Details?.i9Status == '3'
+                      }"
+                    >
+                    </i>
+                    {{ Status[webI9Details?.i9Status] }}
+                  </span>
+                  <!-- <span
+                    class="pl-2"
+                    *ngIf="
+                      isEmp &&
+                      webI9Details?.i9DetailsId &&
+                      webI9Details?.i9Status != '2'
+                    "
+                  >
+                    <a
+                      href="javascript:void(0)"
+                      class="badge noti-dot subdrop"
+                      (click)="verifyForm(webI9Details)"
+                      style="position: relative"
+                    >
+                      VERIFY
+                    </a>
+                  </span> -->
+                  <span *ngIf="webI9Details?.employeeDocumentUploadDetailsId">
+                    <a href="javascript:void(0)" class="edit-icon mr-2"
+                      ><i
+                        class="fa fa-download"
+                        (click)="
+                          downloadI9Form(
+                            webI9Details?.employeeDocumentUploadDetailsId
+                          )
+                        "
+                      ></i
+                    ></a>
+                  </span>
+                  <span>
+                    <a href="javascript:void(0)" class="edit-icon mr-2"
+                      ><i
+                        class="fa fa-file-pdf-o"
+                        (click)="downloadI9PDFForm(webI9Details?.i9DetailsId)"
+                      ></i
+                    ></a>
+                  </span>
+                </div>
+              </h1>
+              <hr />
+              <app-view-i9
+                [webI9Details]="webI9Details"
+                [signatureDetails]="signatureDetails"
+                [digitalSignature]="digitalSignature"
+              ></app-view-i9>
+            </div>
+            <div class="card-body" *ngIf="!webI9Details?.i9DetailsId">
+              No I-9 found. Create New
+            </div>
+
+            <!-- i9DetailsHistory -->
+
+            <section *ngIf="i9DetailsHistory.length">
+              <div class="border-bottom"></div>
+              <div class="card-body">
+                <div class="accordion" id="accordionExample">
+                  <ng-container>
+                    <ng-container
+                      *ngFor="
+                        let webI9Details of i9DetailsHistory;
+                        let index = index
+                      "
+                    >
+                      <div class="card">
+                        <div
+                          class="card-header"
+                          id="i9DetailsHistoryHeading{{ index }}"
+                          data-toggle="collapse"
+                          [attr.data-target]="'#i9DetailsHistory' + index"
+                          [attr.aria-controls]="'i9DetailsHistory' + index"
+                          aria-expanded="false"
+                        >
+                          <i class="fa fa-calendar pl-3" aria-hidden="true"></i>
+                          <button
+                            class="
+                              btn btn-link
+                              d-flex
+                              align-items-center
+                              justify-content-between
+                            "
+                            type="button"
+                          >
+                            {{ webI9Details.dateSubmitted }}
+                            <span
+                              class="badge mr-2"
+                              [ngClass]="{
+                                ' bg-inverse-danger ':
+                                  webI9Details?.i9Status == '0',
+                                ' bg-inverse-success':
+                                  webI9Details?.i9Status == '2',
+                                ' bg-inverse-info':
+                                  webI9Details?.i9Status == '1',
+                                ' bg-inverse-draft':
+                                  webI9Details?.i9Status == '3'
+                              }"
+                            >
+                              <i
+                                class="fa fa-dot-circle-o mr-1"
+                                [ngClass]="{
+                                  ' text-danger ':
+                                    webI9Details?.i9Status == '0',
+                                  ' text-success':
+                                    webI9Details?.i9Status == '2',
+                                  ' text-info': webI9Details?.i9Status == '1',
+                                  ' text-draft': webI9Details?.i9Status == '3'
+                                }"
+                              >
+                              </i>
+                              {{ Status[webI9Details?.i9Status] }}
+                            </span>
+                          </button>
+                        </div>
+
+                        <div
+                          id="i9DetailsHistory{{ index }}"
+                          class="collapse"
+                          [attr.aria-controls]="
+                            'i9DetailsHistoryHeading' + index
+                          "
+                          data-parent="#accordionExample"
+                        >
+                          <div class="card-body">
+                            <h1 class="card-title pb-3">
+                              <div
+                                class="
+                                  d-flex
+                                  justify-content-center
+                                  align-items-center
+                                  float-right
+                                "
+                                *ngIf="webI9Details?.i9DetailsId"
+                              >
+                                <span
+                                  class="badge mr-2"
+                                  [ngClass]="{
+                                    ' bg-inverse-danger ':
+                                      webI9Details?.i9Status == '0',
+                                    ' bg-inverse-success':
+                                      webI9Details?.i9Status == '2',
+                                    ' bg-inverse-info':
+                                      webI9Details?.i9Status == '1',
+                                    ' bg-inverse-draft':
+                                      webI9Details?.i9Status == '3'
+                                  }"
+                                >
+                                  <i
+                                    class="fa fa-dot-circle-o mr-1"
+                                    [ngClass]="{
+                                      ' text-danger ':
+                                        webI9Details?.i9Status == '0',
+                                      ' text-success':
+                                        webI9Details?.i9Status == '2',
+                                      ' text-info':
+                                        webI9Details?.i9Status == '1',
+                                      ' text-draft':
+                                        webI9Details?.i9Status == '3'
+                                    }"
+                                  >
+                                  </i>
+                                  {{ Status[webI9Details?.i9Status] }}
+                                </span>
+                                <!-- <span
+                                  class="pl-2"
+                                  *ngIf="
+                                    isEmp &&
+                                    webI9Details?.i9DetailsId &&
+                                    webI9Details?.i9Status != '2'
+                                  "
+                                >
+                                  <a
+                                    href="javascript:void(0)"
+                                    class="badge noti-dot subdrop"
+                                    (click)="verifyForm(webI9Details)"
+                                    style="position: relative"
+                                  >
+                                    VERIFY
+                                  </a>
+                                </span> -->
+                                <span
+                                  *ngIf="
+                                    webI9Details?.employeeDocumentUploadDetailsId
+                                  "
+                                >
+                                  <a
+                                    href="javascript:void(0)"
+                                    class="edit-icon mr-2"
+                                    ><i
+                                      class="fa fa-download"
+                                      (click)="
+                                        downloadI9Form(
+                                          webI9Details?.employeeDocumentUploadDetailsId
+                                        )
+                                      "
+                                    ></i
+                                  ></a>
+                                </span>
+                                <span>
+                                  <a
+                                    href="javascript:void(0)"
+                                    class="edit-icon mr-2"
+                                    ><i
+                                      class="fa fa-file-pdf-o"
+                                      (click)="
+                                        downloadI9PDFForm(
+                                          webI9Details?.i9DetailsId
+                                        )
+                                      "
+                                    ></i
+                                  ></a>
+                                </span>
+                                <span>
+                                  <a
+                                    href="javascript:void(0)"
+                                    class="edit-icon mr-2"
+                                    ><i
+                                      class="fa fa-trash"
+                                      (click)="deleteConfPopUp(webI9Details)"
+                                    ></i
+                                  ></a>
+                                </span>
+                              </div>
+                            </h1>
+                            <hr />
+                            <app-view-i9
+                              [webI9Details]="webI9Details"
+                              [signatureDetails]="signatureDetails"
+                              [digitalSignature]="digitalSignature"
+                            ></app-view-i9>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </ng-container>
+                </div>
+              </div>
+            </section>
+            <!-- /i9DetailsHistory -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section *ngIf="editType == 'Edit'">
+      <div class="row">
+        <div class="col-md-12" [ngClass]="{ 'p-0': isEmp }">
+          <div class="card">
+            <div class="card-header">
+              <div
+                class="row d-flex justify-content-between align-items-center"
+              >
+                <div class="col">
+                  <h4 class="card-title mb-0">
+                    Employee I-9 Form -
+                    <span class="username">{{ userName }}</span>
+                  </h4>
+                </div>
+                <div class="col">
+                  <button
+                    type="button"
+                    class="btn btn-danger submit-btn float-right"
+                    (click)="cancel()"
+                  >
+                    <i class="fa fa-times"></i>&nbsp;Cancel
+                  </button>
+                </div>
+              </div>
+              <p *ngIf="errLabel" style="color: red">{{ errLabel }}</p>
+            </div>
+
+            <form (ngSubmit)="save()" #f="ngForm">
+              <div class="card-body">
+                <!-- <div class="row">
+                  <label class="col-form-label col-md-2"
+                    >I-9 Form Type <span class="text-danger">*</span></label
+                  >
+                  <div class="col-md-3 d-flex align-items-center">
+                    <div class="mr-3">
+                      <p-radioButton
+                        name="formType"
+                        value="1"
+                        label="Current Year"
+                        [(ngModel)]="i9.i9FormType"
+                        aria-required="true"
+                        required
+                      ></p-radioButton>
+                    </div>
+                    <div class="">
+                      <p-radioButton
+                        name="formType"
+                        value="2"
+                        label="2019 & Prior"
+                        [(ngModel)]="i9.i9FormType"
+                        aria-required="true"
+                        required
+                      ></p-radioButton>
+                    </div>
+                  </div>
+                </div>
+                <div class="border mt-3 mb-4"></div> -->
+                <section>
+                  <div class="row">
+                    <div class="col-2 pb-2">
+                      <img
+                        src="assets/img/homeland-security-2.png"
+                        alt="logo"
+                        class="rounded"
+                      />
+                    </div>
+                    <div
+                      class="
+                        col-8
+                        text-center
+                        d-flex
+                        align-items-center
+                        flex-column
+                      "
+                    >
+                      <h3><b>Employment Eligibility Verification</b></h3>
+                      <h3 class="m-0">
+                        <b>Department of Homeland Security </b>
+                      </h3>
+                      <h3 style="font-weight: 400">
+                        U.S. Citizenship and Immigration Services
+                      </h3>
+                    </div>
+                    <div class="col-2 text-center">
+                      <h3 class="m-0">USCIS</h3>
+                      <h3 class="m-0">Form I-9</h3>
+                      <p>OMB No. 1615-0047</p>
+                      <p>Expires 10/31/2022</p>
+                    </div>
+                  </div>
+                  <div style="border: 5px solid"></div>
+                  <div style="border-bottom: 1px solid; padding-top: 5px"></div>
+                  <div class="row pt-2">
+                    <div class="col">
+                      <p class="mb-1">
+                        <b
+                          ><strong
+                            ><i class="fa fa-play" aria-hidden="true"></i>START
+                            HERE:</strong
+                          >
+                          Read instructions carefully before completing this
+                          form. The instructions must be available, either in
+                          paper or electronically, during completion of this
+                          form. Employers are liable for errors in the
+                          completion of this form.</b
+                        >
+                      </p>
+                      <p class="mb-1">
+                        <b>ANTI-DISCRIMINATION NOTICE:</b> It is illegal to
+                        discriminate against work-authorized individuals.
+                        Employers <b>CANNOT</b> specify which document(s) an
+                        employee may present to establish employment
+                        authorization and identity. The refusal to hire or
+                        continue to employ an individual because the
+                        documentation presented has a future expiration date may
+                        also constitute illegal discrimination.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12 border">
+                      <div class="row" style="background-color: #f7f7f7">
+                        <div class="col-12 border">
+                          <p>
+                            <b style="font-size: large"
+                              >Section 1. Employee Information and
+                              Attestation</b
+                            >
+                            (Employees must complete and sign Section 1 of Form
+                            I-9 no later than the
+                            <b>first day of employment,</b> but not before
+                            accepting a job offer.)
+                          </p>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-xs-3 col-sm-3 col-md-3 form-group">
+                          <label class="text-muted"
+                            >Last Name<span> (Family Name)</span>
+                            <span class="text-danger"> *</span>
+                          </label>
+                          <div class="d-flex align-items-center">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="lastName"
+                              [(ngModel)]="i9.lastName"
+                              pattern="[A-Za-z ]{1,150}"
+                              placeholder="Last Name"
+                              (keypress)="
+                                sharedService.keyPressAlphabet($event)
+                              "
+                            />
+                          </div>
+                        </div>
+                        <div class="col-xs-4 col-sm-4 col-md-4 form-group">
+                          <label class="text-muted"
+                            >First Name<span> (Given Name)</span>
+                            <span class="text-danger"> *</span>
+                          </label>
+                          <div class="d-flex align-items-center">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="firstName"
+                              [(ngModel)]="i9.firstName"
+                              pattern="[A-Za-z ]{1,150}"
+                              minlength="2"
+                              maxlength="150"
+                              placeholder="First Name"
+                              (keypress)="
+                                sharedService.keyPressAlphabet($event)
+                              "
+                            />
+                          </div>
+                        </div>
+                        <div class="col-xs-2 col-sm-2 col-md-2 form-group">
+                          <label class="text-muted"
+                            >Middle Initial<span class="text-danger pr-2">
+                              *</span
+                            >
+                            <p-checkbox
+                              [(ngModel)]="isMiddleInitial"
+                              label="If N/A"
+                              name="isMiddleInitial"
+                              binary="ture"
+                              class="checkboxlebal"
+                              (onChange)="
+                                checkApplicable($event, 'isMiddleInitial')
+                              "
+                            ></p-checkbox>
+                          </label>
+                          <div class="d-flex align-items-center">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="middleInitial"
+                              [(ngModel)]="i9.middleInitial"
+                              pattern="[A-Za-z ]{1,150}"
+                              (keypress)="
+                                sharedService.keyPressAlphabet($event)
+                              "
+                              required
+                              placeholder="Middle Initial"
+                              [(disabled)]="isMiddleInitial"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-xs-3 col-sm-3 col-md-3 form-group">
+                          <label class="text-muted"
+                            >Other Last Names<span class="text-danger pr-2">
+                              *</span
+                            >
+                            <p-checkbox
+                              [(ngModel)]="isLastNameUsed"
+                              label="If N/A"
+                              name="isLastNameUsed"
+                              binary="ture"
+                              class="checkboxlebal"
+                              (onChange)="
+                                checkApplicable($event, 'isLastNameUsed')
+                              "
+                            ></p-checkbox>
+                          </label>
+                          <div class="d-flex align-items-center">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="otherLastName"
+                              [(ngModel)]="i9.otherLastName"
+                              pattern="[A-Za-z ]{1,150}"
+                              (keypress)="
+                                sharedService.keyPressAlphabet($event)
+                              "
+                              required
+                              placeholder="Other Last Names"
+                              [(disabled)]="isLastNameUsed"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-xs-4 col-sm-4 col-md-4 form-group">
+                          <label class="text-muted"
+                            >Address <span>(Street Number and Name)</span>
+                            <span class="text-danger"> *</span></label
+                          >
+                          <div class="d-flex align-items-center">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="address"
+                              [(ngModel)]="i9.address"
+                              placeholder="Address (Street Number and Name)"
+                              (keypress)="sharedService.keyPressAddress($event)"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-xs-2 col-sm-2 col-md-2 form-group">
+                          <label class="text-muted"
+                            >Apt. Number<span class="text-danger pr-2"> *</span>
+                            <p-checkbox
+                              [(ngModel)]="isAPTNumber"
+                              label="If N/A"
+                              name="isAPTNumber"
+                              binary="ture"
+                              class="checkboxlebal"
+                              (onChange)="
+                                checkApplicable($event, 'isAPTNumber')
+                              "
+                            ></p-checkbox>
+                          </label>
+                          <div class="d-flex align-items-center">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="aptNumber"
+                              [(ngModel)]="i9.aptNumber"
+                              required
+                              [(disabled)]="isAPTNumber"
+                              placeholder="Apt. Number"
+                              (keypress)="sharedService.keyPressAddress($event)"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-xs-4 col-sm-4 col-md-4 form-group">
+                          <label class="text-muted"
+                            >City or Town
+                            <span class="text-danger">*</span></label
+                          >
+                          <div class="d-flex align-items-center">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="cityOrTown"
+                              [(ngModel)]="i9.cityOrTown"
+                              placeholder="City or Town"
+                              (keypress)="sharedService.keyPressAddress($event)"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-xs-1 col-sm-1 col-md-1 form-group">
+                          <label class="text-muted"
+                            >State<span class="text-danger"> *</span></label
+                          >
+                          <div class="d-flex align-items-center">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="state"
+                              [(ngModel)]="i9.state"
+                              placeholder="State"
+                              (keypress)="
+                                sharedService.keyPressAlphabet($event)
+                              "
+                            />
+                          </div>
+                        </div>
+                        <div class="col-xs-1 col-sm-1 col-md-1 form-group">
+                          <label class="text-muted"
+                            >ZIP<span class="text-danger"> *</span></label
+                          >
+                          <div class="d-flex align-items-center">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="zipCode"
+                              [(ngModel)]="i9.zipCode"
+                              placeholder="ZIP Code"
+                              minlength="4"
+                              maxlength="7"
+                              (keypress)="
+                                sharedService.keyPressAlphaNumaric($event)
+                              "
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-xs-3 col-sm-3 col-md-3 form-group">
+                          <label class="text-muted"
+                            >Date of Birth <span>(MM-DD-YYYY)</span>
+                            <span class="text-danger"> *</span>
+                          </label>
+                          <div class="">
+                            <p-calendar
+                              [yearNavigator]="true"
+                              [monthNavigator]="true"
+                              yearRange="1980:2050"
+                              readonlyInput="true"
+                              name="dateOfBirth"
+                              dateFormat="mm-dd-yy"
+                              dataType="string"
+                              [maxDate]="date"
+                              name="dateOfBirth"
+                              [(ngModel)]="i9.dateOfBirth"
+                              aria-required="true"
+                              required
+                            ></p-calendar>
+                          </div>
+                        </div>
+                        <div class="col-xs-3 col-sm-3 col-md-3 form-group">
+                          <label class="text-muted"
+                            >U.S. Social Security Number
+                            <span class="text-danger"> *</span></label
+                          >
+                          <div class="d-flex align-items-center">
+                            <p-inputMask
+                              class="form-control"
+                              mask="999-99-9999"
+                              [(ngModel)]="i9.usSsn"
+                              name="usSsn"
+                              unmask="true"
+                              required
+                            ></p-inputMask>
+                            <!-- <input
+                              type="text"
+                              class="form-control"
+                              name="usSsn"
+                              [(ngModel)]="i9.usSsn"
+                              pattern="[0-9]{10,15}"
+                              (keypress)="sharedService.keyPressNumber($event)"
+                              placeholder="Social Security Number"
+                              required
+                            /> -->
+                          </div>
+                        </div>
+                        <div class="col-xs-3 col-sm-3 col-md-3 form-group">
+                          <label class="text-muted"
+                            >Employee's email address</label
+                          >
+                          <div class="d-flex align-items-center">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="email"
+                              placeholder="Email"
+                              [(ngModel)]="i9.email"
+                              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                              (keypress)="sharedService.keyPressEmail($event)"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-xs-3 col-sm-3 col-md-3 form-group">
+                          <label class="text-muted"
+                            >Employee's Telephone Number
+                          </label>
+                          <div class="d-flex align-items-center">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="phoneNumber"
+                              [(ngModel)]="i9.phoneNumber"
+                              pattern="[0-9]{10,15}"
+                              placeholder="Phone Number"
+                              (keypress)="sharedService.keyPressNumber($event)"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 py-3">
+                      <p style="margin-right: 20%" class="mb-1">
+                        <b
+                          >I am aware that federal law provides for imprisonment
+                          and/or fines for false statements or use of false
+                          documents in connection with the completion of this
+                          form.</b
+                        >
+                      </p>
+                      <p>
+                        <b
+                          >I attest, under penalty of perjury, that I am (check
+                          one of the following boxes):</b
+                        >
+                      </p>
+                    </div>
+                    <div class="col-12 border">
+                      <div class="row">
+                        <div class="col-auto d-flex align-items-center pr-0">
+                          <div class="checkbox">
+                            <p-radioButton
+                              name="perjury"
+                              value="hasCitizenOfUs"
+                              [(ngModel)]="perjury"
+                              inputId="perjury1"
+                            ></p-radioButton>
+                            <!-- <p-checkbox
+                            name="hasCitizenOfUs"
+                            [(ngModel)]="i9.hasCitizenOfUs"
+                            [binary]="true"
+                          ></p-checkbox> -->
+                          </div>
+                        </div>
+
+                        <label class="col-form-label col-md-auto"
+                          >1. A citizen of the United States</label
+                        >
+                      </div>
+                      <div class="row">
+                        <div class="col-auto d-flex align-items-center pr-0">
+                          <div class="checkbox">
+                            <p-radioButton
+                              name="perjury"
+                              value="hasNonCitizenNationalOfUs"
+                              [(ngModel)]="perjury"
+                              inputId="perjury2"
+                            ></p-radioButton>
+                            <!-- <p-checkbox
+                            name="hasNonCitizenNationalOfUs"
+                            [(ngModel)]="i9.hasNonCitizenNationalOfUs"
+                            [binary]="true"
+                          ></p-checkbox> -->
+                          </div>
+                        </div>
+
+                        <label class="col-form-label col-md-auto"
+                          >2. A noncitizen national of the United States (See
+                          instructions)</label
+                        >
+                      </div>
+                      <div class="row">
+                        <div class="col-auto d-flex align-items-center pr-0">
+                          <div class="checkbox">
+                            <p-radioButton
+                              name="perjury"
+                              value="hasLawfulPermanentResident"
+                              [(ngModel)]="perjury"
+                              inputId="perjury3"
+                            ></p-radioButton>
+                            <!-- <p-checkbox
+                            name="hasLawfulPermanentResident"
+                            [(ngModel)]="i9.hasLawfulPermanentResident"
+                            [binary]="true"
+                          ></p-checkbox> -->
+                          </div>
+                        </div>
+
+                        <label class="col-form-label col-md-auto"
+                          >3. A lawful permanent resident</label
+                        >
+                        <ng-container
+                          *ngIf="perjury == 'hasLawfulPermanentResident'"
+                        >
+                          <label class="col-md-auto col-form-label"
+                            >(Alien Registration Number/USCIS Number):
+                          </label>
+                          <div class="col-md-auto">
+                            <input
+                              type="text"
+                              class="form-control perjury"
+                              name="lprAlienRegNoOrUscisNo"
+                              [(ngModel)]="i9.lprAlienRegNoOrUscisNo"
+                              required
+                              (keypress)="
+                                sharedService.keyPressAlphaNumaric($event)
+                              "
+                            />
+                          </div>
+                        </ng-container>
+                      </div>
+                      <div class="row">
+                        <div class="col-auto d-flex align-items-center pr-0">
+                          <div class="checkbox">
+                            <p-radioButton
+                              name="perjury"
+                              value="hasAlienAuthorizedToWork"
+                              [(ngModel)]="perjury"
+                              inputId="perjury4"
+                            ></p-radioButton>
+                            <!-- <p-checkbox
+                            name="hasAlienAuthorizedToWork"
+                            [(ngModel)]="i9.hasAlienAuthorizedToWork"
+                            [binary]="true"
+                          ></p-checkbox> -->
+                          </div>
+                        </div>
+
+                        <label class="col-form-label col-md-auto"
+                          >4. An alien authorized to work
+                        </label>
+                        <ng-container
+                          *ngIf="perjury == 'hasAlienAuthorizedToWork'"
+                        >
+                          <label class="col-form-label col-md-auto"
+                            >Until (expiration date, if applicable, mm/dd/yyyy):
+                          </label>
+                          <div class="col-md-auto">
+                            <p-calendar
+                              [yearNavigator]="true"
+                              [monthNavigator]="true"
+                              yearRange="1980:2050"
+                              readonlyInput="true"
+                              name="dateOfBirth"
+                              dateFormat="mm-dd-yy"
+                              dataType="string"
+                              name="alienAuthorizationWorkExpirationDate"
+                              [(ngModel)]="
+                                i9.alienAuthorizationWorkExpirationDate
+                              "
+                            ></p-calendar>
+                          </div>
+                        </ng-container>
+                      </div>
+                      <ng-container
+                        *ngIf="perjury == 'hasAlienAuthorizedToWork'"
+                      >
+                        <div class="row d-flex align-items-center">
+                          <div class="col-sm-1"></div>
+                          <div class="col-sm-10">
+                            <p>
+                              Some aliens may write "N/A" in the expiration date
+                              field(See instructions)
+                            </p>
+                            <p class="mt-2">
+                              <b
+                                >Aliens authorized to work must provide only one
+                                of the following document numbers to complete
+                                Form I-9: An Alien Registration Number/USCIS
+                                Number OR Form I-94 Admission Number OR Foreign
+                                Passport Number.</b
+                              >
+                            </p>
+                          </div>
+                          <div class="col-sm-1"></div>
+                        </div>
+                        <div class="row">
+                          <div class="col">
+                            <div class="row">
+                              <label class="col-auto col-form-label"
+                                >1. Alien Registration Number/USCIS Number:
+                              </label>
+                              <div class="col-auto">
+                                <input
+                                  type="text"
+                                  class="form-control perjury"
+                                  name="alienRegNoOrUscisNo"
+                                  [(ngModel)]="i9.alienRegNoOrUscisNo"
+                                  (keypress)="
+                                    sharedService.keyPressAlphaNumaric($event)
+                                  "
+                                />
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-lg-4 text-center">OR</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col">
+                            <div class="row">
+                              <label class="col-auto col-form-label"
+                                >2. Form I-94 Admission Number:
+                              </label>
+                              <div class="col-auto">
+                                <input
+                                  type="text"
+                                  class="form-control perjury"
+                                  name="formI94AdmnNumber"
+                                  [(ngModel)]="i9.formI94AdmnNumber"
+                                  (keypress)="
+                                    sharedService.keyPressAlphaNumaric($event)
+                                  "
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-4 text-center">OR</div>
+                        </div>
+                        <div class="row">
+                          <div class="col">
+                            <div class="row">
+                              <label class="col-auto col-form-label"
+                                >3. Foreign Passport Number:
+                              </label>
+                              <div class="col-auto">
+                                <input
+                                  type="text"
+                                  class="form-control perjury"
+                                  name="foreignPassportNumber"
+                                  [(ngModel)]="i9.foreignPassportNumber"
+                                  (keypress)="
+                                    sharedService.keyPressAlphaNumaric($event)
+                                  "
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row py-2">
+                          <div class="col">
+                            <div class="row">
+                              <label class="col-auto col-form-label pl-4"
+                                >Country of Issuance:
+                              </label>
+                              <div class="col-auto">
+                                <input
+                                  type="text"
+                                  class="form-control perjury"
+                                  name="countryOfIssuance"
+                                  [(ngModel)]="i9.countryOfIssuance"
+                                  (keypress)="
+                                    sharedService.keyPressAlphaNumaric($event)
+                                  "
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </div>
+                    <div class="col-12 py-3">
+                      <strong
+                        >I attest, under penalties of perjury, I declare that I
+                        have examined this certificate and, to the best of my
+                        knowledge and belief, it is true, correct, and
+                        complete.</strong
+                      >
+                    </div>
+                    <div
+                      class="col-12 border py-3"
+                      *ngIf="signatureDetails.i9Config == 1 && i9.i9DetailsId"
+                    >
+                      <h1 class="card-title">
+                        I-9 Documents
+                        <!-- <span
+                          ><a
+                            class="float-right"
+                            target="_blank"
+                            href="assets/forms/i-9.pdf"
+                            download
+                            ><i
+                              class="fa fa-download fa-fw"
+                              aria-hidden="true"
+                            ></i
+                            >&nbsp; DOWNLOAD BLANK FORM I-9</a
+                          ></span
+                        > -->
+                        <span *ngIf="i9?.employeeDocumentUploadDetailsId"
+                          ><a
+                            class="float-right mr-4"
+                            target="_blank"
+                            href="javascript:void(0)"
+                            (click)="
+                              downloadI9Form(
+                                i9?.employeeDocumentUploadDetailsId
+                              )
+                            "
+                            ><i
+                              class="fa fa-download fa-fw"
+                              aria-hidden="true"
+                            ></i
+                            >&nbsp; I-9 DOCUMENT
+                          </a></span
+                        >
+                        <span
+                          ><a
+                            class="float-right mr-4"
+                            target="_blank"
+                            href="javascript:void(0)"
+                            [ngClass]="{
+                              'text-muted': i9?.employeeDocumentUploadDetailsId
+                            }"
+                            (click)="downloadI9PDFForm(i9?.i9DetailsId)"
+                            ><i
+                              class="fa fa-download fa-fw"
+                              aria-hidden="true"
+                            ></i
+                            >&nbsp; Download saved copy & Upload with signature
+                          </a></span
+                        >
+                      </h1>
+
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="submit-section m-0">
+                            <button
+                              type="button"
+                              class="btn btn-primary submit-btn mr-2"
+                              (click)="showDialogToUpload()"
+                            >
+                              Upload I-9 Document
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 py-3">
+                      <div class="row">
+                        <div class="form-group col-md-6">
+                          <label class="text-muted"
+                            >Signature Of The Employee
+                            <span *ngIf="!isEmp"
+                              ><a
+                                href="javascript:void(0)"
+                                (click)="onSignatureClick()"
+                              >
+                                Click here to get signature</a
+                              ></span
+                            >
+                          </label>
+                          <div class="d-flex align-items-center">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="signatureOfTheEmployee"
+                              [(ngModel)]="i9.signatureOfTheEmployee"
+                              (keypress)="
+                                sharedService.keyPressAlphabet($event)
+                              "
+                              required
+                              readonly
+                              [ngStyle]="{ 'font-family': signatureStyle }"
+                              [ngClass]="{ 'signature-box': signatureStyle }"
+                            />
+                          </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                          <label class="text-muted"
+                            >Date Submitted <span class="text-danger">*</span>
+                          </label>
+                          <div class="">
+                            <p-calendar
+                              [yearNavigator]="true"
+                              [monthNavigator]="true"
+                              yearRange="1980:2050"
+                              readonlyInput="true"
+                              name="dateSubmitted"
+                              dateFormat="mm-dd-yy"
+                              dataType="string"
+                              [(ngModel)]="i9.dateSubmitted"
+                              aria-required="true"
+                              required
+                            ></p-calendar>
+                          </div>
+                        </div>
+                        <div class="col-md-3 form-group">
+                          <label class="text-muted"
+                            >Prepared By Employer
+                            <span class="text-danger">*</span></label
+                          >
+                          <div class="d-flex align-items-center">
+                            <div class="mr-3">
+                              <p-radioButton
+                                name="preparedByEmployer"
+                                value="1"
+                                label="Yes"
+                                [(ngModel)]="i9.preparedByEmployer"
+                                aria-required="true"
+                                required
+                                disabled="true"
+                              >
+                              </p-radioButton>
+                            </div>
+                            <div class="">
+                              <p-radioButton
+                                name="preparedByEmployer"
+                                value="2"
+                                label="No"
+                                [(ngModel)]="i9.preparedByEmployer"
+                                aria-required="true"
+                                required
+                                disabled="true"
+                              >
+                              </p-radioButton>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 py-3">
+                      <div class="row" style="background-color: #f7f7f7">
+                        <div class="col-12 border">
+                          <div>
+                            <p>
+                              <b style="font-size: large"
+                                >Preparer and/or Translator Certification (check
+                                one):</b
+                              >
+                            </p>
+                          </div>
+                          <div>
+                            <p-radioButton
+                              name="preparerAndOrTranslatorCertification"
+                              value="0"
+                              label="I did not use a preparer or translator."
+                              aria-required="true"
+                              class="mr-3"
+                              [(ngModel)]="
+                                i9.preparerAndOrTranslatorCertification
+                              "
+                              required
+                            ></p-radioButton>
+                            <p-radioButton
+                              name="preparerAndOrTranslatorCertification"
+                              value="1"
+                              label="A preparer(s) and/or translator(s) assisted the employee in completing Section 1."
+                              aria-required="true"
+                              [(ngModel)]="
+                                i9.preparerAndOrTranslatorCertification
+                              "
+                              required
+                              class="mr-3"
+                            ></p-radioButton>
+                          </div>
+                          <div style="font-style: italic">
+                            (Fields below must be completed and signed when
+                            preparers and/or translators assist an employee in
+                            completing Section 1.)
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12 py-3">
+                          <strong>
+                            I attest, under penalty of perjury, that I have
+                            assisted in the completion of Section 1 of this form
+                            and that to the best of my knowledge <br />the
+                            information is true and correct.
+                          </strong>
+                        </div>
+                        <div
+                          class="col-12"
+                          *ngIf="i9.preparerAndOrTranslatorCertification == '1'"
+                        >
+                          <div class="row">
+                            <div class="col-xs-8 col-sm-8 col-md-8 form-group">
+                              <label class="text-muted"
+                                >Signature of Preparer or Translator
+                                <span class="text-danger"> *</span>
+                              </label>
+                              <div class="d-flex align-items-center">
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  name="signatureOfThePreparerOrTranslator"
+                                  [(ngModel)]="
+                                    i9.signatureOfThePreparerOrTranslator
+                                  "
+                                  pattern="[A-Za-z ]{1,150}"
+                                  placeholder="Last Name"
+                                  (keypress)="
+                                    sharedService.keyPressAlphabet($event)
+                                  "
+                                />
+                              </div>
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4 form-group">
+                              <label class="text-muted"
+                                >Today's Date
+                                <span class="text-danger"> *</span>
+                              </label>
+                              <div>
+                                <p-calendar
+                                  [yearNavigator]="true"
+                                  [monthNavigator]="true"
+                                  yearRange="1980:2050"
+                                  readonlyInput="true"
+                                  name="dateSubmittedPreparer"
+                                  dateFormat="mm-dd-yy"
+                                  dataType="string"
+                                  aria-required="true"
+                                  [(ngModel)]="i9.dateSubmittedPreparer"
+                                  required
+                                ></p-calendar>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-xs-6 col-sm-6 col-md-6 form-group">
+                              <label class="text-muted"
+                                >Last Name<span> (Family Name)</span>
+                                <span class="text-danger"> *</span>
+                              </label>
+                              <div class="d-flex align-items-center">
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  name="lastNamePreparer"
+                                  [(ngModel)]="i9.lastNamePreparer"
+                                  placeholder="Address (Street Number and Name)"
+                                  (keypress)="
+                                    sharedService.keyPressAddress($event)
+                                  "
+                                />
+                              </div>
+                            </div>
+                            <div class="col-xs-6 col-sm-6 col-md-6 form-group">
+                              <label class="text-muted"
+                                >First Name<span> (Given Name)</span>
+                                <span class="text-danger"> *</span>
+                              </label>
+                              <div class="d-flex align-items-center">
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  name="firstNamePreparer"
+                                  [(ngModel)]="i9.firstNamePreparer"
+                                  minlength="2"
+                                  maxlength="150"
+                                  required
+                                  (keypress)="
+                                    sharedService.keyPressAddress($event)
+                                  "
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-xs-5 col-sm-5 col-md-5 form-group">
+                              <label class="text-muted"
+                                >Address <span>(Street Number and Name)</span>
+                                <span class="text-danger"> *</span></label
+                              >
+                              <div class="d-flex align-items-center">
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  name="addressPreparer"
+                                  [(ngModel)]="i9.addressPreparer"
+                                  placeholder="Address (Street Number and Name)"
+                                  (keypress)="
+                                    sharedService.keyPressAddress($event)
+                                  "
+                                />
+                              </div>
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4 form-group">
+                              <label class="text-muted"
+                                >City or Town
+                                <span class="text-danger">*</span></label
+                              >
+                              <div class="d-flex align-items-center">
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  name="cityOrTownPreparer"
+                                  [(ngModel)]="i9.cityOrTownPreparer"
+                                  placeholder="City or Town"
+                                  (keypress)="
+                                    sharedService.keyPressAddress($event)
+                                  "
+                                />
+                              </div>
+                            </div>
+                            <div class="col-xs-1 col-sm-1 col-md-1 form-group">
+                              <label class="text-muted"
+                                >State<span class="text-danger"> *</span></label
+                              >
+                              <div class="d-flex align-items-center">
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  name="statePreparer"
+                                  [(ngModel)]="i9.statePreparer"
+                                  placeholder="State"
+                                  (keypress)="
+                                    sharedService.keyPressAlphabet($event)
+                                  "
+                                />
+                              </div>
+                            </div>
+                            <div class="col-xs-2 col-sm-2 col-md-2 form-group">
+                              <label class="text-muted"
+                                >ZIP<span class="text-danger"> *</span></label
+                              >
+                              <div class="d-flex align-items-center">
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  name="zipCodePreparer"
+                                  [(ngModel)]="i9.zipCodePreparer"
+                                  placeholder="ZIP Code"
+                                  minlength="4"
+                                  maxlength="7"
+                                  (keypress)="
+                                    sharedService.keyPressAlphaNumaric($event)
+                                  "
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+              <div class="card-body">
+                <section>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="submit-section">
+                        <button
+                          *ngIf="
+                            signatureDetails.i9Config == 3 ||
+                            signatureDetails.i9Config == 4
+                          "
+                          type="button"
+                          class="btn btn-primary submit-btn mr-2"
+                          (click)="signatureVerificatonModel()"
+                          [disabled]="!f.valid"
+                        >
+                          Submit
+                        </button>
+                        <button
+                          *ngIf="signatureDetails.i9Config == 1"
+                          type="button"
+                          class="btn btn-info submit-btn mr-2"
+                          [disabled]="
+                            !f.valid || !i9.employeeDocumentUploadDetailsId
+                          "
+                          (click)="showDeclarationModel()"
+                        >
+                          <i class="fa fa-check"></i>&nbsp;Submit
+                        </button>
+                        <button
+                          *ngIf="signatureDetails.i9Config == 2"
+                          type="button"
+                          class="btn btn-info submit-btn mr-2"
+                          [disabled]="!f.valid"
+                          (click)="showDeclarationModel()"
+                        >
+                          <i class="fa fa-check"></i>&nbsp;Submit
+                        </button>
+                        <button
+                          *ngIf="
+                            signatureDetails.i9Config == 1 &&
+                            i9.i9DetailsId == null
+                          "
+                          type="button"
+                          class="btn btn-success submit-btn"
+                          [disabled]="!f.valid"
+                          (click)="saveI9Details()"
+                        >
+                          <i class="fa fa-save"></i>&nbsp;Save
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-danger submit-btn ml-2"
+                          (click)="cancel()"
+                        >
+                          <i class="fa fa-times"></i>&nbsp;Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <!-- <section>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="submit-section m-0">
+                        <button
+                          type="button"
+                          class="btn btn-primary submit-btn mr-2"
+                          [disabled]="
+                            !f.valid || !i9.employeeDocumentUploadDetailsId
+                          "
+                          (click)="showDeclarationModel()"
+                        >
+                          Submit
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </section> -->
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section *ngIf="editType == 'verify'">
+      <app-verify-i9
+        [(isEmp)]="isEmp"
+        [webI9Details]="selectedWebI9Details"
+        (onClose)="onVerifyCloseClick($event)"
+      >
+      </app-verify-i9>
+    </section>
+  </div>
+</div>
+<app-upload-i9-document
+  *ngIf="showUpload"
+  [userId]="userId"
+  (onClose)="onDeptAddCloseClick($event)"
+>
+</app-upload-i9-document>
+<div
+  [ngStyle]="{ display: showDeclaration }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <h5 class="modal-title">Custom Email</h5> -->
+        <button
+          type="button"
+          class="close"
+          (click)="closeDeclaration()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card-body">
+          <div>
+            <div class="text-center">
+              <h4>LISTS OF ACCEPTABLE DOCUMENTS</h4>
+              <h4>All documents must be UNEXPIRED</h4>
+              <p>
+                Employees may present one selection from List Aor a combination
+                of one selection from List B and one selection from List C
+              </p>
+            </div>
+            <table>
+              <tr>
+                <th>
+                  <div>
+                    <p><strong> LIST A </strong></p>
+                    <p>
+                      <strong>
+                        Documents that Establish Both <br />
+                        Identity and Employment Authorization
+                      </strong>
+                    </p>
+                  </div>
+                </th>
+                <th style="border-right: none">
+                  <div>
+                    <p><strong> LIST B </strong></p>
+                    <p>
+                      <strong> Documents that Establish Identity </strong>
+                    </p>
+                  </div>
+                </th>
+                <th style="border-left: none">
+                  <div>
+                    <p><strong> LIST C </strong></p>
+                    <p>
+                      <strong>
+                        Documents that Establish <br />Employment Authorization
+                      </strong>
+                    </p>
+                  </div>
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  <div>
+                    <ol>
+                      <li>U.S. Passport or U.S. Passport Card</li>
+                      <hr />
+                      <li>
+                        Permanent Resident Card or Alien Registration Receipt
+                        Card(Form I-551)
+                      </li>
+                      <hr />
+                      <li>
+                        Foreign passport that contains a temporary I-551 stamp
+                        or temporary I-551 printed notation on a machine-
+                        readable immigrant visa
+                      </li>
+                      <hr />
+                      <li>
+                        Employment Authorization Document that contains a
+                        photograph (Form I-766)
+                      </li>
+                      <hr />
+                      <li>
+                        For a nonimmigrant alien authorized to work for a
+                        specific employer because of his or her status:
+                        <ol type="A">
+                          <li>Foreign passport; and</li>
+                          <li>
+                            Form I-94 or Form I-94A that has the following:
+                            <ol type="1">
+                              <li>The same name as the passport; and</li>
+                              <li>
+                                An endorsement of the alien's nonimmigrant
+                                status as long as that period of endorsement has
+                                not yet expired and the proposed employment is
+                                not in conflict with any restrictions or
+                                limitations identified on the form.
+                              </li>
+                            </ol>
+                          </li>
+                        </ol>
+                      </li>
+                      <hr />
+                      <li>
+                        Passport from the Federated States of Micronesia (FSM)
+                        or the Republic of the Marshall Islands (RMI) with Form
+                        I-94 or Form I-94A indicating nonimmigrant admission
+                        under the Compact of Free Association Between the United
+                        States and the FSM or RMI
+                      </li>
+                    </ol>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <ol>
+                      <li>
+                        Driver's license or ID card issued by a State or
+                        outlying possession of the United States provided it
+                        contains a photograph or information such as name, date
+                        of birth, gender, height, eye color, and address
+                      </li>
+                      <hr />
+                      <li>
+                        ID card issued by federal, state or local government
+                        agencies or entities, provided it contains a photograph
+                        or information such as name, date of birth, gender,
+                        height, eye color, and address
+                      </li>
+                      <hr />
+                      <li>School ID card with a photograph</li>
+                      <hr />
+                      <li>Voter's registration card</li>
+                      <hr />
+                      <li>U.S. Military card or draft record</li>
+                      <hr />
+                      <li>Military dependent's ID card</li>
+                      <hr />
+                      <li>U.S. Coast Guard Merchant Mariner Card</li>
+                      <hr />
+                      <li>Native American tribal document</li>
+                      <hr />
+                      <li>
+                        Driver's license issued by a Canadian government
+                        authority
+                      </li>
+                      <hr />
+                      <strong class="text-center d-flex"
+                        >For persons under age 18 who are unable to present a
+                        document listed above:</strong
+                      >
+                      <hr />
+                      <li>School record or report card</li>
+                      <hr />
+                      <li>Clinic, doctor, or hospital record</li>
+                      <hr />
+                      <li>Day-care or nursery school record</li>
+                    </ol>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <ol>
+                      <li>
+                        A Social Security Account Number card, unless the card
+                        includes one of the following restrictions:
+                        <ol type="A">
+                          <li>NOT VALID FOR EMPLOYMENT</li>
+                          <li>VALID FOR WORK ONLY WITH INS AUTHORIZATION</li>
+                          <li>VALID FOR WORK ONLY WITH DHS AUTHORIZATION</li>
+                        </ol>
+                      </li>
+                      <hr />
+                      <li>
+                        Certification of report of birth issued by the
+                        Department of State (Forms DS-1350, FS-545, FS-240)
+                      </li>
+                      <hr />
+                      <li>
+                        Original or certified copy of birth certificate issued
+                        by a State, county, municipal authority, or territory of
+                        the United States bearing an official seal
+                      </li>
+                      <hr />
+                      <li>Native American tribal document</li>
+                      <hr />
+                      <li>U.S. Citizen ID Card (Form I-197)</li>
+                      <hr />
+                      <li>
+                        Identification Card for Use of Resident Citizen in the
+                        United States (Form I-179)
+                      </li>
+                      <hr />
+                      <li>
+                        Employment authorization document issued by the
+                        Department of Homeland Security
+                      </li>
+                    </ol>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="self-declaration pt-3">
+            <p-checkbox
+              [(ngModel)]="isconfirm"
+              label="Provide these documents to your Employer for verification or upload in Employment Documents.Please confirm."
+              name="isAPTNumber"
+              binary="ture"
+            ></p-checkbox>
+          </div>
+        </div>
+        <section>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="submit-section">
+                <button
+                  type="button"
+                  class="btn btn-success submit-btn mr-2"
+                  [disabled]="!isconfirm"
+                  (click)="save()"
+                >
+                  <i class="fa fa-save"></i>&nbsp;Submit
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+<app-i9-w4-signature-model
+  *ngIf="showSignatureModel"
+  formType="I9"
+  [userId]="userId"
+  [signatureDetails]="signatureDetails"
+  (onClose)="onshowSignatureModel($event)"
+></app-i9-w4-signature-model>
+<section *ngIf="deleteConf == 'delete'">
+  <div
+    id="i9_addRejectMessage"
+    class="modal custom-modal backdrop"
+    [ngStyle]="{ display: deleteDisplay }"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="form-header">
+            <h3>Delete I9 Details</h3>
+            <p>Are you sure ? Do you want to Delete the I9 Details ?</p>
+          </div>
+          <div class="modal-btn delete-action">
+            <div class="row">
+              <div class="col-6 d-flex justify-content-end">
+                <a
+                  class="btn btn-info submit-btn"
+                  href="javascript:void(0);"
+                  (click)="deleteI9Details()"
+                  ><i class="fa fa-trash-o"></i>&nbsp;Delete</a
+                >
+              </div>
+              <div class="col-6 d-flex justify-content-start">
+                <a
+                  href="javascript:void(0);"
+                  data-dismiss="modal"
+                  (click)="cancel()"
+                  class="btn btn-danger submit-btn"
+                  ><i class="fa fa-times"></i>&nbsp;Cancel</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

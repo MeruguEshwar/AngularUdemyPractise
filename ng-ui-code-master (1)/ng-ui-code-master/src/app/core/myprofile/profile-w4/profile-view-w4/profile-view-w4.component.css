@@ -1,0 +1,10 @@
+.text-info {
+  color: #0099dc !important;
+}
+.bg-inverse-info {
+  color: #0099dc !important;
+}
+.badge {
+  font-size: 90%;
+  font-weight: 500;
+}

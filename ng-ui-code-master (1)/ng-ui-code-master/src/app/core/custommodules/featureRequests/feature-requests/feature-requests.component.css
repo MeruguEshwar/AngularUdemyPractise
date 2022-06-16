@@ -1,0 +1,45 @@
+:host
+  ::ng-deep
+  .ui-table
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="requestedDateTime"] {
+  width: 18%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-tbody
+  > tr
+  > td[ng-reflect-data="status"] {
+  overflow: initial;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="status"] {
+  width: 12%;
+}
+:host ::ng-deep .ui-table-customers .ui-table-caption {
+  color: transparent;
+}
+#confirmModel form {
+  text-align: left;
+}
+.bg-inverse-status {
+  background-color: #c7e7e2 !important;
+  color: inherit !important;
+  padding: 5px;
+}
+:host ::ng-deep .ui-table-customers .ui-table-tbody > tr.record-unRead {
+  font-weight: 500;
+}
+:host ::ng-deep .ui-table-customers .ui-table-tbody > tr.record-read {
+  font-weight: inherit;
+}
+:host ::ng-deep .action-label .dropdown-menu .dropdown-item,
+:host ::ng-deep td .dropdown .dropdown-toggle {
+  font-size: 85%;
+}

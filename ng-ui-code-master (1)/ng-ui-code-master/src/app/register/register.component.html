@@ -1,0 +1,384 @@
+<div
+  class="main-wrapper"
+  [ngClass]="{ nonRoutingModuleInLogin: nonRoutingModuleInLogin }"
+  *ngIf="!showRegistration"
+>
+  <div class="container pt-2" [ngClass]="{ 'pt-2': !nonRoutingModule }">
+    <form
+      id="get-started-form"
+      class="Form"
+      method="POST"
+      data-form-processed="true"
+      __bizdiag="-147418808"
+      __biza="WJ__"
+    >
+      <input type="hidden" name="marketo_list_id" value="" />
+      <input type="hidden" name="company-size-clearbit" value="" />
+
+      <div class="get-started-modal-step-one row justify-content-center">
+        <div class="get-started-modal-sidebar col-5">
+          <div class="get-started-modal-sidebar-wrapper">
+            <img src="assets/img/logo2.png" alt="" />
+            <div>
+              <h2>Get Started<br />with HRX Cloud</h2>
+              <p>
+                Sign up for a demo account and explore the platform yourself.
+              </p>
+              <ul>
+                <li>
+                  <i class="fa fa-check" aria-hidden="true"></i>Free 14-day demo
+                </li>
+                <li>
+                  <i class="fa fa-check" aria-hidden="true"></i>No credit card
+                  needed
+                </li>
+                <li><i class="fa fa-check" aria-hidden="true"></i>No setup</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="get-started-modal-main col-7">
+          <div class="get-started-modal-main-wrapper">
+            <div *ngIf="!formcontent">
+              <div class="subheader">1/2</div>
+              <h2>How many employees do you have?</h2>
+              <div class="QuestionnaireContent-FormContent">
+                <ul class="Form-radioList">
+                  <li
+                    class="Form-radioListItem"
+                    *ngFor="let item of lstEmployees; let i = index"
+                    (click)="formClick(item)"
+                  >
+                    <input
+                      class="Form-radioListInput js-questionnaireCompanySize"
+                      type="radio"
+                      name="questionnaire-company-size"
+                      [value]="item.value"
+                      id="questionnaire-company-size-xl{{ i }}"
+                    />
+                    <label
+                      class="Form-radioListLabel"
+                      for="questionnaire-company-size-xl{{ i }}"
+                      >{{ item.label }}</label
+                    >
+                    <i
+                      class="Form-radioListIcon fa fa-long-arrow-right"
+                      aria-hidden="true"
+                    ></i>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div
+              class="get-started-modal-step-two row show"
+              *ngIf="formcontent"
+            >
+              <form
+                id="basicSetupForm"
+                (ngSubmit)="onFormSubmit()"
+                [formGroup]="basicSetupForm"
+              >
+                <div class="subheader">2/2</div>
+                <h2 style="padding-top: 19px">
+                  Tell us a little about yourself.
+                </h2>
+                <div class="QuestionnaireContent-FormContent">
+                  <div class="QuestionnaireContent-FormContent">
+                    <div class="Form-fieldGroup">
+                      <i
+                        class="fa fa-envelope-o Form-fieldGroupIcon"
+                        aria-hidden="true"
+                      ></i>
+                      <input
+                        formControlName="workEmail"
+                        type="email"
+                        name="email"
+                        placeholder="Work Email *"
+                        class="Form-field Form-field--withIcon"
+                        maxlength="150"
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                        (keypress)="sharedService.keyPressEmail($event)"
+                      />
+                    </div>
+
+                    <div class="Form-fieldGroup half">
+                      <i
+                        class="fa fa-user-o Form-fieldGroupIcon"
+                        aria-hidden="true"
+                      ></i>
+                      <input
+                        formControlName="firstName"
+                        type="text"
+                        name="first_name"
+                        placeholder="First Name *"
+                        class="Form-field Form-field--withIcon"
+                      />
+                    </div>
+
+                    <div class="Form-fieldGroup half end">
+                      <input
+                        formControlName="lastName"
+                        type="text"
+                        name="last_name"
+                        placeholder="Last Name *"
+                        class="Form-field Form-field--withIcon"
+                      />
+                      <div
+                        class="Form-fieldGroup-icon-placeholder has-popover"
+                        data-template="<div class = 'popover error-popover' role = 'tooltip'><div class = 'arrow'></div><div class = 'popover-wrapper'><img src = 'https://www.zenefits.com/wp-content/themes/zenefits-website/dist/img/modals/error.png' /><div class = 'popover-body'></div></div>"
+                        data-container="body"
+                        data-toggle="popover"
+                        data-offset="0"
+                        data-html="true"
+                        data-placement="right"
+                        data-content=""
+                        data-original-title=""
+                        title=""
+                      ></div>
+                    </div>
+
+                    <div class="Form-fieldGroup ee-large">
+                      <i
+                        class="fa fa-suitcase Form-fieldGroupIcon"
+                        aria-hidden="true"
+                      ></i>
+                      <input
+                        formControlName="title"
+                        type="text"
+                        name="title"
+                        placeholder="Title *"
+                        class="
+                          Form-field Form-field--withIcon
+                          ui-autocomplete-input
+                        "
+                        autocomplete="off"
+                      />
+                    </div>
+
+                    <div class="Form-fieldGroup">
+                      <i
+                        class="fa fa-building-o Form-fieldGroupIcon"
+                        aria-hidden="true"
+                      ></i>
+                      <input
+                        formControlName="organizationName"
+                        type="text"
+                        name="company"
+                        placeholder="Company *"
+                        class="Form-field Form-field--withIcon"
+                      />
+                    </div>
+
+                    <div class="Form-fieldGroup">
+                      <i
+                        class="fa fa-phone Form-fieldGroupIcon"
+                        aria-hidden="true"
+                      ></i>
+                      <input
+                        formControlName="workPhone"
+                        type="tel"
+                        name="work-phone"
+                        placeholder="Work Phone *"
+                        class="Form-field Form-field--withIcon"
+                        data-inputmask="(999) 999-9999"
+                        maxlength="14"
+                        pattern="[0-9]{10,15}"
+                        required
+                        (keypress)="sharedService.keyPressNumber($event)"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="Form-fieldGroup button-group step-back">
+                  <div class="step-back-block1">
+                    <a
+                      href="javascript:void(0)"
+                      (click)="onbackClick()"
+                      class="back report-ga"
+                      ><i class="fa fa-long-arrow-left" aria-hidden="true"></i
+                      >&nbsp; Back
+                    </a>
+                  </div>
+                  <div class="step-back-block2">
+                    <button
+                      calss="btn report-ga"
+                      type="submit"
+                      [disabled]="!basicSetupForm.valid"
+                    >
+                      <span>Get Started</span>
+                    </button>
+                  </div>
+                  <span style="flex: 1 1 auto !important"></span>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div *ngIf="showRegistration">
+  <!-- Account Logo -->
+  <div class="account-logo">
+    <a href="javascript:void(0)">
+      <img src="assets/img/logo2.png" class="inv-logo" alt=""
+    /></a>
+  </div>
+  <!-- /Account Logo -->
+  <div class="card m-0">
+    <h4 class="card-header text-center">Register</h4>
+    <div class="card-body py-2">
+      <div class="main-wrapper singleRegistration">
+        <form
+          id="get-started-form"
+          class="Form"
+          method="POST"
+          data-form-processed="true"
+          __bizdiag="-147418808"
+          __biza="WJ__"
+        >
+          <div class="get-started-modal-step-one row justify-content-center">
+            <div class="get-started-modal-main-wrapper">
+              <div class="get-started-modal-step-two row show">
+                <form
+                  id="basicSetupForm"
+                  (ngSubmit)="onFormSubmit()"
+                  [formGroup]="basicSetupForm"
+                >
+                  <div class="QuestionnaireContent-FormContent">
+                    <div class="Form-fieldGroup">
+                      <p-dropdown
+                        [options]="lstEmployees"
+                        formControlName="noOfEmployees"
+                        required
+                        (onChange)="formClick($event)"
+                        placeholder="Select no of employees"
+                      ></p-dropdown>
+                    </div>
+                    <div class="Form-fieldGroup">
+                      <i
+                        class="fa fa-envelope-o Form-fieldGroupIcon"
+                        aria-hidden="true"
+                      ></i>
+                      <input
+                        formControlName="workEmail"
+                        type="email"
+                        name="email"
+                        placeholder="Work Email *"
+                        class="Form-field Form-field--withIcon"
+                        maxlength="150"
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                        (blur)="validateDomain()"
+                        (keypress)="sharedService.keyPressEmail($event)"
+                      />
+                    </div>
+
+                    <div class="Form-fieldGroup half">
+                      <i
+                        class="fa fa-user-o Form-fieldGroupIcon"
+                        aria-hidden="true"
+                      ></i>
+                      <input
+                        formControlName="firstName"
+                        type="text"
+                        name="first_name"
+                        placeholder="First Name *"
+                        class="Form-field Form-field--withIcon"
+                        (keypress)="sharedService.keyPressAlphabet($event)"
+                      />
+                    </div>
+
+                    <div class="Form-fieldGroup half end">
+                      <input
+                        formControlName="lastName"
+                        type="text"
+                        name="last_name"
+                        placeholder="Last Name *"
+                        class="Form-field Form-field--withIcon"
+                        (keypress)="sharedService.keyPressAlphabet($event)"
+                      />
+                      <div
+                        class="Form-fieldGroup-icon-placeholder has-popover"
+                        data-template="<div class = 'popover error-popover' role = 'tooltip'><div class = 'arrow'></div><div class = 'popover-wrapper'><img src = 'https://www.zenefits.com/wp-content/themes/zenefits-website/dist/img/modals/error.png' /><div class = 'popover-body'></div></div>"
+                        data-container="body"
+                        data-toggle="popover"
+                        data-offset="0"
+                        data-html="true"
+                        data-placement="right"
+                        data-content=""
+                        data-original-title=""
+                        title=""
+                      ></div>
+                    </div>
+
+                    <div class="Form-fieldGroup ee-large">
+                      <i
+                        class="fa fa-suitcase Form-fieldGroupIcon"
+                        aria-hidden="true"
+                      ></i>
+                      <input
+                        formControlName="title"
+                        type="text"
+                        name="title"
+                        placeholder="Title *"
+                        class="
+                          Form-field Form-field--withIcon
+                          ui-autocomplete-input
+                        "
+                        autocomplete="off"
+                      />
+                    </div>
+
+                    <div class="Form-fieldGroup">
+                      <i
+                        class="fa fa-building-o Form-fieldGroupIcon"
+                        aria-hidden="true"
+                      ></i>
+                      <input
+                        formControlName="organizationName"
+                        type="text"
+                        name="company"
+                        placeholder="Company *"
+                        class="Form-field Form-field--withIcon"
+                      />
+                    </div>
+
+                    <div class="Form-fieldGroup">
+                      <i
+                        class="fa fa-phone Form-fieldGroupIcon"
+                        aria-hidden="true"
+                      ></i>
+                      <input
+                        formControlName="workPhone"
+                        type="tel"
+                        name="work-phone"
+                        placeholder="Work Phone *"
+                        class="Form-field Form-field--withIcon"
+                        data-inputmask="(999) 999-9999"
+                        maxlength="14"
+                        pattern="[0-9]{10,15}"
+                        required
+                        (keypress)="sharedService.keyPressNumber($event)"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <button
+                      type="submit"
+                      class="btn btn-primary account-btn"
+                      [disabled]="validateForm()"
+                    >
+                      Register
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

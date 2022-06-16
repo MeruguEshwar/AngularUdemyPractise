@@ -1,0 +1,34 @@
+:host ::ng-deep .ui-table-customers .ui-table-tbody > tr > td:nth-child(4) {
+  text-align: right;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="amount"] {
+  text-align: right;
+  width: 16%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="invoiceNumber"] {
+  width: 13%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="dateReceived"] {
+  width: 14%;
+}
+input[name="amount"] {
+  text-align: right;
+}
+:host ::ng-deep .p-inputnumber {
+  width: 100%;
+}

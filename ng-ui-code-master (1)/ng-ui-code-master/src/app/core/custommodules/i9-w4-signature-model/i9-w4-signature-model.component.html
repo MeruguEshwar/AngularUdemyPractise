@@ -1,0 +1,95 @@
+<div
+  id="add_employee"
+  class="modal custom-modal backdrop"
+  [ngStyle]="{ display: uploadDisplay }"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Verify Details</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form #f="ngForm" (ngSubmit)="save()">
+            <div class="row" *ngIf="clientErrorMsg">
+              <div class="col-sm-12" style="color: red">
+                {{ clientErrorMsg }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-12 form-group">
+                <label class="col-form-label"
+                  >Social Security Number
+                  <span class="text-danger">*</span></label
+                >
+                <div class="d-flex align-items-center">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="socialSecurityNumber"
+                    [(ngModel)]="ssn"
+                    pattern="[0-9]{10,15}"
+                    (keypress)="sharedService.keyPressNumber($event)"
+                    required
+                    #socialSecurityNumber
+                  />
+                </div>
+                <small
+                  class="text-danger"
+                  *ngIf="
+                    socialSecurityNumber.touched && socialSecurityNumber.invalid
+                  "
+                  >Social Security Number is required</small
+                >
+              </div>
+              <div
+                class="col-xs-12 col-sm-12 col-md-12 form-group"
+                *ngIf="showDOB"
+              >
+                <label class="col-form-label"
+                  >Date of birth <span class="text-danger">*</span></label
+                >
+                <div class="">
+                  <p-calendar
+                    [yearNavigator]="true"
+                    [monthNavigator]="true"
+                    yearRange="1980:2050"
+                    readonlyInput="true"
+                    name="dateOfBirth"
+                    dateFormat="mm-dd-yy"
+                    dataType="string"
+                    name="dateOfBirth"
+                    aria-required="true"
+                    [(ngModel)]="dateOfBirth"
+                    required
+                  ></p-calendar>
+                </div>
+              </div>
+            </div>
+
+            <div class="submit-section">
+              <button
+                type="submit"
+                class="btn btn-primary submit-btn"
+                [(disabled)]="!f.valid || !ssn"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

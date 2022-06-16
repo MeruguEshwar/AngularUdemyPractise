@@ -1,0 +1,221 @@
+<div [ngClass]="{ 'page-wrapper': !isEmp }">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <ul class="breadcrumb" *ngIf="!isEmp">
+            <li class="breadcrumb-item">Dashboard</li>
+            <li class="breadcrumb-item active">Paystubs</li>
+          </ul>
+        </div>
+        <div class="col-auto float-right ml-auto" *ngIf="viewType">
+          <button
+            type="button"
+            class="btn add-btn"
+            (click)="showDialogToAdd()"
+            [disabled]="!selectedEmployeeAction?.employeeDetailsId"
+          >
+            <i class="fa fa-plus"></i> Add Paystub
+          </button>
+        </div>
+        <!-- <div class="col-auto float-right ml-auto">
+          <a href="javascript:void(0)" class="btn add-btn" [ngClass]="{'disabled': lstEmployes == '' && !lstEmployes.length}" (click)="lstEmployes && lstEmployes.length ? showDialogToAdd() : null"><i class="fa fa-plus"></i> Add
+            Paystub</a>
+        </div> -->
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row filter-row" *ngIf="viewType && !isEmp">
+      <div class="col-sm-6 col-md-3">
+        <div class="form-group form-focus select-focus focused emp-dropdown">
+          <p-dropdown
+            [options]="lstEmployes"
+            [(ngModel)]="selectedEmployee"
+            [filter]="true"
+            optionLabel="fullName"
+          ></p-dropdown>
+
+          <label class="focus-label"></label>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-2">
+        <a
+          href="javascript:void(0)"
+          class="btn btn-info btn-block"
+          (click)="getDetails(selectedEmployee)"
+        >
+          <i class="fa fa-search"></i>&nbsp;Get Paystubs</a
+        >
+      </div>
+    </div>
+    <!-- /Search Filter -->
+    <div class="col pl-0 pr-0 mt-2" *ngIf="!loading">
+      <p-table
+        [columns]="cols"
+        [value]="lstPaystubs"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        styleClass="ui-table-customers"
+        #dt
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [alwaysShowPaginator]="false"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [filterDelay]="0"
+        [globalFilterFields]="[
+          'netAmount',
+          'checkDate',
+          'grossEarnings',
+          'withHoldings',
+          'deductions',
+          'totalHours'
+        ]"
+      >
+        <ng-template pTemplate="caption">
+          Employee Paystubs -
+          <span class="username">{{ selectedEmployeeAction?.fullName }}</span>
+
+          <div class="ui-table-globalfilter-container">
+            <p-dropdown
+              [options]="yearLst"
+              [(ngModel)]="selectedYear"
+              (onChange)="
+                getyear($event.value, selectedEmployee.employeeDetailsId)
+              "
+              [filter]="true"
+            ></p-dropdown>
+            <input
+              pInputText
+              type="text"
+              (input)="dt.filterGlobal($event.target.value, 'contains')"
+              placeholder="Search"
+            />
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th
+              style="width: 300px"
+              [pSortableColumn]="'employeeName'"
+              *ngIf="selectedEmployee?.employeeDetailsId == 0"
+            >
+              Employee Name
+            </th>
+            <th
+              *ngFor="let col of columns"
+              [pSortableColumn]="col.field"
+              [ngClass]="
+                col.field == 'netAmount' ||
+                col.field == 'totalHours' ||
+                col.field == 'withHoldings' ||
+                col.field == 'deductions' ||
+                col.field == 'grossEarnings'
+                  ? 'text-right'
+                  : 'text-left'
+              "
+            >
+              {{ col.header }}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+            <!-- <th class="actions">Actions</th> -->
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr [pSelectableRow]="rowData">
+            <td *ngIf="selectedEmployee?.employeeDetailsId == 0">
+              {{ rowData["employeeName"] }}
+            </td>
+            <td
+              *ngFor="let col of columns"
+              [ngClass]="
+                col.field == 'netAmount' ||
+                col.field == 'totalHours' ||
+                col.field == 'withHoldings' ||
+                col.field == 'deductions' ||
+                col.field == 'grossEarnings'
+                  ? 'text-right'
+                  : 'text-left'
+              "
+            >
+              <ng-container *ngIf="col.field == 'status'">
+                {{ rowData[col.field] | status }}
+              </ng-container>
+
+              <ng-container
+                *ngIf="col.field == 'grossEarnings' && rowData[col.field]"
+              >
+                {{ organizationCurreny }} {{ rowData[col.field] }}
+              </ng-container>
+              <ng-container
+                *ngIf="col.field == 'withHoldings' && rowData[col.field]"
+              >
+                {{ organizationCurreny }} {{ rowData[col.field] }}
+              </ng-container>
+              <ng-container
+                *ngIf="col.field == 'deductions' && rowData[col.field]"
+              >
+                {{ organizationCurreny }} {{ rowData[col.field] }}
+              </ng-container>
+              <ng-container
+                *ngIf="col.field == 'netAmount' && rowData[col.field]"
+              >
+                {{ organizationCurreny }} {{ rowData[col.field] }}
+              </ng-container>
+              <ng-container *ngIf="col.field == 'totalHours'">
+                {{ rowData[col.field] }}
+              </ng-container>
+
+              <ng-container *ngIf="col.field == 'checkDate'">
+                <a href="javascript:void(0)" (click)="showView(rowData)">{{
+                  rowData[col.field]
+                }}</a>
+              </ng-container>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td
+              [attr.colspan]="cols?.length + 1"
+              style="text-align: center"
+              *ngIf="selectedEmployee?.employeeDetailsId == 0"
+            >
+              No Records Found.
+            </td>
+            <td
+              [attr.colspan]="cols?.length"
+              style="text-align: center"
+              *ngIf="selectedEmployee?.employeeDetailsId != 0"
+            >
+              No Records Found.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+<!-- /Page Content -->
+
+<ng-container *ngIf="paystubType == 'Add' || paystubType == 'Edit'">
+  <app-add-paystub
+    [paystubType]="paystubType"
+    [empName]="selectedEmployee"
+    [rowObj]="paystub"
+    [isEmp]="isEmp"
+    (onClose)="onPaystubAddCloseClick($event)"
+    (onReload)="onReload()"
+  >
+  </app-add-paystub>
+</ng-container>
+<ng-container *ngIf="paystubType == 'View'">
+  <app-view-paystub
+    [paystubType]="paystubType"
+    [paystub]="paystub"
+    (onClose)="onPaystubCloseClick($event)"
+    (onEdit)="showDialogToEdit($event)"
+  >
+  </app-view-paystub>
+</ng-container>

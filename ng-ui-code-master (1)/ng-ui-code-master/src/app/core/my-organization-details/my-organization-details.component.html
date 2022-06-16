@@ -1,0 +1,1560 @@
+<div class="page-wrapper" style="min-height: 344px">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">Dashboard</li>
+            <li class="breadcrumb-item active">My Organization Details</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="card mb-0">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="profile-view">
+              <div class="profile-img-wrap">
+                <div class="profile-img">
+                  <a href="javascript:void(0)" (click)="uploadFile()">
+                    <!-- <img alt="" src="assets/img/profiles/avatar-02.jpg" /> -->
+                    <img
+                      alt=""
+                      src="{{ pictureUrl + organizationDetails.logoPath }}"
+                    />
+                  </a>
+                </div>
+              </div>
+              <div class="profile-basic">
+                <div class="row">
+                  <div class="col-md-5">
+                    <div class="">
+                      <h3 class="user-name m-t-0 mb-0">
+                        {{ organizationDetails.organizationName }}
+                      </h3>
+                      <h6 class="text-muted">
+                        {{ organizationDetails.website || "-" }}
+                      </h6>
+                      <div class="staff-id">
+                        EIN Number : {{ organizationDetails.einNumber || " -" }}
+                      </div>
+                      <div class="small doj text-muted">
+                        No Of Employees :
+                        {{ organizationDetails.noOfEmployees || " -" }}
+                      </div>
+                      <div class="small doj text-muted">
+                        Phone Number :
+                        {{ organizationDetails.phoneNumber || " -" }}
+                      </div>
+                      <div
+                        class="small doj text-muted"
+                        *ngIf="selectedGlobalCurrencyDetails"
+                      >
+                        Organization Currency :
+                        {{
+                          selectedGlobalCurrencyDetails?.currency_icon || " -"
+                        }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="pro-edit">
+                <a
+                  class="edit-icon"
+                  href="javascript:void(0)"
+                  (click)="organizationUpdate()"
+                  ><i class="fa fa-pencil"></i
+                ></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card mb-0 mt-3">
+      <div class="card-body">
+        <section>
+          <div class="accordion" id="accordionExample">
+            <div class="card">
+              <div
+                class="card-header"
+                id="addressDetailsHeading"
+                data-toggle="collapse"
+                data-target="#addressDetails"
+                aria-expanded="false"
+                aria-controls="addressDetails"
+              >
+                <i class="fa fa-list-alt pl-3" aria-hidden="true"></i>
+                <button class="btn btn-link" type="button">Addresses</button>
+              </div>
+
+              <div
+                id="addressDetails"
+                class="collapse"
+                aria-labelledby="addressDetailsHeading"
+                data-parent="#accordionExample"
+              >
+                <div class="card-body pt-0">
+                  <div class="row">
+                    <div class="col-auto float-right ml-auto py-2">
+                      <a
+                        href="javascript:void(0)"
+                        class="btn add-btn"
+                        (click)="addressUpdate(organizationAddressDetails)"
+                        ><i class="fa fa-plus"></i> Add Address</a
+                      >
+                    </div>
+                    <!-- <div class="col-md-12">
+                      <a
+                        href="javascript:void(0)"
+                        class="add-more float-right"
+                        (click)="addressUpdate(organizationAddressDetails)"
+                        ><i class="fa fa-plus-circle"></i> Add More</a
+                      >
+                    </div> -->
+
+                    <div class="row" *ngIf="organizationDetails.addresses">
+                      <div class="col-md-12">
+                        <p-table
+                          [columns]="addressCols"
+                          [value]="organizationDetails.addresses"
+                          [rowsPerPageOptions]="[5, 10, 25, 50]"
+                          styleClass="ui-table-customers"
+                          #addressDT
+                          [paginator]="true"
+                          [rows]="5"
+                          [showCurrentPageReport]="true"
+                          [alwaysShowPaginator]="false"
+                          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                          [filterDelay]="0"
+                          [globalFilterFields]="[
+                            'addressLine1',
+                            'addressLine2',
+                            'city',
+                            'state',
+                            'country'
+                          ]"
+                          class="invoice-list"
+                        >
+                          <ng-template pTemplate="header" let-columns>
+                            <tr>
+                              <th
+                                *ngFor="let col of columns"
+                                [pSortableColumn]="col.field"
+                              >
+                                {{ col.header }}
+                                <p-sortIcon [field]="col.field"></p-sortIcon>
+                              </th>
+                              <th style="width: 80px">Actions</th>
+                            </tr>
+                          </ng-template>
+                          <ng-template
+                            pTemplate="body"
+                            let-rowData
+                            let-columns="columns"
+                            let-rowIndex="rowIndex"
+                          >
+                            <tr [pSelectableRow]="rowData">
+                              <ng-container *ngFor="let col of columns">
+                                <td>
+                                  {{ rowData[col.field] }}
+                                </td>
+                              </ng-container>
+                              <td>
+                                <a
+                                  href="javascript:void(0)"
+                                  class="edit-icon"
+                                  (click)="addressUpdate(rowData)"
+                                  ><i class="fa fa-pencil"></i
+                                ></a>
+                              </td>
+                            </tr>
+                          </ng-template>
+                          <ng-template pTemplate="emptymessage">
+                            <tr>
+                              <td
+                                [attr.colspan]="addressCols.length"
+                                style="text-align: center"
+                              >
+                                No Records found.
+                              </td>
+                            </tr>
+                          </ng-template>
+                        </p-table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div
+                class="card-header"
+                id="remittanceHeading"
+                data-toggle="collapse"
+                data-target="#remittance"
+                aria-expanded="false"
+                aria-controls="remittance"
+              >
+                <i class="fa fa-check-square-o pl-3" aria-hidden="true"></i>
+                <button class="btn btn-link" type="button">Remittances</button>
+              </div>
+
+              <div
+                id="remittance"
+                class="collapse"
+                aria-labelledby="remittanceHeading"
+                data-parent="#accordionExample"
+              >
+                <div class="card-body pt-0">
+                  <div class="row">
+                    <div class="col-auto float-right ml-auto py-2">
+                      <a
+                        href="javascript:void(0)"
+                        class="btn add-btn"
+                        (click)="
+                          remittanceUpdate(organizationRemittanceDetails)
+                        "
+                        ><i class="fa fa-plus"></i> Add Remittance</a
+                      >
+                    </div>
+                    <!-- <div class="col-md-12">
+                      <a
+                        class="add-more float-right"
+                        href="javascript:void(0)"
+                        (click)="
+                          remittanceUpdate(organizationRemittanceDetails)
+                        "
+                        ><i class="fa fa-plus-circle"></i> Add</a
+                      >
+                    </div> -->
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <p-table
+                        [columns]="remittanceCols"
+                        [value]="organizationDetails.remittances"
+                        [rowsPerPageOptions]="[5, 10, 25, 50]"
+                        styleClass="ui-table-customers"
+                        #remitanceDT
+                        [paginator]="true"
+                        [rows]="5"
+                        [showCurrentPageReport]="true"
+                        [alwaysShowPaginator]="false"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [filterDelay]="0"
+                        [globalFilterFields]="[
+                          'bankName',
+                          'friendlyName',
+                          'accountName',
+                          'accountNumber',
+                          'ifscCode',
+                          'routingNumber',
+                          'otherDetails'
+                        ]"
+                        class="invoice-list"
+                      >
+                        <ng-template pTemplate="header" let-columns>
+                          <tr>
+                            <th
+                              *ngFor="let col of columns"
+                              [pSortableColumn]="col.field"
+                            >
+                              {{ col.header }}
+                              <p-sortIcon [field]="col.field"></p-sortIcon>
+                            </th>
+                            <th style="width: 80px">Actions</th>
+                          </tr>
+                        </ng-template>
+                        <ng-template
+                          pTemplate="body"
+                          let-rowData
+                          let-columns="columns"
+                          let-rowIndex="rowIndex"
+                        >
+                          <tr [pSelectableRow]="rowData">
+                            <ng-container *ngFor="let col of columns">
+                              <td>
+                                {{ rowData[col.field] }}
+                              </td>
+                            </ng-container>
+                            <td>
+                              <a
+                                href="javascript:void(0)"
+                                class="edit-icon"
+                                (click)="remittanceUpdate(rowData)"
+                                ><i class="fa fa-pencil"></i
+                              ></a>
+                            </td>
+                          </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                          <tr>
+                            <td
+                              [attr.colspan]="remittanceCols.length"
+                              style="text-align: center"
+                            >
+                              No Records found.
+                            </td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div
+                class="card-header"
+                id="documentsHeading"
+                data-toggle="collapse"
+                data-target="#documents"
+                aria-expanded="false"
+                aria-controls="documents"
+              >
+                <i class="fa fa-files-o pl-3" aria-hidden="true"></i>
+                <button class="btn btn-link" type="button">Documents</button>
+              </div>
+
+              <div
+                id="documents"
+                class="collapse"
+                aria-labelledby="documentsHeading"
+                data-parent="#accordionExample"
+              >
+                <div class="card-body p-0">
+                  <app-organization-documents></app-organization-documents>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div
+                class="card-header"
+                id="projectsHeading"
+                data-toggle="collapse"
+                data-target="#projects"
+                aria-expanded="false"
+                aria-controls="projects"
+              >
+                <i class="fa fa-cubes pl-3" aria-hidden="true"></i>
+                <button class="btn btn-link" type="button">Projects</button>
+              </div>
+
+              <div
+                id="projects"
+                class="collapse"
+                aria-labelledby="projectsHeading"
+                data-parent="#accordionExample"
+              >
+                <div class="card-body pt-2">
+                  <div class="row">
+                    <!-- <div class="col-auto float-right ml-auto py-2">
+                      <a
+                        href="javascript:void(0)"
+                        class="btn add-btn"
+                        (click)="
+                        projectUpdate(project)
+                        "
+                        ><i class="fa fa-plus"></i> Add Project</a
+                      >
+                    </div> -->
+                    <!-- <div class="col-md-12">
+                      <a
+                        class="add-more float-right"
+                        href="javascript:void(0)"
+                        (click)="projectUpdate(project)"
+                        ><i class="fa fa-plus-circle"></i> Add More</a
+                      >
+                    </div> -->
+                  </div>
+                  <div class="row">
+                    <div class="col pl-0 pr-0 mt-2">
+                      <p-table
+                        [columns]="projectCols"
+                        [value]="projectsDetailsList"
+                        [rowsPerPageOptions]="[10, 25, 50]"
+                        styleClass="ui-table-customers"
+                        #pdt
+                        [paginator]="true"
+                        [rows]="10"
+                        [showCurrentPageReport]="true"
+                        [alwaysShowPaginator]="false"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [filterDelay]="0"
+                        [globalFilterFields]="[
+                          'projectName',
+                          'startDate',
+                          'endDate'
+                        ]"
+                      >
+                        <ng-template pTemplate="caption">
+                          <div class="float-right">
+                            <a
+                              href="javascript:void(0)"
+                              class="btn add-btn"
+                              (click)="projectUpdate(project)"
+                              ><i class="fa fa-plus"></i> Add Project</a
+                            >
+                          </div>
+                          <div class="ui-table-globalfilter-container">
+                            <input
+                              pInputText
+                              type="text"
+                              (input)="
+                                pdt.filterGlobal(
+                                  $event.target.value,
+                                  'contains'
+                                )
+                              "
+                              placeholder="Search"
+                            />
+                          </div>
+                        </ng-template>
+                        <ng-template pTemplate="header" let-columns>
+                          <tr>
+                            <th
+                              *ngFor="let col of columns"
+                              [pSortableColumn]="col.field"
+                            >
+                              {{ col.header }}
+                              <p-sortIcon [field]="col.field"></p-sortIcon>
+                            </th>
+                            <th style="width: 10%">Status</th>
+                            <th style="width: 5%"></th>
+                          </tr>
+                        </ng-template>
+                        <ng-template
+                          pTemplate="body"
+                          let-rowData
+                          let-columns="columns"
+                        >
+                          <tr [pSelectableRow]="rowData">
+                            <td
+                              *ngFor="let col of columns"
+                              [pSelectableRow]="col.field"
+                            >
+                              <ng-container *ngIf="col.field == 'inHouse'">
+                                <ng-container
+                                  *ngIf="
+                                    +rowData[col.field] ? true : false;
+                                    else notApproved
+                                  "
+                                >
+                                  <i
+                                    class="fa fa-check"
+                                    style="color: #49d626; font-size: x-large"
+                                    aria-hidden="true"
+                                  ></i>
+                                </ng-container>
+                                <ng-template #notApproved>
+                                  <i
+                                    class="fa fa-times"
+                                    style="color: #f56464e6; font-size: x-large"
+                                    aria-hidden="true"
+                                  ></i>
+                                </ng-template>
+                              </ng-container>
+                              <ng-container *ngIf="col.field == 'projectName'">
+                                <a
+                                  href="javascript:void(0)"
+                                  [routerLink]="[
+                                    '/admin/projects/project/view'
+                                  ]"
+                                  [state]="{
+                                    projectDetailsId: rowData.projectDetailsId
+                                  }"
+                                  >{{ rowData[col.field] }}</a
+                                >
+                              </ng-container>
+                              <ng-container *ngIf="col.field == 'description'">
+                                <div
+                                  class="d-flex justify-content-start"
+                                  pTooltip="{{ rowData[col.field] }}"
+                                  tooltipPosition="top"
+                                  *ngIf="rowData[col.field]"
+                                >
+                                  <div class="tab-descp">
+                                    {{ rowData[col.field] }}
+                                  </div>
+                                  <div>
+                                    <i
+                                      class="fa fa-info-circle ml-3"
+                                      aria-hidden="true"
+                                    ></i>
+                                  </div>
+                                </div>
+                              </ng-container>
+
+                              <ng-container
+                                *ngIf="
+                                  col.field != 'description' &&
+                                  col.field != 'projectName' &&
+                                  col.field != 'inHouse'
+                                "
+                              >
+                                {{ rowData[col.field] }}
+                              </ng-container>
+                            </td>
+                            <td>
+                              <ng-container *ngIf="rowData.endDate">
+                                <span class="badge bg-inverse-completed"
+                                  >COMPLETE</span
+                                >
+                              </ng-container>
+                              <ng-container *ngIf="!rowData.endDate">
+                                <span class="badge bg-inverse-in-progress"
+                                  >IN PROGRESS</span
+                                >
+                              </ng-container>
+                            </td>
+                            <td>
+                              <a
+                                href="javascript:void(0)"
+                                class="edit-icon"
+                                (click)="projectUpdate(rowData)"
+                                ><i class="fa fa-pencil"></i
+                              ></a>
+                            </td>
+                          </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                          <tr>
+                            <td
+                              [attr.colspan]="projectCols.length"
+                              style="text-align: center"
+                            >
+                              No projects found.
+                            </td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div
+                class="card-header"
+                id="ApproverHeading"
+                data-toggle="collapse"
+                data-target="#approvers"
+                aria-expanded="false"
+                aria-controls="projects"
+              >
+                <i class="fa fa-cubes pl-3" aria-hidden="true"></i>
+                <button class="btn btn-link" type="button">Approvers</button>
+              </div>
+
+              <div
+                id="approvers"
+                class="collapse"
+                aria-labelledby="ApproverHeading"
+                data-parent="#accordionExample"
+              >
+                <app-approvers [isApproverShow]="true"></app-approvers>
+              </div>
+            </div>
+
+            <div class="card">
+              <div
+                class="card-header"
+                id="registerredstatesHeading"
+                data-toggle="collapse"
+                data-target="#registerredstates"
+                aria-expanded="false"
+                aria-controls="registerredstates"
+              >
+                <i class="fa fa-globe pl-3" aria-hidden="true"></i>
+                <button class="btn btn-link" type="button">
+                  Registerred States
+                </button>
+              </div>
+
+              <div
+                id="registerredstates"
+                class="collapse"
+                aria-labelledby="registerredstatesHeading"
+                data-parent="#accordionExample"
+              >
+                <div class="card-body"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+  <!-- /Page Content -->
+
+  <!-- Organization Details Modal -->
+  <div
+    id="organization_info"
+    class="modal custom-modal backdrop"
+    role="dialog"
+    [ngStyle]="{ display: organizationInfo }"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title pb-2">Organization Details</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            (click)="closeOrgAddmodal()"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="saveOrganization(oF)" #oF="ngForm">
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label
+                        >EIN Number<span class="text-danger">*</span></label
+                      >
+                      <p-inputMask
+                        id="ssnno"
+                        mask="99-9999999"
+                        [(ngModel)]="organizationDetails.einNumber"
+                        name="einNumber"
+                        unmask="true"
+                        #einNumber="ngModel"
+                      ></p-inputMask>
+                      <!-- <input
+                        type="text"
+                        class="form-control"
+                        name="einNumber"
+                        [(ngModel)]="organizationDetails.einNumber"
+                        required
+                        #einNumber="ngModel"
+                        maxlength="9"
+                        pattern="[0-9-]{1,15}"
+                        (keypress)="sharedService.keyPressEIN($event)"
+                      /> -->
+                      <small
+                        class="text-danger"
+                        *ngIf="einNumber.touched && einNumber.invalid"
+                        >The given value is not valid.</small
+                      >
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label
+                        >No Of Employees
+                        <span class="text-danger">*</span></label
+                      >
+                      <p-dropdown
+                        name="noOfEmployees"
+                        [options]="noOfEmployees"
+                        [(ngModel)]="selectedNoOfEmployess"
+                        placeholder="Select No Of Employees"
+                        required
+                        [filter]="true"
+                      >
+                      </p-dropdown>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Phone Number</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="phoneNumber"
+                        [(ngModel)]="organizationDetails.phoneNumber"
+                        #phoneNumber="ngModel"
+                        maxlength="15"
+                        pattern="[0-9]{10,15}"
+                        (keypress)="sharedService.keyPressNumber($event)"
+                      />
+
+                      <small
+                        class="text-danger"
+                        *ngIf="phoneNumber.touched && phoneNumber.invalid"
+                        >The given number is not valid.</small
+                      >
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Website</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="website"
+                        [(ngModel)]="organizationDetails.website"
+                        pattern="((https?|ftp|smtp):\/\/)?(www.)?\S*\.[a-z]{2,}\.*"
+                        (keypress)="sharedService.keyPressWebsite($event)"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="submit-section">
+              <button
+                class="btn btn-success submit-btn"
+                type="submit"
+                [disabled]="!oF.valid"
+              >
+                <i class="fa fa-save"></i>&nbsp;Save
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger submit-btn ml-2"
+                (click)="closeOrgAddmodal()"
+              >
+                <i class="fa fa-times"></i>&nbsp;Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Profile Modal -->
+  <!-- file upload Modal -->
+  <div
+    id="organization_info"
+    class="modal custom-modal backdrop"
+    role="dialog"
+    [ngStyle]="{ display: fileUploadInfo }"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title pb-2">Upload Organization Logo</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            (click)="closeOrgAddmodal()"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="saveFileUpload(fU)" #fU="ngForm">
+            <div class="card">
+              <div class="card-body">
+                <div class="form-group">
+                  <!-- <label class="col-form-label"
+                    >File To Upload <span class="text-danger">*</span></label
+                  > -->
+                  <input
+                    (change)="onFileChange($event, fU)"
+                    name="fileToUpload"
+                    class="form-control"
+                    type="file"
+                    required
+                    #fileInput
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="submit-section">
+              <button
+                class="btn btn-success submit-btn"
+                type="submit"
+                [disabled]="!fU.valid || !fileToUpload"
+              >
+                <i class="fa fa-upload"></i>&nbsp; Upload
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger submit-btn ml-2"
+                (click)="closeOrgAddmodal()"
+              >
+                <i class="fa fa-times"></i>&nbsp;Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /file upload Modal -->
+
+  <!-- address Info Modal -->
+  <div
+    id="address_info_modal"
+    class="modal custom-modal backdrop"
+    role="dialog"
+    [ngStyle]="{ display: addressInfo }"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Address Details</h5>
+          <button
+            type="button"
+            class="close"
+            (click)="closeAddmodal(aF)"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="saveAddress(aF)" #aF="ngForm">
+            <div class="">
+              <div class="card">
+                <div class="card-body">
+                  <!-- <h3 class="card-title">
+                    Address Details
+                    <a href="javascript:void(0);" class="delete-icon"
+                      ><i class="fa fa-trash-o"></i
+                    ></a>
+                  </h3> -->
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label
+                          >Address Line 1
+                          <span class="text-danger">*</span></label
+                        >
+                        <textarea
+                          cols="3"
+                          rows="3"
+                          class="form-control"
+                          name="addressLine1"
+                          [(ngModel)]="organizationAddressDetails.addressLine1"
+                          required
+                          maxlength="150"
+                          (keypress)="sharedService.keyPressAddress($event)"
+                        >
+                        </textarea>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Address Line 2 </label>
+                        <textarea
+                          cols="3"
+                          rows="3"
+                          class="form-control"
+                          name="addressLine2"
+                          [(ngModel)]="organizationAddressDetails.addressLine2"
+                          maxlength="150"
+                          (keypress)="sharedService.keyPressAddress($event)"
+                        ></textarea>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>City <span class="text-danger">*</span></label>
+                        <input
+                          class="form-control"
+                          type="text"
+                          name="city"
+                          [(ngModel)]="organizationAddressDetails.city"
+                          required
+                          maxlength="150"
+                          (keypress)="sharedService.keyPressAlphabet($event)"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>State <span class="text-danger">*</span></label>
+                        <input
+                          class="form-control"
+                          type="text"
+                          name="state"
+                          [(ngModel)]="organizationAddressDetails.state"
+                          required
+                          maxlength="150"
+                          (keypress)="sharedService.keyPressAlphabet($event)"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label
+                          >Country <span class="text-danger">*</span></label
+                        >
+                        <!-- <input
+                          class="form-control"
+                          type="text"
+                          name="country"
+                          [(ngModel)]="organizationAddressDetails.country"
+                          required
+                          maxlength="150"
+                          (keypress)="sharedService.keyPressAlphabet($event)"
+                        /> -->
+                        <p-dropdown
+                          name="country"
+                          [options]="countryDetails"
+                          [(ngModel)]="addressSelectedCountryDetails"
+                          placeholder="Select Country"
+                          optionLabel="name"
+                          (onChange)="selectAddressCountry($event.value)"
+                          required
+                          maxlength="150"
+                          (keypress)="sharedService.keyPressAlphabet($event)"
+                          [filter]="true"
+                        >
+                        </p-dropdown>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>ZipCode </label>
+                        <input
+                          class="form-control"
+                          type="text"
+                          name="pinCode"
+                          [(ngModel)]="organizationAddressDetails.pinCode"
+                          maxlength="150"
+                          (keypress)="
+                            sharedService.keyPressAlphaNumaric($event)
+                          "
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="submit-section mt-0">
+              <button
+                class="btn btn-success submit-btn"
+                type="submit"
+                [disabled]="!aF.valid"
+              >
+                <i class="fa fa-save"></i>&nbsp;Save
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger submit-btn ml-2"
+                (click)="closeAddmodal(aF)"
+              >
+                <i class="fa fa-times"></i>&nbsp;Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /address Info Modal -->
+  <!-- remittance Info Modal -->
+  <div
+    id="remittance_info_modal"
+    class="modal custom-modal backdrop"
+    role="dialog"
+    [ngStyle]="{ display: remittanceInfo }"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Remittance Details</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            (click)="closeAddmodal(rF)"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="saveRemittance(rF)" #rF="ngForm">
+            <div class="form-scroll">
+              <div class="card">
+                <div class="card-body">
+                  <!-- <h3 class="card-title">
+                    Remittance Details
+                    <a href="javascript:void(0);" class="delete-icon"
+                      ><i class="fa fa-trash-o"></i
+                    ></a>
+                  </h3> -->
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label
+                          >Bank Name <span class="text-danger">*</span></label
+                        >
+                        <input
+                          class="form-control"
+                          type="text"
+                          name="bankName"
+                          [(ngModel)]="organizationRemittanceDetails.bankName"
+                          required
+                          maxlength="150"
+                          (keypress)="sharedService.keyPressAlphabet($event)"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label
+                          >Country <span class="text-danger">*</span></label
+                        >
+                        <p-dropdown
+                          name="remittanceCountryDetails"
+                          [options]="countryDetails"
+                          [(ngModel)]="selectedCountryDetails"
+                          placeholder="Select Country"
+                          optionLabel="name"
+                          (onChange)="selectCountry($event.value)"
+                          required
+                          maxlength="150"
+                          (keypress)="sharedService.keyPressAlphabet($event)"
+                          [filter]="true"
+                        >
+                        </p-dropdown>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label
+                          >Friendly Name
+                          <span class="text-danger">*</span></label
+                        >
+                        <input
+                          class="form-control"
+                          type="text"
+                          name="friendlyName"
+                          [(ngModel)]="
+                            organizationRemittanceDetails.friendlyName
+                          "
+                          required
+                          maxlength="150"
+                          (keypress)="sharedService.keyPressAlphabet($event)"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label
+                          >Account Name
+                          <span class="text-danger">*</span></label
+                        >
+                        <input
+                          class="form-control"
+                          type="text"
+                          name="accountName"
+                          [(ngModel)]="
+                            organizationRemittanceDetails.accountName
+                          "
+                          required
+                          maxlength="150"
+                          (keypress)="sharedService.keyPressAlphabet($event)"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label
+                          >Account Number
+                          <span class="text-danger">*</span></label
+                        >
+                        <input
+                          class="form-control"
+                          type="password"
+                          name="accountNumber"
+                          #accountNumber="ngModel"
+                          [(ngModel)]="
+                            organizationRemittanceDetails.accountNumber
+                          "
+                          maxlength="150"
+                          (keypress)="sharedService.keyPressNumber($event)"
+                          required
+                        />
+                        <small
+                          class="text-danger"
+                          *ngIf="
+                            accountNumber.touched &&
+                            accountNumber.errors?.required
+                          "
+                          >Account Number is required</small
+                        >
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label
+                          >Confirm Account Number
+                          <span class="text-danger">*</span></label
+                        >
+                        <input
+                          class="form-control"
+                          type="text"
+                          name="confirmAccountNumber"
+                          #confirmAccountNumber="ngModel"
+                          [(ngModel)]="
+                            organizationRemittanceDetails.confirmAccountNumber
+                          "
+                          pattern="{{
+                            organizationRemittanceDetails.accountNumber
+                          }}"
+                          maxlength="150"
+                          (keypress)="sharedService.keyPressNumber($event)"
+                          (blur)="confirmAccountNumberValidation()"
+                          required
+                        />
+                        <small
+                          class="text-danger"
+                          *ngIf="
+                            confirmAccountNumber.touched &&
+                            confirmAccountNumber.errors?.required
+                          "
+                          >Confirm Account Number is required</small
+                        >
+                        <small
+                          class="text-danger"
+                          *ngIf="
+                            confirmAccountNumber.touched &&
+                            confirmAccountNumber.errors?.pattern
+                          "
+                          >Account Number and confirm Account Number not
+                          matched</small
+                        >
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label
+                          >Bank Address
+                          <span class="text-danger">*</span></label
+                        >
+                        <textarea
+                          cols="3"
+                          rows="3"
+                          class="form-control"
+                          name="accountAddress"
+                          [(ngModel)]="
+                            organizationRemittanceDetails.accountAddress
+                          "
+                          required
+                          maxlength="150"
+                          (keypress)="sharedService.keyPressAddress($event)"
+                        >
+                        </textarea>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Other Details </label>
+                        <textarea
+                          cols="3"
+                          rows="3"
+                          class="form-control"
+                          name="otherDetails"
+                          [(ngModel)]="
+                            organizationRemittanceDetails.otherDetails
+                          "
+                          maxlength="150"
+                          (keypress)="sharedService.keyPressAddress($event)"
+                        >
+                        </textarea>
+                      </div>
+                    </div>
+                    <div
+                      class="col-md-6"
+                      *ngIf="organizationRemittanceDetails.country == 101"
+                    >
+                      <div class="form-group">
+                        <label
+                          >IFSC Code <span class="text-danger">*</span>
+                        </label>
+                        <input
+                          class="form-control"
+                          type="text"
+                          name="ifscCode"
+                          [(ngModel)]="organizationRemittanceDetails.ifscCode"
+                          required
+                          maxlength="150"
+                          (keypress)="
+                            sharedService.keyPressAlphaNumaric($event)
+                          "
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="col-md-6"
+                      *ngIf="organizationRemittanceDetails.country == 233"
+                    >
+                      <div class="form-group">
+                        <label
+                          >Routing Number
+                          <span class="text-danger">*</span></label
+                        >
+                        <input
+                          class="form-control"
+                          type="text"
+                          name="routingNumber"
+                          [(ngModel)]="
+                            organizationRemittanceDetails.routingNumber
+                          "
+                          required
+                          maxlength="150"
+                          (keypress)="
+                            sharedService.keyPressAlphaNumaric($event)
+                          "
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="submit-section mt-0">
+              <button
+                class="btn btn-success submit-btn"
+                type="submit"
+                [disabled]="!rF.valid"
+              >
+                <i class="fa fa-save"></i>&nbsp;Save
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger submit-btn ml-2"
+                (click)="closeAddmodal(rF)"
+              >
+                <i class="fa fa-times"></i>&nbsp;Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /remittance Info Modal -->
+
+  <!-- documents Info Modal -->
+  <div
+    id="document_info_modal"
+    class="modal custom-modal backdrop"
+    role="dialog"
+    [ngStyle]="{ display: documentInfo }"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Document Details</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            (click)="closeAddmodalDocs(dF)"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="saveDocument(dF)" #dF="ngForm">
+            <div class="form-scroll">
+              <div class="card">
+                <div class="card-body">
+                  <!-- <h3 class="card-title">
+                    Document Details
+                    <a href="javascript:void(0);" class="delete-icon"
+                      ><i class="fa fa-trash-o"></i
+                    ></a>
+                  </h3> -->
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label
+                          >File to Upload
+                          <span class="text-danger">*</span></label
+                        >
+                        <input
+                          (change)="onFileChange($event, dF)"
+                          name="fileToUpload"
+                          class="form-control"
+                          type="file"
+                          required
+                          #fileInput
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label
+                          >Document Title
+                          <span class="text-danger">*</span></label
+                        >
+                        <input
+                          class="form-control"
+                          type="text"
+                          name="documentTitle"
+                          [(ngModel)]="
+                            organizationDocumentDetails.documentTitle
+                          "
+                          required
+                          maxlength="150"
+                          (keypress)="sharedService.keyPressAlphabet($event)"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label
+                          >Document Number
+                          <span class="text-danger">*</span></label
+                        >
+                        <input
+                          class="form-control"
+                          type="text"
+                          name="documentNumber"
+                          [(ngModel)]="
+                            organizationDocumentDetails.documentNumber
+                          "
+                          required
+                          maxlength="150"
+                          (keypress)="sharedService.keyPressAlphabet($event)"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label
+                          >Document Expiry Date
+                          <span class="text-danger">*</span></label
+                        >
+                        <p-calendar
+                          name="documentExpiryDate"
+                          [(ngModel)]="
+                            organizationDocumentDetails.documentExpiryDate
+                          "
+                          dataType="string"
+                          showIcon="true"
+                          dateFormat="mm-dd-yy"
+                          required
+                        ></p-calendar>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="col-form-label">Alert Required</label>
+                        <div>
+                          <p-inputSwitch
+                            name="alertRequired"
+                            [(ngModel)]="
+                              organizationDocumentDetails.alertRequired
+                            "
+                          ></p-inputSwitch>
+                        </div>
+
+                        <!-- <p-checkbox
+                        name="alertRequired"
+                        [(ngModel)]="organizationDocumentDetails.alertRequired"
+                        [binary]="true"
+                        label="Alert Required"
+                      ></p-checkbox> -->
+                      </div>
+                    </div>
+                    <div
+                      class="col-md-6"
+                      *ngIf="organizationDocumentDetails.alertRequired"
+                    >
+                      <div class="form-group">
+                        <label
+                          >Alert Before No Of Days
+                          <span class="text-danger">*</span></label
+                        >
+                        <input
+                          class="form-control"
+                          type="text"
+                          name="alertBeforeNoOfDays"
+                          #alertBeforeNoOfDays="ngModel"
+                          [(ngModel)]="
+                            organizationDocumentDetails.alertBeforeNoOfDays
+                          "
+                          maxlength="150"
+                          (keypress)="sharedService.keyPressNumber($event)"
+                          required
+                        />
+                        <small
+                          class="text-danger"
+                          *ngIf="
+                            alertBeforeNoOfDays.touched &&
+                            alertBeforeNoOfDays.errors?.required
+                          "
+                          >Alert Before No Of Days is required</small
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="submit-section mt-0">
+              <button
+                class="btn btn-success submit-btn"
+                type="submit"
+                [disabled]="!dF.valid"
+              >
+                <i class="fa fa-upload"></i>&nbsp;Upload
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /documents Info Modal -->
+  <!-- Project Upload Modal -->
+  <div
+    id="add_employee"
+    class="modal custom-modal backdrop"
+    [ngStyle]="{ display: addPoject }"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Project Details</h5>
+          <button
+            type="button"
+            class="close"
+            (click)="closeAddmodal(pF)"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form #pF="ngForm">
+          <div class="modal-body">
+            <section>
+              <div class="row">
+                <div class="col-sm-6" style="color: red">
+                  {{ errLabel }}
+                </div>
+              </div>
+            </section>
+            <section>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label class="col-form-label"
+                              >Project Name
+                              <span class="text-danger">*</span></label
+                            >
+                            <input
+                              pInputText
+                              class="form-control"
+                              (blur)="checkProjectAlreadyExist()"
+                              name="projectName"
+                              [(ngModel)]="project.projectName"
+                              placeholder=""
+                              type="text"
+                              maxlength="150"
+                              required
+                              (keypress)="
+                                sharedService.keyPressProject_SupplierName(
+                                  $event
+                                )
+                              "
+                            />
+                          </div>
+                        </div>
+                        <div class="col-sm-3">
+                          <div class="form-group">
+                            <label class="col-form-label"
+                              >Start Date<span class="text-danger">
+                                *</span
+                              ></label
+                            >
+                            <p-calendar
+                              name="startDate"
+                              [(ngModel)]="project.startDate"
+                              showIcon="true"
+                              dateFormat="mm-dd-yy"
+                              dataType="string"
+                              required
+                            ></p-calendar>
+                          </div>
+                        </div>
+                        <div class="col-sm-3">
+                          <div class="form-group">
+                            <label class="col-form-label">End Date</label>
+                            <p-calendar
+                              name="endDate"
+                              [(ngModel)]="project.endDate"
+                              showIcon="true"
+                              dateFormat="mm-dd-yy"
+                              dataType="string"
+                            ></p-calendar>
+                          </div>
+                        </div>
+                        <div class="col-sm-12">
+                          <div class="form-group">
+                            <label class="col-form-label">Description </label>
+                            <textarea
+                              class="form-control"
+                              [(ngModel)]="project.description"
+                              name="desc"
+                              placeholder="Enter Your description here..."
+                              maxlength="2500"
+                              cols="3"
+                              (keypress)="sharedService.keyPressAddress($event)"
+                            >
+                            </textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="submit-section">
+                    <button
+                      type="button"
+                      class="btn btn-success submit-btn"
+                      (click)="saveProject()"
+                      [disabled]="!project.projectName || !pF.valid"
+                    >
+                      <i class="fa fa-save"></i>&nbsp;Save
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-danger submit-btn ml-2"
+                      (click)="closeAddmodal(pF)"
+                    >
+                      <i class="fa fa-times"></i>&nbsp;Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- /Project Upload Modal -->
+</div>

@@ -1,0 +1,31 @@
+.approvertittlename {
+  padding: 10px;
+  background-color: #f4f4f4;
+  text-align: center;
+}
+.approverNote {
+  padding: 10px;
+  background-color: #f4f4f4;
+  text-align: left;
+}
+:host ::ng-deep .ui-table .ui-table-tbody > tr > td,
+.list-group-item {
+  border: none;
+  padding: 5px 15px;
+}
+:host ::ng-deep .ui-inputtext {
+  height: auto;
+}
+.card-body-height {
+  max-height: 300px;
+  overflow: auto;
+  min-height: 50px;
+}
+.card-body-footer {
+  padding: 10px;
+  text-align: center;
+}
+
+:host ::ng-deep .ui-dialog .ui-dialog-titlebar {
+  display: none;
+}

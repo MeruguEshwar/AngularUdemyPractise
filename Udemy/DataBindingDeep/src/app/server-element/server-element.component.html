@@ -1,0 +1,9 @@
+    <div class="list-group">
+        <div class="list-group-item heading">{{ element.name }}</div>
+        <div class="list-group-item">
+          <p>
+            <strong *ngIf="element.type === 'server'" style="color: red">{{ element.content }}</strong>
+            <em *ngIf="element.type === 'blueprint'">{{ element.content }}</em>
+          </p>
+      </div>
+    </div>

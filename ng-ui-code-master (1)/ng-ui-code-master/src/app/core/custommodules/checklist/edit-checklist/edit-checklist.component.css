@@ -1,0 +1,11 @@
+.action-td {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.btn-primary:hover {
+  color: #fff !important;
+}
+.table td {
+  padding: 5px 10px 5px 10px !important;
+}

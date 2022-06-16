@@ -1,0 +1,41 @@
+.page_content {
+  border: 1px solid #c8c8c8;
+  background-color: white;
+}
+.nav-tabs.nav-tabs-bottom > li > a.active {
+  background-color: #013893;
+  color: white;
+}
+.tab-content {
+  padding: 0px;
+}
+/* tabview css*/
+
+:host ::ng-deep .ui-tabview-left > .ui-tabview-panels {
+  border-left: none;
+}
+
+:host ::ng-deep .ui-tabview.ui-tabview-left .ui-tabview-nav {
+  overflow: overlay;
+  background-color: white;
+  height: 382px;
+  border: 1px solid #c8c8c8;
+  border-radius: 0px;
+}
+
+/* /tabview css*/
+
+/* Document tabview css*/
+
+#documents .actions .action_Button a {
+  display: inline;
+  padding: 4px;
+}
+a:not([href]):not([tabindex]) {
+  cursor: pointer;
+  color: #013893;
+}
+/* /Document tabview css*/
+.add-btn {
+  font-size: 14px;
+}

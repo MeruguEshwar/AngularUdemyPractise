@@ -1,0 +1,171 @@
+<div class="main-wrapper" [ngClass]="{ routing: nonRoutingModule }">
+  <div class="account-content" [ngClass]="{ 'p-0': nonRoutingModule }">
+    <div
+      class="container"
+      id="container"
+      [ngClass]="{ routing: nonRoutingModule }"
+    >
+      <div class="form-container sign-up-container">
+        <div class="form">
+          <app-register
+            [showRegistration]="true"
+            (onClose)="onCloseEvent($event)"
+          ></app-register>
+        </div>
+      </div>
+      <div class="form-container sign-in-container">
+        <div class="form">
+          <!-- Account Logo -->
+          <div class="account-logo">
+            <a href="javascript:void(0)">
+              <img src="assets/img/logo2.png" class="inv-logo" alt=""
+            /></a>
+          </div>
+          <!-- /Account Logo -->
+          <form
+            autocomplete="off"
+            name="loginForm"
+            (ngSubmit)="onFormSubmit()"
+            [formGroup]="loginForm"
+            autocomplete="off"
+            *ngIf="isloginShow"
+          >
+            <div class="card m-0">
+              <h4 class="card-header text-center">Sign In</h4>
+              <div class="card-body">
+                <div class="form-group">
+                  <label>Email<span class="text-danger">*</span></label
+                  ><input
+                    tabindex="1"
+                    placeholder="Email"
+                    class="form-control"
+                    formControlName="userName"
+                    type="text"
+                    [(ngModel)]="userLogin.userName"
+                    required
+                    (keypress)="sharedService.keyPressEmail($event)"
+                  />
+                  <small
+                    class="text-danger"
+                    *ngIf="userName.touched && userName.invalid"
+                    >The given email id is not a valid format.</small
+                  >
+                </div>
+                <div class="form-group">
+                  <label>Password<span class="text-danger">*</span></label
+                  ><input
+                    tabindex="2"
+                    placeholder="Password"
+                    formControlName="password"
+                    name="password"
+                    class="form-control"
+                    type="password"
+                    [(ngModel)]="userLogin.password"
+                    required
+                    (keypress)="sharedService.keyPressPassword($event)"
+                  />
+                  <small
+                    class="text-danger"
+                    *ngIf="password.touched && password.invalid"
+                    >Must contain at least one number and one uppercase and
+                    lowercase letter and one special character (! @#$%-_&*), and
+                    at least 8 or more characters</small
+                  >
+                </div>
+
+                <div>
+                  <button
+                    type="submit"
+                    class="btn btn-primary account-btn mb-3"
+                    [disabled]="!loginForm.valid"
+                  >
+                    Sign In
+                  </button>
+                </div>
+                <div class="text-center">
+                  <a href="javascript:void(0)" (click)="showForm('forgot')"
+                    >Forgot your password?</a
+                  >
+                </div>
+              </div>
+            </div>
+          </form>
+          <form
+            autocomplete="off"
+            name="loginForm"
+            (ngSubmit)="onForgotSubmit()"
+            [formGroup]="forgotForm"
+            *ngIf="!isloginShow"
+          >
+            <div class="card m-0">
+              <h4 class="card-header text-center">Reset your password</h4>
+              <div class="card-body" *ngIf="!showForgotSuccessMsg">
+                <div class="form-group">
+                  <label>Email<span class="text-danger">*</span></label
+                  ><input
+                    tabindex="1"
+                    placeholder="Email"
+                    class="form-control"
+                    formControlName="forgotEmailId"
+                    type="text"
+                    [(ngModel)]="forgotLogin.userName"
+                    required
+                    (keypress)="sharedService.keyPressEmail($event)"
+                  />
+                  <small
+                    class="text-danger"
+                    *ngIf="userName.touched && userName.invalid"
+                    >The given Email id is not a valid format.</small
+                  >
+                </div>
+
+                <div>
+                  <button
+                    type="submit"
+                    class="btn btn-primary account-btn mb-3"
+                    [disabled]="!forgotForm.valid"
+                  >
+                    Send Reset Email
+                  </button>
+                </div>
+                <div class="text-center">
+                  Already have an account?
+                  <a href="javascript:void(0)" (click)="showForm('login')"
+                    >Sign In</a
+                  >
+                </div>
+              </div>
+              <div class="card-body" *ngIf="showForgotSuccessMsg">
+                An email with instructions to reset your password has been sent
+                to {{ forgotLogin.userName }}
+                <div class="text-center">
+                  Already have an account?
+                  <a href="javascript:void(0)" (click)="showForm('login')"
+                    >Sign In</a
+                  >
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="overlay-container">
+        <div class="overlay">
+          <div class="overlay-panel overlay-left">
+            <h2>Welcome Back!</h2>
+            <p>
+              To keep connected with us please login with your personal info
+            </p>
+            <button class="ghost" (click)="onsignIn()">Sign In</button>
+          </div>
+          <div class="overlay-panel overlay-right">
+            <h2>Get Started with HRX Cloud</h2>
+            <p>Sign up for a demo account and explore the platform yourself</p>
+            <button class="ghost" (click)="onsignUp()">Register</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Main Wrapper -->

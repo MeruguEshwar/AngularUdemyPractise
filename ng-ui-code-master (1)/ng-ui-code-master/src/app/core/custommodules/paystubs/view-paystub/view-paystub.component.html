@@ -1,0 +1,415 @@
+<div
+  id="add_paystubs"
+  class="modal custom-modal backdrop"
+  [ngStyle]="{ display: addPaystubDisplay }"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Paystubs Details<span>&nbsp;:&nbsp;{{ userName }}</span>
+        </h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <section *ngIf="paystub && paystub.checkDate">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <label class="col-form-label">Check Date</label>
+                        <div>{{ paystub.checkDate }}</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <label class="col-form-label"
+                          >Payperiod Start Date</label
+                        >
+                        <div class="dropwonbox">
+                          <div>{{ paystub.startDate }}</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <label class="col-form-label">Payperiod End Date</label>
+                        <div class="dropwonbox">
+                          <div>{{ paystub.endDate }}</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-3 text-right">
+                      <a
+                        *ngIf="viewType"
+                        href="javascript:void(0)"
+                        style="margin-left: 10px"
+                        class="edit-icon"
+                        title="Edit Paystub"
+                        ><i class="fa fa-pencil" (click)="showEdit(paystub)"></i
+                      ></a>
+                      <a
+                        href="javascript:void(0)"
+                        style="margin-left: 10px"
+                        class="edit-icon"
+                        title="Download Paystub as PDF"
+                        ><i
+                          class="fa fa-file-pdf-o"
+                          (click)="downloadPDFFile(paystub)"
+                        ></i
+                      ></a>
+                      <a
+                        href="javascript:void(0)"
+                        *ngIf="paystub.employeeDocumentUploadDetailsId"
+                        class="edit-icon"
+                        title="Download Attachment"
+                        ><i
+                          class="fa fa-download"
+                          (click)="downloadFile(paystub)"
+                        ></i
+                      ></a>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label class="col-form-label">Pay Type</label>
+                        <div>{{ paystub.payType }}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="graybox">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                              <label class="col-form-label"
+                                >Check Number:
+                                {{
+                                  paystub.checkNumber
+                                    ? paystub.checkNumber
+                                    : "None"
+                                }}</label
+                              >
+                              <div>
+                                <span class="text-muted"
+                                  >Total Hours: {{ paystub.totalHours }}</span
+                                >
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="form-group netpayblock">
+                              <label class="col-form-label">Net Pay</label>
+                              <h4>
+                                {{ organizationCurrency }}
+                                {{ paystub.netAmount }}
+                              </h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label class="col-form-label"
+                          >Pay Summary
+                          <ul class="pay-category">
+                            <li>
+                              Gross Earnings: {{ organizationCurrency }}
+                              {{ totalGross }}
+                            </li>
+                            <li>
+                              Withholdings: {{ organizationCurrency }}
+                              {{ totalHoldings }}
+                            </li>
+                            <li>
+                              Deductions: {{ organizationCurrency }}
+                              {{ totalDeductions }}
+                            </li>
+                          </ul>
+                        </label>
+                        <div class="paysummary-bar">
+                          <div
+                            class="paysummary-barbase"
+                            [ngClass]="{ 'paysummary-bar1': totalGross }"
+                            [style.width]="
+                              totalGross
+                                ? (totalGross / netPay) * 100 + '%'
+                                : '0%'
+                            "
+                            title="Gross Earnings: {{ totalGross }}"
+                          ></div>
+                          <div
+                            class="paysummary-barbase"
+                            [ngClass]="{ 'paysummary-bar3': totalHoldings }"
+                            [style.width]="
+                              totalHoldings
+                                ? (totalHoldings / netPay) * 100 + '%'
+                                : '0%'
+                            "
+                            title="Withholdings: {{ totalHoldings }}"
+                          ></div>
+                          <div
+                            class="paysummary-barbase"
+                            [ngClass]="{ 'paysummary-bar2': totalDeductions }"
+                            [style.width]="
+                              totalDeductions
+                                ? (totalDeductions / netPay) * 100 + '%'
+                                : '0%'
+                            "
+                            title="Deductions: {{ totalDeductions }}"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="card">
+                        <div class="accordion" id="accordionExample">
+                          <div
+                            class="card-header"
+                            id="grossEarningsHeading"
+                            data-toggle="collapse"
+                            data-target="#grossEarnings"
+                            aria-expanded="false"
+                            aria-controls="grossEarnings"
+                          >
+                            <button class="btn btn-link" type="button">
+                              Gross Earnings
+                            </button>
+                          </div>
+
+                          <div
+                            id="grossEarnings"
+                            class="collapse"
+                            aria-labelledby="grossEarningsHeading"
+                            data-parent="#accordionExample"
+                          >
+                            <div class="card-body">
+                              <div class="row" *ngIf="grossList">
+                                <div class="col-sm-3">Description</div>
+                                <div class="col-sm-3">Hours</div>
+                                <div class="col-sm-3">Rate</div>
+                                <div class="col-sm-3">Amount</div>
+                                <hr />
+                                <ng-container
+                                  *ngFor="let row of grossList; index as sno"
+                                >
+                                  <div class="col-sm-3">
+                                    <div class="form-group">
+                                      {{ row.description }}
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-3">
+                                    <div class="form-group">
+                                      {{ row.hours }}
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-3">
+                                    <div class="form-group">
+                                      {{ organizationCurrency }} {{ row.rate }}
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-3">
+                                    <div class="form-group">
+                                      {{ organizationCurrency }}
+                                      {{ row.amount }}
+                                    </div>
+                                  </div>
+                                </ng-container>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12">
+                      <div class="card">
+                        <div class="accordion" id="accordionExample">
+                          <div
+                            class="card-header"
+                            id="withHoldingsHeading"
+                            data-toggle="collapse"
+                            data-target="#withHoldings"
+                            aria-expanded="false"
+                            aria-controls="withHoldings"
+                          >
+                            <button class="btn btn-link" type="button">
+                              Withholdings
+                            </button>
+                          </div>
+
+                          <div
+                            id="withHoldings"
+                            class="collapse"
+                            aria-labelledby="withHoldingsHeading"
+                            data-parent="#accordionExample"
+                          >
+                            <div class="card-body">
+                              <div class="row" *ngIf="withholdingsList">
+                                <div class="col-sm-6">Description</div>
+                                <div class="col-sm-6">Amount</div>
+                                <hr />
+                                <ng-container
+                                  *ngFor="
+                                    let row of withholdingsList;
+                                    index as sno
+                                  "
+                                >
+                                  <div class="col-sm-6">
+                                    <div class="form-group">
+                                      {{ row.description }}
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-6">
+                                    <div class="form-group">
+                                      {{ organizationCurrency }}
+                                      {{ row.withholdingAmount }}
+                                    </div>
+                                  </div>
+                                </ng-container>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12">
+                      <div class="card">
+                        <div class="accordion" id="accordionExample">
+                          <div
+                            class="card-header"
+                            id="deductionsHeading"
+                            data-toggle="collapse"
+                            data-target="#deductions"
+                            aria-expanded="false"
+                            aria-controls="deductions"
+                          >
+                            <button class="btn btn-link" type="button">
+                              Deductions
+                            </button>
+                          </div>
+
+                          <div
+                            id="deductions"
+                            class="collapse"
+                            aria-labelledby="deductionsHeading"
+                            data-parent="#accordionExample"
+                          >
+                            <div class="card-body">
+                              <div class="row" *ngIf="deductionsList">
+                                <div class="col-sm-6">Description</div>
+                                <div class="col-sm-6">Amount</div>
+                                <hr />
+                                <ng-container
+                                  *ngFor="
+                                    let row of deductionsList;
+                                    index as sno
+                                  "
+                                >
+                                  <div class="col-sm-6">
+                                    <div class="form-group">
+                                      {{ row.description }}
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-6">
+                                    <div class="form-group">
+                                      {{ organizationCurrency }}
+                                      {{ row.deductionAmount }}
+                                    </div>
+                                  </div>
+                                </ng-container>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12">
+                      <div class="card">
+                        <div class="accordion" id="accordionExample">
+                          <div
+                            class="card-header"
+                            id="othersHeading"
+                            data-toggle="collapse"
+                            data-target="#others"
+                            aria-expanded="false"
+                            aria-controls="others"
+                          >
+                            <button class="btn btn-link" type="button">
+                              Others
+                            </button>
+                          </div>
+
+                          <div
+                            id="others"
+                            class="collapse"
+                            aria-labelledby="othersHeading"
+                            data-parent="#accordionExample"
+                          >
+                            <div class="card-body">
+                              <div class="row" *ngIf="othersList">
+                                <div class="col-sm-6">Description</div>
+                                <div class="col-sm-6">Amount</div>
+                                <hr />
+                                <ng-container
+                                  *ngFor="let row of othersList; index as sno"
+                                >
+                                  <div class="col-sm-6">
+                                    <div class="form-group">
+                                      {{ row.description }}
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-6">
+                                    <div
+                                      *ngIf="row.otherType == 0; else positive"
+                                    >
+                                      <div class="form-group">
+                                        -
+                                        {{ organizationCurrency }}
+                                        {{ row.amount }}
+                                      </div>
+                                    </div>
+                                    <ng-template #positive>
+                                      <div class="form-group">
+                                        +
+                                        {{ organizationCurrency }}
+                                        {{ row.amount }}
+                                      </div>
+                                    </ng-template>
+                                  </div>
+                                </ng-container>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

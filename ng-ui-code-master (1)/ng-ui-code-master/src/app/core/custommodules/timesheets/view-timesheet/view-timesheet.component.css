@@ -1,0 +1,61 @@
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="entryType"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="entryDate"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="loggedTime"] {
+  width: 14%;
+}
+.screenshot:hover {
+  color: #00a88e;
+}
+.total-logged-time {
+  padding: 10px;
+  font-size: 13px;
+  margin-right: 10px;
+  font-weight: 500;
+}
+.aprover-status {
+  cursor: default;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.total-logged-time .text-info.pto {
+  color: #17a2b8 !important;
+}
+.total-logged-time .text-info.dblot {
+  color: #0040fd !important;
+}
+.weekday {
+  font-size: 85%;
+  text-transform: uppercase;
+}
+.total-logged-time .attachment-file {
+  border: 1px solid #00a88e;
+  padding: 5px;
+  border-radius: 10px;
+}
+.btnColor {
+  color: #00a88e;
+}
+.table td,
+.table thead th {
+  text-align: center;
+  padding: 5px 10px 5px 10px !important;
+}
+.personal-info li .title {
+  width: 36%;
+}

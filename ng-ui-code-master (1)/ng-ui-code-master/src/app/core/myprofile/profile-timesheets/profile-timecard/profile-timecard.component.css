@@ -1,0 +1,59 @@
+.actions .action_Button a {
+  display: inline;
+  padding: 4px;
+}
+.fa {
+  color: #013893;
+}
+.fa:hover {
+  color: white;
+  background-color: #013893;
+  padding: 5px;
+}
+:host ::ng-deep .entryTypeDropDown .ui-dropdown,
+:host ::ng-deep .loggedTime .ui-inputtext {
+  width: 50%;
+  min-width: 7.5em;
+}
+/* :host ::ng-deep .loggedTime .ui-inputtext {
+  width: 30%;
+  min-width: 1.5em;
+} */
+:host ::ng-deep p-table .ui-inputtext {
+  height: 35px;
+}
+:host ::ng-deep p-table .ui-dropdown .ui-dropdown-label {
+  line-height: 1.8;
+}
+:host ::ng-deep p-table .ui-table .ui-table-tbody > tr > td {
+  padding: 3px 20px;
+}
+.total-logged-time {
+  margin-top: 15px;
+  font-size: 16px;
+}
+.timesheet-status {
+  background-color: #6abb6a;
+  border: 1px solid #6abb6a;
+  border-radius: 50px;
+  color: #fff;
+  font-weight: 500;
+  margin-top: 15px;
+  min-width: 140px;
+  cursor: auto;
+}
+.downloadScreenShot .list-group-item {
+  border: none;
+  color: #013893;
+}
+.downloadScreenShot .list-group-item:hover {
+  color: blue;
+}
+.downloadScreenShot .fa:hover {
+  padding: 0px;
+  color: #013893;
+  background-color: transparent;
+}
+a:not([href]):not([tabindex]) {
+  cursor: pointer;
+}

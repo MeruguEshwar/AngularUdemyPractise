@@ -1,0 +1,117 @@
+.project-name {
+  letter-spacing: 2px;
+  font-size: 20px;
+  text-transform: capitalize;
+}
+.project-end-name {
+  font-size: 24px;
+}
+.header.viewChanged {
+  /* background: linear-gradient(to right, #005245 0%, #00a88e 100%); */
+  background: rgb(83, 18, 148);
+  background: linear-gradient(
+    90deg,
+    rgba(83, 18, 148, 1) 5%,
+    rgba(171, 48, 108, 1) 60%,
+    rgba(251, 100, 5, 1) 100%
+  );
+}
+/* top header menus style */
+.nav-tabs.nav-tabs-solid {
+  background-color: transparent;
+}
+.navbar-nav .nav-link {
+  color: white;
+  font-weight: 400;
+  background-color: transparent;
+}
+.switchedView {
+  float: left;
+  height: 60px;
+  display: flex;
+  /* width: 57%; */
+  justify-content: center;
+}
+.switchedView .nav-item:hover {
+  border-color: #ffffff;
+}
+.switchedView .nav-item.active {
+  border-color: #ffffff;
+}
+.switchedView .nav-item {
+  border: 1px solid transparent;
+  border-radius: 10px;
+  margin: 0px 2px;
+}
+.user-name {
+  max-width: 150px;
+  overflow: hidden;
+  float: left;
+  position: relative;
+  left: 5px;
+  color: inherit;
+  text-transform: capitalize;
+}
+.user-img {
+  float: left;
+}
+.policy-block {
+  text-align: left;
+  border-left: 1px solid #929292;
+}
+.policy-block h1 {
+  font-size: large;
+}
+.policy-block h2,
+.policy-block p {
+  font-size: inherit;
+  color: #0a0a0a;
+}
+.policy-block ul li {
+  color: #0a0a0a;
+  list-style-type: disc;
+}
+.policy-block a {
+  color: #00a88e;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.change-form .submit-btn {
+  padding: 5px 15px;
+}
+/* active user menu */
+.user-menu.nav > li.active > a {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.small_text {
+  text-align: left;
+}
+.label_text {
+  text-align: left;
+}
+.form-control {
+  border-color: #c1bbbb;
+}
+.user-name.org-name {
+  font-size: 18px;
+  font-weight: 500;
+  font-style: italic;
+  max-width: 200px;
+  white-space: nowrap;
+}
+.dropdown-menu.organization-dropdown-menu .dropdown-item:hover {
+  background-color: #00a2e3;
+}
+.dropdown-menu.organization-dropdown-menu .dropdown-item {
+  font-size: medium;
+  border-bottom: 1px solid #00203f;
+  line-height: 36px;
+  color: white;
+  text-transform: capitalize;
+}
+.dropdown-menu.organization-dropdown-menu .dropdown-item:last-child {
+  border-bottom: 1px solid transparent;
+}
+.dropdown-menu.organization-dropdown-menu {
+  background-color: #013893;
+}

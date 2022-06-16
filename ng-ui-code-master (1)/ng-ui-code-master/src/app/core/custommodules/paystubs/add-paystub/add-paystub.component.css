@@ -1,0 +1,35 @@
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+.netpayblock{
+  display: flex;
+  justify-content: space-between;
+}
+.card-title{
+  cursor: pointer;
+}
+:host ::ng-deep .dropwonbox p-dropdown .ui-dropdown {
+  height: 36px !important;
+  width: 100% !important;
+  line-height: unset;
+}
+:host ::ng-deep .ui-selectbutton {
+  display: flex;
+  align-items: center;
+}
+:host ::ng-deep .ui-button.ui-button-text-only .ui-button-text {
+  padding: 8px 8px;
+}
+.graybox{
+  background-color: #e2e2e2;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+}

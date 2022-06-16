@@ -1,0 +1,91 @@
+:host ::ng-deep .action_Button {
+  display: inline-flex;
+}
+/* :host ::ng-deep .dropdown-item {
+  padding: 0px;
+} */
+:host ::ng-deep .ui-inputswitch {
+  font-size: 10px;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="timesheetApprover"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="invoiceApprover"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="authorization"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="authorizationCode"] {
+  width: 11%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="group"] {
+  width: 9%;
+}
+:host ::ng-deep .ui-table-customers .ui-table-tbody > tr > td {
+  text-align: center;
+}
+:host ::ng-deep .ui-table-customers .ui-table-tbody > tr > td:first-child {
+  text-align: left;
+}
+
+:host ::ng-deep form .row {
+  padding: 0px 15px;
+}
+:host ::ng-deep .ui-tabview .ui-tabview-panels {
+  padding: 0;
+}
+:host ::ng-deep .ui-table-customers .ui-table-caption {
+  border: 0px;
+}
+:host ::ng-deep .ui-table-customers .ui-table-globalfilter-container input {
+  width: 250px;
+  margin-right: 10px;
+  margin-bottom: 12px;
+}
+:host ::ng-deep .ui-table-customers .ui-table-thead > tr > th {
+  border-top: 2px solid #dee2e6;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="authorization"] {
+  width: 13%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="invoiceApprover"] {
+  width: 15%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="timesheetApprover"] {
+  width: 17%;
+}

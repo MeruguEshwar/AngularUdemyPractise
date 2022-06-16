@@ -1,0 +1,6 @@
+:host ::ng-deep .ui-table-customers .ui-table-globalfilter-container {
+  float: none;
+}
+:host ::ng-deep .ui-table-customers .ui-table-caption {
+  padding: 10px 10px 45px 5px;
+}

@@ -1,0 +1,35 @@
+.username {
+  color: #03927c;
+}
+:host ::ng-deep .ui-fileupload .ui-fileupload-content,
+:host ::ng-deep .ui-fileupload .ui-fileupload-buttonbar {
+  border: none;
+  background-color: transparent;
+  padding-left: 0px;
+  padding-bottom: 0px;
+}
+:host ::ng-deep .ui-fileupload-content .ui-progressbar {
+  display: none;
+}
+:host ::ng-deep .ui-fileupload {
+  display: flex;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="rowNo"] {
+  width: 6%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="validationResponses"] {
+  width: 9%;
+}
+:host ::ng-deep .ui-table-customers .ui-table-caption {
+  color: transparent;
+}

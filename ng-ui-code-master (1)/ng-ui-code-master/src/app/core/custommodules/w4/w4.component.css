@@ -1,0 +1,180 @@
+p {
+  margin: 0px;
+}
+.username {
+  color: #6c757d;
+  text-transform: capitalize;
+}
+.personal-info li .title {
+  font-weight: inherit;
+}
+input[type="checkbox"] {
+  width: 25px;
+  height: 25px;
+}
+.downloadW4Form .nav-item {
+  cursor: pointer;
+  margin: 0px 10px;
+}
+:host ::ng-deep .ui-dropdown,
+:host ::ng-deep .ui-dropdown-item {
+  min-width: max-content;
+}
+.downloadW4Form .list-group-item {
+  border: none;
+  color: #013893;
+}
+.downloadW4Form .list-group-item:hover {
+  color: blue;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+.alert-info {
+  border-color: #f2fafb;
+  background-color: #f2fafb;
+  font-size: 13px;
+  font-style: italic;
+}
+.list-group-item {
+  border: none;
+}
+
+/* acc */
+#accordionExample .card-header {
+  /* background: linear-gradient(to right, #013893 0%, #00a2e3 100%); */
+  background-color: #f7f7f7;
+  padding: 0px;
+  display: flex;
+  justify-content: start;
+  align-items: baseline;
+  text-decoration: none;
+  font-size: inherit;
+}
+#accordionExample .card-header[aria-expanded="true"] {
+  background-color: #00a88e;
+}
+#accordionExample .card-header[aria-expanded="true"] button {
+  font-weight: 500;
+}
+#accordionExample .card-header[aria-expanded="true"] button .badge,
+#accordionExample .card-header[aria-expanded="true"] button .fa {
+  display: none;
+}
+#accordionExample .card-header:hover {
+  /* background: linear-gradient(to right, #013893 0%, #00a2e3 100%); */
+  color: inherit;
+}
+#accordionExample .card-header button {
+  color: inherit;
+  width: 100%;
+  text-align: left;
+  text-decoration: none;
+  padding-left: 5px;
+  font-size: inherit;
+  font-weight: 500;
+}
+#accordionExample .card {
+  margin-bottom: 25px;
+}
+#accordionExample .card-header button::after {
+  border-top: 0;
+  border-left: 0;
+  border-bottom: 2px solid #fff;
+  border-right: 2px solid #fff;
+  content: "";
+  height: 8px;
+  display: inline-block;
+  pointer-events: none;
+  -webkit-transform-origin: 66% 66%;
+  transform-origin: 66% 66%;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+  -webkit-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+  width: 8px;
+  border-color: #1f1f1f;
+  vertical-align: 2px;
+  margin-left: 2px;
+  position: absolute;
+  right: 10px;
+  top: 11px;
+}
+#accordionExample .card-header[aria-expanded="true"] button::after {
+  -webkit-transform: rotate(-135deg);
+  transform: rotate(-135deg);
+}
+.badge {
+  font-size: 90%;
+  font-weight: 500;
+}
+.text-info {
+  color: #0099dc !important;
+}
+.bg-inverse-info {
+  color: #0099dc !important;
+}
+.federal_income {
+  padding-top: 20px;
+}
+.pd_radio {
+  padding-left: 13px;
+}
+.checkNote {
+  padding-left: 13px;
+  color: #8e8e8e;
+  font-style: italic;
+}
+.checkBox {
+  padding-left: 13px;
+  color: #8e8e8e;
+  font-style: italic;
+}
+.maritalStatus {
+  padding-top: 10px;
+}
+.verify {
+  margin-left: 10px;
+}
+.form-control {
+  border-color: transparent;
+  box-shadow: none;
+  height: 35px;
+  background: aliceblue;
+}
+.form-group {
+  padding: 0px;
+  margin: 0px;
+}
+.col-form-label {
+  padding-left: 10px;
+}
+:host ::ng-deep .ui-inputtext,
+:host ::ng-deep .ui-calendar .ui-calendar-button,
+:host ::ng-deep .ui-calendar,
+:host ::ng-deep .ui-inputtext:enabled:hover:not(.ui-state-error) {
+  border: transparent;
+  background: aliceblue;
+}
+:host ::ng-deep p-inputmask .ui-inputtext {
+  height: 25px;
+}
+input::placeholder {
+  color: transparent;
+}
+li::marker {
+  font-weight: bolder;
+}
+.signature-box {
+  font-weight: bold;
+  font-size: 40px;
+  height: 60px;
+}

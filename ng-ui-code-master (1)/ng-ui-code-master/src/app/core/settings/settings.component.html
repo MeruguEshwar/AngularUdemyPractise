@@ -1,0 +1,1311 @@
+<div class="page-wrapper" style="min-height: 344px">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">Dashboard</li>
+            <li class="breadcrumb-item active">Configurations</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="card mb-0 mt-3">
+      <div class="card-body">
+        <section>
+          <div class="accordion" id="accordionExample">
+            <div class="card">
+              <div
+                class="card-header"
+                id="registerCurrencyHeading"
+                data-toggle="collapse"
+                data-target="#registerCurrency"
+                aria-expanded="false"
+                aria-controls="registerCurrency"
+              >
+                <i class="fa fa-money pl-3" aria-hidden="true"></i>
+                <button class="btn btn-link" type="button">
+                  Currency Configuration
+                </button>
+              </div>
+
+              <div
+                id="registerCurrency"
+                class="collapse"
+                aria-labelledby="registerCurrencyHeading"
+                data-parent="#accordionExample"
+              >
+                <div class="card-body">
+                  <div class="row d-flex align-items-center">
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label
+                          >Country <span class="text-danger">*</span></label
+                        >
+                        <p-dropdown
+                          appendTo="body"
+                          name="remittanceCountryDetails"
+                          [options]="countryDetails"
+                          [(ngModel)]="selectedGlobalCurrencyDetails"
+                          placeholder="Select Country"
+                          optionLabel="name"
+                          (onChange)="selectGlobalCurrency($event.value)"
+                          required
+                          maxlength="150"
+                          (keypress)="sharedService.keyPressAlphabet($event)"
+                          [filter]="true"
+                        >
+                        </p-dropdown>
+                      </div>
+                    </div>
+                    <div
+                      class="col-md-3 text-center"
+                      *ngIf="selectedGlobalCurrencyDetails"
+                    >
+                      <div class="stats-box mb-0">
+                        <p>{{ selectedGlobalCurrencyDetails?.name }}</p>
+                        <h3>
+                          {{ selectedGlobalCurrencyDetails?.currency }}:{{
+                            selectedGlobalCurrencyDetails?.currency_icon
+                          }}
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div
+                class="card-header"
+                id="registerEmailHeading"
+                data-toggle="collapse"
+                data-target="#registerEmail"
+                aria-expanded="false"
+                aria-controls="registerEmail"
+              >
+                <i class="fa fa-envelope pl-3" aria-hidden="true"></i>
+                <button class="btn btn-link" type="button">
+                  Email Configuration
+                </button>
+              </div>
+
+              <div
+                id="registerEmail"
+                class="collapse"
+                aria-labelledby="registerEmailHeading"
+                data-parent="#accordionExample"
+              >
+                <div class="gmail-note">
+                  <label>Note: Please Provide Gmail Configurations Only</label>
+                </div>
+                <div class="modal-body">
+                  <form
+                    (ngSubmit)="updateEmailDetails(emailDetailsForm)"
+                    #emailDetailsForm="ngForm"
+                  >
+                    <div class="">
+                      <div class="card">
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label
+                                  >Mail Box Host
+                                  <span class="text-danger">*</span></label
+                                >
+                                <input
+                                  class="form-control"
+                                  type="text"
+                                  name="mailBoxHost"
+                                  [(ngModel)]="settingsEmailDetails.mailBoxHost"
+                                  required
+                                  #mailBoxHost="ngModel"
+                                  maxlength="100"
+                                />
+                                <small
+                                  class="text-danger"
+                                  *ngIf="
+                                    mailBoxHost.touched && mailBoxHost.invalid
+                                  "
+                                  >The given value is not a valid format</small
+                                >
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label
+                                  >Mail Box Username
+                                  <span class="text-danger">*</span></label
+                                >
+                                <input
+                                  class="form-control"
+                                  type="text"
+                                  name="mailBoxUsername"
+                                  [(ngModel)]="
+                                    settingsEmailDetails.mailBoxUsername
+                                  "
+                                  required
+                                  #mailBoxUsername="ngModel"
+                                  maxlength="150"
+                                />
+                                <small
+                                  class="text-danger"
+                                  *ngIf="
+                                    mailBoxUsername.touched &&
+                                    mailBoxUsername.invalid
+                                  "
+                                  >The given value is not a valid format</small
+                                >
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label
+                                  >Mail Box Password
+                                  <span class="text-danger">*</span></label
+                                >
+                                <input
+                                  class="form-control"
+                                  type="password"
+                                  name="mailBoxPassword"
+                                  [(ngModel)]="
+                                    settingsEmailDetails.mailBoxPassword
+                                  "
+                                  required
+                                  #mailBoxPassword="ngModel"
+                                  maxlength="30"
+                                />
+                                <small
+                                  class="text-danger"
+                                  *ngIf="
+                                    mailBoxPassword.touched &&
+                                    mailBoxPassword.invalid
+                                  "
+                                  >The given value is not a valid format</small
+                                >
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="submit-section mt-0">
+                      <button
+                        class="btn btn-success submit-btn"
+                        type="submit"
+                        [disabled]="!emailDetailsForm.valid"
+                      >
+                        <i class="fa fa-save"></i>&nbsp;Update
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div
+                class="card-header"
+                id="notificationsHeading"
+                data-toggle="collapse"
+                data-target="#notifications"
+                aria-expanded="false"
+                aria-controls="notifications"
+              >
+                <i class="fa fa-cogs pl-3" aria-hidden="true"></i>
+                <button class="btn btn-link" type="button">
+                  Employee Configuration
+                </button>
+              </div>
+
+              <div
+                id="notifications"
+                class="collapse"
+                aria-labelledby="notificationsHeading"
+                data-parent="#accordionExample"
+              >
+                <div class="col pl-0 pr-0 mt-2" *ngIf="!loading">
+                  <p-table
+                    [columns]="employeeCols"
+                    [value]="employeeConfigs"
+                    [rowsPerPageOptions]="[5, 10, 25, 50]"
+                    styleClass="ui-table-customers"
+                    #dt
+                    [paginator]="true"
+                    [rows]="10"
+                    [showCurrentPageReport]="true"
+                    [alwaysShowPaginator]="false"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    [filterDelay]="0"
+                    [globalFilterFields]="[
+                      'employeeName',
+                      'w4ConfigValue',
+                      'i9ConfigValue'
+                    ]"
+                  >
+                    <ng-template pTemplate="caption">
+                      <div class="applyToAll">
+                        <a
+                          href="javascript:void(0)"
+                          (click)="editEmployeeConfigDetails()"
+                          ><i class="fa fa-pencil-square-o m-r-5"></i>Edit
+                          configurations to all the employees</a
+                        >
+                      </div>
+                      <div class="ui-table-globalfilter-container">
+                        <input
+                          pInputText
+                          type="text"
+                          (input)="
+                            dt.filterGlobal($event.target.value, 'contains')
+                          "
+                          placeholder="Search"
+                        />
+                      </div>
+                    </ng-template>
+                    <ng-template pTemplate="header" let-columns>
+                      <tr>
+                        <ng-container *ngFor="let col of columns">
+                          <th
+                            [pSortableColumn]="col.field"
+                            *ngIf="col.field == 'employeeName'"
+                            colspan="3"
+                          >
+                            {{ col.header }}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                          </th>
+                          <th
+                            [pSortableColumn]="col.field"
+                            *ngIf="col.field == 'timesheetNotification'"
+                          >
+                            {{ col.header }}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                          </th>
+                          <th
+                            [pSortableColumn]="col.field"
+                            *ngIf="col.field == 'w4ConfigValue'"
+                          >
+                            {{ col.header }}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                          </th>
+                          <th
+                            [pSortableColumn]="col.field"
+                            *ngIf="col.field == 'i9ConfigValue'"
+                          >
+                            {{ col.header }}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                          </th>
+                        </ng-container>
+                      </tr>
+                    </ng-template>
+                    <ng-template
+                      pTemplate="body"
+                      let-rowData
+                      let-columns="columns"
+                      let-rowIndex="rowIndex"
+                    >
+                      <tr [pSelectableRow]="rowData">
+                        <ng-container *ngFor="let col of columns">
+                          <ng-container *ngIf="col.field == 'employeeName'">
+                            <td colspan="3">{{ rowData[col.field] }}</td>
+                          </ng-container>
+                          <ng-container
+                            *ngIf="col.field == 'timesheetNotification'"
+                          >
+                            <td>
+                              <p-inputSwitch
+                                [(ngModel)]="rowData.notificationChecked"
+                                (onChange)="
+                                  updateNotificationConfig($event, rowData)
+                                "
+                              >
+                              </p-inputSwitch>
+                            </td>
+                          </ng-container>
+                          <ng-container *ngIf="col.field == 'w4ConfigValue'">
+                            <td>
+                              <a
+                                href="javascript:void(0)"
+                                (click)="edit(rowData)"
+                                >{{ rowData[col.field] }}</a
+                              >
+                            </td>
+                          </ng-container>
+                          <ng-container *ngIf="col.field == 'i9ConfigValue'">
+                            <td>
+                              <a
+                                href="javascript:void(0)"
+                                (click)="editI9Config(rowData)"
+                                >{{ rowData[col.field] }}</a
+                              >
+                            </td>
+                          </ng-container>
+                        </ng-container>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div
+                class="card-header"
+                id="employeeIdConfigHeader"
+                data-toggle="collapse"
+                data-target="#employeeIdConfig"
+                aria-expanded="false"
+                aria-controls="employeeIdConfig"
+              >
+                <i class="fa fa-cogs pl-3" aria-hidden="true"></i>
+                <button class="btn btn-link" type="button">
+                  Employee ID Configuration
+                </button>
+              </div>
+
+              <div
+                id="employeeIdConfig"
+                class="collapse"
+                aria-labelledby="employeeIdConfigHeader"
+                data-parent="#accordionExample"
+              >
+                <div class="col-12 mt-3">
+                  <div class="form-group">
+                    <div>
+                      <div class="form-check form-check-inline">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="employeeIdConfig"
+                          value="1"
+                          required
+                          [(ngModel)]="empIdConfiguration"
+                          (click)="onEmpIdConfigurationChange()"
+                        />
+                        <label class="form-check-label" for="employeeIdConfig"
+                          >Manual Entry</label
+                        >
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="employeeIdConfig"
+                          value="2"
+                          required
+                          [(ngModel)]="empIdConfiguration"
+                          (click)="onEmpIdConfigurationChange()"
+                        />
+                        <label class="form-check-label" for="employeeIdConfig"
+                          >Number(Start number configure) + Auto increment
+                        </label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="employeeIdConfig"
+                          value="3"
+                          required
+                          [(ngModel)]="empIdConfiguration"
+                          (click)="onEmpIdConfigurationChange()"
+                        />
+                        <label class="form-check-label" for="employeeIdConfig"
+                          >Prefix + Auto increment</label
+                        >
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="employeeIdConfig"
+                          value="4"
+                          required
+                          [(ngModel)]="empIdConfiguration"
+                          (click)="onEmpIdConfigurationChange()"
+                        />
+                        <label class="form-check-label" for="employeeIdConfig"
+                          >Auto increment + Suffix</label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Invoice Configuration -->
+            <div class="card">
+              <div
+                class="card-header"
+                id="invoiceHeading"
+                data-toggle="collapse"
+                data-target="#invoiceConfigs"
+                aria-expanded="false"
+                aria-controls="invoiceConfigs"
+              >
+                <i class="fa fa-briefcase pl-3" aria-hidden="true"></i>
+                <button class="btn btn-link" type="button">
+                  Invoice Configuration
+                </button>
+              </div>
+
+              <div
+                id="invoiceConfigs"
+                class="collapse"
+                aria-labelledby="invoiceHeading"
+                data-parent="#accordionExample"
+              >
+                <div class="col pl-0 pr-0 mt-2" *ngIf="!loading">
+                  <p-table
+                    [columns]="invoiceCols"
+                    [value]="invoiceConfigs"
+                    [rowsPerPageOptions]="[5, 10, 25, 50]"
+                    styleClass="ui-table-customers"
+                    #dt
+                    [paginator]="true"
+                    [rows]="10"
+                    [showCurrentPageReport]="true"
+                    [alwaysShowPaginator]="false"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    [filterDelay]="0"
+                    [globalFilterFields]="[
+                      'companyName',
+                      'invoiceNotificationConfigValue'
+                    ]"
+                  >
+                    <ng-template pTemplate="caption">
+                      <!-- <div class="applyToAll">&nbsp;</div> -->
+                      <div class="applyToAll">
+                        <a
+                          href="javascript:void(0)"
+                          (click)="editInvoiceConfigDetails()"
+                          ><i class="fa fa-pencil-square-o m-r-5"></i>Edit
+                          configurations to all the Customers</a
+                        >
+                      </div>
+                      <div class="ui-table-globalfilter-container">
+                        <input
+                          pInputText
+                          type="text"
+                          (input)="
+                            dt.filterGlobal($event.target.value, 'contains')
+                          "
+                          placeholder="Search"
+                        />
+                      </div>
+                    </ng-template>
+                    <ng-template pTemplate="header" let-columns>
+                      <tr>
+                        <ng-container *ngFor="let col of columns">
+                          <th
+                            [pSortableColumn]="col.field"
+                            *ngIf="col.field == 'companyName'"
+                            colspan="3"
+                          >
+                            {{ col.header }}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                          </th>
+                          <th
+                            [pSortableColumn]="col.field"
+                            *ngIf="
+                              col.field == 'invoiceNotificationConfigValue'
+                            "
+                          >
+                            {{ col.header }}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                          </th>
+                        </ng-container>
+                      </tr>
+                    </ng-template>
+                    <ng-template
+                      pTemplate="body"
+                      let-rowData
+                      let-columns="columns"
+                      let-rowIndex="rowIndex"
+                    >
+                      <tr [pSelectableRow]="rowData">
+                        <ng-container *ngFor="let col of columns">
+                          <ng-container *ngIf="col.field == 'companyName'">
+                            <td colspan="3">{{ rowData[col.field] }}</td>
+                          </ng-container>
+                          <ng-container
+                            *ngIf="
+                              col.field == 'invoiceNotificationConfigValue'
+                            "
+                          >
+                            <td>
+                              <a
+                                href="javascript:void(0)"
+                                (click)="editInvoice(rowData)"
+                                >{{ rowData[col.field] }}</a
+                              >
+                            </td>
+                          </ng-container>
+                        </ng-container>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+            </div>
+            <!-- Invoice Configuration -->
+            <!-- Timesheet Configuration -->
+            <div class="card">
+              <div
+                class="card-header"
+                id="timesheetHeading"
+                data-toggle="collapse"
+                data-target="#timesheetConfigs"
+                aria-expanded="false"
+                aria-controls="timesheetConfigs"
+              >
+                <i class="fa fa-calendar pl-3" aria-hidden="true"></i>
+                <button class="btn btn-link" type="button">
+                  Timesheet Configuration
+                </button>
+              </div>
+
+              <div
+                id="timesheetConfigs"
+                class="collapse"
+                aria-labelledby="timesheetHeading"
+                data-parent="#accordionExample"
+              >
+                <div class="col pl-0 pr-0 mt-2" *ngIf="!loading">
+                  <p-table
+                    [columns]="timesheetCols"
+                    [value]="timesheetConfigs"
+                    [rowsPerPageOptions]="[5, 10, 25, 50]"
+                    styleClass="ui-table-customers"
+                    #dt
+                    [paginator]="true"
+                    [rows]="10"
+                    [showCurrentPageReport]="true"
+                    [alwaysShowPaginator]="false"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    [filterDelay]="0"
+                    [globalFilterFields]="[
+                      'projectName',
+                      'timesheetNotificationConfigValue'
+                    ]"
+                  >
+                    <ng-template pTemplate="caption">
+                      <!-- <div class="applyToAll">&nbsp;</div> -->
+                      <div class="applyToAll">
+                        <a
+                          href="javascript:void(0)"
+                          (click)="editProjectConfigDetails()"
+                          ><i class="fa fa-pencil-square-o m-r-5"></i>Edit
+                          configurations to all the Projects</a
+                        >
+                      </div>
+                      <div class="ui-table-globalfilter-container">
+                        <input
+                          pInputText
+                          type="text"
+                          (input)="
+                            dt.filterGlobal($event.target.value, 'contains')
+                          "
+                          placeholder="Search"
+                        />
+                      </div>
+                    </ng-template>
+                    <ng-template pTemplate="header" let-columns>
+                      <tr>
+                        <ng-container *ngFor="let col of columns">
+                          <th
+                            [pSortableColumn]="col.field"
+                            *ngIf="col.field == 'projectName'"
+                            colspan="3"
+                          >
+                            {{ col.header }}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                          </th>
+                          <th
+                            [pSortableColumn]="col.field"
+                            *ngIf="
+                              col.field == 'timesheetNotificationConfigValue'
+                            "
+                          >
+                            {{ col.header }}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                          </th>
+                        </ng-container>
+                      </tr>
+                    </ng-template>
+                    <ng-template
+                      pTemplate="body"
+                      let-rowData
+                      let-columns="columns"
+                      let-rowIndex="rowIndex"
+                    >
+                      <tr [pSelectableRow]="rowData">
+                        <ng-container *ngFor="let col of columns">
+                          <ng-container *ngIf="col.field == 'projectName'">
+                            <td colspan="3">{{ rowData[col.field] }}</td>
+                          </ng-container>
+                          <ng-container
+                            *ngIf="
+                              col.field == 'timesheetNotificationConfigValue'
+                            "
+                          >
+                            <td>
+                              <a
+                                href="javascript:void(0)"
+                                (click)="editTimesheet(rowData)"
+                                >{{ rowData[col.field] }}</a
+                              >
+                            </td>
+                          </ng-container>
+                        </ng-container>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+            </div>
+            <!-- Timesheet Configuration -->
+            <!-- Employee Config Edit -->
+            <section *ngIf="editType == 'employeeConfig'">
+              <div
+                id="w4_config"
+                class="modal custom-modal backdrop"
+                [ngStyle]="{ display: employeeConfigDisplay }"
+                role="dialog"
+                aria-modal="true"
+              >
+                <div
+                  class="modal-dialog modal-dialog-centered modal-lg"
+                  role="document"
+                >
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Employee Configuration</h5>
+                      <button
+                        type="button"
+                        class="close"
+                        (click)="cancel()"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">×</span>
+                      </button>
+                    </div>
+                    <form #f="ngForm">
+                      <div class="modal-body">
+                        <section>
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <div class="card">
+                                <div class="card-body">
+                                  <h5 class="card-title">
+                                    Timesheet Configuration
+                                  </h5>
+                                  <div class="row">
+                                    <div class="col-sm-4 border-right">
+                                      <div class="form-group">
+                                        <label>
+                                          Timesheet Configuration &nbsp;
+                                          <input
+                                            class="checkbox"
+                                            type="checkbox"
+                                            name="checkBox"
+                                            (change)="onCheckTimeSheet($event)"
+                                          />
+                                        </label>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                      <p-inputSwitch
+                                        (onChange)="
+                                          onChangeTimesheetNotification($event)
+                                        "
+                                        [disabled]="
+                                          !employeeConfigDetailsUpdate.updateTimesheetConfig
+                                        "
+                                      >
+                                      </p-inputSwitch>
+                                    </div>
+                                  </div>
+                                  <hr />
+                                  <h5 class="card-title">W4 Configuration</h5>
+                                  <div class="row">
+                                    <div class="col-sm-4 border-right">
+                                      <div class="form-group">
+                                        <label>
+                                          W4 Configuration &nbsp;
+                                          <input
+                                            class="checkbox"
+                                            type="checkbox"
+                                            name="checkBox"
+                                            (change)="onCheckW4($event)"
+                                          />
+                                        </label>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                      <p-dropdown
+                                        [options]="w4ConfigOptionList"
+                                        name="w4ConfigOptionList"
+                                        [filter]="false"
+                                        [(ngModel)]="
+                                          employeeConfigDetailsUpdate.w4Config
+                                        "
+                                        [disabled]="
+                                          !employeeConfigDetailsUpdate.updateW4Config
+                                        "
+                                      ></p-dropdown>
+                                    </div>
+                                  </div>
+                                  <hr />
+                                  <h5 class="card-title">I9 Configuration</h5>
+                                  <div class="row">
+                                    <div class="col-sm-4 border-right">
+                                      <div class="form-group">
+                                        <label>
+                                          I9 Configuration &nbsp;
+                                          <input
+                                            class="checkbox"
+                                            type="checkbox"
+                                            name="checkBox1"
+                                            (change)="onCheckI9($event)"
+                                          />
+                                        </label>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                      <p-dropdown
+                                        [options]="i9ConfigOptionList"
+                                        name="i9ConfigOptionList"
+                                        [filter]="false"
+                                        [(ngModel)]="
+                                          employeeConfigDetailsUpdate.i9Config
+                                        "
+                                        [disabled]="
+                                          !employeeConfigDetailsUpdate.updateI9Config
+                                        "
+                                      ></p-dropdown>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </section>
+                        <section>
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <div class="submit-section mt-0">
+                                <button
+                                  type="button"
+                                  class="btn btn-info submit-btn"
+                                  (click)="updateEmployeeConfigDetails()"
+                                >
+                                  <i class="fa fa-save"></i>&nbsp;Submit
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </section>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <!-- Employee Config Edit -->
+            <section *ngIf="editType == 'w4'">
+              <div
+                id="w4_config"
+                class="modal custom-modal backdrop"
+                [ngStyle]="{ display: editW4Details }"
+                role="dialog"
+                aria-modal="true"
+              >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">W4 Configuration</h5>
+                      <button
+                        type="button"
+                        class="close"
+                        (click)="cancel()"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">×</span>
+                      </button>
+                    </div>
+                    <form #f="ngForm">
+                      <div class="modal-body">
+                        <section>
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <div class="card">
+                                <div class="card-body">
+                                  <div class="row">
+                                    <div class="col-12">
+                                      <div class="form-group">
+                                        <div class="d-flex align-items-center">
+                                          <p-radioButton
+                                            name="w4Config"
+                                            value="1"
+                                            [(ngModel)]="
+                                              employeeConfigDetails.w4Config
+                                            "
+                                            label="Download-->Sign-->Upload"
+                                            aria-required="true"
+                                          ></p-radioButton>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-12">
+                                      <div class="form-group">
+                                        <div class="d-flex align-items-center">
+                                          <p-radioButton
+                                            name="w4Config"
+                                            value="2"
+                                            [(ngModel)]="
+                                              employeeConfigDetails.w4Config
+                                            "
+                                            label="Digital Signture"
+                                            aria-required="true"
+                                          ></p-radioButton>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-12">
+                                      <div class="form-group">
+                                        <div class="d-flex align-items-center">
+                                          <p-radioButton
+                                            name="w4Config"
+                                            value="3"
+                                            [(ngModel)]="
+                                              employeeConfigDetails.w4Config
+                                            "
+                                            label="Digital Signature with SSN Verify"
+                                            aria-required="true"
+                                          ></p-radioButton>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-12">
+                                      <div class="form-group">
+                                        <div class="d-flex align-items-center">
+                                          <p-radioButton
+                                            name="w4Config"
+                                            value="4"
+                                            [(ngModel)]="
+                                              employeeConfigDetails.w4Config
+                                            "
+                                            label="Digital Signataure with SSN & Date of Birth Verify"
+                                            aria-required="true"
+                                          ></p-radioButton>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-sm-12 py-2 w4config">
+                                  <div class="form-group m-0">
+                                    <span>
+                                      Apply this configuration to all the
+                                      employees &nbsp;&nbsp;
+                                    </span>
+                                    <p-inputSwitch
+                                      name="applyToAll"
+                                      class="setting-toggle"
+                                      (onChange)="onChangeApplyToAllW4($event)"
+                                    >
+                                    </p-inputSwitch>
+                                  </div>
+                                </div>
+                              </div>
+                              &nbsp;
+                            </div>
+                          </div>
+                        </section>
+                        <section>
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <div class="submit-section mt-0">
+                                <button
+                                  type="button"
+                                  class="btn btn-info submit-btn"
+                                  (click)="updateW4ConfigDetails()"
+                                >
+                                  <i class="fa fa-save"></i>&nbsp;Submit
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </section>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <!-- w4 configuration -->
+            <!-- I9 Configuration -->
+            <section *ngIf="editType == 'i9'">
+              <div
+                id="w4_config"
+                class="modal custom-modal backdrop"
+                [ngStyle]="{ display: editI9Details }"
+                role="dialog"
+                aria-modal="true"
+              >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">I9 Configuration</h5>
+                      <button
+                        type="button"
+                        class="close"
+                        (click)="cancel()"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">×</span>
+                      </button>
+                    </div>
+                    <form #f="ngForm">
+                      <div class="modal-body">
+                        <section>
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <div class="card">
+                                <div class="card-body">
+                                  <div class="row">
+                                    <div class="col-12">
+                                      <div class="form-group">
+                                        <div class="d-flex align-items-center">
+                                          <p-radioButton
+                                            name="i9Config"
+                                            value="1"
+                                            [(ngModel)]="
+                                              employeeConfigDetails.i9Config
+                                            "
+                                            label="Download-->Sign-->Upload"
+                                            aria-required="true"
+                                          ></p-radioButton>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-12">
+                                      <div class="form-group">
+                                        <div class="d-flex align-items-center">
+                                          <p-radioButton
+                                            name="i9Config"
+                                            value="2"
+                                            [(ngModel)]="
+                                              employeeConfigDetails.i9Config
+                                            "
+                                            label="Digital Signture"
+                                            aria-required="true"
+                                          ></p-radioButton>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-12">
+                                      <div class="form-group">
+                                        <div class="d-flex align-items-center">
+                                          <p-radioButton
+                                            name="i9Config"
+                                            value="3"
+                                            [(ngModel)]="
+                                              employeeConfigDetails.i9Config
+                                            "
+                                            label="Digital Signature with SSN Verify"
+                                            aria-required="true"
+                                          ></p-radioButton>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-12">
+                                      <div class="form-group">
+                                        <div class="d-flex align-items-center">
+                                          <p-radioButton
+                                            name="i9Config"
+                                            value="4"
+                                            [(ngModel)]="
+                                              employeeConfigDetails.i9Config
+                                            "
+                                            label="Digital Signataure with SSN & Date of Birth Verify"
+                                            aria-required="true"
+                                          ></p-radioButton>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm-12 py-2 w4config">
+                                <div class="form-group m-0">
+                                  <span>
+                                    Apply this configuration to all the
+                                    employees &nbsp;&nbsp;
+                                  </span>
+                                  <p-inputSwitch
+                                    name="applyToAll"
+                                    class="setting-toggle"
+                                    (onChange)="onChangeApplyToAllI9($event)"
+                                  >
+                                  </p-inputSwitch>
+                                </div>
+                              </div>
+                              &nbsp;
+                            </div>
+                          </div>
+                        </section>
+                        <section>
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <div class="submit-section mt-0">
+                                <button
+                                  type="button"
+                                  class="btn btn-info submit-btn"
+                                  (click)="updateI9ConfigDetails()"
+                                >
+                                  <i class="fa fa-save"></i>&nbsp;Submit
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </section>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <!-- I9 Configuration -->
+            <!-- Invoice Configuration -->
+            <section *ngIf="editType == 'invoiceConfig'">
+              <div
+                id="w4_config"
+                class="modal custom-modal backdrop"
+                [ngStyle]="{ display: editInvoiceConfigs }"
+                role="dialog"
+                aria-modal="true"
+              >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Invoice Configuration</h5>
+                      <button
+                        type="button"
+                        class="close"
+                        (click)="cancel()"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">×</span>
+                      </button>
+                    </div>
+                    <form #f="ngForm">
+                      <div class="modal-body">
+                        <section>
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <div class="card">
+                                <div class="card-body">
+                                  <div class="row">
+                                    <div class="col-12">
+                                      <div class="form-group">
+                                        <div class="d-flex align-items-center">
+                                          <p-radioButton
+                                            name="invoiceConfig"
+                                            value="1"
+                                            [(ngModel)]="
+                                              invoiceNotificationConfig
+                                            "
+                                            label="	By Authorization Code"
+                                            aria-required="true"
+                                          ></p-radioButton>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-12">
+                                      <div class="form-group">
+                                        <div class="d-flex align-items-center">
+                                          <p-radioButton
+                                            name="invoiceConfig"
+                                            value="2"
+                                            [(ngModel)]="
+                                              invoiceNotificationConfig
+                                            "
+                                            label="By email reply"
+                                            aria-required="true"
+                                          ></p-radioButton>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class="col-sm-12 py-2 w4config"
+                                *ngIf="invoiceApplyToAll"
+                              >
+                                <div class="form-group m-0">
+                                  <span>
+                                    Apply this configuration to all the
+                                    Customers &nbsp;&nbsp;
+                                  </span>
+                                  <p-inputSwitch
+                                    name="applyToAll"
+                                    class="setting-toggle"
+                                    (onChange)="
+                                      onChangeApplyToAllInvoices($event)
+                                    "
+                                  >
+                                  </p-inputSwitch>
+                                </div>
+                              </div>
+                              &nbsp;
+                            </div>
+                          </div>
+                        </section>
+                        <section>
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <div class="submit-section mt-0">
+                                <button
+                                  type="button"
+                                  class="btn btn-info submit-btn"
+                                  (click)="updateInvoiceConfigDetails()"
+                                >
+                                  <i class="fa fa-save"></i>&nbsp;Submit
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </section>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <!-- Invoice Configuration -->
+            <!-- Timesheet Configuration -->
+            <section *ngIf="editType == 'timesheetConfig'">
+              <div
+                id="w4_config"
+                class="modal custom-modal backdrop"
+                [ngStyle]="{ display: editTimesheetConfigs }"
+                role="dialog"
+                aria-modal="true"
+              >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Timesheet Configuration</h5>
+                      <button
+                        type="button"
+                        class="close"
+                        (click)="cancel()"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">×</span>
+                      </button>
+                    </div>
+                    <form #f="ngForm">
+                      <div class="modal-body">
+                        <section>
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <div class="card">
+                                <div class="card-body">
+                                  <div class="row">
+                                    <div class="col-12">
+                                      <div class="form-group">
+                                        <div class="d-flex align-items-center">
+                                          <p-radioButton
+                                            name="timesheetConfig"
+                                            value="1"
+                                            [(ngModel)]="
+                                              timesheetNotificationConfig
+                                            "
+                                            label="	By Authorization Code"
+                                            aria-required="true"
+                                          ></p-radioButton>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-12">
+                                      <div class="form-group">
+                                        <div class="d-flex align-items-center">
+                                          <p-radioButton
+                                            name="timesheetConfig"
+                                            value="2"
+                                            [(ngModel)]="
+                                              timesheetNotificationConfig
+                                            "
+                                            label="By email reply"
+                                            aria-required="true"
+                                          ></p-radioButton>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class="col-sm-12 py-2 w4config"
+                                *ngIf="projectsApplyToAll"
+                              >
+                                <div class="form-group m-0">
+                                  <span>
+                                    Apply this configuration to all the Projects
+                                    &nbsp;&nbsp;
+                                  </span>
+                                  <p-inputSwitch
+                                    name="applyToAll"
+                                    class="setting-toggle"
+                                    (onChange)="
+                                      onChangeApplyToAllTimesheets($event)
+                                    "
+                                  >
+                                  </p-inputSwitch>
+                                </div>
+                              </div>
+                              &nbsp;
+                            </div>
+                          </div>
+                        </section>
+                        <section>
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <div class="submit-section mt-0">
+                                <button
+                                  type="button"
+                                  class="btn btn-info submit-btn"
+                                  (click)="updateTimesheetConfigDetails()"
+                                >
+                                  <i class="fa fa-save"></i>&nbsp;Submit
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </section>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <!-- Timesheet Configuration -->
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

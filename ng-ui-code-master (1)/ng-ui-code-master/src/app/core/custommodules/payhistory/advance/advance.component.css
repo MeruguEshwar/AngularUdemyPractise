@@ -1,0 +1,85 @@
+.filter-row .btn {
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #00a88e;
+  border-color: #00a88e;
+}
+.filter-row .btn:hover {
+  background-color: #03927c;
+  border-color: #03927c;
+}
+:host ::ng-deep .p-inputnumber {
+  width: 100%;
+}
+:host ::ng-deep td .dropdown .dropdown-toggle {
+  width: 150px;
+  text-align: start;
+}
+:host ::ng-deep td .dropdown-toggle::after {
+  position: absolute;
+  top: 13px;
+  right: 35px;
+}
+
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="advanceRequestedDate"] {
+  width: 14%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="advanceAmount"] {
+  width: 9%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="status"] {
+  width: 20%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="advancePaidDate"] {
+  width: 10%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="employeeName"] {
+  width: 18%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="advanceAmount"],
+:host ::ng-deep .ui-table-customers .ui-table-tbody > tr > td:nth-child(4) {
+  text-align: right;
+}
+:host ::ng-deep .action-label .dropdown-menu .dropdown-item,
+:host ::ng-deep td .dropdown .dropdown-toggle {
+  font-size: 85%;
+}
+:host ::ng-deep .ui-table-customers .ui-table-caption {
+  /* padding: 5px 5px 18px 12px; */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.571em 0.857em;
+}

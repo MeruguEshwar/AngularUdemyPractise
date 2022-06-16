@@ -1,0 +1,513 @@
+:host ::ng-deep .actions {
+  width: 100px;
+  text-align: center;
+}
+:host ::ng-deep .actions .action-icon {
+  color: #777;
+}
+:host ::ng-deep .actions {
+  width: 100px;
+  text-align: center;
+}
+:host ::ng-deep .actions .action-icon {
+  color: #777;
+}
+:host ::ng-deep .ui-table-customers {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
+    0 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+
+/* search */
+:host ::ng-deep .ui-tabview .ui-tabview-panels {
+  padding-top: 0px;
+}
+:host ::ng-deep .ui-table-customers .ui-table-globalfilter-container {
+  float: right;
+}
+:host ::ng-deep .ui-table-customers .ui-table-globalfilter-container input {
+  width: 200px;
+  height: 33px;
+}
+
+:host ::ng-deep .ui-table-customers .ui-table-caption,
+:host ::ng-deep .ui-table-customers .ui-treetable-caption {
+  border: 0 none;
+  padding: 5px 5px 15px 15px;
+  text-align: left;
+  color: inherit;
+  background: #ffffff;
+  border-bottom: 1px solid #c8c8c8;
+  font-weight: 500;
+}
+:host ::ng-deep .ui-table-customers .ui-table-caption .username,
+:host ::ng-deep .ui-table-customers .ui-treetable-caption .username {
+  color: #03927c;
+}
+/* /search */
+/* content*/
+:host ::ng-deep .ui-table .ui-sortable-column.ui-state-highlight,
+:host
+  ::ng-deep
+  .ui-table
+  .ui-sortable-column.ui-state-highlight
+  .ui-sortable-column-icon {
+  color: black;
+}
+:host ::ng-deep .ui-table-customers .ui-table-thead > tr > th,
+:host ::ng-deep .ui-treetable .ui-treetable-thead > tr > th {
+  border: 0 none;
+  text-align: left;
+  border-bottom: 2px solid #dee2e6;
+  background-color: #f4f4f4;
+  font-weight: 500;
+}
+:host ::ng-deep .ui-table-customers .ui-table-thead > tr > th.ui-filter-column {
+  border-top: 1px solid #c8c8c8;
+}
+
+:host ::ng-deep .ui-table-customers .ui-table-thead > tr > th.actions {
+  text-align: center;
+  width: 7%;
+}
+:host ::ng-deep .ui-table-customers .ui-table-tbody > tr > td,
+:host ::ng-deep .ui-treetable .ui-treetable-tbody > tr > td {
+  border: 0 none;
+  cursor: auto;
+  word-wrap: break-word;
+  overflow: hidden;
+}
+:host ::ng-deep .ui-table-customers .ui-table-tbody > tr > td:last-child,
+:host ::ng-deep .ui-treetable .ui-treetable-tbody > tr > td:last-child {
+  overflow: inherit;
+}
+
+:host ::ng-deep .ui-table-customers .ui-table-tbody > tr > td.actions,
+:host ::ng-deep .ui-treetable .ui-treetable-tbody > tr > td.actions {
+  text-align: center;
+}
+:host ::ng-deep .ui-table-customers .ui-dropdown-label:not(.ui-placeholder) {
+  text-transform: uppercase;
+}
+:host ::ng-deep .ui-table-customers .ui-table-tbody > tr > td .ui-column-title {
+  display: none;
+}
+
+:host ::ng-deep .ui-table-customers .customer-badge {
+  border-radius: 2px;
+  padding: 0.25em 0.5em;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+}
+:host ::ng-deep td div.tab-descp,
+:host ::ng-deep .ui-table-customers .ui-table-tbody > tr > td.div.tab-descp {
+  max-height: 21px;
+  overflow: hidden;
+  width: 100%;
+  text-align: initial;
+  text-overflow: ellipsis;
+  white-space: inherit;
+  cursor: pointer;
+}
+/* /content*/
+
+/* pagination */
+
+:host ::ng-deep .ui-table-customers .ui-paginator .ui-dropdown {
+  float: left;
+  width: auto;
+}
+:host ::ng-deep .ui-table-customers .ui-paginator .ui-paginator-current {
+  float: right;
+}
+:host ::ng-deep .ui-paginator .ui-paginator-current {
+  font-size: 12px;
+  position: relative;
+  top: 2px;
+}
+:host ::ng-deep .ui-dropdown .ui-dropdown-trigger,
+:host ::ng-deep .ui-paginator .ui-dropdown .ui-dropdown-label {
+  background-color: #f4f4f4;
+}
+:host ::ng-deep .ui-table-customers .ui-paginator {
+  border: 0 none;
+  padding: 5px;
+}
+:host ::ng-deep .ui-paginator .ui-paginator-pages .ui-paginator-page,
+:host ::ng-deep .ui-paginator .ui-paginator-first,
+:host ::ng-deep .ui-paginator .ui-paginator-prev,
+:host ::ng-deep .ui-paginator .ui-paginator-next,
+:host ::ng-deep .ui-paginator .ui-paginator-last,
+:host ::ng-deep .ui-paginator .ui-paginator-pages {
+  line-height: 1.8em;
+  min-width: 1.8em;
+  height: 1.8em;
+  position: relative;
+  top: 2px;
+}
+:host
+  ::ng-deep
+  .ui-paginator
+  .ui-paginator-pages
+  .ui-paginator-page.ui-state-active {
+  border-radius: 50%;
+}
+
+/*/pagination*/
+/* Responsive */
+@media screen and (max-width: 64em) {
+  :host ::ng-deep .ui-table.ui-table-customers .ui-table-thead > tr > th,
+  :host ::ng-deep .ui-table.ui-table-customers .ui-table-tfoot > tr > td {
+    display: none !important;
+  }
+  :host ::ng-deep .ui-table.ui-table-customers .ui-table-tbody > tr > td {
+    text-align: left;
+    display: block;
+    border: 0 none !important;
+    width: 100% !important;
+    float: left;
+    clear: left;
+    border: 0 none;
+  }
+  :host
+    ::ng-deep
+    .ui-table.ui-table-customers
+    .ui-table-tbody
+    > tr
+    > td
+    .ui-column-title {
+    padding: 0.4em;
+    min-width: 30%;
+    display: inline-block;
+    margin: -0.4em 1em -0.4em -0.4em;
+    font-weight: bold;
+  }
+}
+/* /Responsive */
+/* Check Box*/
+:host ::ng-deep .ui-chkbox .ui-chkbox-box {
+  width: 16px;
+  height: 16px;
+}
+:host ::ng-deep .ui-chkbox .ui-chkbox-box .ui-chkbox-icon {
+  font-size: 13px;
+}
+/* /Check Box*/
+/* callender Box*/
+:host ::ng-deep .ui-datepicker table td {
+  padding: 0px;
+}
+/* /callender Box*/
+/* toast message */
+
+:host ::ng-deep .ui-toast .ui-toast-close-icon {
+  top: 35%;
+  right: 3%;
+  font-size: 12px;
+}
+.message-icon {
+  padding: 0px 15px;
+}
+.message-icon i {
+  font-size: 24px;
+}
+:host ::ng-deep .ui-toast .ui-toast-message.ui-toast-message-success {
+  background-color: #c5f7dd;
+  border: solid #3bc279;
+}
+:host
+  ::ng-deep
+  .ui-toast
+  .ui-toast-message.ui-toast-message-success
+  .message-icon,
+:host
+  ::ng-deep
+  .ui-toast
+  .ui-toast-message.ui-toast-message-success
+  .ui-toast-close-icon {
+  color: #3bc279;
+}
+:host ::ng-deep .ui-toast .ui-toast-message.ui-toast-message-error {
+  background-color: #ffd0cb;
+  border: solid #e9594d;
+}
+:host
+  ::ng-deep
+  .ui-toast
+  .ui-toast-message.ui-toast-message-error
+  .message-icon,
+:host
+  ::ng-deep
+  .ui-toast
+  .ui-toast-message.ui-toast-message-error
+  .ui-toast-close-icon {
+  color: #e9594d;
+}
+:host ::ng-deep .ui-toast .ui-toast-message.ui-toast-message-warn {
+  background-color: #ffe8c3;
+  border: solid #e89f2b;
+}
+:host ::ng-deep .ui-toast .ui-toast-message.ui-toast-message-warn .message-icon,
+:host
+  ::ng-deep
+  .ui-toast
+  .ui-toast-message.ui-toast-message-warn
+  .ui-toast-close-icon {
+  color: #e89f2b;
+}
+:host ::ng-deep .ui-toast .ui-toast-message {
+  border-radius: 10px;
+  padding: 0px;
+  border-width: 0px 0px 0px 8px !important;
+}
+:host ::ng-deep .ui-toast .ui-toast-message-content {
+  padding: 5px 6% 5px 0px;
+}
+:host ::ng-deep .ui-toast-top-right {
+  top: 60px;
+}
+/* /toast message */
+/*
+
+
+
+:host ::ng-deep .ui-table-customers .customer-badge.status-qualified {
+  background-color: #c8e6c9;
+  color: #256029;
+}
+:host ::ng-deep .ui-table-customers .customer-badge.status-unqualified {
+  background-color: #ffcdd2;
+  color: #c63737;
+}
+:host ::ng-deep .ui-table-customers .customer-badge.status-negotiation {
+  background-color: #feedaf;
+  color: #8a5340;
+}
+:host ::ng-deep .ui-table-customers .customer-badge.status-new {
+  background-color: #b3e5fc;
+  color: #23547b;
+}
+:host ::ng-deep .ui-table-customers .customer-badge.status-renewal {
+  background-color: #eccfff;
+  color: #694382;
+}
+:host ::ng-deep .ui-table-customers .customer-badge.status-proposal {
+  background-color: #ffd8b2;
+  color: #805b36;
+}
+:host ::ng-deep .ui-table-customers .flag {
+  vertical-align: middle;
+  width: 30px;
+  height: 20px;
+}
+:host ::ng-deep .ui-table-customers .ui-multiselect-representative-option {
+  display: inline-block;
+  vertical-align: middle;
+}
+:host ::ng-deep .ui-table-customers .ui-multiselect-representative-option img {
+  vertical-align: middle;
+  width: 24px;
+}
+:host ::ng-deep .ui-table-customers .ui-multiselect-representative-option span {
+  margin-top: 0.125em;
+  vertical-align: middle;
+  margin-left: 0.5em;
+}
+:host ::ng-deep .ui-table-customers .ui-datepicker {
+  min-width: 25em;
+}
+:host ::ng-deep .ui-table-customers .ui-datepicker td {
+  font-weight: 400;
+}
+	*/
+
+:host ::ng-deep h2.table-avatar {
+  -webkit-box-align: center;
+  align-items: center;
+  display: -webkit-inline-box;
+  display: inline-flex;
+  font-size: inherit;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+:host ::ng-deep .filter-row .btn {
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #00a88e;
+  border-color: #00a88e;
+}
+:host ::ng-deep .filter-row .btn:hover {
+  background-color: #03927c;
+  border-color: #03927c;
+}
+/* border colors */
+:host ::ng-deep .ui-table .ui-table-tbody > tr:nth-child(even),
+:host ::ng-deep .ui-treetable .ui-treetable-tbody > tr:nth-child(even) {
+  border-top: 1px solid #c8c8c8;
+  border-bottom: 1px solid #c8c8c8;
+  background-color: #f9f9f9;
+}
+:host ::ng-deep .ui-inputtext,
+:host ::ng-deep .ui-radiobutton .ui-radiobutton-box,
+:host ::ng-deep .ui-calendar .ui-calendar-button {
+  border-color: #c8c8c8;
+}
+/* /border colors */
+:host ::ng-deep .role-fs {
+  font-size: 12px;
+  cursor: default;
+}
+:host ::ng-deep .ui-dropdown .ui-dropdown-clear-icon {
+  right: 3em;
+  font-size: 80%;
+}
+:host ::ng-deep .tag-note {
+  font-size: 75%;
+  font-style: italic;
+  color: #00a88e;
+}
+:host ::ng-deep .is-shared {
+  color: #00a88e;
+}
+:host ::ng-deep .ui-datepicker .ui-datepicker-buttonbar {
+  display: flex;
+  justify-content: space-around;
+}
+
+:host ::ng-deep .add-btn,
+:host ::ng-deep .btn-primary {
+  background: rgb(1, 69, 138) !important;
+  background: linear-gradient(
+    0deg,
+    rgba(1, 69, 138, 1) 0%,
+    rgba(1, 120, 242, 1) 100%
+  ) !important;
+  color: white;
+}
+:host ::ng-deep .btn-primary:hover {
+  border: 1px solid #00a2e3;
+  color: white;
+}
+:host ::ng-deep .btn-info {
+  background: rgb(1, 115, 98) !important;
+  background: linear-gradient(
+    0deg,
+    rgba(1, 115, 98, 1) 0%,
+    rgba(0, 168, 142, 1) 100%
+  ) !important;
+  border: none;
+  color: white;
+}
+:host ::ng-deep .btn-info:hover {
+  background: rgb(0, 168, 142) !important;
+  background: linear-gradient(
+    0deg,
+    rgba(0, 168, 142, 1) 0%,
+    rgba(1, 115, 98, 1) 100%
+  ) !important;
+  color: white;
+}
+:host ::ng-deep .btn-success {
+  background: rgb(2, 144, 33) !important;
+  background: linear-gradient(
+    0deg,
+    rgba(2, 144, 33, 1) 0%,
+    rgba(29, 224, 71, 1) 100%
+  ) !important;
+  border: none;
+  color: white;
+}
+:host ::ng-deep .btn-success:hover {
+  background: rgb(29, 224, 71) !important;
+  background: linear-gradient(
+    0deg,
+    rgba(29, 224, 71, 1) 0%,
+    rgba(2, 144, 33, 1) 100%
+  ) !important;
+  color: white;
+}
+:host ::ng-deep .btn-danger {
+  background: rgb(203, 20, 38) !important;
+  background: linear-gradient(
+    0deg,
+    rgba(203, 20, 38, 1) 0%,
+    rgba(236, 74, 89, 1) 100%
+  ) !important;
+  border: none;
+  color: white;
+}
+:host ::ng-deep .btn-danger:hover {
+  background: rgb(236, 74, 89) !important;
+  background: linear-gradient(
+    0deg,
+    rgba(236, 74, 89, 1) 0%,
+    rgba(203, 20, 38, 1) 100%
+  ) !important;
+  color: white;
+}
+:host ::ng-deep .add-btn,
+:host ::ng-deep .submit-btn,
+:host ::ng-deep .btn-info,
+:host ::ng-deep .btn-danger,
+:host ::ng-deep .btn-success {
+  font-weight: 300 !important;
+}
+:host ::ng-deep .badge {
+  font-weight: 500;
+}
+:host ::ng-deep .btn-white {
+  min-width: auto;
+}
+:host ::ng-deep .btn.btn-clear-file {
+  min-width: auto;
+  margin-left: 10px;
+}
+:host ::ng-deep p-button[ng-reflect-label="Upload"] button {
+  background: linear-gradient(
+    0deg,
+    rgba(2, 144, 33, 1) 0%,
+    rgba(29, 224, 71, 1) 100%
+  ) !important;
+  border: none;
+  color: white !important;
+  font-weight: 300 !important;
+  border-radius: 5px;
+}
+:host ::ng-deep p-button[ng-reflect-label="Upload"] button:hover {
+  background: linear-gradient(
+    0deg,
+    rgba(29, 224, 71, 1) 0%,
+    rgba(2, 144, 33, 1) 100%
+  ) !important;
+}
+:host ::ng-deep .chat-right .chat-content {
+  /* background: linear-gradient(to right, #013893 0%, #00a2e3 100%) !important; */
+  color: #1f1f1f !important;
+  background-color: #ade0f5 !important;
+}
+:host ::ng-deep .bg-inverse-completed {
+  background-color: #55e779 !important;
+}
+:host ::ng-deep .bg-inverse-in-progress {
+  background-color: #90c1f5 !important;
+}
+:host ::ng-deep .badge {
+  text-transform: uppercase;
+  vertical-align: text-bottom;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+:host ::ng-deep .ui-fileupload-files button[ng-reflect-icon="pi pi-times"] {
+  border: none;
+  background: rgb(203, 20, 38);
+  padding: 3px;
+  color: white;
+  font-size: 8px;
+}

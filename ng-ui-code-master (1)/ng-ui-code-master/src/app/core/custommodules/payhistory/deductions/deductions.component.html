@@ -1,0 +1,889 @@
+<div class="page-wrapper">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">Dashboard</li>
+            <li class="breadcrumb-item active">Deductions</li>
+          </ul>
+        </div>
+        <div class="col-auto float-right ml-auto" *ngIf="this.viewType">
+          <button
+            type="button"
+            class="btn add-btn"
+            (click)="showDialogToAdd()"
+            [disabled]="
+              !employeeSelectedToAddDeductionPayRate?.employeeDetailsId
+            "
+          >
+            <i class="fa fa-plus"></i> Add Deduction
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- /page Header-->
+    <!-- Search Filter -->
+    <div class="row filter-row" *ngIf="this.viewType">
+      <div class="col-sm-6 col-md-3">
+        <div class="form-group form-focus select-focus focused">
+          <p-dropdown
+            [options]="employeeList"
+            [(ngModel)]="selectedEmployee"
+            [filter]="true"
+            optionLabel="fullName"
+            [filter]="true"
+          ></p-dropdown>
+
+          <label class="focus-label"></label>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <a
+          href="javascript:void(0)"
+          class="btn btn-info btn-block"
+          (click)="getDetails(selectedEmployee)"
+        >
+          <i class="fa fa-search"></i>&nbsp;Get Deductions</a
+        >
+      </div>
+    </div>
+    <!-- /Search Filter -->
+    <div
+      class="col pl-0 pr-0"
+      *ngIf="employeeSelectedToAddDeductionPayRate?.employeeDetailsId"
+    >
+      <p-table
+        [columns]="cols"
+        [value]="deductionPayRateList"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        styleClass="ui-table-customers"
+        class="mainpayDeductionList"
+        #dt
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [alwaysShowPaginator]="false"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [filterDelay]="0"
+        [globalFilterFields]="['status']"
+      >
+        <ng-template pTemplate="caption">
+          <div>
+            Employee Deductions -
+            <span class="username">{{
+              employeeSelectedToAddDeductionPayRate?.fullName
+            }}</span>
+          </div>
+
+          <div class="ui-table-globalfilter-container">
+            <input
+              pInputText
+              type="text"
+              (input)="dt.filterGlobal($event.target.value, 'contains')"
+              placeholder="Search"
+            />
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th style="width: 12%; text-align: center">#</th>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{ col.header }}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+            <!-- <th class="actions">Actions</th> -->
+          </tr>
+        </ng-template>
+        <ng-template
+          pTemplate="body"
+          let-rowData
+          let-columns="columns"
+          let-rowIndex="rowIndex"
+        >
+          <tr [pSelectableRow]="rowData">
+            <td>
+              <a
+                [routerLink]="['/admin/deductions/deduction/view']"
+                [state]="{
+                  details: rowData
+                }"
+                >#DED-0000{{ rowIndex + 1 }}
+              </a>
+            </td>
+            <ng-container *ngFor="let col of columns">
+              <td
+                *ngIf="
+                  col.field != 'status' &&
+                  col.field != 'deductionAmountPerCycle' &&
+                  col.field != 'totalDeductionAmount' &&
+                  col.field != 'deductionType'
+                "
+                [attr.ng-reflect-field]="col.field"
+              >
+                {{ rowData[col.field] }}
+              </td>
+              <td *ngIf="col.field == 'deductionType'">
+                <div
+                  class="d-flex justify-content-start"
+                  pTooltip="{{ rowData[col.field] }}"
+                  tooltipPosition="top"
+                  *ngIf="rowData[col.field]"
+                >
+                  <div class="tab-descp">
+                    {{ rowData[col.field] }}
+                  </div>
+                  <div>
+                    <i class="fa fa-info-circle ml-3" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </td>
+              <td
+                *ngIf="col.field == 'deductionAmountPerCycle'"
+                [attr.ng-reflect-field]="col.field"
+              >
+                <div *ngIf="rowData[col.field]; else noDeduction">
+                  {{ organizationCurrency }} {{ rowData[col.field] }}
+                </div>
+                <ng-template #noDeduction> &nbsp; </ng-template>
+              </td>
+              <td
+                *ngIf="col.field == 'totalDeductionAmount'"
+                [attr.ng-reflect-field]="col.field"
+              >
+                <div *ngIf="rowData[col.field]; else noDeduction">
+                  {{ organizationCurrency }} {{ rowData[col.field] }}
+                </div>
+                <ng-template #noDeduction> &nbsp; </ng-template>
+              </td>
+              <td
+                class=""
+                *ngIf="col.field == 'status'"
+                [attr.ng-reflect-field]="col.field"
+              >
+                <div class="dropdown action-label">
+                  <a
+                    class="btn btn-white btn-sm btn-rounded dropdown-toggle"
+                    href="#"
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <i
+                      class="fa fa-dot-circle-o text-success"
+                      *ngIf="rowData[col.field] == 'Active'"
+                    ></i>
+                    <i
+                      class="fa fa-dot-circle-o text-danger"
+                      *ngIf="rowData[col.field] == 'In Active'"
+                    ></i>
+                    <i
+                      class="fa fa-dot-circle-o text-warning"
+                      *ngIf="rowData[col.field] == 'Payroll system not updated'"
+                    ></i>
+                    <i
+                      class="fa fa-dot-circle-o text-info"
+                      *ngIf="
+                        rowData[col.field] ==
+                        'Payroll system updated with deduction'
+                      "
+                    ></i>
+                    <i
+                      class="fa fa-dot-circle-o text-success"
+                      *ngIf="rowData[col.field] == 'Deduction Complete'"
+                    ></i>
+                    {{ rowData[col.field] }}
+                  </a>
+                  <div
+                    class="dropdown-menu dropdown-menu-right"
+                    x-placement="bottom-end"
+                    style="
+                      position: absolute;
+                      will-change: transform;
+                      top: 0px;
+                      left: 0px;
+                      transform: translate3d(-17px, 31px, 0px);
+                    "
+                  >
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      data-toggle="modal"
+                      data-target="#confirmModel"
+                      (click)="statusUpdate(rowData, 0)"
+                      *ngIf="rowData[col.field] != 'In Active'"
+                      ><i class="fa fa-dot-circle-o text-danger"></i> In
+                      Active</a
+                    >
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      (click)="statusUpdate(rowData, 1)"
+                      data-toggle="modal"
+                      data-target="#confirmModel"
+                      *ngIf="rowData[col.field] != 'Active'"
+                      ><i class="fa fa-dot-circle-o text-success"></i>Active</a
+                    >
+
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      data-toggle="modal"
+                      data-target="#confirmModel"
+                      (click)="statusUpdate(rowData, 2)"
+                      *ngIf="rowData[col.field] != 'Payroll system not updated'"
+                      ><i class="fa fa-dot-circle-o text-warning"></i> Payroll
+                      system not updated</a
+                    >
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      data-toggle="modal"
+                      data-target="#confirmModel"
+                      (click)="statusUpdate(rowData, 3)"
+                      *ngIf="
+                        rowData[col.field] !=
+                        'Payroll system updated with deduction'
+                      "
+                      ><i class="fa fa-dot-circle-o text-info"></i> Payroll
+                      system updated with deduction</a
+                    >
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      (click)="statusUpdate(rowData, 4)"
+                      data-toggle="modal"
+                      data-target="#confirmModel"
+                      *ngIf="rowData[col.field] != 'Deduction Complete'"
+                      ><i class="fa fa-dot-circle-o text-success"></i> Deduction
+                      Complete</a
+                    >
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- <td class="actions">
+              <div class="dropdown dropdown-action">
+                <a
+                  href="#"
+                  class="action-icon dropdown-toggle"
+                  data-toggle="dropdown"
+                  aria-expanded="false"
+                  ><i class="material-icons">more_vert</i></a
+                >
+                <div
+                  class="dropdown-menu dropdown-menu-right"
+                  x-placement="top-end"
+                  style="
+                    position: absolute;
+                    will-change: transform;
+                    top: 0px;
+                    left: 0px;
+                    transform: translate3d(72px, -2px, 0px);
+                  "
+                >
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    data-toggle="modal"
+                    (click)="showDialogToEdit(rowData)"
+                    ><i class="fa fa-pencil m-r-5"></i> Edit</a
+                  >
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    data-toggle="modal"
+                    (click)="showDialogToEdit(rowData)"
+                    class="dropdown-item delete"
+                    ><i class="fa fa-trash-o m-r-5"></i> Delete</a
+                  >
+                </div>
+              </div>
+            </td> -->
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td [attr.colspan]="cols.length + 1" style="text-align: center">
+              No Records Found.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <div
+      class="col pl-0 pr-0"
+      *ngIf="!employeeSelectedToAddDeductionPayRate?.employeeDetailsId"
+    >
+      <p-table
+        [columns]="cols"
+        [value]="deductionPayRateList"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        styleClass="ui-table-customers"
+        class="mainpayDeductionList"
+        #dt
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [alwaysShowPaginator]="false"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [filterDelay]="0"
+        [globalFilterFields]="['status']"
+      >
+        <ng-template pTemplate="caption">
+          <div>
+            Employee Deductions -
+            <span class="username">{{
+              employeeSelectedToAddDeductionPayRate?.fullName
+            }}</span>
+          </div>
+
+          <div class="ui-table-globalfilter-container">
+            <input
+              pInputText
+              type="text"
+              (input)="dt.filterGlobal($event.target.value, 'contains')"
+              placeholder="Search"
+            />
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{ col.header }}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+            <!-- <th class="actions">Actions</th> -->
+          </tr>
+        </ng-template>
+        <ng-template
+          pTemplate="body"
+          let-rowData
+          let-columns="columns"
+          let-rowIndex="rowIndex"
+        >
+          <tr [pSelectableRow]="rowData">
+            <ng-container *ngFor="let col of columns">
+              <td
+                *ngIf="
+                  col.field != 'status' &&
+                  col.field != 'employeeName' &&
+                  col.field != 'deductionAmountPerCycle' &&
+                  col.field != 'totalDeductionAmount' &&
+                  col.field != 'deductionType'
+                "
+                [attr.ng-reflect-field]="col.field"
+              >
+                {{ rowData[col.field] }}
+              </td>
+              <td *ngIf="col.field == 'deductionType'">
+                <div
+                  class="d-flex justify-content-start"
+                  pTooltip="{{ rowData[col.field] }}"
+                  tooltipPosition="top"
+                  *ngIf="rowData[col.field]"
+                >
+                  <div class="tab-descp">
+                    {{ rowData[col.field] }}
+                  </div>
+                  <div>
+                    <i class="fa fa-info-circle ml-3" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </td>
+              <td
+                *ngIf="col.field == 'deductionAmountPerCycle'"
+                [attr.ng-reflect-field]="col.field"
+              >
+                <div *ngIf="rowData[col.field]; else noDeduction">
+                  {{ organizationCurrency }} {{ rowData[col.field] }}
+                </div>
+                <ng-template #noDeduction> &nbsp; </ng-template>
+              </td>
+              <td
+                *ngIf="col.field == 'totalDeductionAmount'"
+                [attr.ng-reflect-field]="col.field"
+              >
+                <div *ngIf="rowData[col.field]; else noDeduction">
+                  {{ organizationCurrency }} {{ rowData[col.field] }}
+                </div>
+                <ng-template #noDeduction> &nbsp; </ng-template>
+              </td>
+              <td
+                *ngIf="col.field == 'employeeName'"
+                style="overflow: hidden"
+                [attr.ng-reflect-field]="col.field"
+              >
+                <h2 class="table-avatar">
+                  <a
+                    [routerLink]="['/admin/deductions/deduction/view']"
+                    [state]="{
+                      details: rowData
+                    }"
+                    >{{ rowData[col.field] }}</a
+                  >
+                </h2>
+              </td>
+
+              <td
+                class=""
+                *ngIf="col.field == 'status'"
+                [attr.ng-reflect-field]="col.field"
+              >
+                <div class="dropdown action-label">
+                  <a
+                    class="btn btn-white btn-sm btn-rounded dropdown-toggle"
+                    href="#"
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <i
+                      class="fa fa-dot-circle-o text-success"
+                      *ngIf="rowData[col.field] == 'Active'"
+                    ></i>
+                    <i
+                      class="fa fa-dot-circle-o text-danger"
+                      *ngIf="rowData[col.field] == 'In Active'"
+                    ></i>
+                    <i
+                      class="fa fa-dot-circle-o text-warning"
+                      *ngIf="rowData[col.field] == 'Payroll system not updated'"
+                    ></i>
+                    <i
+                      class="fa fa-dot-circle-o text-info"
+                      *ngIf="
+                        rowData[col.field] ==
+                        'Payroll system updated with deduction'
+                      "
+                    ></i>
+                    <i
+                      class="fa fa-dot-circle-o text-success"
+                      *ngIf="rowData[col.field] == 'Deduction Complete'"
+                    ></i>
+                    {{ rowData[col.field] }}
+                  </a>
+                  <div
+                    class="dropdown-menu dropdown-menu-right"
+                    x-placement="bottom-end"
+                    style="
+                      position: absolute;
+                      will-change: transform;
+                      top: 0px;
+                      left: 0px;
+                      transform: translate3d(-17px, 31px, 0px);
+                    "
+                  >
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      data-toggle="modal"
+                      data-target="#confirmModel"
+                      (click)="statusUpdate(rowData, 0)"
+                      *ngIf="rowData[col.field] != 'In Active'"
+                      ><i class="fa fa-dot-circle-o text-danger"></i> In
+                      Active</a
+                    >
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      (click)="statusUpdate(rowData, 1)"
+                      data-toggle="modal"
+                      data-target="#confirmModel"
+                      *ngIf="rowData[col.field] != 'Active'"
+                      ><i class="fa fa-dot-circle-o text-success"></i>Active</a
+                    >
+
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      data-toggle="modal"
+                      data-target="#confirmModel"
+                      (click)="statusUpdate(rowData, 2)"
+                      *ngIf="rowData[col.field] != 'Payroll system not updated'"
+                      ><i class="fa fa-dot-circle-o text-warning"></i> Payroll
+                      system not updated</a
+                    >
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      data-toggle="modal"
+                      data-target="#confirmModel"
+                      (click)="statusUpdate(rowData, 3)"
+                      *ngIf="
+                        rowData[col.field] !=
+                        'Payroll system updated with deduction'
+                      "
+                      ><i class="fa fa-dot-circle-o text-info"></i> Payroll
+                      system updated with deduction</a
+                    >
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      (click)="statusUpdate(rowData, 4)"
+                      data-toggle="modal"
+                      data-target="#confirmModel"
+                      *ngIf="rowData[col.field] != 'Deduction Complete'"
+                      ><i class="fa fa-dot-circle-o text-success"></i> Deduction
+                      Complete</a
+                    >
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td [attr.colspan]="cols.length" style="text-align: center">
+              No Records Found.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+<!-- Add or edit deductions -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: deductionModel }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Deduction Details : {{ selectedEmployee?.fullName }}
+        </h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeUploadmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card m-0">
+          <div class="card-body">
+            <form (ngSubmit)="saveDeduction(f)" #f="ngForm">
+              <div class="row" *ngIf="errorLabel">
+                <div class="col-sm-6" style="color: red">
+                  {{ errorLabel }}
+                </div>
+              </div>
+              <div class="row justify-content-center">
+                <div class="form-group col-3">
+                  <label
+                    >Deduction Updated Date
+                    <span class="text-danger"> *</span></label
+                  >
+                  <p-calendar
+                    [yearNavigator]="true"
+                    [monthNavigator]="true"
+                    yearRange="1980:2050"
+                    readonlyInput="true"
+                    showIcon="true"
+                    dateFormat="mm-dd-yy"
+                    name="deductionUpdatedDate"
+                    dataType="string"
+                    [(ngModel)]="deductionPayRateDetails.deductionUpdatedDate"
+                    required
+                  ></p-calendar>
+                </div>
+                <div class="form-group col-3">
+                  <label
+                    >{{ organizationCurrency }} Deduction Amount per cycle
+                  </label>
+                  <p-inputNumber
+                    name="deductionAmountPerCycle"
+                    [(ngModel)]="
+                      deductionPayRateDetails.deductionAmountPerCycle
+                    "
+                    maxlength="12"
+                    [minFractionDigits]="2"
+                    [useGrouping]="false"
+                  ></p-inputNumber>
+                  <!-- <input
+                    class="form-control text-right"
+                    type="number"
+                    min="0"
+                    oninput="validity.valid||(value='');"
+                    name="deductionAmountPerCycle"
+                    [(ngModel)]="deductionPayRateDetails.deductionAmountPerCycle"
+                  /> -->
+                </div>
+                <div
+                  class="form-group col-3"
+                  *ngIf="deductionPayRateDetails.deductionType != 'Other'"
+                >
+                  <label
+                    >Deduction Type <span class="text-danger"> *</span></label
+                  >
+                  <p-dropdown
+                    [options]="deductionOptionList"
+                    [(ngModel)]="deductionPayRateDetails.deductionType"
+                    (onChange)="onDeductionType($event.value)"
+                    name="deductionOptionList"
+                    [disabled]="disableDeductionType"
+                    [filter]="true"
+                  ></p-dropdown>
+                </div>
+                <div
+                  class="form-group col-3"
+                  *ngIf="deductionPayRateDetails.deductionType == 'Other'"
+                >
+                  <label
+                    >Enter Deduction Type <span class="text-danger"> *</span>
+                  </label>
+                  <a
+                    href="javascript:void(0)"
+                    (click)="resetType()"
+                    class="float-right"
+                  >
+                    <i class="fa fa-refresh" aria-hidden="true"></i
+                  ></a>
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="deductionType"
+                    [(ngModel)]="deductionPayRateDetails.customeDeductionType"
+                    required
+                  />
+                </div>
+                <div class="form-group col-3">
+                  <label
+                    >{{ organizationCurrency }} Total Deduction Amount
+                    <span class="text-danger"> *</span></label
+                  >
+                  <p-inputNumber
+                    name="deductionAmount"
+                    [(ngModel)]="deductionPayRateDetails.totalDeductionAmount"
+                    maxlength="12"
+                    [minFractionDigits]="2"
+                    [useGrouping]="false"
+                    ariaRequired="true"
+                    required
+                    [disabled]="disableAmount"
+                  ></p-inputNumber>
+                  <!-- <input
+                    class="form-control text-right"
+                    type="number"
+                    min="0"
+                    oninput="validity.valid||(value='');"
+                    name="deductionAmount"
+                    [disabled]="disableAmount"
+                    [(ngModel)]="deductionPayRateDetails.totalDeductionAmount"
+                    required
+                  /> -->
+                </div>
+                <div
+                  class="col-12"
+                  *ngIf="
+                    deductionPayRateDetails.deductionType ==
+                      'Advance Deduction' ||
+                    deductionPayRateDetails.deductionType == 'Expense Deduction'
+                  "
+                >
+                  <div class="pb-2">
+                    <strong class=""
+                      >{{
+                        deductionPayRateDetails.deductionType
+                      }}
+                      Details:</strong
+                    >
+                  </div>
+                  <p-table
+                    [columns]="deductionCols"
+                    [value]="deductionList"
+                    [rowsPerPageOptions]="[10, 25, 50]"
+                    styleClass="ui-table-customers deductionDetails"
+                    [class]="deductionPayRateDetails.deductionType"
+                    #dt
+                    [paginator]="true"
+                    [rows]="10"
+                    [showCurrentPageReport]="true"
+                    [alwaysShowPaginator]="false"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    [filterDelay]="0"
+                    [globalFilterFields]="[
+                      'designation',
+                      'description',
+                      'status'
+                    ]"
+                    [(selection)]="selecteddeductionList"
+                    selectionMode="multiple"
+                    [metaKeySelection]="false"
+                    (onRowSelect)="onRowSelect($event)"
+                    (onRowUnselect)="onRowUnselect($event)"
+                  >
+                    <ng-template pTemplate="header" let-columns>
+                      <tr>
+                        <th style="width: 2.25em">
+                          <p-tableHeaderCheckbox
+                            (click)="onAllRowSelect(selecteddeductionList)"
+                          ></p-tableHeaderCheckbox>
+                        </th>
+                        <th
+                          *ngFor="let col of columns"
+                          [pSortableColumn]="col.field"
+                        >
+                          {{ col.header }}
+                          <p-sortIcon [field]="col.field"></p-sortIcon>
+                        </th>
+                      </tr>
+                    </ng-template>
+                    <ng-template
+                      pTemplate="body"
+                      let-rowData
+                      let-columns="columns"
+                      let-rowIndex="rowIndex"
+                    >
+                      <tr>
+                        <td>
+                          <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                        </td>
+                        <ng-container *ngFor="let col of columns">
+                          <td
+                            *ngIf="
+                              col.field != 'status' &&
+                              col.field != 'description'
+                            "
+                          >
+                            {{ rowData[col.field] }}
+                          </td>
+                          <td *ngIf="col.field == 'description'">
+                            <div
+                              #container
+                              style="display: inline-block; position: relative"
+                              class="d-flex justify-content-start"
+                              pTooltip="{{ rowData[col.field] }}"
+                              tooltipPosition="top"
+                              *ngIf="rowData[col.field]"
+                              [appendTo]="container"
+                            >
+                              <div class="tab-descp">
+                                {{ rowData[col.field] }}
+                              </div>
+                              <div>
+                                <i
+                                  class="fa fa-info-circle ml-3"
+                                  aria-hidden="true"
+                                ></i>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="" *ngIf="col.field == 'status'">
+                            <div class="dropdown action-label">
+                              <a
+                                class="
+                                  btn btn-white btn-sm btn-rounded
+                                  dropdown-toggle
+                                "
+                              >
+                                <i
+                                  class="fa fa-dot-circle-o text-info"
+                                  *ngIf="
+                                    rowData[col.field] == 'Advance Requested'
+                                  "
+                                ></i>
+                                <i
+                                  class="fa fa-dot-circle-o text-danger"
+                                  *ngIf="
+                                    rowData[col.field] == 'Advance Not Paid'
+                                  "
+                                ></i>
+                                <i
+                                  class="fa fa-dot-circle-o text-success"
+                                  *ngIf="rowData[col.field] == 'Advance Paid'"
+                                ></i>
+                                {{ rowData[col.field] }}
+                              </a>
+                            </div>
+                          </td>
+                        </ng-container>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                      <tr>
+                        <td
+                          [attr.colspan]="deductionCols.length"
+                          style="text-align: center"
+                        >
+                          No Records Found.
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+
+              <div class="submit-section">
+                <button
+                  type="submit"
+                  class="btn btn-success submit-btn"
+                  [disabled]="!f.valid"
+                >
+                  <i class="fa fa-save"></i>&nbsp;Save
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger submit-btn ml-2"
+                  (click)="closeUploadmodal()"
+                >
+                  <i class="fa fa-times"></i>&nbsp;Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Add or edit deductions -->
+<!-- confirm model-->
+<div
+  class="modal custom-modal fade"
+  id="confirmModel"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <h3>Confirm Deduction</h3>
+          <p>Are you sure want to Update Deduction?</p>
+        </div>
+        <div class="modal-btn">
+          <div class="row">
+            <div class="col-6 d-flex justify-content-end">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                (click)="confirm()"
+                class="btn btn-info submit-btn"
+                ><i class="fa fa-check"></i>&nbsp;Confirm</a
+              >
+            </div>
+            <div class="col-6 d-flex justify-content-start">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                class="btn btn-danger submit-btn"
+                ><i class="fa fa-times"></i>&nbsp;Cancel</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /confirm model-->

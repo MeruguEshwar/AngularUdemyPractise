@@ -1,0 +1,16 @@
+<div class="container-fluid p-0" style="background-color: white">
+  <app-welcome-header></app-welcome-header>
+  <app-inner-menu [menuDetails]="menuDetails"></app-inner-menu>
+
+  <div class="container py-5">
+    <app-inner-banner [bannerDetails]="bannerDetails"></app-inner-banner>
+  </div>
+
+  <div class="container pb-5">
+    <app-inner-sub-banner
+      [bannerDetails]="subBannerList"
+    ></app-inner-sub-banner>
+  </div>
+  <!--footer-->
+  <app-welcome-footer></app-welcome-footer>
+</div>

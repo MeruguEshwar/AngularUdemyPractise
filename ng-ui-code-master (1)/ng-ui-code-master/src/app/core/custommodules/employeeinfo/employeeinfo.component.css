@@ -1,0 +1,54 @@
+:host
+  ::ng-deep.ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="role"] {
+  width: 12%;
+}
+:host
+  ::ng-deep.ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="employeeType"] {
+  width: 15%;
+}
+:host ::ng-deep p-tabpanel[header="Active Employees"] td h2.table-avatar span {
+  /* color: #888; */
+  display: block;
+  font-size: 11px;
+  margin-top: 3px;
+}
+/* .role-fs {
+  font-size: 12px;
+  cursor: default;
+} */
+:host ::ng-deep .ui-table-customers .ui-table-tbody > tr > td {
+  overflow: hidden;
+}
+:host ::ng-deep .ui-table-customers .ui-table-caption {
+  color: transparent;
+}
+:host
+  ::ng-deep
+  p-tabpanel[ng-reflect-header="Inactive Employees"]
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th.actions {
+  width: 10%;
+}
+.total-logged-time {
+  padding: 10px;
+  font-size: 13px;
+  margin-right: 10px;
+  font-weight: 500;
+}
+
+.total-logged-time .attachment-file {
+  border: 1px solid #00a88e;
+  padding: 5px;
+  border-radius: 10px;
+}
+.total-logged-time .attachment-file .fa {
+  color: #00a88e;
+}

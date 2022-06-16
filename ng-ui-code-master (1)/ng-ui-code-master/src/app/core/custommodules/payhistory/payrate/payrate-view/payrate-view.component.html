@@ -1,0 +1,252 @@
+<div class="page-wrapper" style="min-height: 283px">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="javascript:void(0)">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">Payrate</li>
+            <li class="breadcrumb-item active">View</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="card mb-0">
+      <div class="card-body">
+        <h3 class="card-title">
+          Pay Rate Details
+
+          <a
+            href="javascript:void(0)"
+            class="edit-icon"
+            (click)="showDialogToAdd()"
+            ><i class="fa fa-pencil"></i
+          ></a>
+        </h3>
+        <div class="profile-view">
+          <div class="row">
+            <div class="col-md-6">
+              <ul class="personal-info">
+                <li *ngIf="details?.payRateType == '1'">
+                  <div class="title">Rate</div>
+                  <div class="text">
+                    :
+                    <strong
+                      >{{ organizationCurrency }} {{ details?.rate }}</strong
+                    >
+                  </div>
+                </li>
+                <li *ngIf="details?.payRateType == '2'">
+                  <div class="title">Salary</div>
+                  <div class="text">
+                    :
+                    <strong
+                      >{{ organizationCurrency }} {{ details?.salary }}</strong
+                    >
+                  </div>
+                </li>
+                <li *ngIf="details?.startDate">
+                  <div class="title">Start Date</div>
+                  <div class="text">: {{ details?.startDate }}</div>
+                </li>
+                <li *ngIf="details?.endDate">
+                  <div class="title">End Date</div>
+                  <div class="text">: {{ details?.endDate }}</div>
+                </li>
+                <li *ngIf="details?.rateCodeDescription">
+                  <div class="title">Description</div>
+                  <div class="text">: {{ details?.rateCodeDescription }}</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- /Page Content -->
+</div>
+<!-- Add or edit deductions -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: model }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+  *ngIf="employeePayRateDetailsId"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          *ngIf="errorLabel"
+          style="position: absolute; left: 15px"
+          class="text-danger"
+        >
+          {{ errorLabel }}
+        </h5>
+        <h5 class="modal-title">
+          Pay Rate Details : {{ details.employeeName }}
+        </h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeModel('cancel')"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card m-0">
+          <div class="card-body">
+            <form (ngSubmit)="savePayRate(f)" #f="ngForm">
+              <div class="row" *ngIf="errorLabel">
+                <div class="col-sm-6" style="color: red">
+                  <!-- {{ errorLabel }} -->
+                </div>
+              </div>
+              <div class="row justify-content-center">
+                <div class="form-group col-12">
+                  <label
+                    >{{ organizationCurrency }} Pay Rate
+                    <span class="text-danger"> *</span></label
+                  >
+                  <div class="d-flex justify-content-start">
+                    <div>
+                      <p-selectButton
+                        name="payrateMode"
+                        [options]="payrateMode"
+                        [(ngModel)]="details.payRateType"
+                      ></p-selectButton>
+                    </div>
+                    <div class="ml-3">
+                      <p-inputNumber
+                        *ngIf="details.payRateType == '1'"
+                        name="rate"
+                        [(ngModel)]="details.rate"
+                        placeholder="Enter Rate"
+                        maxlength="12"
+                        [minFractionDigits]="2"
+                        [useGrouping]="false"
+                        ariaRequired="true"
+                        required
+                      ></p-inputNumber>
+                      <!-- <input
+                        *ngIf="payRateDetails.payRateType == '1'"
+                        class="form-control text-right"
+                        type="number"
+                        placeholder="Enter Rate"
+                        min="0"
+                        oninput="validity.valid||(value='');"
+                        [(ngModel)]="payRateDetails.rate"
+                        name="rate"
+                        required
+                      /> -->
+                      <p-inputNumber
+                        *ngIf="details.payRateType == '2'"
+                        name="amount"
+                        [(ngModel)]="details.salary"
+                        placeholder="Enter Salary"
+                        maxlength="12"
+                        [minFractionDigits]="2"
+                        [useGrouping]="false"
+                        ariaRequired="true"
+                        required
+                      ></p-inputNumber>
+                      <!-- <input
+                        *ngIf="payRateDetails.payRateType == '2'"
+                        class="form-control text-right"
+                        type="number"
+                        min="0"
+                        oninput="validity.valid||(value='');"
+                        placeholder="Enter Salary"
+                        name="amount"
+                        [(ngModel)]="payRateDetails.salary"
+                        required
+                      /> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-6">
+                  <label>Start Date <span class="text-danger"> *</span></label>
+                  <p-calendar
+                    #minimumDate
+                    [yearNavigator]="true"
+                    [monthNavigator]="true"
+                    yearRange="1980:2050"
+                    readonlyInput="true"
+                    showIcon="true"
+                    dateFormat="mm-dd-yy"
+                    [(ngModel)]="details.startDate"
+                    name="startDate"
+                    dataType="string"
+                    (onClose)="checkPayRateExists()"
+                    required
+                  ></p-calendar>
+                </div>
+                <div class="col-6">
+                  <div
+                    class="form-group"
+                    *ngIf="details.employeePayRateDetailsId"
+                  >
+                    <label>End Date <span class="text-danger"> *</span></label>
+                    <p-calendar
+                      [yearNavigator]="true"
+                      [monthNavigator]="true"
+                      yearRange="1980:2050"
+                      readonlyInput="true"
+                      [minDate]="minimumDate.value"
+                      showIcon="true"
+                      dateFormat="mm-dd-yy"
+                      [(ngModel)]="details.endDate"
+                      name="startDate"
+                      dataType="string"
+                      required
+                    ></p-calendar>
+                  </div>
+                </div>
+                <div class="form-group col-12">
+                  <label>Description <span class="text-danger"> *</span></label>
+                  <textarea
+                    pInputTextarea
+                    autoResize="autoResize"
+                    [rows]="5"
+                    name="rateCodeDescp"
+                    [(ngModel)]="details.rateCodeDescription"
+                    (keypress)="sharedService.keyPressAddress($event)"
+                  ></textarea>
+                </div>
+              </div>
+
+              <div class="submit-section">
+                <button
+                  type="submit"
+                  class="btn btn-success submit-btn"
+                  [disabled]="!f.valid"
+                >
+                  <i class="fa fa-save"></i>&nbsp;Save
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger submit-btn ml-2"
+                  (click)="closeModel('cancel')"
+                >
+                  <i class="fa fa-times"></i>&nbsp;Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Add or edit deductions -->

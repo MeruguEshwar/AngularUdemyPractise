@@ -1,0 +1,12 @@
+:host ::ng-deep .irs_forms_management {
+  color: #009ce7;
+}
+:host ::ng-deep .civil_permission_management {
+  color: #6ac069;
+}
+:host ::ng-deep .workforce_classification {
+  color: #8484d7;
+}
+:host ::ng-deep .accounting_payroll_data_management {
+  color: #e44c7d;
+}

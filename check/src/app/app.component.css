@@ -1,0 +1,9 @@
+#nani{
+  background-color: antiquewhite;
+  height: 200px;
+  margin-left: 650px;
+}
+
+input.ng-invalid.ng-touched{
+  border:2px solid red;
+}

@@ -1,0 +1,929 @@
+<div
+  id="add_employee"
+  class="modal custom-modal backdrop"
+  [ngStyle]="{ display: addemployeeDisplay }"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-capitalize">
+          Employee Details
+          <ng-container *ngIf="employee.firstName || employee.lastName">
+            : {{ employee.firstName }} {{ employee.lastName }}</ng-container
+          >
+        </h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p-tabView [(activeIndex)]="tabActiveIndex">
+          <p-tabPanel header="Employee Registration Details" [disabled]="true">
+            <form
+              #f="ngForm"
+              (ngSubmit)="saveEmployeeDetails(true)"
+              *ngIf="tabActiveIndex == 0"
+            >
+              <div>
+                <div class="row" *ngIf="errLabel">
+                  <div class="col-sm-6" class="text-danger">
+                    {{ errLabel }}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="col-form-label"
+                        >First Name <span class="text-danger">*</span></label
+                      >
+                      <input
+                        pInputText
+                        class="form-control"
+                        [(ngModel)]="employee.firstName"
+                        name="firstName"
+                        placeholder=" "
+                        type="text"
+                        required
+                        #firstName="ngModel"
+                        minlength="2"
+                        maxlength="150"
+                        pattern="[A-Za-z ]{1,150}"
+                        (keypress)="sharedService.keyPressAlphabet($event)"
+                      />
+                      <small
+                        class="text-danger"
+                        *ngIf="firstName.touched && firstName.invalid"
+                        >The given value is not a valid format.</small
+                      >
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="col-form-label"
+                        >Last Name <span class="text-danger">*</span></label
+                      >
+                      <input
+                        pInputText
+                        class="form-control"
+                        [(ngModel)]="employee.lastName"
+                        name="lastName"
+                        placeholder=" "
+                        type="text"
+                        required
+                        #lastName="ngModel"
+                        maxlength="150"
+                        pattern="[A-Za-z ]{1,150}"
+                        (keypress)="sharedService.keyPressAlphabet($event)"
+                      />
+                      <small
+                        class="text-danger"
+                        *ngIf="lastName.touched && lastName.invalid"
+                        >The given value is not a valid format.</small
+                      >
+                    </div>
+                  </div>
+                  <!-- <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Employee ID <span class="text-danger">*</span></label>
+                                <input pInputText class="form-control" [(ngModel)]="employee.employeeid"
+                                    name="employeeid" placeholder="employeeid" type="text">
+                            </div>
+                        </div> -->
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="col-form-label"
+                        >Email <span class="text-danger">*</span></label
+                      >
+                      <input
+                        pInputText
+                        class="form-control"
+                        [(ngModel)]="employee.email"
+                        type="email"
+                        name="email"
+                        #email="ngModel"
+                        maxlength="150"
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                        (keypress)="sharedService.keyPressEmail($event)"
+                        required
+                      />
+                      <small
+                        class="text-danger"
+                        *ngIf="email.touched && email.invalid"
+                        >The given value is not a valid format or already
+                        exists.</small
+                      >
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="col-form-label"
+                        >Mobile <span class="text-danger">*</span></label
+                      >
+                      <input
+                        pInputText
+                        class="form-control"
+                        [(ngModel)]="employee.phoneNumber"
+                        type="tel"
+                        name="phoneNumber"
+                        #phone="ngModel"
+                        maxlength="15"
+                        required
+                        pattern="[0-9]{10,15}"
+                        (keypress)="sharedService.keyPressNumber($event)"
+                      />
+                      <small
+                        class="text-danger"
+                        *ngIf="phone.touched && phone.invalid"
+                        >The given value is not a valid format.</small
+                      >
+                    </div>
+                  </div>
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                      <label class="col-form-label"
+                        >Role <span class="text-danger">*</span></label
+                      >
+                      <div>
+                        <div
+                          *ngFor="let role of roles; let i = index"
+                          class="{{ i == 0 ? 'ui-g-3' : 'ui-g-2' }}"
+                        >
+                          <p-radioButton
+                            name="role"
+                            [value]="role.value"
+                            [label]="role.label"
+                            [(ngModel)]="employee.roleId"
+                            [inputId]="'role' + i"
+                            required
+                          ></p-radioButton>
+                        </div>
+                      </div>
+                      <!-- <p-dropdown class="form-control"  [options]="designation" [(ngModel)]="selectedDesignation" placeholder="Select a City" [filter]="true">
+                                </p-dropdown> -->
+                    </div>
+                  </div>
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                      <label class="col-form-label"
+                        >Send Registration Mail
+                        <span class="text-danger">*</span></label
+                      >
+                      <div>
+                        <div
+                          *ngFor="let item of approvals; let i = index"
+                          class="ui-g-3"
+                        >
+                          <p-radioButton
+                            name="approval"
+                            [value]="item.value"
+                            [label]="item.label"
+                            [(ngModel)]="employee.sendRegistrationLink"
+                            [inputId]="'approval' + i"
+                            required
+                          ></p-radioButton>
+                        </div>
+                      </div>
+                      <!-- <p-dropdown class="form-control"  [options]="designation" [(ngModel)]="selectedDesignation" placeholder="Select a City" [filter]="true">
+                                </p-dropdown> -->
+                    </div>
+                  </div>
+                  <div class="col-sm-12" *ngIf="employee.sendRegistrationLink">
+                    <span class="text-info"
+                      >Note: Please ask the Employee to check the spam folder
+                      for the registration mail
+                    </span>
+                  </div>
+                </div>
+
+                <div class="submit-section">
+                  <button
+                    type="submit"
+                    class="btn btn-info mr-2"
+                    [disabled]="!f.valid"
+                  >
+                    <i class="fa fa-save"></i>&nbsp;Save & Close
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-success mr-2"
+                    (click)="openNext()"
+                    [disabled]="!f.valid"
+                  >
+                    <i class="fa fa-hand-o-right"></i>&nbsp;Save & Next
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    (click)="closeAddmodal()"
+                  >
+                    <i class="fa fa-times"></i>&nbsp;Cancel
+                  </button>
+                </div>
+              </div>
+            </form>
+          </p-tabPanel>
+          <p-tabPanel header="Personal Details" [disabled]="true">
+            <form #personalDetailsForm="ngForm" *ngIf="tabActiveIndex == 1">
+              <div class="">
+                <div class="pt-3">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label
+                              >First Name
+                              <span class="text-danger">*</span></label
+                            >
+                            <input
+                              type="text"
+                              name="firstName"
+                              [(ngModel)]="personalDetails.firstName"
+                              class="form-control"
+                              required
+                              #firstName="ngModel"
+                              minlength="2"
+                              maxlength="150"
+                              pattern="[A-Za-z ]{1,150}"
+                              (keypress)="
+                                sharedService.keyPressAlphabet($event)
+                              "
+                            />
+                            <small
+                              class="text-danger"
+                              *ngIf="firstName.touched && firstName.invalid"
+                              >The given value is not a valid format</small
+                            >
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label>Middle Name </label>
+                            <input
+                              type="text"
+                              name="middleName"
+                              [(ngModel)]="personalDetails.middleName"
+                              class="form-control"
+                              #middleName="ngModel"
+                              maxlength="150"
+                              pattern="[A-Za-z ]{1,150}"
+                              (keypress)="
+                                sharedService.keyPressAlphabet($event)
+                              "
+                            />
+                            <small
+                              class="text-danger"
+                              *ngIf="firstName.touched && firstName.invalid"
+                              >The given value is not a valid format</small
+                            >
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label
+                              >Last Name
+                              <span class="text-danger">*</span></label
+                            >
+                            <input
+                              type="text"
+                              name="lastName"
+                              [(ngModel)]="personalDetails.lastName"
+                              class="form-control"
+                              required
+                              #lastName="ngModel"
+                              maxlength="150"
+                              pattern="[A-Za-z ]{1,150}"
+                              (keypress)="
+                                sharedService.keyPressAlphabet($event)
+                              "
+                            />
+                            <small
+                              class="text-danger"
+                              *ngIf="lastName.touched && lastName.invalid"
+                              >The given value is not a valid format</small
+                            >
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label
+                              >Birth Date
+                              <span class="text-danger">*</span></label
+                            >
+
+                            <p-calendar
+                              [maxDate]="birthMaxDate"
+                              [yearNavigator]="true"
+                              [monthNavigator]="true"
+                              yearRange="1980:2050"
+                              readonlyInput="true"
+                              name="dateOfBirth"
+                              [(ngModel)]="personalDetails.dateOfBirth"
+                              showIcon="true"
+                              dateFormat="mm-dd-yy"
+                              aria-required="true"
+                              dataType="string"
+                              required
+                            ></p-calendar>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label
+                              >Gender <span class="text-danger">*</span></label
+                            >
+                            <div>
+                              <div class="ui-g-3">
+                                <p-radioButton
+                                  name="gender"
+                                  value="1"
+                                  label="Male"
+                                  [(ngModel)]="personalDetails.gender"
+                                  aria-required="true"
+                                  required
+                                ></p-radioButton>
+                              </div>
+                              <div class="ui-g-4">
+                                <p-radioButton
+                                  name="gender"
+                                  value="2"
+                                  label="Female"
+                                  [(ngModel)]="personalDetails.gender"
+                                  aria-required="true"
+                                  required
+                                ></p-radioButton>
+                              </div>
+                              <div class="ui-g-4">
+                                <p-radioButton
+                                  name="gender"
+                                  value="3"
+                                  label="Other"
+                                  [(ngModel)]="personalDetails.gender"
+                                  aria-required="true"
+                                  required
+                                ></p-radioButton>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label>Nationality </label>
+                            <input
+                              name="nationality"
+                              [(ngModel)]="personalDetails.nationality"
+                              class="form-control"
+                              type="text"
+                              #nationality="ngModel"
+                              maxlength="150"
+                              pattern="[A-Za-z]{1,150}"
+                              (keypress)="
+                                sharedService.keyPressAlphabet($event)
+                              "
+                            />
+                            <small
+                              class="text-danger"
+                              *ngIf="nationality.touched && nationality.invalid"
+                              >The given Nationality is not a valid
+                              format</small
+                            >
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label
+                              >Marital status
+                              <span class="text-danger">*</span></label
+                            >
+                            <div>
+                              <div class="ui-g-6">
+                                <p-radioButton
+                                  name="maritalStatuses"
+                                  value="1"
+                                  label="Single"
+                                  [(ngModel)]="personalDetails.maritalStatus"
+                                  aria-required="true"
+                                  required
+                                ></p-radioButton>
+                              </div>
+                              <div class="ui-g-6">
+                                <p-radioButton
+                                  name="maritalStatuses"
+                                  value="2"
+                                  label="Married"
+                                  [(ngModel)]="personalDetails.maritalStatus"
+                                  aria-required="true"
+                                  required
+                                ></p-radioButton>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="col-md-3"
+                          *ngIf="personalDetails.maritalStatus == 2"
+                        >
+                          <div class="form-group">
+                            <label>Anniversary Date </label>
+
+                            <p-calendar
+                              [maxDate]="birthMaxDate"
+                              [yearNavigator]="true"
+                              [monthNavigator]="true"
+                              yearRange="1980:2050"
+                              readonlyInput="true"
+                              name="dateOfMarriage"
+                              [(ngModel)]="personalDetails.dateOfMarriage"
+                              showIcon="true"
+                              dateFormat="mm-dd-yy"
+                              aria-required="true"
+                              dataType="string"
+                            ></p-calendar>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="submit-section">
+                <button
+                  type="button"
+                  class="btn btn-info mr-2"
+                  (click)="savePersonalDetails(true)"
+                  [disabled]="!personalDetailsForm.valid"
+                >
+                  <i class="fa fa-save"></i>&nbsp;Save & Close
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-success mr-2"
+                  (click)="openNext()"
+                  [disabled]="!personalDetailsForm.valid"
+                >
+                  <i class="fa fa-hand-o-right"></i>&nbsp;Save & Next
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  (click)="closeAddmodal(employeeType)"
+                >
+                  <i class="fa fa-times"></i>&nbsp;Cancel
+                </button>
+              </div>
+            </form>
+          </p-tabPanel>
+
+          <p-tabPanel header="Employment Details" [disabled]="true">
+            <form #employementDetailsForm="ngForm" *ngIf="tabActiveIndex == 2">
+              <div class="pt-3">
+                <div class="row" *ngIf="errLabel">
+                  <div class="col-sm-6" class="text-danger">
+                    {{ errLabel }}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label
+                        >Employee Id<span class="text-danger"> *</span></label
+                      >
+                      <input
+                        name="employeeId"
+                        id="employeeId"
+                        [(ngModel)]="employmentDetails.employeeId"
+                        type="text"
+                        class="form-control"
+                        #employeeId="ngModel"
+                        maxlength="15"
+                        pattern="[A-Za-z0-9]{1,15}"
+                        (keypress)="sharedService.keyPressAlphaNumaric($event)"
+                        (ngModelChange)="
+                          employmentDetails.employeeId = $event.toUpperCase()
+                        "
+                        required
+                      />
+                      <small
+                        class="text-danger"
+                        *ngIf="employeeId.touched && employeeId.invalid"
+                        >The given value is not a valid format</small
+                      >
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label
+                        >Joining Date<span class="text-danger"> *</span></label
+                      >
+                      <p-calendar
+                        [yearNavigator]="true"
+                        [monthNavigator]="true"
+                        yearRange="1980:2050"
+                        readonlyInput="true"
+                        name="dateOfJoining"
+                        [(ngModel)]="employmentDetails.dateOfJoining"
+                        showIcon="true"
+                        dateFormat="mm-dd-yy"
+                        dataType="string"
+                        aria-required="true"
+                        required
+                      ></p-calendar>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label
+                        >Department <span class="text-danger">*</span></label
+                      >
+                      <p-dropdown
+                        name="department"
+                        [options]="departments"
+                        [(ngModel)]="employmentDetails.departmentDetailsId"
+                        placeholder="Department"
+                        [filter]="true"
+                        required
+                      ></p-dropdown>
+                      <!-- <p-autoComplete
+                  [suggestions]="filterDepartments"
+                  name="department"
+                  [(ngModel)]="saveProfile.departmentDetails"
+                  (completeMethod)="departmentsList($event)"
+                  field="label"
+                  placeholder="Department"
+                  aria-required="true"
+                  required
+                >
+                </p-autoComplete> -->
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label
+                        >Designation <span class="text-danger"> *</span></label
+                      >
+                      <p-dropdown
+                        name="designation"
+                        [options]="designations"
+                        [(ngModel)]="employmentDetails.designationDetailsId"
+                        placeholder="Designation"
+                        [filter]="true"
+                        required
+                      ></p-dropdown>
+                      <!-- <p-autoComplete
+                  [suggestions]="filterDesignation"
+                  name="designation"
+                  [(ngModel)]="saveProfile.designationDetails"
+                  (completeMethod)="designationList($event)"
+                  field="label"
+                  placeholder="Designation"
+                  aria-required="true"
+                  required
+                >
+                </p-autoComplete> -->
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label
+                        >Employment Type
+                        <span class="text-danger"> *</span></label
+                      >
+                      <div class="d-flex justify-content-start">
+                        <div class="p-2">
+                          <p-radioButton
+                            name="employmentType"
+                            value="1"
+                            label="Fulltime"
+                            [(ngModel)]="employmentDetails.employmentType"
+                            aria-required="true"
+                            required
+                          ></p-radioButton>
+                        </div>
+                        <div class="p-2">
+                          <p-radioButton
+                            name="employmentType"
+                            value="2"
+                            label="Parttime"
+                            [(ngModel)]="employmentDetails.employmentType"
+                            aria-required="true"
+                            required
+                          ></p-radioButton>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Supervisor</label>
+                      <p-dropdown
+                        name="reportingToUserName"
+                        [options]="reportingToUserNames"
+                        [(ngModel)]="
+                          employmentDetails.reportingToEmployeeDetailsId
+                        "
+                        placeholder="Select a Supervisor"
+                        [filter]="true"
+                      ></p-dropdown>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label
+                        >Employee Type
+                        <span class="text-danger"> *</span></label
+                      >
+                      <div class="d-flex justify-content-between">
+                        <div class="p-2">
+                          <p-radioButton
+                            name="employeeType"
+                            value="1"
+                            label="W-2 Employee"
+                            [(ngModel)]="employmentDetails.employeeType"
+                            aria-required="true"
+                            required
+                          ></p-radioButton>
+                        </div>
+                        <div class="p-2">
+                          <p-radioButton
+                            name="employeeType"
+                            value="2"
+                            label="C2C Employee"
+                            [(ngModel)]="employmentDetails.employeeType"
+                            aria-required="true"
+                            required
+                          ></p-radioButton>
+                        </div>
+                        <div class="p-2">
+                          <p-radioButton
+                            name="employeeType"
+                            value="3"
+                            label="Contract Employee (1099)"
+                            [(ngModel)]="employmentDetails.employeeType"
+                            aria-required="true"
+                            required
+                          ></p-radioButton>
+                        </div>
+                        <div class="p-2">
+                          <p-radioButton
+                            name="employeeType"
+                            value="4"
+                            label="W8 Ben"
+                            [(ngModel)]="employmentDetails.employeeType"
+                            aria-required="true"
+                            required
+                          ></p-radioButton>
+                        </div>
+                        <div class="p-2">
+                          <p-radioButton
+                            name="employeeType"
+                            value="5"
+                            label="Offshore Employee"
+                            [(ngModel)]="employmentDetails.employeeType"
+                            aria-required="true"
+                            required
+                          ></p-radioButton>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="submit-section">
+                <button
+                  type="button"
+                  class="btn btn-info mr-2"
+                  (click)="saveEmploymentDetails(true)"
+                  [disabled]="!employementDetailsForm.valid"
+                >
+                  <i class="fa fa-save"></i>&nbsp;Save & Close
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-success mr-2"
+                  (click)="openNext()"
+                  [disabled]="!employementDetailsForm.valid"
+                >
+                  <i class="fa fa-hand-o-right"></i>&nbsp;Save & Next
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  (click)="closeAddmodal(employeeType)"
+                >
+                  <i class="fa fa-times"></i>&nbsp;Cancel
+                </button>
+              </div>
+            </form>
+          </p-tabPanel>
+          <p-tabPanel header="Project Assigment Details" [disabled]="true">
+            <form
+              #assignResource="ngForm"
+              class="py-3"
+              *ngIf="tabActiveIndex == 3"
+            >
+              <div class="row">
+                <div class="col-3">
+                  <div class="form-group">
+                    <label>Projects <span class="text-danger">*</span></label>
+                    <p-dropdown
+                      [options]="lstProjects"
+                      [(ngModel)]="selectedProjectAssignMent.projectDetailsId"
+                      placeholder="Select a Project"
+                      name="project"
+                      [filter]="true"
+                      (onChange)="
+                        getProjectCustomers(
+                          selectedProjectAssignMent.projectDetailsId
+                        )
+                      "
+                    >
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="form-group">
+                    <label>Start Date <span class="text-danger">*</span></label>
+                    <p-calendar
+                      #minimumDate
+                      [yearNavigator]="true"
+                      [monthNavigator]="true"
+                      yearRange="1980:2050"
+                      readonlyInput="true"
+                      name="startDate"
+                      [(ngModel)]="selectedProjectAssignMent.startDate"
+                      showIcon="true"
+                      dateFormat="mm-dd-yy"
+                      dataType="string"
+                      required="true"
+                    ></p-calendar>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="form-group">
+                    <label>End Date</label>
+                    <p-calendar
+                      [yearNavigator]="true"
+                      [monthNavigator]="true"
+                      yearRange="1980:2050"
+                      readonlyInput="true"
+                      [minDate]="minimumDate.value"
+                      name="endDate"
+                      [(ngModel)]="selectedProjectAssignMent.endDate"
+                      showIcon="true"
+                      dateFormat="mm-dd-yy"
+                      dataType="string"
+                    ></p-calendar>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="form-group">
+                    <label
+                      >Invoice Frequency
+                      <span class="text-danger">*</span></label
+                    >
+                    <p-dropdown
+                      [options]="invoiceFrequencyList"
+                      [(ngModel)]="selectedProjectAssignMent.invoiceFrequency"
+                      placeholder="Select Invoice Frequency"
+                      name="invoiceFrequency"
+                      [filter]="true"
+                    >
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="form-group">
+                    <label>Customer <span class="text-danger">*</span></label>
+                    <p-dropdown
+                      [options]="projectCustomerList"
+                      [(ngModel)]="selectedProjectAssignMent.companyDetailsId"
+                      placeholder="Select Customer"
+                      name="customer"
+                      [filter]="true"
+                      required="true"
+                    >
+                    </p-dropdown>
+                  </div>
+                </div>
+                <!-- 22/07/2021 -->
+                <div class="col-2">
+                  <div class="form-group">
+                    <label class="col-form-label">Show In Invoice </label>
+                    <div>
+                      <p-inputSwitch
+                        [(ngModel)]="showInInvoice"
+                        name="showInInvoice"
+                      ></p-inputSwitch>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-2">
+                  <div class="form-group">
+                    <label
+                      >{{ organizationCurrency }} Rate
+                      <span class="text-danger">*</span></label
+                    >
+                    <input
+                      type="number"
+                      class="form-control"
+                      step="any"
+                      [(ngModel)]="selectedProjectAssignMent.rate"
+                      name="rate"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="col-2">
+                  <div class="form-group">
+                    <label class="col-form-label">Overtime Exemption </label>
+                    <div>
+                      <p-inputSwitch
+                        [(ngModel)]="isOvertimeExemption"
+                        name="overtimeExemption"
+                        (onChange)="
+                          handleIsOvertimeExemption(
+                            $event,
+                            selectedProjectAssignMent
+                          )
+                        "
+                      ></p-inputSwitch>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-3" *ngIf="!isOvertimeExemption">
+                  <div class="form-group">
+                    <label
+                      >{{ organizationCurrency }} Overtime Rate
+                      <span class="text-danger">*</span></label
+                    >
+                    <input
+                      type="number"
+                      class="form-control"
+                      step="any"
+                      [(ngModel)]="selectedProjectAssignMent.overtimeRate"
+                      name="overtimeRate"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="col-3" *ngIf="!isOvertimeExemption">
+                  <div class="form-group">
+                    <label
+                      >{{ organizationCurrency }} Double Overtime Rate
+                      <span class="text-danger">*</span></label
+                    >
+                    <input
+                      type="number"
+                      class="form-control"
+                      step="any"
+                      [(ngModel)]="selectedProjectAssignMent.doubleOvertimeRate"
+                      name="doubleOvertimeRate"
+                      required
+                    />
+                  </div>
+                </div>
+                <!-- 22/07/2021 -->
+                <div
+                  class="
+                    col-12
+                    d-flex
+                    align-items-center
+                    justify-content-center
+                  "
+                >
+                  <button
+                    type="button"
+                    class="btn btn-success mr-2"
+                    (click)="assignProject(true)"
+                    [disabled]="!assignResource.valid"
+                  >
+                    <i class="fa fa-save"></i>&nbsp;Save & Close
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    (click)="closeAddmodal(employeeType)"
+                  >
+                    <i class="fa fa-times"></i>&nbsp;Cancel
+                  </button>
+                </div>
+              </div>
+            </form>
+          </p-tabPanel>
+        </p-tabView>
+      </div>
+    </div>
+  </div>
+</div>

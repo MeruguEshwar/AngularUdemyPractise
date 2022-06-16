@@ -1,0 +1,50 @@
+<!--event Binding -->
+<!-- <label>ServerName:</label>
+<input type="text" 
+class="form-control"
+(input)="onupdateServerName($event)">
+<p>{{ServerName}}</p> -->
+
+<!--Two Way Data Binding -->
+<label>ServerName:</label>
+<input type="text" 
+class="form-control"
+[(ngModel)]="ServerName">
+
+<!--Property Binding example Of disabled-->
+<button class="btn btn-primary"
+[disabled]=!allowNewserver
+(click)="onservercreated()">
+AddServer</button>
+<p>{{allowNewserver}}</p>
+
+<!--String Interpolation -->
+<p>{{ServerCreatedStatus}}</p>
+
+<label>UserName:</label>
+<input type="text"
+class ="form-control"
+[(ngModel)]="UserName"
+>
+<p>{{UserName}}</p>
+<button class="btn btn-primary" (click)="UserName='' " [disabled]="UserName===''">Reset User</button>
+<br>
+<!--ngIf Directive -->
+<hr>
+<label>UserName:</label>
+<input type="text"
+class ="form-control"
+[(ngModel)]="ServerName"
+>
+
+<button class="btn btn-primary"
+[disabled]=!allowNewserver
+(click)="onservercreated()">
+AddServer</button>
+
+<p *ngIf="Servercreated; else noserver">Server was created and server name is {{ServerName}}</p>
+<ng-template #noserver>
+    <p>No Server Was Created</p>
+</ng-template>
+<hr>
+<app-server *ngFor="let server of Servers"></app-server>

@@ -1,0 +1,1014 @@
+<div class="page-wrapper">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">Dashboard</li>
+            <li class="breadcrumb-item active">Employees</li>
+          </ul>
+        </div>
+        <div class="col-auto float-right ml-auto">
+          <a href="javascript:void(0)" (click)="showDialogToAdd()"
+            ><button [disabled]="!isAddEmpEnable" class="btn add-btn">
+              <i class="fa fa-plus"></i>Add Employee
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+    <p-tabView (onChange)="handleChange($event)" *ngIf="!gridviewcol">
+      <p-tabPanel header="Active Employees">
+        <div class="col pl-0 pr-0 mt-2" *ngIf="listviewcol && !loading">
+          <p-table
+            [columns]="cols"
+            [value]="lstEmployees"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            styleClass="ui-table-customers"
+            #dt
+            [paginator]="true"
+            [rows]="10"
+            [showCurrentPageReport]="true"
+            [alwaysShowPaginator]="false"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [filterDelay]="0"
+            [globalFilterFields]="['fullName', 'email', 'role', 'employeeType']"
+          >
+            <ng-template pTemplate="caption">
+              .
+              <div class="ui-table-globalfilter-container">
+                <input
+                  pInputText
+                  type="text"
+                  (input)="dt.filterGlobal($event.target.value, 'contains')"
+                  placeholder="Search"
+                />
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                  {{ col.header }}
+                  <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+                <th class="actions" style="width: 7%">Actions</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <tr>
+                <td *ngFor="let col of columns">
+                  <ng-container *ngIf="col.field == 'fullName'">
+                    <h2 class="table-avatar">
+                      <a href="javascript:void(0)" class="avatar">
+                        <img
+                          src="{{ pictureUrl + rowData?.photoPath }}"
+                          alt="user"
+                        />
+                      </a>
+                      <a
+                        href="javascript:void(0)"
+                        href="#"
+                        data-toggle="modal"
+                        [routerLink]="[
+                          '../employees/' +
+                            rowData.employeeDetailsId +
+                            '/profile'
+                        ]"
+                        [state]="{ userDetailsId: rowData.employeeDetailsId }"
+                      >
+                        {{ rowData[col.field] }}
+                        <span class="text-muted">{{
+                          rowData?.employeeId
+                        }}</span>
+                        <span class="text-muted">{{
+                          rowData?.designation
+                        }}</span>
+                      </a>
+                    </h2>
+                  </ng-container>
+                  <ng-container *ngIf="col.field == 'role'">
+                    <div class="">
+                      <a class="btn btn-white btn-sm btn-rounded role-fs">
+                        <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+                        {{ rowData[col.field] }}
+                      </a>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="col.field == 'email'">
+                    <div>
+                      <!-- <i class="fa fa-envelope-o" aria-hidden="true"></i> -->
+                      {{ rowData?.email }}
+                    </div>
+                    <!-- <div>
+                      <i class="fa fa-phone" aria-hidden="true"></i>
+                      {{ rowData?.phoneNumber }}
+                    </div> -->
+                  </ng-container>
+                  <ng-container *ngIf="col.field == 'employeeType'">
+                    {{ rowData[col.field] }}
+                  </ng-container>
+                  <ng-container
+                    *ngIf="
+                      col.field != 'fullName' &&
+                      col.field != 'role' &&
+                      col.field != 'email' &&
+                      col.field != 'employeeType'
+                    "
+                  >
+                    {{ rowData[col.field] }}
+                  </ng-container>
+                </td>
+                <td class="actions">
+                  <div class="dropdown dropdown-action">
+                    <a
+                      href="#"
+                      class="action-icon dropdown-toggle"
+                      data-toggle="dropdown"
+                      aria-expanded="false"
+                      ><i class="material-icons">more_vert</i></a
+                    >
+                    <div
+                      class="dropdown-menu dropdown-menu-right"
+                      x-placement="top-end"
+                      style="
+                        position: absolute;
+                        will-change: transform;
+                        top: 0px;
+                        left: 0px;
+                        transform: translate3d(72px, -2px, 0px);
+                      "
+                    >
+                      <!-- <a
+                        class="dropdown-item"
+                        data-target="#manage_access"
+                        href="#"
+                        data-toggle="modal"
+                        (click)="onManageAccess(rowData)"
+                      >
+                        <i class="fa fa-key m-r-5" aria-hidden="true"></i>
+                        Manage Access</a
+                      > -->
+                      <a
+                        class="dropdown-item"
+                        data-target="#reset_password_employee"
+                        href="#"
+                        data-toggle="modal"
+                        (click)="resetPassword(rowData)"
+                      >
+                        <i class="fa fa-refresh m-r-5" aria-hidden="true"></i>
+                        Reset Password</a
+                      >
+                      <a
+                        class="dropdown-item"
+                        href="#"
+                        data-toggle="modal"
+                        (click)="sendRegistrationLink(rowData)"
+                        ><i
+                          class="fa fa-paper-plane m-r-5"
+                          aria-hidden="true"
+                        ></i>
+                        Send Registration Link</a
+                      >
+                      <a
+                        class="dropdown-item delete"
+                        href="#"
+                        data-toggle="modal"
+                        (click)="onDelete(rowData)"
+                        data-target="#delete_employee"
+                        ><i class="fa fa-trash-o m-r-5"></i> Terminate
+                        Employee</a
+                      >
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td [attr.colspan]="cols.length" style="text-align: center">
+                  No employees found.
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Terminated Employees">
+        <div class="col pl-0 pr-0 mt-2" *ngIf="listviewcol && !loading">
+          <p-table
+            [columns]="terminateCols"
+            [value]="lstEmployees"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            styleClass="ui-table-customers"
+            #dt
+            [paginator]="true"
+            [rows]="10"
+            [showCurrentPageReport]="true"
+            [alwaysShowPaginator]="false"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [filterDelay]="0"
+            [globalFilterFields]="[
+              'fullName',
+              'description',
+              'email',
+              'phoneNumber',
+              'role',
+              'employeeDetailsId'
+            ]"
+          >
+            <ng-template pTemplate="caption">
+              .
+              <div class="ui-table-globalfilter-container">
+                <input
+                  pInputText
+                  type="text"
+                  (input)="dt.filterGlobal($event.target.value, 'contains')"
+                  placeholder="Search"
+                />
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                  {{ col.header }}
+                  <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+                <th class="actions" style="width: 100px">Actions</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <tr>
+                <td *ngFor="let col of columns">
+                  <ng-container *ngIf="col.field == 'fullName'">
+                    <h2 class="table-avatar">
+                      <a
+                        href="javascript:void(0)"
+                        href="#"
+                        data-toggle="modal"
+                        [routerLink]="[
+                          '../employees/' +
+                            rowData.employeeDetailsId +
+                            '/profile'
+                        ]"
+                        [state]="{ userDetailsId: rowData.employeeDetailsId }"
+                      >
+                        {{ rowData[col.field] }}
+                      </a>
+                    </h2>
+                  </ng-container>
+                  <ng-container *ngIf="col.field != 'fullName'">
+                    {{ rowData[col.field] }}
+                  </ng-container>
+                </td>
+                <!-- <td class="actions">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <button title="Edit" (click)="onRowSelect(rowData)" type="button" class="mr-2 btn btn-secondary"><i  class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                                        <button title="Delete" (click)="delete(rowData)" type="button" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                    </div>
+
+
+                                </td> -->
+                <td class="actions" style="width: 100px">
+                  <a
+                    class="success"
+                    href="#"
+                    data-toggle="modal"
+                    (click)="onActivate(rowData)"
+                    data-target="#activate_employee"
+                    ><i class="fa fa fa-check m-r-5"></i> Rehire</a
+                  >
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td [attr.colspan]="cols.length" style="text-align: center">
+                  No employees found.
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
+
+    <div
+      class="modal custom-modal fade"
+      id="activate_employee"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="form-header">
+              <h3>Rehire Employee</h3>
+              <!-- <p>Are you sure ? Do you want to Rehire?</p> -->
+            </div>
+            <div class="modal-btn delete-action">
+              <form #rF="ngForm">
+                <section>
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label class="col-form-label"
+                          >Rehire Date <span class="text-danger">*</span></label
+                        >
+                        <p-calendar
+                          name="terminationOrRehireDate"
+                          [(ngModel)]="terminationOrRehireDate"
+                          dataType="string"
+                          showIcon="true"
+                          dateFormat="mm-dd-yy"
+                          required
+                        ></p-calendar>
+                      </div>
+                    </div>
+                    <div class="col-sm-8">
+                      <div class="form-group">
+                        <label class="col-form-label">Comments</label>
+                        <textarea
+                          class="form-control"
+                          [(ngModel)]="commentsOrRemarks"
+                          name="desc"
+                          maxlength="2500"
+                          placeholder="Enter your comments here......."
+                          cols="6"
+                          (keypress)="sharedService.keyPressAddress($event)"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="" class="col-form-label"
+                          >Checklist<span class="text-danger">*</span></label
+                        >
+                        <p-dropdown
+                          name="statusOptions"
+                          [options]="checkList"
+                          required="true"
+                          [(ngModel)]="selectedChecklist1"
+                          (ngModelChange)="loadEntries($event)"
+                          [filter]="true"
+                        ></p-dropdown>
+                      </div>
+                    </div>
+                    <!-- <div class="col-md-6" *ngIf="selectedChecklist1">
+                      <div class="form-group">
+                        <label class="col-form-label"
+                          >File To Upload
+                          <span class="text-danger">*</span></label
+                        >
+                        <input
+                          (change)="onFileChange($event)"
+                          name="fileToUpload"
+                          class="form-control"
+                          type="file"
+                          required
+                          #fileInput
+                        />
+                      </div>
+                    </div> -->
+                  </div>
+                  <div
+                    class="row"
+                    *ngIf="checklistMappings && checklistMappings.length"
+                  >
+                    <div class="col-md-12">
+                      <h5>Checklist Entries</h5>
+                      <div class="ui-table-customers ui-table ui-widget">
+                        <table class="table table-condensed table-bordered">
+                          <thead class="ui-table-thead">
+                            <tr>
+                              <th>Entry Name</th>
+                              <th>Description</th>
+                              <th>Status</th>
+                              <th style="width: 318px">Remarks</th>
+                            </tr>
+                          </thead>
+                          <tr
+                            *ngFor="
+                              let row of checklistMappings;
+                              let sno = index
+                            "
+                          >
+                            <td>{{ row.entryName }}</td>
+                            <td>{{ row.description }}</td>
+                            <td>
+                              <p-dropdown
+                                name="statusOptions{{ sno }}"
+                                [options]="statusOptions"
+                                required="true"
+                                [(ngModel)]="row.status"
+                                [filter]="true"
+                              ></p-dropdown>
+                            </td>
+                            <td style="width: 318px">
+                              <input
+                                pInputText
+                                class="form-control"
+                                [(ngModel)]="row.remarksOrComments"
+                                name="remarksOrComments{{ sno }}"
+                                placeholder=""
+                                type="text"
+                                maxlength="255"
+                              />
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div class="row" *ngIf="empDocs && empDocs.length">
+                    <div class="col-md-12">
+                      <h5>Checklist Documents</h5>
+                      <div class="ui-table-customers ui-table ui-widget">
+                        <table class="table table-condensed table-bordered">
+                          <thead class="ui-table-thead">
+                            <tr>
+                              <th>Title</th>
+                              <th style="width: 150px">Download</th>
+                            </tr>
+                          </thead>
+                          <tr *ngFor="let row of empDocs; let sno = index">
+                            <td>{{ row.documentTitle }}</td>
+                            <td style="width: 150px">
+                              <a
+                                class="dropdown-item"
+                                href="#"
+                                data-toggle="modal"
+                                (click)="fileToDownload(row)"
+                                ><i class="fa fa-download m-r-5"></i>
+                                Download
+                              </a>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div> -->
+                </section>
+                <section *ngIf="selectedChecklist1">
+                  <div
+                    class="row d-flex justify-content-start attachmentssection"
+                    style="
+                      background-color: #f4f4f4;
+                      margin: 0px;
+                      margin-top: 15px;
+                      margin-bottom: 15px;
+                    "
+                  >
+                    <div class="total-logged-time mr-0">
+                      Checklist Documents :
+                    </div>
+                    <div class="total-logged-time pl-0">
+                      <a
+                        class="mr-4"
+                        (click)="uploadAttachemnts()"
+                        style="cursor: pointer"
+                        ><i class="fa fa-upload fa-fw" aria-hidden="true"></i
+                        >Upload More
+                      </a>
+                    </div>
+                    <ng-container *ngIf="empDocs && empDocs.length">
+                      <div
+                        class="total-logged-time pl-0"
+                        *ngFor="let row of empDocs; let sno = index"
+                      >
+                        <a
+                          class="attachment-file"
+                          style="cursor: pointer"
+                          class="attachment-file"
+                          (click)="fileToDownload(row)"
+                        >
+                          <i class="fa fa-paperclip"></i>
+                          {{ row.documentTitle }}
+                          <i class="fa fa-download"></i>
+                        </a>
+                      </div>
+                    </ng-container>
+                  </div>
+                </section>
+                <div class="row">
+                  <div class="col-6 d-flex justify-content-end">
+                    <button
+                      type="button"
+                      (click)="activate(employee)"
+                      [disabled]="!rF.valid"
+                      class="btn btn-info"
+                    >
+                      <i class="fa fa-check"></i>&nbsp;Rehire
+                    </button>
+                  </div>
+                  <div class="col-6 d-flex justify-content-start">
+                    <a
+                      href="javascript:void(0);"
+                      data-dismiss="modal"
+                      class="btn btn-danger"
+                      ><i class="fa fa-times"></i>&nbsp;Cancel</a
+                    >
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal custom-modal fade"
+      id="delete_employee"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="form-header">
+              <h3>Terminate Employee</h3>
+              <!-- <p>Are you sure ? Do you want to Terminate?</p> -->
+            </div>
+            <div class="modal-btn">
+              <form #tF="ngForm">
+                <section>
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label class="col-form-label"
+                          >Termination Date
+                          <span class="text-danger">*</span></label
+                        >
+                        <p-calendar
+                          name="terminationOrRehireDate"
+                          [(ngModel)]="terminationOrRehireDate"
+                          dataType="string"
+                          showIcon="true"
+                          dateFormat="mm-dd-yy"
+                          required
+                        ></p-calendar>
+                      </div>
+                    </div>
+                    <div class="col-sm-8">
+                      <div class="form-group">
+                        <label class="col-form-label">Comments</label>
+                        <textarea
+                          class="form-control"
+                          [(ngModel)]="commentsOrRemarks"
+                          name="desc"
+                          maxlength="2500"
+                          placeholder="Enter your comments here......."
+                          cols="6"
+                          (keypress)="sharedService.keyPressAddress($event)"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="" class="col-form-label"
+                          >Checklist<span class="text-danger">*</span></label
+                        >
+                        <p-dropdown
+                          name="statusOptions1"
+                          [options]="checkList"
+                          required="true"
+                          [(ngModel)]="selectedChecklist"
+                          (ngModelChange)="loadEntries($event)"
+                          [filter]="true"
+                        ></p-dropdown>
+                      </div>
+                    </div>
+                    <!-- <div class="col-md-6" *ngIf="selectedChecklist">
+                      <div class="form-group">
+                        <label class="col-form-label"
+                          >File To Upload
+                          <span class="text-danger">*</span></label
+                        >
+                        <input
+                          (change)="onFileChange($event)"
+                          name="fileToUpload"
+                          class="form-control"
+                          type="file"
+                          required
+                          #fileInput
+                        />
+                      </div>
+                    </div> -->
+                  </div>
+                  <div
+                    class="row"
+                    *ngIf="checklistMappings && checklistMappings.length"
+                  >
+                    <div class="col-md-12">
+                      <h5>Checklist Entries</h5>
+                      <div class="ui-table-customers ui-table ui-widget">
+                        <table class="table table-condensed table-bordered">
+                          <thead class="ui-table-thead">
+                            <tr>
+                              <th>Entry Name</th>
+                              <th>Description</th>
+                              <th>Status</th>
+                              <th style="width: 318px">Remarks</th>
+                            </tr>
+                          </thead>
+                          <tr
+                            *ngFor="
+                              let row of checklistMappings;
+                              let sno = index
+                            "
+                          >
+                            <td>{{ row.entryName }}</td>
+                            <td>{{ row.description }}</td>
+                            <td>
+                              <p-dropdown
+                                name="statusOptions{{ sno }}"
+                                [options]="statusOptions"
+                                required
+                                [(ngModel)]="row.status"
+                                [filter]="true"
+                              ></p-dropdown>
+                            </td>
+                            <td style="width: 318px">
+                              <input
+                                pInputText
+                                class="form-control"
+                                [(ngModel)]="row.remarksOrComments"
+                                name="remarksOrComments{{ sno }}"
+                                placeholder=""
+                                type="text"
+                                maxlength="255"
+                              />
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div class="row" *ngIf="empDocs && empDocs.length">
+                    <div class="col-md-12">
+                      <h5>Checklist Document</h5>
+                      <div class="ui-table-customers ui-table ui-widget">
+                        <table class="table table-condensed table-bordered">
+                          <thead class="ui-table-thead">
+                            <tr>
+                              <th>Title</th>
+                              <th style="width: 150px">Download</th>
+                            </tr>
+                          </thead>
+                          <tr *ngFor="let row of empDocs; let sno = index">
+                            <td>{{ row.documentTitle }}</td>
+                            <td style="width: 150px">
+                              <a
+                                class="dropdown-item"
+                                href="#"
+                                data-toggle="modal"
+                                (click)="fileToDownload(row)"
+                                ><i class="fa fa-download m-r-5"></i>
+                                Download
+                              </a>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div> -->
+                </section>
+                <section *ngIf="selectedChecklist">
+                  <div
+                    class="row d-flex justify-content-start attachmentssection"
+                    style="
+                      background-color: #f4f4f4;
+                      margin: 0px;
+                      margin-top: 15px;
+                      margin-bottom: 15px;
+                    "
+                  >
+                    <div class="total-logged-time mr-0">
+                      Checklist Documents :
+                    </div>
+                    <div class="total-logged-time pl-0">
+                      <a
+                        class="mr-4"
+                        (click)="uploadAttachemnts()"
+                        style="cursor: pointer"
+                        ><i class="fa fa-upload fa-fw" aria-hidden="true"></i
+                        >Upload More
+                      </a>
+                    </div>
+                    <ng-container *ngIf="empDocs && empDocs.length">
+                      <div
+                        class="total-logged-time pl-0"
+                        *ngFor="let row of empDocs; let sno = index"
+                      >
+                        <a
+                          class="attachment-file"
+                          style="cursor: pointer"
+                          class="attachment-file"
+                          (click)="fileToDownload(row)"
+                        >
+                          <i class="fa fa-paperclip"></i>
+                          {{ row.documentTitle }}
+                          <i class="fa fa-download"></i>
+                        </a>
+                      </div>
+                    </ng-container>
+                  </div>
+                </section>
+                <div class="row">
+                  <div class="col-6 d-flex justify-content-end">
+                    <button
+                      type="button"
+                      (click)="delete(employee)"
+                      [disabled]="!tF.valid"
+                      class="btn btn-info"
+                    >
+                      <i class="fa fa-check"></i>&nbsp;Terminate
+                    </button>
+                  </div>
+                  <div class="col-6 d-flex justify-content-start">
+                    <a
+                      href="javascript:void(0);"
+                      data-dismiss="modal"
+                      class="btn btn-danger"
+                      ><i class="fa fa-times"></i>&nbsp;Cancel</a
+                    >
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal custom-modal fade"
+      id="reset_password_employee"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="form-header">
+              <h3>Reset Password</h3>
+              <p>Are you sure ? Do you want to Reset password?</p>
+            </div>
+            <div class="modal-btn">
+              <div class="row">
+                <div class="col-6 d-flex justify-content-end">
+                  <a
+                    href="javascript:void(0);"
+                    data-dismiss="modal"
+                    (click)="resetPasswordConfirm(employee)"
+                    class="btn btn-info"
+                    ><i class="fa fa-refresh"></i>&nbsp;Reset</a
+                  >
+                </div>
+                <div class="col-6 d-flex justify-content-start">
+                  <a
+                    href="javascript:void(0);"
+                    data-dismiss="modal"
+                    class="btn btn-danger"
+                    ><i class="fa fa-times"></i>&nbsp;Cancel</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal custom-modal fade"
+      id="manage_access"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="form-header mt-3 mb-2">
+              <h3>Manage Access</h3>
+            </div>
+            <p-tabView>
+              <p-tabPanel header="Module Access">
+                <ng-container
+                  *ngFor="let module of lstAccessModules; let i = index"
+                >
+                  <div class="row module-div">
+                    <div class="col-6">
+                      <div>
+                        <span>
+                          {{ module.moduleName }}
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-6 check-box-div">
+                      <div>
+                        <p-checkbox
+                          binary="true"
+                          [(ngModel)]="module.active"
+                        ></p-checkbox>
+                      </div>
+                    </div>
+                  </div> </ng-container
+              ></p-tabPanel>
+              <p-tabPanel header="Document Category Access"
+                ><div class="row module-div">
+                  <div class="col-6">
+                    <div>
+                      <span> DocumentCategory </span>
+                    </div>
+                  </div>
+                  <div class="col-2 check-box-div">Read</div>
+                  <div class="col-2 check-box-div">Write</div>
+                  <div class="col-2 check-box-div">Delete</div>
+                </div>
+
+                <ng-container
+                  *ngFor="let document of lstDocumentCategory; let i = index"
+                >
+                  <div class="row module-div">
+                    <div class="col-6">
+                      <div>
+                        <span>
+                          {{ document.documentCategory }}
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-2 check-box-div">
+                      <div>
+                        <p-checkbox
+                          binary="true"
+                          (onChange)="
+                            documentCategoryChange(document, 'read', $event)
+                          "
+                          [(ngModel)]="document.read"
+                        ></p-checkbox>
+                      </div>
+                    </div>
+                    <div class="col-2 check-box-div">
+                      <div>
+                        <p-checkbox
+                          binary="true"
+                          (onChange)="
+                            documentCategoryChange(document, 'write', $event)
+                          "
+                          [(ngModel)]="document.write"
+                        ></p-checkbox>
+                      </div>
+                    </div>
+                    <div class="col-2 check-box-div">
+                      <div>
+                        <p-checkbox
+                          binary="true"
+                          (onChange)="
+                            documentCategoryChange(document, 'delete', $event)
+                          "
+                          [(ngModel)]="document.delete"
+                        ></p-checkbox>
+                      </div>
+                    </div>
+                  </div> </ng-container
+              ></p-tabPanel>
+            </p-tabView>
+
+            <div class="row module-div mt-4">
+              <div class="col-6 d-flex justify-content-end">
+                <a
+                  href="javascript:void(0);"
+                  data-dismiss="modal"
+                  (click)="saveAccess(employee)"
+                  class="btn btn-success"
+                  ><i class="fa fa-save"></i>&nbsp;Save</a
+                >
+              </div>
+              <div class="col-6 d-flex justify-content-start">
+                <a
+                  href="javascript:void(0);"
+                  data-dismiss="modal"
+                  class="btn btn-danger"
+                  ><i class="fa fa-times"></i>&nbsp;Cancel</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="employeeType == 'Add'">
+      <app-add-employee-tabs
+        [employeeType]="employeeType"
+        (onClose)="onEmployeeAddCloseClick($event)"
+      ></app-add-employee-tabs>
+    </ng-container>
+    <!-- <ng-container *ngIf="employeeType == 'Add'">
+      <app-add-employee
+        [employeeType]="employeeType"
+        (onClose)="onEmployeeAddCloseClick($event)"
+      ></app-add-employee>
+    </ng-container> -->
+    <ng-container *ngIf="employeeType == 'Edit'">
+      <app-edit-employee
+        [employeeType]="employeeType"
+        [employee]="employee"
+        (onClose)="onEmployeeAddCloseClick($event)"
+      ></app-edit-employee>
+    </ng-container>
+  </div>
+</div>
+<!-- Upload file Modal -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: uploadFileInfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Upload Document</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeUploadmodal(uploadForm)"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form (ngSubmit)="saveUploadFile(uploadForm)" #uploadForm="ngForm">
+            <div class="row" *ngIf="errorLabel">
+              <div class="col-sm-6" style="color: red">
+                {{ errorLabel }}
+              </div>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-12">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Title <span class="text-danger">*</span></label
+                  >
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="title"
+                    [(ngModel)]="uploadedFileTitle"
+                    (keypress)="sharedService.keyPressAlphaNumaric($event)"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >File To Upload <span class="text-danger">*</span></label
+                  >
+                  <div class="d-flex align-items-center">
+                    <input
+                      class="form-control"
+                      type="file"
+                      name="file"
+                      id="fileToUpload"
+                      (change)="onFileChange($event)"
+                      #fileInput
+                    />
+                    <div *ngIf="fileToUpload">
+                      <a
+                        class="btn btn-danger btn-clear-file"
+                        href="javascript:void(0)"
+                        aria-label="Remove"
+                        (click)="clearFile()"
+                      >
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="submit-section">
+              <button
+                type="submit"
+                class="btn btn-success"
+                [disabled]="!uploadForm.valid || !fileToUpload"
+              >
+                <i class="fa fa-upload"></i>&nbsp;Upload
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Upload file Modal -->

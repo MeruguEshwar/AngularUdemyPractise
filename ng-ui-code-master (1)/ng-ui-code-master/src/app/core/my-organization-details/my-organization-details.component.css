@@ -1,0 +1,329 @@
+.view.profile-view .profile-img-wrap {
+  height: 64px;
+  width: 64px;
+}
+
+.view.profile-view .profile-basic {
+  margin-left: 72px;
+}
+
+.view .profile-img-wrap img {
+  height: 64px;
+  width: 64px;
+}
+
+.personal-info li .title {
+  width: 30%;
+}
+
+.form-scroll {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+#accordionExample .card-header {
+  /* background: linear-gradient(to right, #013893 0%, #00a2e3 100%); */
+  background-color: #f7f7f7;
+  padding: 0px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  text-decoration: none;
+  font-size: inherit;
+  font-weight: 500;
+}
+
+#accordionExample .card-header[aria-expanded="true"] {
+  background-color: #00a88e;
+}
+
+#accordionExample .card-header[aria-expanded="true"] button {
+  font-weight: 500;
+}
+
+#accordionExample .card-header:hover {
+  /* background: linear-gradient(to right, #013893 0%, #00a2e3 100%); */
+  color: inherit;
+}
+
+#accordionExample .card-header button {
+  color: inherit;
+  width: 100%;
+  text-align: left;
+  text-decoration: none;
+  padding-left: 5px;
+  font-size: inherit;
+  font-weight: 500;
+}
+
+#accordionExample .card {
+  margin-bottom: 25px;
+}
+
+#accordionExample .card-header button::after {
+  border-top: 0;
+  border-left: 0;
+  border-bottom: 2px solid #fff;
+  border-right: 2px solid #fff;
+  content: "";
+  height: 8px;
+  display: inline-block;
+  pointer-events: none;
+  -webkit-transform-origin: 66% 66%;
+  transform-origin: 66% 66%;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+  -webkit-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+  width: 8px;
+  border-color: #1f1f1f;
+  vertical-align: 2px;
+  margin-left: 2px;
+  position: absolute;
+  right: 10px;
+  top: 15px;
+}
+
+#accordionExample .card-header[aria-expanded="true"] button::after {
+  -webkit-transform: rotate(-135deg);
+  transform: rotate(-135deg);
+}
+
+.list-group-item {
+  padding: 5px;
+}
+
+#approvers .card-body {
+  max-height: 150px;
+  overflow: auto;
+}
+
+:host ::ng-deep .ui-table-customers .ui-table-caption {
+  color: inherit;
+  padding: 0.571em 1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="paymentType"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="dateReceived"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="commentDateTime"] {
+  width: 14%;
+}
+
+:host
+  ::ng-deep
+  #invoicesHistory
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="amount"] {
+  width: 11%;
+}
+
+:host
+  ::ng-deep
+  #payments
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="amount"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="invoiceNumber"] {
+  width: 16%;
+}
+
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="amountPaid"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="balanceAmount"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="paymentStatus"] {
+  width: 11%;
+}
+
+:host ::ng-deep .ui-table-customers .ui-table-tbody > tr > td.amount,
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-tbody
+  > tr
+  > td[ng-reflect-field="amount"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-tbody
+  > tr
+  > td[ng-reflect-field="amountPaid"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-tbody
+  > tr
+  > td[ng-reflect-field="balanceAmount"] {
+  text-align: right;
+}
+
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="invoiceDate"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="invoiceDueDate"] {
+  width: 10%;
+}
+
+:host ::ng-deep .ui-table-customers .ui-table-thead > tr > th.actions {
+  width: 10%;
+}
+
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="documentNumber"] {
+  width: 17%;
+}
+
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="documentExpiryDate"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="alertRequired"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="alertBeforeNoOfDays"] {
+  width: 14%;
+}
+
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > #EmployeesWorkedStatus,
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="startDate"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="endDate"] {
+  width: 12%;
+}
+
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="contactPhone"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="contactLandline"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="contactLandlineExtn"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="contactTitle"] {
+  width: 13%;
+}
+
+:host ::ng-deep #documents .ui-tabview .ui-tabview-panels {
+  padding: 0px;
+}
+.accordion .card-body {
+  font-size: 95%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="inHouse"] {
+  width: 10%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-tbody
+  > tr
+  > td[ng-reflect-data="inHouse"] {
+  text-align: center;
+}
+/* :host ::ng-deep #registerCurrency .ui-dropdown-panel {
+  position: relative;
+} */
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-tbody
+  > tr
+  > td:last-child
+  .dropdown-menu.show {
+  transform: translate3d(-111px, -78px, 0px) !important;
+}

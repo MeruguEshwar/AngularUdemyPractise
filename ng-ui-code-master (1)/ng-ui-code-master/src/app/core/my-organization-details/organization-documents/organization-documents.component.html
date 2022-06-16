@@ -1,0 +1,469 @@
+<div style="min-height: 400px">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <div class="row">
+      <div class="file-wrap">
+        <div class="file-sidebar">
+          <div class="file-header">
+            <span>Document Category</span>
+            <div
+              class="file-options"
+              style="cursor: pointer"
+              (click)="orgDocumentCategorytInfoEnable()"
+            >
+              <span class="btn-file"><i class="fa fa-plus"></i></span>
+            </div>
+            <a href="javascript:void(0);" class="file-side-close"
+              ><i class="fa fa-times"></i
+            ></a>
+          </div>
+          <div class="file-search">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <i class="fa fa-search"></i>
+              </div>
+              <input
+                type="text"
+                name="Search"
+                class="form-control"
+                placeholder="Search"
+                [(ngModel)]="searchValue"
+                (keyup)="filter(searchValue, mainDocumentCategoryList)"
+              />
+            </div>
+          </div>
+          <div class="file-pro-list">
+            <div class="file-scroll">
+              <ul class="file-menu">
+                <li
+                  *ngFor="let item of documentCategoryList; let i = index"
+                  [ngClass]="{
+                    active:
+                      selectedDocumentCategoryDetailsIndex == i &&
+                      item.documentCategory == selectedRowData.documentCategory
+                  }"
+                >
+                  <a href="javascript:void(0)" (click)="handleDocChange(i)">{{
+                    item.documentCategory
+                  }}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="file-cont-wrap">
+          <div class="file-cont-inner">
+            <div class="file-cont-header">
+              <div class="file-options">
+                <a
+                  href="javascript:void(0)"
+                  id="file_sidebar_toggle"
+                  class="file-sidebar-toggle"
+                >
+                  <i class="fa fa-bars"></i>
+                </a>
+              </div>
+              <span *ngIf="selectedRowData">{{
+                selectedRowData.documentCategory
+              }}</span>
+              <div
+                class="file-options"
+                (click)="uploadDocCatg(selectedRowData)"
+                style="cursor: pointer"
+              >
+                <span class="btn-file"><i class="fa fa-upload"></i></span>
+              </div>
+            </div>
+            <div class="file-content" #myIdentifier>
+              <p-table
+                [columns]="cols"
+                [value]="documentCategoryDetails"
+                styleClass="ui-table-customers"
+                #dt
+                [paginator]="true"
+                [rows]="5"
+                [showCurrentPageReport]="true"
+                [alwaysShowPaginator]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [filterDelay]="0"
+                [globalFilterFields]="[
+                  'documentTitle',
+                  'documentNumber',
+                  'documentExpiryDate'
+                ]"
+              >
+                <ng-template pTemplate="caption">
+                  <div class="file-search">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <i class="fa fa-search"></i>
+                      </div>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Search"
+                        (input)="
+                          dt.filterGlobal($event.target.value, 'contains')
+                        "
+                      />
+                    </div>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th *ngIf="isLink" style="width: 25px">
+                      <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th>
+                    <th
+                      *ngFor="let col of columns"
+                      [pSortableColumn]="col.field"
+                    >
+                      {{ col.header }}
+                      <p-sortIcon [field]="col.field"></p-sortIcon>
+                    </th>
+                    <th class="actions">Actions</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                  <tr [pSelectableRow]="rowData">
+                    <td *ngIf="isLink" style="width: 25px">
+                      <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                    </td>
+                    <td *ngFor="let col of columns">
+                      <ng-container *ngIf="col.field == 'status'">
+                        {{ rowData[col.field] | status }}
+                      </ng-container>
+                      <ng-container *ngIf="col.field == 'projectName'">
+                        <a (click)="onImageViewOpenClick()">
+                          {{ rowData[col.field] }}</a
+                        >
+                      </ng-container>
+                      <ng-container
+                        *ngIf="
+                          col.field != 'status' && col.field != 'projectName'
+                        "
+                      >
+                        {{ rowData[col.field] }}
+                      </ng-container>
+                    </td>
+                    <td class="actions">
+                      <div class="dropdown dropdown-action">
+                        <a
+                          href="#"
+                          class="action-icon dropdown-toggle"
+                          data-toggle="dropdown"
+                          aria-expanded="false"
+                          ><i class="material-icons">more_vert</i></a
+                        >
+                        <div
+                          class="dropdown-menu dropdown-menu-right"
+                          x-placement="top-end"
+                          style="
+                            position: absolute;
+                            will-change: transform;
+                            top: 0px;
+                            left: 0px;
+                            transform: translate3d(72px, -2px, 0px);
+                          "
+                        >
+                          <a
+                            class="dropdown-item"
+                            href="#"
+                            data-toggle="modal"
+                            (click)="fileToEdit(rowData)"
+                            ><i class="fa fa-pencil-square-o m-r-5"></i>
+
+                            Edit
+                          </a>
+                          <a
+                            class="dropdown-item"
+                            href="#"
+                            data-toggle="modal"
+                            (click)="fileToDownload(rowData)"
+                            ><i class="fa fa-download m-r-5"></i>
+                            Download
+                          </a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td
+                      [attr.colspan]="cols.length + 1"
+                      style="text-align: center"
+                    >
+                      No Records found.
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Page Content -->
+</div>
+
+<!-- Upload File Modal -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: uploadFileInfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          *ngIf="errorLabel"
+          style="position: absolute; left: 15px"
+          class="text-danger"
+        >
+          {{ errorLabel }}
+        </h5>
+        <h5 class="modal-title">Upload Document</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal(dFU)"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form
+            (ngSubmit)="saveUploadFile(selectedDocumentCategoryDetails)"
+            #dFU="ngForm"
+          >
+            <div class="row" *ngIf="errorLabel">
+              <div class="col-sm-6" style="color: red">
+                {{ errorLabel }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Document Title <span class="text-danger">*</span></label
+                  >
+                  <input
+                    class="form-control"
+                    name="documentTitle"
+                    [(ngModel)]="fileUpload.documentTitle"
+                    type="text"
+                    required
+                    (keypress)="sharedService.keyPressAlphaNumaric($event)"
+                  />
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-form-label">Document Number </label>
+                  <input
+                    class="form-control"
+                    name="documentNumber"
+                    [(ngModel)]="fileUpload.documentNumber"
+                    type="text"
+                    (keypress)="sharedService.keyPressAlphaNumaric($event)"
+                  />
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Document Expiry Date
+                    <span class="text-danger" *ngIf="fileUpload.checked"
+                      >*</span
+                    ></label
+                  >
+                  <p-calendar
+                    name="documentExpiryDate"
+                    [(ngModel)]="fileUpload.documentExpiryDate"
+                    showIcon="true"
+                    dateFormat="mm-dd-yy"
+                    dataType="string"
+                    [required]="fileUpload.checked"
+                  ></p-calendar>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >File To Upload
+                    <span class="text-danger" *ngIf="!isFileEdit"
+                      >*</span
+                    ></label
+                  >
+                  <div class="d-flex align-items-center">
+                    <input
+                      (change)="onFileChange($event)"
+                      name="fileToUpload"
+                      class="form-control"
+                      type="file"
+                      [required]="!isFileEdit"
+                      #fileInput
+                    />
+                    <div *ngIf="fileUpload.fileToUpload">
+                      <a
+                        class="btn btn-danger btn-clear-file"
+                        href="javascript:void(0)"
+                        aria-label="Remove"
+                        (click)="clearFile()"
+                      >
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                [ngClass]="{
+                  'col-sm-4': fileUpload.checked == true,
+                  'col-sm-12': fileUpload.checked == false
+                }"
+              >
+                <div class="form-group">
+                  <label class="col-form-label">Alert Required</label>
+                  <div>
+                    <p-inputSwitch
+                      name="alertRequired"
+                      [(ngModel)]="fileUpload.checked"
+                    ></p-inputSwitch>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-8" *ngIf="fileUpload.checked">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Alert Before No Of Days
+                    <span class="text-danger">*</span></label
+                  >
+                  <p-dropdown
+                    name="alertBeforeNoOfDays"
+                    [options]="noOfAlertsList"
+                    [(ngModel)]="fileUpload.alertBeforeNoOfDays"
+                    required
+                    [filter]="true"
+                  ></p-dropdown>
+                </div>
+              </div>
+            </div>
+
+            <div class="submit-section">
+              <button
+                *ngIf="!isFileEdit"
+                type="submit"
+                class="btn btn-success submit-btn"
+                [disabled]="!dFU.valid || !fileUpload.fileToUpload"
+              >
+                <i class="fa fa-upload"></i>&nbsp; Upload
+              </button>
+              <button
+                *ngIf="isFileEdit"
+                type="submit"
+                class="btn btn-success submit-btn"
+                [disabled]="!dFU.valid"
+              >
+                <i class="fa fa-check"></i>&nbsp;Update
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Upload file Modal -->
+<!-- Image view file Modal -->
+<ng-container *ngIf="viewImage">
+  <app-imageviwer (onClose)="onImageViewCloseClick($event)"> </app-imageviwer>
+</ng-container>
+
+<!-- /Image view file Modal -->
+<!-- Org Document Categoryt File Modal -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: orgDocumentCategorytInfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          *ngIf="errorLabel"
+          style="position: absolute; left: 15px"
+          class="text-danger"
+        >
+          {{ errorLabel }}
+        </h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal(DCf)"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form
+            (ngSubmit)="saveOrgDocumentCategoryt(orgDocumentCategory)"
+            #DCf="ngForm"
+          >
+            <div class="row" *ngIf="errLabel">
+              <div class="col-sm-6" style="color: red">
+                {{ errLabel }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Document Category <span class="text-danger">*</span></label
+                  >
+                  <input
+                    class="form-control"
+                    name="documentTitle"
+                    (blur)="checkOrgDocCatAlreadyExist(orgDocumentCategory)"
+                    [(ngModel)]="orgDocumentCategory"
+                    type="text"
+                    maxlength="150"
+                    required
+                    (keypress)="sharedService.keyPressAlphaNumaric($event)"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="submit-section">
+              <button
+                type="submit"
+                class="btn btn-success submit-btn"
+                [disabled]="!DCf.valid"
+              >
+                <i class="fa fa-save"></i>&nbsp;Save
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger submit-btn ml-2"
+                (click)="closeAddmodal(DCf)"
+              >
+                <i class="fa fa-times"></i>&nbsp;Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Org Document Categoryt file Modal -->

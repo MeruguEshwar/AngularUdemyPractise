@@ -1,0 +1,63 @@
+.filter-row .btn {
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #00a88e;
+  border-color: #00a88e;
+}
+.filter-row .btn:hover {
+  background-color: #03927c;
+  border-color: #03927c;
+}
+:host ::ng-deep .ui-button.ui-button-text-only .ui-button-text {
+  padding: 8px 1em;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="rate"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="salary"] {
+  width: 10%;
+  text-align: right;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="startDate"],
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="endDate"] {
+  width: 11%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="employeeName"] {
+  width: 20%;
+}
+:host ::ng-deep .ui-table-customers .ui-table-tbody > tr > td:nth-child(2),
+:host ::ng-deep .ui-table-customers .ui-table-tbody > tr > td:nth-child(3) {
+  text-align: right;
+}
+:host ::ng-deep .ui-table-customers .ui-table-caption {
+  /* padding: 5px 5px 18px 12px; */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.571em 0.857em;
+}

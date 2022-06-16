@@ -1,0 +1,15 @@
+<p>two-way-data Binding works!</p>
+<label>UserName:</label>
+<input type="text"
+class="form-control"
+[(ngModel)]="ServerName"/>
+<p>{{ServerName}}</p>
+
+
+<a [href]="getSubdomainLink(element)" target="_blank"> 
+    {{element.subDomain}} </a> 
+
+<button class="btn btn-primary"
+[disabled]=!allowNewserver
+(click)="onservercreated()">
+AddServer</button>

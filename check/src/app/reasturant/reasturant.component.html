@@ -1,0 +1,14 @@
+<p>reasturant works!  and Reactive Form</p>
+<div class='form-group' [formGroup]="reasturant">
+    DishName:<input type="text" class="form-control" formControlName="DishName"><br><br>
+    <div *ngIf="reasturant.controls ['DishName'].errors && reasturant.controls['DishName'].touched">
+        <span *ngIf="reasturant.controls ['DishName'].errors.required">Dishname must be Enter</span>
+        <span *ngIf="reasturant.controls ['DishName'].errors.minlength">Dishname must be atleast 2 Characters</span>
+    </div>
+    DishPrice:<input type="text" class="form-control" formControlName="DishPrice"><br><br>
+    Ingridients:<input type="text" class="form-control" formControlName="Ingridients"><br><br>
+    <button [disabled]="!reasturant.valid">Save</button>
+    <button (click)="reasturant.resetForm()">Reset</button>
+</div>
+
+<button (click)="abc()">OK</button>

@@ -1,0 +1,449 @@
+<div class="page-wrapper">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">Dashboard</li>
+            <li class="breadcrumb-item active">Projects</li>
+          </ul>
+        </div>
+        <div class="col-auto float-right ml-auto">
+          <a href="javascript:void(0)" (click)="showDialogToAdd()"
+            ><button [disabled]="!isAddProjectEnabled" class="btn add-btn">
+              <i class="fa fa-plus"></i> Add Project
+            </button></a
+          >
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <!-- /Search Filter -->
+    <p-tabView (onChange)="handleChange($event)">
+      <p-tabPanel header="Active Projects">
+        <div class="col pl-0 pr-0 mt-2" *ngIf="!loading">
+          <p-table
+            [columns]="cols"
+            [value]="lstProjects"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            styleClass="ui-table-customers"
+            #dt
+            [paginator]="true"
+            [rows]="10"
+            [showCurrentPageReport]="true"
+            [alwaysShowPaginator]="false"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [filterDelay]="0"
+            [globalFilterFields]="[
+              'projectName',
+              'description',
+              'startDate',
+              'status'
+            ]"
+          >
+            <ng-template pTemplate="caption">
+              .
+              <div class="ui-table-globalfilter-container">
+                <input
+                  pInputText
+                  type="text"
+                  (input)="dt.filterGlobal($event.target.value, 'contains')"
+                  placeholder="Search"
+                />
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                  {{ col.header }}
+                  <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+                <th class="actions">Actions</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <tr [pSelectableRow]="rowData">
+                <td *ngFor="let col of columns" [pSelectableRow]="col.field">
+                  <ng-container *ngIf="col.field == 'projectName'">
+                    <a
+                      href="javascript:void(0)"
+                      [routerLink]="['/admin/projects/project/view']"
+                      [state]="{ projectDetailsId: rowData.projectDetailsId }"
+                      >{{ rowData[col.field] }}</a
+                    >
+                  </ng-container>
+                  <ng-container *ngIf="col.field == 'inHouse'">
+                    <ng-container
+                      *ngIf="
+                        +rowData[col.field] ? true : false;
+                        else notApproved
+                      "
+                    >
+                      <i
+                        class="fa fa-check"
+                        style="color: #49d626; font-size: large"
+                        aria-hidden="true"
+                      ></i>
+                    </ng-container>
+                    <ng-template #notApproved>
+                      <i
+                        class="fa fa-times"
+                        style="color: #f56464e6; font-size: large"
+                        aria-hidden="true"
+                      ></i>
+                    </ng-template>
+                  </ng-container>
+                  <ng-container *ngIf="col.field == 'description'">
+                    <div
+                      class="d-flex justify-content-start"
+                      pTooltip="{{ rowData[col.field] }}"
+                      tooltipPosition="top"
+                      *ngIf="rowData[col.field]"
+                    >
+                      <div class="tab-descp">
+                        {{ rowData[col.field] }}
+                      </div>
+                      <div>
+                        <i
+                          class="fa fa-info-circle ml-3"
+                          aria-hidden="true"
+                        ></i>
+                      </div>
+                    </div>
+                  </ng-container>
+
+                  <ng-container
+                    *ngIf="
+                      col.field != 'projectName' &&
+                      col.field != 'description' &&
+                      col.field != 'inHouse' &&
+                      col.field != 'statusVal'
+                    "
+                  >
+                    {{ rowData[col.field] }}
+                  </ng-container>
+                  <ng-container *ngIf="col.field == 'statusVal'">
+                    <span
+                      class="badge"
+                      [ngClass]="
+                        rowData.statusVal == 'COMPLETED'
+                          ? 'bg-inverse-completed'
+                          : 'bg-inverse-in-progress'
+                      "
+                      >{{ rowData[col.field] }}</span
+                    >
+                  </ng-container>
+                </td>
+                <!-- <td>
+                  <span
+                    class="badge"
+                    [ngClass]="
+                      rowData.endDate
+                        ? 'bg-inverse-completed'
+                        : 'bg-inverse-in-progress'
+                    "
+                    >{{ rowData.endDate ? "Completed" : "In Progress" }}</span
+                  >
+                </td> -->
+                <td class="actions">
+                  <div class="dropdown dropdown-action">
+                    <a
+                      href="#"
+                      class="action-icon dropdown-toggle"
+                      data-toggle="dropdown"
+                      aria-expanded="false"
+                      ><i class="material-icons">more_vert</i></a
+                    >
+                    <div
+                      class="dropdown-menu dropdown-menu-right"
+                      x-placement="top-end"
+                      style="
+                        position: absolute;
+                        will-change: transform;
+                        top: 0px;
+                        left: 0px;
+                        transform: translate3d(72px, -2px, 0px);
+                      "
+                    >
+                      <!-- <a
+                        class="dropdown-item"
+                        href="#"
+                        data-toggle="modal"
+                        (click)="onRowSelectView(rowData)"
+                        ><i class="fa fa-eye m-r-5"></i> View
+                      </a> -->
+
+                      <a
+                        class="dropdown-item"
+                        [routerLink]="['/admin/projects/project/edit']"
+                        [state]="{
+                          projectDetailsId: rowData.projectDetailsId,
+                          tabIndex: 0
+                        }"
+                        ><i class="fa fa-pencil-square-o m-r-5"></i> Edit</a
+                      >
+                      <a
+                        class="dropdown-item"
+                        href="javascript:void(0)"
+                        [routerLink]="['/admin/projects/project/edit']"
+                        [state]="{
+                          projectDetailsId: rowData.projectDetailsId,
+                          tabIndex: 1
+                        }"
+                        ><i class="fa fa-check-square-o m-r-5"></i> Assign
+                        Approvers</a
+                      >
+                      <a
+                        class="dropdown-item"
+                        [routerLink]="['/admin/projects/project/edit']"
+                        [state]="{
+                          projectDetailsId: rowData.projectDetailsId,
+                          tabIndex: 2
+                        }"
+                        ><i class="fa fa-user-plus m-r-5"></i> Assign
+                        Resource</a
+                      >
+                      <a
+                        class="dropdown-item"
+                        [routerLink]="['/admin/projects/project/edit']"
+                        [state]="{
+                          projectDetailsId: rowData.projectDetailsId,
+                          tabIndex: 3
+                        }"
+                        ><i class="fa fa-comments m-r-5"></i> Comments</a
+                      >
+                      <a
+                        class="dropdown-item"
+                        [routerLink]="['/admin/projects/project/edit']"
+                        [state]="{
+                          projectDetailsId: rowData.projectDetailsId,
+                          tabIndex: 4
+                        }"
+                        ><i class="fa fa-files-o m-r-5"></i> Documents</a
+                      >
+
+                      <a
+                        class="dropdown-item delete"
+                        href="#"
+                        data-toggle="modal"
+                        (click)="onAction(rowData)"
+                        data-target="#deactivate_project"
+                        ><i class="fa fa-trash-o m-r-5"></i> Deactivate</a
+                      >
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td [attr.colspan]="cols.length" style="text-align: center">
+                  No projects found.
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Inactive Projects">
+        <div class="col pl-0 pr-0 mt-2" *ngIf="!loading">
+          <p-table
+            [columns]="cols"
+            [value]="lstProjects"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            styleClass="ui-table-customers"
+            #dt
+            [paginator]="true"
+            [rows]="10"
+            [showCurrentPageReport]="true"
+            [alwaysShowPaginator]="false"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [filterDelay]="0"
+            [globalFilterFields]="[
+              'projectName',
+              'description',
+              'startDate',
+              'status'
+            ]"
+          >
+            <ng-template pTemplate="caption">
+              .
+              <div class="ui-table-globalfilter-container">
+                <input
+                  pInputText
+                  type="text"
+                  (input)="dt.filterGlobal($event.target.value, 'contains')"
+                  placeholder="Search"
+                />
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                  {{ col.header }}
+                  <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+                <th class="actions">Actions</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <tr [pSelectableRow]="rowData">
+                <td *ngFor="let col of columns" [pSelectableRow]="col.field">
+                  <ng-container *ngIf="col.field == 'inHouse'">
+                    <ng-container
+                      *ngIf="
+                        +rowData[col.field] ? true : false;
+                        else notApproved
+                      "
+                    >
+                      <i
+                        class="fa fa-check"
+                        style="color: #49d626; font-size: x-large"
+                        aria-hidden="true"
+                      ></i>
+                    </ng-container>
+                    <ng-template #notApproved>
+                      <i
+                        class="fa fa-times"
+                        style="color: #f56464e6; font-size: x-large"
+                        aria-hidden="true"
+                      ></i>
+                    </ng-template>
+                  </ng-container>
+                  <ng-container *ngIf="col.field == 'description'">
+                    <div
+                      class="d-flex justify-content-start"
+                      pTooltip="{{ rowData[col.field] }}"
+                      tooltipPosition="top"
+                      *ngIf="rowData[col.field]"
+                    >
+                      <div class="tab-descp">
+                        {{ rowData[col.field] }}
+                      </div>
+                      <div>
+                        <i
+                          class="fa fa-info-circle ml-3"
+                          aria-hidden="true"
+                        ></i>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-container
+                    *ngIf="col.field != 'description' && col.field != 'inHouse'"
+                  >
+                    {{ rowData[col.field] }}</ng-container
+                  >
+                </td>
+                <td class="actions">
+                  <a
+                    class="success"
+                    href="#"
+                    data-toggle="modal"
+                    (click)="onAction(rowData)"
+                    data-target="#activate_project"
+                    ><i class="fa fa-check m-r-5"></i>Activate</a
+                  >
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td [attr.colspan]="cols.length" style="text-align: center">
+                  No projects found.
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+  <!-- /Page Content -->
+  <div
+    class="modal custom-modal fade"
+    id="deactivate_project"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="form-header">
+            <h3>Deactivate Project</h3>
+            <p>Are you sure ? Do you want to Deactivate the project ?</p>
+          </div>
+          <div class="modal-btn">
+            <div class="row">
+              <div class="col-6 d-flex justify-content-end">
+                <a
+                  href="javascript:void(0);"
+                  data-dismiss="modal"
+                  (click)="deactivate(project)"
+                  class="btn btn-info"
+                  ><i class="fa fa-check"></i>&nbsp;Deactivate</a
+                >
+              </div>
+              <div class="col-6 d-flex justify-content-start">
+                <a
+                  href="javascript:void(0);"
+                  data-dismiss="modal"
+                  class="btn btn-danger"
+                  ><i class="fa fa-times"></i>&nbsp;Cancel</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="modal custom-modal fade"
+    id="activate_project"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="form-header">
+            <h3>Activate Project</h3>
+            <p>Are you sure ? Do you want to Activate the project ?</p>
+          </div>
+          <div class="modal-btn">
+            <div class="row">
+              <div class="col-6 d-flex justify-content-end">
+                <a
+                  href="javascript:void(0);"
+                  data-dismiss="modal"
+                  (click)="activate(project)"
+                  class="btn btn-info"
+                  ><i class="fa fa-check"></i>&nbsp;Activate</a
+                >
+              </div>
+              <div class="col-6 d-flex justify-content-start">
+                <a
+                  href="javascript:void(0);"
+                  data-dismiss="modal"
+                  class="btn btn-danger"
+                  ><i class="fa fa-times"></i>&nbsp;Cancel</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="projectType == 'Add'">
+    <app-add-project
+      [projectType]="projectType"
+      [companyList]="companyList"
+      (onClose)="onDeptAddCloseClick($event)"
+    >
+    </app-add-project>
+  </ng-container>
+</div>

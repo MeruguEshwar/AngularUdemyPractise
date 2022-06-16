@@ -1,0 +1,1265 @@
+<p-tabView [(activeIndex)]="activeTabIndex" (onChange)="handleChange($event)">
+  <p-tabPanel header="Personal Details">
+    <form #personalDetailsForm="ngForm">
+      <div class="">
+        <div class="pt-3">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="profile-img-wrap edit-img">
+                <img
+                  class="inline-block"
+                  [src]="profile?.photoPath"
+                  alt="user"
+                />
+                <div class="fileupload btn">
+                  <!-- <span class="btn-text">edit</span> -->
+                  <!-- <input class="upload" type="file" (onChange)='saveProfilePicture()'/> -->
+                  <p-fileUpload
+                    mode="basic"
+                    #profilePicture
+                    name="myProfile[]"
+                    customUpload="true"
+                    accept="image/*"
+                    maxFileSize="1000000"
+                    (uploadHandler)="saveProfilePicture($event, profilePicture)"
+                    [auto]="true"
+                    chooseLabel="Upload"
+                  ></p-fileUpload>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>First Name <span class="text-danger">*</span></label>
+                    <input
+                      type="text"
+                      name="firstName"
+                      [(ngModel)]="saveProfile.firstName"
+                      class="form-control"
+                      required
+                      #firstName="ngModel"
+                      minlength="2"
+                      maxlength="150"
+                      pattern="[A-Za-z ]{1,150}"
+                      (keypress)="sharedService.keyPressAlphabet($event)"
+                    />
+                    <small
+                      class="text-danger"
+                      *ngIf="firstName.touched && firstName.invalid"
+                      >The given value is not a valid format</small
+                    >
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Middle Name </label>
+                    <input
+                      type="text"
+                      name="middleName"
+                      [(ngModel)]="saveProfile.middleName"
+                      class="form-control"
+                      #middleName="ngModel"
+                      maxlength="150"
+                      pattern="[A-Za-z ]{1,150}"
+                      (keypress)="sharedService.keyPressAlphabet($event)"
+                    />
+                    <small
+                      class="text-danger"
+                      *ngIf="firstName.touched && firstName.invalid"
+                      >The given value is not a valid format</small
+                    >
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Last Name <span class="text-danger">*</span></label>
+                    <input
+                      type="text"
+                      name="lastName"
+                      [(ngModel)]="saveProfile.lastName"
+                      class="form-control"
+                      required
+                      #lastName="ngModel"
+                      maxlength="150"
+                      pattern="[A-Za-z ]{1,150}"
+                      (keypress)="sharedService.keyPressAlphabet($event)"
+                    />
+                    <small
+                      class="text-danger"
+                      *ngIf="lastName.touched && lastName.invalid"
+                      >The given value is not a valid format</small
+                    >
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Birth Date <span class="text-danger">*</span></label>
+
+                    <p-calendar
+                      [maxDate]="birthMaxDate"
+                      [yearNavigator]="true"
+                      [monthNavigator]="true"
+                      yearRange="1980:2050"
+                      readonlyInput="true"
+                      name="dateOfBirth"
+                      [(ngModel)]="saveProfile.dateOfBirth"
+                      showIcon="true"
+                      dateFormat="mm-dd-yy"
+                      aria-required="true"
+                      dataType="string"
+                      required
+                    ></p-calendar>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Gender <span class="text-danger">*</span></label>
+                    <div>
+                      <div class="ui-g-3">
+                        <p-radioButton
+                          name="gender"
+                          value="1"
+                          label="Male"
+                          [(ngModel)]="saveProfile.gender"
+                          aria-required="true"
+                          required
+                        ></p-radioButton>
+                      </div>
+                      <div class="ui-g-4">
+                        <p-radioButton
+                          name="gender"
+                          value="2"
+                          label="Female"
+                          [(ngModel)]="saveProfile.gender"
+                          aria-required="true"
+                          required
+                        ></p-radioButton>
+                      </div>
+                      <div class="ui-g-4">
+                        <p-radioButton
+                          name="gender"
+                          value="3"
+                          label="Other"
+                          [(ngModel)]="saveProfile.gender"
+                          aria-required="true"
+                          required
+                        ></p-radioButton>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Nationality </label>
+                    <input
+                      name="nationality"
+                      [(ngModel)]="saveProfile.nationality"
+                      class="form-control"
+                      type="text"
+                      #nationality="ngModel"
+                      maxlength="150"
+                      pattern="[A-Za-z]{1,150}"
+                      (keypress)="sharedService.keyPressAlphabet($event)"
+                    />
+                    <small
+                      class="text-danger"
+                      *ngIf="nationality.touched && nationality.invalid"
+                      >The given Nationality is not a valid format</small
+                    >
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label
+                      >Marital status <span class="text-danger">*</span></label
+                    >
+                    <div>
+                      <div class="ui-g-6">
+                        <p-radioButton
+                          name="maritalStatuses"
+                          value="1"
+                          label="Single"
+                          [(ngModel)]="saveProfile.maritalStatus"
+                          aria-required="true"
+                          required
+                        ></p-radioButton>
+                      </div>
+                      <div class="ui-g-6">
+                        <p-radioButton
+                          name="maritalStatuses"
+                          value="2"
+                          label="Married"
+                          [(ngModel)]="saveProfile.maritalStatus"
+                          aria-required="true"
+                          required
+                        ></p-radioButton>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3" *ngIf="saveProfile.maritalStatus == 2">
+                  <div class="form-group">
+                    <label>Anniversary Date </label>
+
+                    <p-calendar
+                      [yearNavigator]="true"
+                      [monthNavigator]="true"
+                      yearRange="1980:2050"
+                      readonlyInput="true"
+                      name="dateOfMarriage"
+                      [(ngModel)]="saveProfile.dateOfMarriage"
+                      showIcon="true"
+                      dateFormat="mm-dd-yy"
+                      aria-required="true"
+                      dataType="string"
+                    ></p-calendar>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="submit-section">
+        <button
+          class="btn btn-success"
+          (click)="onProfileSubmit()"
+          [disabled]="!personalDetailsForm.valid"
+        >
+          <i class="fa fa-save"></i>&nbsp;Save
+        </button>
+        <button class="btn btn-danger ml-2" (click)="onCancel()">
+          <i class="fa fa-times"></i>&nbsp;Cancel
+        </button>
+      </div>
+    </form>
+  </p-tabPanel>
+  <p-tabPanel header="Contact Details">
+    <form #contactDetailsForm="ngForm">
+      <div class="">
+        <div class="pt-3">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Address <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  name="address"
+                  [(ngModel)]="saveProfile.address"
+                  class="form-control"
+                  value="4487 Snowbird Lane"
+                  required
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>City <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  name="city"
+                  [(ngModel)]="saveProfile.city"
+                  class="form-control"
+                  value="New York"
+                  required
+                  #city="ngModel"
+                  maxlength="150"
+                  pattern="[A-Za-z ]{1,150}"
+                  (keypress)="sharedService.keyPressAlphabet($event)"
+                />
+                <small class="text-danger" *ngIf="city.touched && city.invalid"
+                  >The given value is not a valid format</small
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>State <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  name="state"
+                  [(ngModel)]="saveProfile.state"
+                  class="form-control"
+                  required
+                  #statefiled="ngModel"
+                  maxlength="150"
+                  pattern="[A-Za-z ]{1,150}"
+                  (keypress)="sharedService.keyPressAlphabet($event)"
+                />
+                <small
+                  class="text-danger"
+                  *ngIf="statefiled.touched && statefiled.invalid"
+                  >The given value is not a valid format</small
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Country <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  name="country"
+                  [(ngModel)]="saveProfile.country"
+                  class="form-control"
+                  value="United States"
+                  required
+                  #country="ngModel"
+                  maxlength="150"
+                  pattern="[A-Za-z ]{1,150}"
+                  (keypress)="sharedService.keyPressAlphabet($event)"
+                />
+                <small
+                  class="text-danger"
+                  *ngIf="country.touched && country.invalid"
+                  >The given value is not a valid format</small
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Zip Code </label>
+                <input
+                  type="text"
+                  name="pinCode"
+                  [(ngModel)]="saveProfile.pinCode"
+                  class="form-control"
+                  #pinCode="ngModel"
+                  maxlength="7"
+                  minlength="4"
+                  (keypress)="sharedService.keyPressAlphaNumaric($event)"
+                />
+                <small
+                  class="text-danger"
+                  *ngIf="pinCode.touched && pinCode.invalid"
+                  >The given value is not a valid format</small
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Phone Number <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  [(ngModel)]="saveProfile.phoneNumber"
+                  class="form-control"
+                  #phoneNumber="ngModel"
+                  minlength="10"
+                  maxlength="15"
+                  pattern="[0-9]{1,15}"
+                  (keypress)="sharedService.keyPressNumber($event)"
+                  required
+                />
+                <small
+                  class="text-danger"
+                  *ngIf="phoneNumber.touched && phoneNumber.invalid"
+                  >The given value is not a valid format</small
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="submit-section">
+        <button
+          class="btn btn-success"
+          (click)="onProfileSubmit()"
+          [disabled]="!contactDetailsForm.valid"
+        >
+          <i class="fa fa-save"></i>&nbsp;Save
+        </button>
+        <button class="btn btn-danger ml-2" (click)="onCancel()">
+          <i class="fa fa-times"></i>&nbsp;Cancel
+        </button>
+      </div>
+    </form>
+  </p-tabPanel>
+  <p-tabPanel header="Authorization Details">
+    <form #authDetailsFrom="ngForm">
+      <div class="">
+        <div class="pt-3">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Passport No</label>
+                <input
+                  name="passportNo"
+                  id="passportNo"
+                  [(ngModel)]="saveProfile.passportNo"
+                  type="text"
+                  class="form-control"
+                  #passportNo="ngModel"
+                  minlength="6"
+                  maxlength="9"
+                  pattern="[A-Za-z0-9]{1,9}"
+                  (keypress)="sharedService.keyPressAlphaNumaric($event)"
+                />
+                <small
+                  class="text-danger"
+                  *ngIf="passportNo.touched && passportNo.invalid"
+                  >The given value is not a valid format</small
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Passport Expiry Date</label>
+                <p-calendar
+                  [yearNavigator]="true"
+                  [monthNavigator]="true"
+                  yearRange="1980:2050"
+                  readonlyInput="true"
+                  name="passportExpDate"
+                  [(ngModel)]="saveProfile.passportExpDate"
+                  showIcon="true"
+                  dateFormat="mm-dd-yy"
+                  dataType="string"
+                ></p-calendar>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>SSN</label>
+                <p-inputMask
+                  id="ssnno"
+                  mask="999-99-9999"
+                  [(ngModel)]="saveProfile.ssn"
+                  name="ssnno"
+                  unmask="true"
+                  #ssnno="ngModel"
+                ></p-inputMask>
+                <!-- <input
+                  name="ssnno"
+                  id="ssnno"
+                  [(ngModel)]="saveProfile.ssn"
+                  type="password"
+                  class="form-control"
+                  #ssnno="ngModel"
+                  maxlength="15"
+                  pattern="[0-9]{1,15}"
+                  (keypress)="sharedService.keyPressNumber($event)"
+                /> -->
+                <small
+                  class="text-danger"
+                  *ngIf="ssnno.touched && ssnno.invalid"
+                  >The given value is not a valid format</small
+                >
+              </div>
+            </div>
+            <div class="col-md-6" *ngIf="saveProfile.ssn">
+              <div class="form-group">
+                <label>Confirm SSN<span class="text-danger"> *</span></label>
+                <p-inputMask
+                  id="confirmssnno"
+                  mask="999-99-9999"
+                  [(ngModel)]="saveProfile.confirmssn"
+                  name="confirmssnno"
+                  unmask="true"
+                  required
+                  #confirmssnno="ngModel"
+                  (onBlur)="confirmSSNValidation()"
+                  pattern="{{ saveProfile.ssn }}"
+                ></p-inputMask>
+                <!-- <input
+                  name="confirmssnno"
+                  id="confirmssnno"
+                  [(ngModel)]="saveProfile.confirmssn"
+                  type="text"
+                  class="form-control"
+                  #confirmssnno="ngModel"
+                  maxlength="15"
+                  pattern="{{ saveProfile.ssn }}"
+                  (blur)="confirmSSNValidation()"
+                  required
+                  (keypress)="sharedService.keyPressNumber($event)"
+                /> -->
+                <small
+                  class="text-danger"
+                  *ngIf="confirmssnno.touched && confirmssnno.errors?.pattern"
+                  >The confirm SSN not matched</small
+                >
+                <small
+                  class="text-danger"
+                  *ngIf="confirmssnno.touched && confirmssnno.errors?.required"
+                  >The confirm SSN not matched</small
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="submit-section">
+        <button
+          class="btn btn-success"
+          (click)="onProfileSubmit()"
+          [disabled]="!authDetailsFrom.valid"
+        >
+          <i class="fa fa-save"></i>&nbsp;Save
+        </button>
+        <button class="btn btn-danger ml-2" (click)="onCancel()">
+          <i class="fa fa-times"></i>&nbsp;Cancel
+        </button>
+      </div>
+    </form>
+  </p-tabPanel>
+  <p-tabPanel header="Employment Details">
+    <div
+      class=""
+      *ngIf="
+        user &&
+        (user.roleId == 4 ||
+          user.roleId == 5 ||
+          user.roleId == 3 ||
+          user.roleId == 2)
+      "
+    >
+      <form #employementDetails="ngForm">
+        <div class="pt-3">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Employee Id<span class="text-danger"> *</span></label>
+                <input
+                  name="employeeId"
+                  id="employeeId"
+                  [(ngModel)]="saveProfile.employeeId"
+                  type="text"
+                  class="form-control"
+                  #employeeId="ngModel"
+                  maxlength="15"
+                  pattern="[A-Za-z0-9]{1,15}"
+                  (keypress)="sharedService.keyPressAlphaNumaric($event)"
+                  (ngModelChange)="
+                    saveProfile.employeeId = $event.toUpperCase()
+                  "
+                  required
+                />
+                <small
+                  class="text-danger"
+                  *ngIf="employeeId.touched && employeeId.invalid"
+                  >The given value is not a valid format</small
+                >
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Joining Date<span class="text-danger"> *</span></label>
+                <p-calendar
+                  [yearNavigator]="true"
+                  [monthNavigator]="true"
+                  yearRange="1980:2050"
+                  readonlyInput="true"
+                  name="dateOfJoining"
+                  [(ngModel)]="saveProfile.dateOfJoining"
+                  showIcon="true"
+                  dateFormat="mm-dd-yy"
+                  dataType="string"
+                  aria-required="true"
+                  required
+                ></p-calendar>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Department <span class="text-danger">*</span></label>
+                <p-dropdown
+                  name="departments"
+                  [options]="departments"
+                  [(ngModel)]="departmentDetailsId"
+                  placeholder="Department"
+                  [filter]="true"
+                  required
+                ></p-dropdown>
+                <!-- <p-autoComplete
+                  [suggestions]="filterDepartments"
+                  name="department"
+                  [(ngModel)]="saveProfile.departmentDetails"
+                  (completeMethod)="departmentsList($event)"
+                  field="label"
+                  placeholder="Department"
+                  aria-required="true"
+                  required
+                >
+                </p-autoComplete> -->
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Designation <span class="text-danger"> *</span></label>
+                <p-dropdown
+                  name="designations"
+                  [options]="designations"
+                  [(ngModel)]="designationDetailsId"
+                  placeholder="Designation"
+                  [filter]="true"
+                  required
+                ></p-dropdown>
+                <!-- <p-autoComplete
+                  [suggestions]="filterDesignation"
+                  name="designation"
+                  [(ngModel)]="saveProfile.designationDetails"
+                  (completeMethod)="designationList($event)"
+                  field="label"
+                  placeholder="Designation"
+                  aria-required="true"
+                  required
+                >
+                </p-autoComplete> -->
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label
+                  >Employment Type <span class="text-danger"> *</span></label
+                >
+                <div class="d-flex justify-content-start">
+                  <div class="p-2">
+                    <p-radioButton
+                      name="employmentType"
+                      value="1"
+                      label="Fulltime"
+                      [(ngModel)]="saveProfile.employmentType"
+                      aria-required="true"
+                      required
+                    ></p-radioButton>
+                  </div>
+                  <div class="p-2">
+                    <p-radioButton
+                      name="employmentType"
+                      value="2"
+                      label="Parttime"
+                      [(ngModel)]="saveProfile.employmentType"
+                      aria-required="true"
+                      required
+                    ></p-radioButton>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Supervisor</label>
+                <p-dropdown
+                  name="reportingToUserName"
+                  [options]="reportingToUserNames"
+                  [(ngModel)]="reportingToEmployeeDetailsId"
+                  placeholder="Select a Supervisor"
+                  [filter]="true"
+                ></p-dropdown>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Employee Type <span class="text-danger"> *</span></label>
+                <div class="d-flex justify-content-between">
+                  <div class="p-2">
+                    <p-radioButton
+                      name="employeeType"
+                      value="1"
+                      label="W-2 Employee"
+                      [(ngModel)]="saveProfile.employeeType"
+                      aria-required="true"
+                      required
+                    ></p-radioButton>
+                  </div>
+                  <div class="p-2">
+                    <p-radioButton
+                      name="employeeType"
+                      value="2"
+                      label="C2C Employee"
+                      [(ngModel)]="saveProfile.employeeType"
+                      aria-required="true"
+                      required
+                    ></p-radioButton>
+                  </div>
+                  <div class="p-2">
+                    <p-radioButton
+                      name="employeeType"
+                      value="3"
+                      label="Contract Employee (1099)"
+                      [(ngModel)]="saveProfile.employeeType"
+                      aria-required="true"
+                      required
+                    ></p-radioButton>
+                  </div>
+                  <div class="p-2">
+                    <p-radioButton
+                      name="employeeType"
+                      value="4"
+                      label="W8 Ben"
+                      [(ngModel)]="saveProfile.employeeType"
+                      aria-required="true"
+                      required
+                    ></p-radioButton>
+                  </div>
+                  <div class="p-2">
+                    <p-radioButton
+                      name="employeeType"
+                      value="5"
+                      label="Offshore Employee"
+                      [(ngModel)]="saveProfile.employeeType"
+                      aria-required="true"
+                      required
+                    ></p-radioButton>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="submit-section">
+          <button
+            class="btn btn-success"
+            (click)="onProfileSubmit()"
+            [disabled]="!employementDetails.valid"
+          >
+            <i class="fa fa-save"></i>&nbsp;Save
+          </button>
+          <button class="btn btn-danger ml-2" (click)="onCancel()">
+            <i class="fa fa-times"></i>&nbsp;Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+    <div *ngIf="user && user.roleId == 6" class="pt-3">
+      <ul class="personal-info">
+        <li class="clearfix">
+          <div class="title">Employee Id</div>
+          <div class="text">{{ saveProfile.employeeId }}</div>
+        </li>
+        <li class="clearfix">
+          <div class="title">Joining Date</div>
+          <div class="text">{{ saveProfile.dateOfJoining }}</div>
+        </li>
+        <li class="clearfix">
+          <div class="title">Department</div>
+          <div class="text">{{ saveProfile.designation }}</div>
+        </li>
+        <li class="clearfix">
+          <div class="title">Designation</div>
+          <div class="text">{{ saveProfile.department }}</div>
+        </li>
+        <li class="clearfix">
+          <div class="title">Supervisor</div>
+          <div class="text">{{ saveProfile.reportingToEmployeeName }}</div>
+        </li>
+        <li class="clearfix">
+          <div class="title">Employee Type</div>
+          <div class="text">
+            {{ EmployeementType[saveProfile?.employeeType] }}
+          </div>
+        </li>
+      </ul>
+    </div>
+  </p-tabPanel>
+  <p-tabPanel header="Dependent Details">
+    <form #empDependentDetailsFrom="ngForm">
+      <div class="">
+        <div class="pt-3">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Name <span class="text-danger">*</span></label>
+                <input
+                  id="empDependentName"
+                  name="empDependentName"
+                  [(ngModel)]="empDependentDetails.name"
+                  type="text"
+                  class="form-control"
+                  #empDependentName="ngModel"
+                  maxlength="150"
+                  pattern="[A-Za-z ]{1,150}"
+                  (keypress)="sharedService.keyPressAlphabet($event)"
+                  required
+                />
+                <small
+                  class="text-danger"
+                  *ngIf="empDependentName.touched && empDependentName.invalid"
+                  >The given value is not a valid format</small
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Relationship <span class="text-danger">*</span></label>
+                <input
+                  name="empDependentRelation"
+                  [(ngModel)]="empDependentDetails.relationship"
+                  class="form-control"
+                  type="text"
+                  #empDependentRelation="ngModel"
+                  minlength="2"
+                  maxlength="150"
+                  pattern="[A-Za-z ]{1,150}"
+                  (keypress)="sharedService.keyPressAlphabet($event)"
+                  required
+                />
+                <small
+                  class="text-danger"
+                  *ngIf="
+                    empDependentRelation.touched && empDependentRelation.invalid
+                  "
+                  >The given value is not a valid format
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Birth Date <span class="text-danger">*</span></label>
+
+                <p-calendar
+                  [maxDate]="birthMaxDate"
+                  [yearNavigator]="true"
+                  [monthNavigator]="true"
+                  yearRange="1950:2050"
+                  readonlyInput="true"
+                  name="empDependentDateOfBirth"
+                  [(ngModel)]="empDependentDetails.dateOfBirth"
+                  showIcon="true"
+                  dateFormat="mm-dd-yy"
+                  aria-required="true"
+                  dataType="string"
+                  required
+                ></p-calendar>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Gender <span class="text-danger">*</span></label>
+                <div>
+                  <div class="ui-g-3">
+                    <p-radioButton
+                      name="empDependentGender"
+                      value="1"
+                      label="Male"
+                      [(ngModel)]="empDependentDetails.gender"
+                      aria-required="true"
+                      required
+                    ></p-radioButton>
+                  </div>
+                  <div class="ui-g-4">
+                    <p-radioButton
+                      name="empDependentGender"
+                      value="2"
+                      label="Female"
+                      [(ngModel)]="empDependentDetails.gender"
+                      aria-required="true"
+                      required
+                    ></p-radioButton>
+                  </div>
+                  <div class="ui-g-4">
+                    <p-radioButton
+                      name="empDependentGender"
+                      value="3"
+                      label="Other"
+                      [(ngModel)]="empDependentDetails.gender"
+                      aria-required="true"
+                      required
+                    ></p-radioButton>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="!loading && saveProfile?.dependents">
+            <div class="col">
+              <hr />
+              <p-table
+                [columns]="empDependtCols"
+                [value]="saveProfile?.dependents"
+                [rowsPerPageOptions]="[5, 10, 25, 50]"
+                styleClass="ui-table-customers"
+                class="supplier-details"
+                #dt
+                [paginator]="true"
+                [rows]="5"
+                [showCurrentPageReport]="true"
+                [alwaysShowPaginator]="false"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [filterDelay]="0"
+                [globalFilterFields]="[]"
+              >
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th
+                      *ngFor="let col of columns"
+                      [pSortableColumn]="col.field"
+                    >
+                      {{ col.header }}
+                      <p-sortIcon [field]="col.field"></p-sortIcon>
+                    </th>
+                    <th class="actions" style="width: 8%">Actions</th>
+                  </tr>
+                </ng-template>
+                <ng-template
+                  pTemplate="body"
+                  let-rowData
+                  let-columns="columns"
+                  let-rowIndex="rowIndex"
+                >
+                  <tr [pSelectableRow]="rowData">
+                    <td *ngFor="let col of columns">
+                      <ng-container *ngIf="col.field == 'gender'">{{
+                        Gender[rowData[col.field]]
+                      }}</ng-container>
+                      <ng-container *ngIf="col.field != 'gender'">{{
+                        rowData[col.field]
+                      }}</ng-container>
+                    </td>
+                    <td class="actions">
+                      <div class="d-flex justify-content-center">
+                        <a
+                          href="javascript:void(0)"
+                          data-toggle="modal"
+                          (click)="editEmpDependentDetails(rowData)"
+                          ><i class="fa fa-pencil-square-o m-r-5"></i>
+                        </a>
+                        <a
+                          href="javascript:void(0)"
+                          class="text-danger"
+                          (click)="deleteEmpDependentDetails(rowData, rowIndex)"
+                          ><i class="fa fa-trash-o m-r-5"></i>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td
+                      [attr.colspan]="empDependtCols.length"
+                      style="text-align: center"
+                    >
+                      No Records found.
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="submit-section">
+        <button
+          class="btn btn-success"
+          (click)="onProfileSubmit(empDependentDetailsFrom)"
+          [disabled]="!empDependentDetailsFrom.valid"
+        >
+          <i class="fa fa-save"></i>&nbsp;Save
+        </button>
+        <button
+          class="btn btn-info ml-3"
+          (click)="cancelForm(empDependentDetailsFrom)"
+          *ngIf="empDependentDetailsFrom.dirty"
+        >
+          <i class="fa fa-refresh"></i>&nbsp;Clear
+        </button>
+        <button class="btn btn-danger ml-2" (click)="onCancel()">
+          <i class="fa fa-times"></i>&nbsp;Cancel
+        </button>
+      </div>
+    </form>
+  </p-tabPanel>
+  <p-tabPanel header="Emergency Contact Details">
+    <form #emergContactDetailsFrom="ngForm">
+      <div class="">
+        <div class="pt-3">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Name <span class="text-danger">*</span></label>
+                <input
+                  id="emergName"
+                  name="emergName"
+                  [(ngModel)]="emergContactDetails.name"
+                  type="text"
+                  class="form-control"
+                  #emergName="ngModel"
+                  maxlength="150"
+                  pattern="[A-Za-z ]{1,150}"
+                  (keypress)="sharedService.keyPressAlphabet($event)"
+                  required
+                />
+                <small
+                  class="text-danger"
+                  *ngIf="emergName.touched && emergName.invalid"
+                  >The given value is not a valid format</small
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Relationship <span class="text-danger">*</span></label>
+                <input
+                  name="emergRelation"
+                  [(ngModel)]="emergContactDetails.relationship"
+                  class="form-control"
+                  type="text"
+                  #emergRelation="ngModel"
+                  maxlength="150"
+                  pattern="[A-Za-z ]{1,150}"
+                  (keypress)="sharedService.keyPressAlphabet($event)"
+                  required
+                />
+                <small
+                  class="text-danger"
+                  *ngIf="emergRelation.touched && emergRelation.invalid"
+                  >The given value is not a valid format
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Phone Number <span class="text-danger">*</span></label>
+                <input
+                  name="emergPhone"
+                  [(ngModel)]="emergContactDetails.phoneNumber"
+                  class="form-control"
+                  type="text"
+                  #emergPhone="ngModel"
+                  minlength="10"
+                  maxlength="15"
+                  pattern="[0-9]{1,15}"
+                  (keypress)="sharedService.keyPressNumber($event)"
+                  required
+                />
+                <small
+                  class="text-danger"
+                  *ngIf="emergPhone.touched && emergPhone.invalid"
+                  >The given value is not a valid format</small
+                >
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label>Email <span class="text-danger">*</span></label>
+                <input
+                  pInputText
+                  class="form-control"
+                  type="email"
+                  name="emergEmail"
+                  [(ngModel)]="emergContactDetails.email"
+                  #emergEmail="ngModel"
+                  maxlength="150"
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                  (keypress)="sharedService.keyPressEmail($event)"
+                  required
+                />
+                <small
+                  class="text-danger"
+                  *ngIf="emergEmail.touched && emergEmail.invalid"
+                  >The given value is not a valid format.</small
+                >
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label>Address <span class="text-danger">*</span></label>
+                <textarea
+                  [rows]="3"
+                  [cols]="30"
+                  autoResize="autoResize"
+                  class="form-control"
+                  type="address"
+                  name="emergAddress"
+                  [(ngModel)]="emergContactDetails.address"
+                  #emergAddress="ngModel"
+                  maxlength="250"
+                  pattern="[a-zA-Z0-9 ,./-]{10,250}"
+                  (keypress)="sharedService.keyPressAddress($event)"
+                  required
+                ></textarea>
+
+                <small
+                  class="text-danger"
+                  *ngIf="emergAddress.touched && emergAddress.invalid"
+                  >The given value is not a valid format.</small
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="!loading && saveProfile?.emergencyContacts">
+            <div class="col">
+              <hr />
+              <p-table
+                [columns]="emergContactCols"
+                [value]="saveProfile?.emergencyContacts"
+                [rowsPerPageOptions]="[5, 10, 25, 50]"
+                styleClass="ui-table-customers"
+                class="supplier-details"
+                #dt
+                [paginator]="true"
+                [rows]="5"
+                [showCurrentPageReport]="true"
+                [alwaysShowPaginator]="false"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [filterDelay]="0"
+                [globalFilterFields]="[]"
+              >
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th
+                      *ngFor="let col of columns"
+                      [pSortableColumn]="col.field"
+                    >
+                      {{ col.header }}
+                      <p-sortIcon [field]="col.field"></p-sortIcon>
+                    </th>
+                    <th class="actions" style="width: 7%">Actions</th>
+                  </tr>
+                </ng-template>
+                <ng-template
+                  pTemplate="body"
+                  let-rowData
+                  let-columns="columns"
+                  let-rowIndex="rowIndex"
+                >
+                  <tr [pSelectableRow]="rowData">
+                    <td *ngFor="let col of columns; let emergIndex = index">
+                      {{ rowData[col.field] }}
+                    </td>
+                    <td class="actions">
+                      <div class="d-flex justify-content-center">
+                        <a
+                          href="javascript:void(0)"
+                          data-toggle="modal"
+                          (click)="editEmergContact(rowData)"
+                          ><i class="fa fa-pencil-square-o m-r-5"></i>
+                        </a>
+                        <a
+                          href="javascript:void(0)"
+                          class="text-danger"
+                          (click)="deleteEmergContact(rowData, rowIndex)"
+                          ><i class="fa fa-trash-o m-r-5"></i>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td
+                      [attr.colspan]="emergContactCols.length"
+                      style="text-align: center"
+                    >
+                      No Records found.
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="submit-section">
+        <button
+          class="btn btn-success"
+          (click)="onProfileSubmit(emergContactDetailsFrom)"
+          [disabled]="!emergContactDetailsFrom.valid"
+        >
+          <i class="fa fa-save"></i>&nbsp;Save
+        </button>
+        <button
+          class="btn btn-info ml-3"
+          (click)="cancelForm(emergContactDetailsFrom)"
+          *ngIf="emergContactDetailsFrom.dirty"
+        >
+          <i class="fa fa-refresh"></i>&nbsp;Clear
+        </button>
+        <button class="btn btn-danger ml-2" (click)="onCancel()">
+          <i class="fa fa-times"></i>&nbsp;Cancel
+        </button>
+      </div>
+    </form>
+  </p-tabPanel>
+  <p-tabPanel header="Social Networking Details">
+    <form #socialNetworkingDetailsFrom="ngForm">
+      <div class="">
+        <div class="pt-3">
+          <div class="row">
+            <ng-container
+              *ngFor="let socialNetwork of saveProfile.socialNetworks"
+            >
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>{{ socialNetwork.socialNetwork }} URL</label>
+                  <input
+                    id="{{ socialNetwork.socialNetwork }}"
+                    name="{{ socialNetwork.socialNetwork }}"
+                    [(ngModel)]="socialNetwork.socialNetworkLink"
+                    type="url"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="submit-section">
+        <button
+          class="btn btn-success"
+          (click)="onProfileSubmit(socialNetworkingDetailsFrom)"
+          [disabled]="!socialNetworkingDetailsFrom.valid"
+        >
+          <i class="fa fa-save"></i>&nbsp;Save
+        </button>
+        <button
+          class="btn btn-info ml-3"
+          (click)="cancelForm(socialNetworkingDetailsFrom)"
+          *ngIf="socialNetworkingDetailsFrom.dirty"
+        >
+          <i class="fa fa-refresh"></i>&nbsp;Clear
+        </button>
+        <button class="btn btn-danger ml-2" (click)="onCancel()">
+          <i class="fa fa-times"></i>&nbsp;Cancel
+        </button>
+      </div>
+    </form>
+  </p-tabPanel>
+</p-tabView>
+<!-- confirm model-->
+<div
+  id="confirm_info"
+  [ngStyle]="{ display: confirmModel }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <p>Are you sure ? Do you want to Delete ?</p>
+        </div>
+        <div class="modal-btn">
+          <div class="row">
+            <div class="col-6 d-flex justify-content-end">
+              <a
+                href="javascript:void(0);"
+                (click)="confirmDeleteAction(deletingRowdata, modelType)"
+                class="btn btn-success"
+                ><i class="fa fa-check"></i>&nbsp;Confirm</a
+              >
+            </div>
+            <div class="col-6 d-flex justify-content-start">
+              <a
+                href="javascript:void(0);"
+                class="btn btn-danger"
+                (click)="cancel()"
+                ><i class="fa fa-times"></i>&nbsp;Cancel</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /confirm model-->

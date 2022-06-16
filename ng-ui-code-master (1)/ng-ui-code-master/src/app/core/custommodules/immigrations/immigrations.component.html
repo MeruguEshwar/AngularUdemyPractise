@@ -1,0 +1,325 @@
+<div class="page-wrapper">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">Dashboard</li>
+            <li class="breadcrumb-item active">Immigrations</li>
+          </ul>
+        </div>
+        <div class="col-auto float-right ml-auto">
+          <a
+            href="javascript:void(0)"
+            class="btn add-btn"
+            (click)="showDialogToAdd()"
+            ><i class="fa fa-plus"></i> Create Case</a
+          >
+        </div>
+      </div>
+    </div>
+    <!-- /page Header-->
+    <!-- Search Filter -->
+    <div class="row filter-row">
+      <div class="col-sm-6 col-md-3">
+        <div class="form-group form-focus select-focus focused">
+          <p-dropdown
+            [options]="employeeList"
+            [(ngModel)]="selectedEmployee"
+            optionLabel="fullName"
+            [filter]="true"
+          ></p-dropdown>
+
+          <label class="focus-label"></label>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-2">
+        <a
+          href="javascript:void(0)"
+          class="btn btn-info btn-block"
+          (click)="getDetails(selectedEmployee)"
+        >
+          <i class="fa fa-search"></i>&nbsp;Get Details</a
+        >
+      </div>
+    </div>
+    <!-- /Search Filter-->
+    <p-tabView (onChange)="handleDocChange($event)" orientation="left">
+      <p-tabPanel
+        [header]="item.label"
+        *ngFor="let item of currentCategoryOptionList; let i = index"
+        [selected]="i == 0"
+        ><ng-template pTemplate="content">
+          <div class="row justify-content-center">
+            <div class="col-11 text-center p-0 mb-2">
+              <div class="px-0 pb-0 mb-3">
+                <form class="msform">
+                  <div class="">
+                    <!-- <p-timeline
+                      [value]="events1"
+                      styleClass="customized-timeline"
+                    >
+                      <ng-template pTemplate="marker" let-event>
+                        <span
+                          class="px-2 custom-marker p-shadow-2"
+                          [style.backgroundColor]="event.color"
+                        >
+                          {{ event.date }}
+                        </span>
+                      </ng-template>
+                      <ng-template pTemplate="content" let-event>
+                        <div class="card mx-2">
+                          <div class="">
+                            <h5
+                              class="card-title"
+                              [style.backgroundColor]="event.color"
+                            >
+                              {{ event.status }}
+                            </h5>
+                            <p class="card-text">
+                              Some quick example text to build on the card title
+                              and make up the bulk of the card's content.
+                            </p>
+                          </div>
+                        </div>
+                      </ng-template>
+                      <ng-template pTemplate="opposite" let-event>
+                        <div
+                          class="immigrations-widget-icon"
+                          [style.color]="event.color"
+                        >
+                          <i class="fa fa-cubes"></i>
+                        </div>
+                      </ng-template>
+                    </p-timeline> -->
+                    <p-timeline
+                      [value]="events1"
+                      layout="horizontal"
+                      align="top"
+                    >
+                      <ng-template pTemplate="marker" let-event>
+                        <span
+                          class="px-2 custom-marker p-shadow-2"
+                          [style.backgroundColor]="event.color"
+                        >
+                          {{ event.type }}
+                        </span>
+                      </ng-template>
+                      <ng-template pTemplate="content" let-event>
+                        <ng-container *ngIf="event?.type">
+                          <ng-container [ngSwitch]="event?.type">
+                            <ng-container *ngSwitchCase="'documentation'">
+                              <ng-template
+                                [ngTemplateOutlet]="documentation"
+                                [ngTemplateOutletContext]="{ $implicit: event }"
+                              ></ng-template>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'attorney'">
+                              <ng-template
+                                [ngTemplateOutlet]="attorney"
+                                [ngTemplateOutletContext]="{ $implicit: event }"
+                              ></ng-template>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'uscis'">
+                              <ng-template
+                                [ngTemplateOutlet]="uscis"
+                                [ngTemplateOutletContext]="{ $implicit: event }"
+                              ></ng-template>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'approved'">
+                              <ng-template
+                                [ngTemplateOutlet]="approved"
+                                [ngTemplateOutletContext]="{ $implicit: event }"
+                              ></ng-template>
+                            </ng-container>
+                          </ng-container>
+                        </ng-container>
+                        <!-- <div class="card mx-2">
+                          <div class="">
+                            <h5
+                              class="card-title"
+                              [style.backgroundColor]="event.color"
+                            >
+                              {{ event.status }}
+                            </h5>
+                            <p class="card-text">
+                              Some quick example text to build on the card title
+                              and make up the bulk of the card's content.
+                            </p>
+                          </div>
+                        </div> -->
+                      </ng-template>
+                      <ng-template pTemplate="opposite" let-event>
+                        <div
+                          class="immigrations-widget-icon"
+                          [style.color]="event.color"
+                        >
+                          <i class="fa fa-cubes"></i>
+                        </div>
+                        <div
+                          class="half-circle"
+                          [style.border-color]="event.color"
+                        ></div>
+                        <div
+                          class="dot right-dot"
+                          [style.backgroundColor]="event.color"
+                        ></div>
+                        <div
+                          class="dot left-dot"
+                          [style.backgroundColor]="event.color"
+                        ></div>
+                      </ng-template>
+                    </p-timeline>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+</div>
+
+<!-- All forms-->
+<ng-template #documentation let-event>
+  <div class="card mx-2">
+    <div class="">
+      <h5 class="card-title" [style.backgroundColor]="event.color">
+        {{ event.status }}
+      </h5>
+      <p class="card-text">
+        Some quick example text to build on the card title and make up the bulk
+        of the card's content.
+      </p>
+    </div>
+  </div>
+</ng-template>
+<ng-template #attorney let-event>
+  <div class="card mx-2">
+    <div class="">
+      <h5 class="card-title" [style.backgroundColor]="event.color">
+        {{ event.status }}
+      </h5>
+      <p class="card-text">
+        Some quick example text to build on the card title and make up the bulk
+        of the card's content.
+      </p>
+    </div>
+  </div>
+</ng-template>
+<ng-template #uscis let-event>
+  <div class="card mx-2">
+    <div class="">
+      <h5 class="card-title" [style.backgroundColor]="event.color">
+        {{ event.status }}
+      </h5>
+      <p class="card-text">
+        Some quick example text to build on the card title and make up the bulk
+        of the card's content.
+      </p>
+    </div>
+  </div>
+</ng-template>
+<ng-template #approved let-event>
+  <div class="card mx-2">
+    <div class="">
+      <h5 class="card-title" [style.backgroundColor]="event.color">
+        {{ event.status }}
+      </h5>
+      <p class="card-text">
+        Some quick example text to build on the card title and make up the bulk
+        of the card's content.
+      </p>
+    </div>
+  </div>
+</ng-template>
+
+<!-- End all forms-->
+<!-- Add or edit deductions -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: immigrationModel }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          *ngIf="errorLabel"
+          style="position: absolute; left: 15px"
+          class="text-danger"
+        >
+          {{ errorLabel }}
+        </h5>
+        <h5 class="modal-title">Case Details</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeUploadmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form (ngSubmit)="saveCase(f)" #f="ngForm">
+            <div class="row" *ngIf="errorLabel">
+              <div class="col-sm-6" style="color: red">
+                <!-- {{ errorLabel }} -->
+              </div>
+            </div>
+            <div class="row justify-content-center">
+              <div class="form-group col-12">
+                <label
+                  >Select Employee <span class="text-danger"> *</span></label
+                >
+                <p-dropdown
+                  [options]="employeeList"
+                  [(ngModel)]="selectedEmployeeAction"
+                  [filter]="true"
+                  name="selectedEmployeeAction"
+                  optionLabel="fullName"
+                  [filter]="true"
+                ></p-dropdown>
+              </div>
+              <div class="form-group col-12">
+                <label>
+                  Select Category <span class="text-danger"> *</span></label
+                >
+                <p-autoComplete
+                  [(ngModel)]="selectedCategoryOptionList"
+                  [suggestions]="filteredCategory"
+                  (completeMethod)="filterCategory($event)"
+                  name="selectedDeductionOptionList"
+                  placeholder="H-1, Green Card,H-4 EAD"
+                  required
+                ></p-autoComplete>
+              </div>
+            </div>
+
+            <div class="submit-section">
+              <button type="submit" class="btn btn-info submit-btn">
+                <i class="fa fa-save"></i>&nbsp;Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Add or edit deductions -->
+<!-- link Document model-->
+<ng-container *ngIf="showDocLinkModel">
+  <app-document-link
+    (onClose)="onDeptCloseClick($event)"
+    [selectedPhase]="selectedPhase"
+  ></app-document-link>
+</ng-container>
+<!-- /link Document model-->

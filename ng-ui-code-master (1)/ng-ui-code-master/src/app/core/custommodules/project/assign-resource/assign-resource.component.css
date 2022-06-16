@@ -1,0 +1,148 @@
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-thead
+  > tr
+  > th[ng-reflect-field="employeeFullName"] {
+  width: 20%;
+}
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-thead
+  > tr
+  > th[ng-reflect-field="startDate"] {
+  width: 8%;
+}
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-thead
+  > tr
+  > th[ng-reflect-field="endDate"] {
+  width: 8%;
+}
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-thead
+  > tr
+  > th[ng-reflect-field="invoiceFrequency"] {
+  width: 7%;
+}
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-thead
+  > tr
+  > th[ng-reflect-field="rate"] {
+  width: 7%;
+}
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-thead
+  > tr
+  > th[ng-reflect-field="overtimeRate"] {
+  width: 7%;
+}
+
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-thead
+  > tr
+  > th[ng-reflect-field="doubleOvertimeRate"] {
+  width: 7%;
+}
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-thead
+  > tr
+  > th[ng-reflect-field="showInInvoice"] {
+  width: 6%;
+}
+
+/* :host
+  ::ng-deep
+  .ui-treetable .ui-treetable-thead > tr > th[ng-reflect-field='actions'] {
+  width: 10%;
+} */
+:host ::ng-deep .ui-table-customers .ui-table-thead > tr > th.actions {
+  text-align: center;
+  width: 10%;
+}
+.bg-inverse-completed {
+  background-color: #55e779 !important;
+  vertical-align: middle;
+}
+.bg-inverse-in-progress {
+  background-color: #90c1f5 !important;
+  vertical-align: middle;
+}
+
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-tbody
+  > tr
+  > td[ng-reflect-row-node="rate"],
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-tbody
+  > tr
+  > td[ng-reflect-row-node="overtimeRate"],
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-tbody
+  > tr
+  > td[ng-reflect-row-node="doubleOvertimeRate"],
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-thead
+  > tr
+  > th[ng-reflect-field="rate"],
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-thead
+  > tr
+  > th[ng-reflect-field="overtimeRate"],
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-thead
+  > tr
+  > th[ng-reflect-field="doubleOvertimeRate"] {
+  text-align: right;
+}
+:host ::ng-deep .ui-inputswitch {
+  font-size: 10px;
+}
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-tbody
+  > tr
+  > td[ng-reflect-row-node="employeeFullName"] {
+  display: flex;
+  align-items: center;
+}
+:host ::ng-deep .ui-treetable .ui-treetable-tbody > tr.has-children-node,
+:host ::ng-deep .has-children-node .bg-inverse-completed,
+:host ::ng-deep .has-children-node .bg-inverse-in-progress {
+  font-weight: bold;
+}
+:host
+  ::ng-deep
+  .ui-treetable
+  .ui-treetable-tbody
+  > tr
+  > td
+  .ui-treetable-toggler {
+  color: #00a88e;
+}

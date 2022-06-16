@@ -1,0 +1,204 @@
+<div
+  id="add_employee"
+  class="modal custom-modal backdrop"
+  [ngStyle]="{ display: addemployeeDisplay }"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Customer Details</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #f="ngForm" (ngSubmit)="save()">
+          <div>
+            <div class="row" *ngIf="errLabel">
+              <div class="col-sm-6" style="color: red">
+                {{ errLabel }}
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <!-- <h3 class="card-title">Supplier Details</h3> -->
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="col-form-label"
+                        >Customer Name <span class="text-danger">*</span></label
+                      >
+                      <input
+                        pInputText
+                        class="form-control"
+                        (blur)="checkCompanyAlreadyExist()"
+                        name="companyName"
+                        [(ngModel)]="company.companyName"
+                        placeholder="Customer Name"
+                        type="text"
+                        maxlength="150"
+                        required
+                        (keypress)="
+                          sharedService.keyPressProject_SupplierName($event)
+                        "
+                      />
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="col-form-label">EIN Number </label>
+                      <p-inputMask
+                        id="ssnno"
+                        mask="99-9999999"
+                        [(ngModel)]="company.einNumber"
+                        name="einNumber"
+                        unmask="true"
+                      ></p-inputMask>
+                      <!-- <input
+                        pInputText
+                        class="form-control"
+                        name="einNumber"
+                        [(ngModel)]="company.einNumber"
+                        placeholder="EIN Number"
+                        maxlength="50"
+                        type="text"
+                        pattern="[0-9-]{1,15}"
+                        (keypress)="sharedService.keyPressEIN($event)"
+                      /> -->
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="col-form-label">Description </label>
+                      <textarea
+                        class="form-control"
+                        [(ngModel)]="company.description"
+                        name="desc"
+                        maxlength="2500"
+                        placeholder="Enter your description here......."
+                        cols="6"
+                        (keypress)="sharedService.keyPressAddress($event)"
+                      ></textarea>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="col-form-label"
+                        >Customer Address
+                        <span class="text-danger">*</span></label
+                      >
+                      <textarea
+                        class="form-control"
+                        [(ngModel)]="company.companyAddress"
+                        name="companyAddress"
+                        maxlength="1000"
+                        placeholder="Enter Address here......."
+                        cols="6"
+                        (keypress)="sharedService.keyPressAddress($event)"
+                      ></textarea>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label class="col-form-label"
+                        >Customer Website
+                        <span class="text-danger">*</span></label
+                      >
+                      <input
+                        class="form-control"
+                        [(ngModel)]="company.companyWebsite"
+                        name="companyWebsite"
+                        placeholder="Customer Website"
+                        type="url"
+                        maxlength="150"
+                        required
+                        pattern="((https?|ftp|smtp):\/\/)?(www.)?\S*\.[a-z]{2,}\.*"
+                        (keypress)="sharedService.keyPressWebsite($event)"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label class="col-form-label"
+                        >Net Due <span class="text-danger">*</span></label
+                      >
+                      <p-dropdown
+                        [options]="creditDaysOptions"
+                        name="netDue"
+                        [(ngModel)]="company.creditDays"
+                        required
+                        [filter]="true"
+                        placeholder="Select Net Due"
+                      ></p-dropdown>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label class="col-form-label"
+                        >Invoice Notification Config
+                        <span class="text-danger">*</span></label
+                      >
+                      <div>
+                        <div class="form-check form-check-inline">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="invoiceNotificationConfig"
+                            value="1"
+                            checked
+                            [(ngModel)]="company.invoiceNotificationConfig"
+                            required
+                          />
+                          <label
+                            class="form-check-label"
+                            for="invoiceNotificationConfig"
+                            >By Authorization Code</label
+                          >
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="invoiceNotificationConfig"
+                            value="2"
+                            [(ngModel)]="company.invoiceNotificationConfig"
+                          />
+                          <label
+                            class="form-check-label"
+                            for="invoiceNotificationConfig"
+                            >By email reply</label
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="submit-section">
+            <button
+              type="submit"
+              [disabled]="!company.companyName || !f.valid"
+              class="btn btn-success"
+            >
+              <i class="fa fa-save"></i>&nbsp;Save
+            </button>
+            <button class="btn btn-danger ml-2" (click)="closeAddmodal()">
+              <i class="fa fa-times"></i>&nbsp;Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

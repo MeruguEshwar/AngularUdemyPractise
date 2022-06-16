@@ -1,0 +1,974 @@
+<div *ngIf="webW4Details.w4FormType == 1">
+  <div class="row border-bottom">
+    <div class="col-2 border-right">
+      <p class="m-0">Form <b style="font-size: 40px">W-4 </b></p>
+      <p style="font-size: smaller">
+        (Rev. December 2020) Department of the Treasury Internal Revenue Service
+      </p>
+    </div>
+    <div class="col-8 border-right text-center">
+      <h2>
+        <b>Employee’s Withholding Certificate</b>
+      </h2>
+      <p class="pb-1">
+        <i class="fa fa-play"></i
+        ><b>
+          Complete Form W-4 so that your employer can withhold the correct
+          federal income tax from your pay.</b
+        >
+      </p>
+      <p class="pb-1">
+        <i class="fa fa-play"></i><b>Give Form W-4 to your employer.</b>
+      </p>
+      <p class="pb-1">
+        <i class="fa fa-play"></i
+        ><b>Your withholding is subject to review by the IRS.</b>
+      </p>
+    </div>
+    <div class="col-2 text-center pl-0 d-flex flex-column">
+      <div class="border-bottom">OMB No. 1545-0074</div>
+      <div>
+        <h1>2021</h1>
+      </div>
+    </div>
+  </div>
+  <div class="">
+    <div class="row border-bottom">
+      <div class="col-xs-2 col-sm-2 col-md-2 border-right">
+        <b>Step 1: Enter Personal Information</b>
+      </div>
+      <div class="col-xs-10 col-sm-10 col-md-10">
+        <div class="row border-bottom">
+          <div class="col-xs-4 col-sm-4 col-md-4 form-group border-right">
+            <label class="col-form-label"
+              ><b>(a)</b> First name and middle initial
+              <span class="text-danger">*</span></label
+            >
+            <div class="d-flex align-items-center">
+              <input
+                pInputText
+                class="form-control"
+                name="firstNameAndMiddileInitial"
+                [(value)]="webW4Details.firstNameAndMiddileInitial"
+              />
+            </div>
+          </div>
+          <div class="col-xs-4 col-sm-4 col-md-4 form-group border-right">
+            <label class="col-form-label"
+              >Last name <span class="text-danger">*</span></label
+            >
+            <div class="d-flex align-items-center">
+              <input
+                type="text"
+                class="form-control"
+                name="lastName"
+                [(value)]="webW4Details.lastName"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-xs-4 col-sm-4 col-md-4 form-group">
+            <label class="col-form-label"
+              ><b>(b)</b> Social Security Number
+              <span class="text-danger">*</span></label
+            >
+            <div class="d-flex align-items-center">
+              <!-- <input
+                type="text"
+                class="form-control"
+                name="socialSecurityNumber"
+                [(value)]="webW4Details.socialSecurityNumber"
+                readonly
+              /> -->
+              <p-inputMask
+                class="form-control"
+                mask="999-99-9999"
+                [(ngModel)]="webW4Details.socialSecurityNumber"
+                name="socialSecurityNumber"
+                unmask="true"
+                required
+                readonly="true"
+                #socialSecurityNumber
+              ></p-inputMask>
+            </div>
+          </div>
+        </div>
+        <div class="row border-bottom">
+          <div class="col-xs-8 col-sm-8 col-md-8 form-group border-right">
+            <div>
+              <label class="col-form-label"
+                >Address <span class="text-danger">*</span></label
+              >
+              <div class="d-flex align-items-center">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="address"
+                  [(value)]="webW4Details.address"
+                  readonly
+                />
+              </div>
+            </div>
+            <div>
+              <label class="col-form-label"
+                >City or town, state, and ZIP code
+                <span class="text-danger">*</span></label
+              >
+              <div class="d-flex align-items-center">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="city"
+                  [(value)]="webW4Details.cityOrTownStateZipCode"
+                  readonly
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-4 col-sm-4 col-md-4 form-group">
+            <div class="col-form-label">
+              <strong
+                ><i class="fa fa-play"></i> Does your name match the name on
+                your social security card?
+              </strong>
+              If not, to ensure you get credit for your earnings, contact SSA at
+              800-772-1213 or go to
+              <a href="www.ssa.gov" target="_blank">www.ssa.gov.</a>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-1 col-sm-1 col-md-1">(c)</div>
+          <div class="col-xs-11 col-sm-11 col-md-11">
+            <div class="row">
+              <div class="col-auto d-flex align-items-center pr-0">
+                <div class="checkbox">
+                  <p-radioButton
+                    name="maritalStatus"
+                    value="0"
+                    [(ngModel)]="webW4Details.maritalStatus"
+                    aria-required="true"
+                    required
+                    disabled="true"
+                  ></p-radioButton>
+                </div>
+              </div>
+
+              <label class="col-form-label col-md-auto"
+                ><b>Single</b> or <b>Married filing separately</b></label
+              >
+            </div>
+            <div class="row">
+              <div class="col-auto d-flex align-items-center pr-0">
+                <div class="checkbox">
+                  <p-radioButton
+                    name="maritalStatus"
+                    value="1"
+                    [(ngModel)]="webW4Details.maritalStatus"
+                    aria-required="true"
+                    required
+                    disabled="true"
+                  ></p-radioButton>
+                </div>
+              </div>
+
+              <label class="col-form-label col-md-auto"
+                ><b>Filing jointly</b> or <b>Qualifying widow(er)</b></label
+              >
+            </div>
+            <div class="row">
+              <div class="col-auto d-flex align-items-center pr-0">
+                <div class="checkbox">
+                  <p-radioButton
+                    name="maritalStatus"
+                    value="2"
+                    [(ngModel)]="webW4Details.maritalStatus"
+                    aria-required="true"
+                    required
+                    disabled="true"
+                  ></p-radioButton>
+                </div>
+              </div>
+
+              <label class="col-form-label"
+                ><b>Head of household </b
+                ><small
+                  >(Check only if you’re unmarried and pay more than half the
+                  costs of keeping up a home for yourself and a qualifying
+                  individual.)</small
+                ></label
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row border-bottom">
+      <div class="col py-4">
+        <strong
+          >Complete Steps 2–4 ONLY if they apply to you; otherwise, skip to Step
+          5.</strong
+        >
+        See page 2 for more information on each step, who can claim exemption
+        from withholding, when to use the estimator at
+        <a href="www.irs.gov/W4App" target="_blank" rel="noopener noreferrer"
+          >www.irs.gov/W4App</a
+        >, and privacy.
+      </div>
+    </div>
+    <div class="row border-bottom">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-xs-2 col-sm-2 col-md-2">
+            <b>Step 2:Multiple Jobs or Spouse Works</b>
+          </div>
+          <div class="col-xs-10 col-sm-10 col-md-10">
+            <p>
+              Complete this step if you (1) hold more than one job at a time, or
+              (2) are married filing jointly and your spouse also works. The
+              correct amount of withholding depends on income earned from all of
+              these jobs.
+            </p>
+            <p>Do <b>only one</b> of the following</p>
+            <ol type="a">
+              <li>
+                Use the estimator at www.irs.gov/W4App for most accurate
+                withholding for this step (and Steps 3–4); <b>or</b>
+              </li>
+              <li>
+                Use the Multiple Jobs Worksheet on page 3 and enter the result
+                in Step 4(c) below for roughly accurate withholding;<b>or</b>
+              </li>
+              <li>
+                If there are only two jobs total, you may check this box. Do the
+                same on Form W-4 for the other job. This option is accurate for
+                jobs with similar pay; otherwise, more tax than necessary may be
+                withheld . . .
+                <i class="fa fa-play mr-2"></i
+                ><p-checkbox
+                  name="multipleJobsOrSpouseWorks"
+                  [(ngModel)]="webW4Details.hasMultipleJobsOrSpouseWorks"
+                  [binary]="true"
+                  disabled="true"
+                ></p-checkbox>
+              </li>
+            </ol>
+            <p>
+              <b>TIP: </b>To be accurate, submit a 2021 Form W-4 for all other
+              jobs. If you (or your spouse) have self-employment income,
+              including as an independent contractor, use the estimator.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="py-4">
+          <strong>
+            Complete Steps 3–4(b) on Form W-4 for only ONE of these
+            jobs.</strong
+          >
+          Leave those steps blank for the other jobs. (Your withholding will be
+          most accurate if you complete Steps 3–4(b) on the Form W-4 for the
+          highest paying job.)
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-2 col-sm-2 col-md-2">
+        <b>Step 3: Claim Dependents</b>
+      </div>
+      <div class="col-xs-7 col-sm-7 col-md-7 border-right">
+        <p class="py-2">
+          If your total income will be $200,000 or less ($400,000 or less if
+          married filing jointly):
+        </p>
+        <div class="d-flex align-items-center justify-content-between pb-3">
+          <div>
+            Multiply the number of qualifying children under age 17 by $2,000<i
+              class="fa fa-play"
+            ></i>
+          </div>
+          <div>
+            <p-inputNumber
+              mode="currency"
+              currency="USD"
+              locale="en-US"
+              name="claimDependents1"
+              [(ngModel)]="webW4Details.claimDependents1"
+              maxlength="12"
+              [minFractionDigits]="2"
+              [useGrouping]="false"
+              disabled="true"
+            ></p-inputNumber>
+          </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between pb-3">
+          <div>
+            Multiply the number of other dependents by $500 . . . .<i
+              class="fa fa-play"
+            ></i>
+          </div>
+          <div>
+            <p-inputNumber
+              mode="currency"
+              currency="USD"
+              locale="en-US"
+              name="claimDependents2"
+              [(ngModel)]="webW4Details.claimDependents2"
+              maxlength="12"
+              [minFractionDigits]="2"
+              [useGrouping]="false"
+              disabled="true"
+            ></p-inputNumber>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-1 col-sm-1 col-md-1 border-right"></div>
+      <div class="col-xs-2 col-sm-2 col-md-2"></div>
+    </div>
+    <div class="row border-bottom">
+      <div class="col-xs-2 col-sm-2 col-md-2"></div>
+      <div class="col-xs-7 col-sm-7 col-md-7 border-right">
+        <div>
+          Add the amounts above and enter the total here . . . . . . . . . . . .
+          .
+        </div>
+      </div>
+      <div
+        class="col-xs-1 col-sm-1 col-md-1 border-right d-flex align-items-end"
+      >
+        <b>3</b>
+      </div>
+      <div class="col-xs-2 col-sm-2 col-md-2">
+        <p-inputNumber
+          mode="currency"
+          currency="USD"
+          locale="en-US"
+          name="claimDependentsTotal"
+          [(ngModel)]="webW4Details.claimDependentsTotal"
+          maxlength="12"
+          [minFractionDigits]="2"
+          [useGrouping]="false"
+          disabled="true"
+        ></p-inputNumber>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-2 col-sm-2 col-md-2">
+        <b>Step 4 (optional): Other Adjustments</b>
+      </div>
+      <div class="col-xs-7 col-sm-7 col-md-7 border-right">
+        <div>
+          <b>(a) Other income (not from jobs).</b> If you want tax withheld for
+          other income you expect this year that won’t have withholding, enter
+          the amount of other income here. This may include interest, dividends,
+          and retirement income
+        </div>
+      </div>
+      <div
+        class="
+          col-xs-1 col-sm-1 col-md-1
+          border-right border-bottom
+          d-flex
+          align-items-end
+        "
+      >
+        <b>4(a)</b>
+      </div>
+      <div
+        class="col-xs-2 col-sm-2 col-md-2 border-bottom d-flex align-items-end"
+      >
+        <p-inputNumber
+          mode="currency"
+          currency="USD"
+          locale="en-US"
+          name="otherAdjustmentsOtherIncome"
+          [(ngModel)]="webW4Details.otherAdjustmentsOtherIncome"
+          maxlength="12"
+          [minFractionDigits]="2"
+          [useGrouping]="false"
+          disabled="true"
+        ></p-inputNumber>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-2 col-sm-2 col-md-2"></div>
+      <div class="col-xs-7 col-sm-7 col-md-7 border-right py-3">
+        <div>
+          <b>(b) Deductions.</b> If you expect to claim deductions other than
+          the standard deduction and want to reduce your withholding, use the
+          Deductions Worksheet on page 3 and enter the result here
+        </div>
+      </div>
+      <div
+        class="
+          col-xs-1 col-sm-1 col-md-1
+          border-right border-bottom
+          d-flex
+          align-items-end
+        "
+      >
+        <b>4(b)</b>
+      </div>
+      <div
+        class="col-xs-2 col-sm-2 col-md-2 border-bottom d-flex align-items-end"
+      >
+        <p-inputNumber
+          mode="currency"
+          currency="USD"
+          locale="en-US"
+          name="otherAdjustmentsDeductions"
+          [(ngModel)]="webW4Details.otherAdjustmentsDeductions"
+          maxlength="12"
+          [minFractionDigits]="2"
+          [useGrouping]="false"
+          disabled="true"
+        ></p-inputNumber>
+      </div>
+    </div>
+    <div class="row border-bottom pb-4">
+      <div class="col-xs-2 col-sm-2 col-md-2"></div>
+      <div class="col-xs-7 col-sm-7 col-md-7 border-right py-3">
+        <div>
+          <b>(c) Extra withholding. </b> Enter any additional tax you want
+          withheld each pay period
+        </div>
+      </div>
+      <div
+        class="
+          col-xs-1 col-sm-1 col-md-1
+          border-right border-bottom
+          d-flex
+          align-items-end
+        "
+      >
+        <b>4(c)</b>
+      </div>
+      <div
+        class="col-xs-2 col-sm-2 col-md-2 border-bottom d-flex align-items-end"
+      >
+        <p-inputNumber
+          mode="currency"
+          currency="USD"
+          locale="en-US"
+          name="otherAdjustmentsExtraWithholding"
+          [(ngModel)]="webW4Details.otherAdjustmentsExtraWithholding"
+          maxlength="12"
+          [minFractionDigits]="2"
+          [useGrouping]="false"
+          disabled="true"
+        ></p-inputNumber>
+      </div>
+    </div>
+    <div class="row border-bottom">
+      <div class="col-xs-2 col-sm-2 col-md-2 border-right">
+        <b>Step 5: Sign Here</b>
+      </div>
+      <div class="col-xs-10 col-sm-10 col-md-10">
+        <div class="row">
+          <div class="col-12 py-3">
+            <div>
+              Under penalties of perjury, I declare that this certificate, to
+              the best of my knowledge and belief, is true, correct, and
+              complete.
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="row">
+              <div class="col-xs-8 col-sm-8 col-md-8 form-group border-right">
+                <div class="d-flex align-items-center">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="firstName"
+                    [(value)]="webW4Details.signatureOfTheEmployee"
+                    [ngStyle]="{
+                      'font-family': webW4Details.signatureFontOfTheEmployee
+                    }"
+                    [ngClass]="{
+                      'signature-box': signatureDetails?.w4Config != '1'
+                    }"
+                    readonly
+                  />
+                </div>
+                <label class="col-form-label"
+                  ><b>Employee’s signature </b> (This form is not valid unless
+                  you sign it.) <span class="text-danger">*</span></label
+                >
+              </div>
+              <div class="col-xs-4 col-sm-4 col-md-4 form-group">
+                <div class="">
+                  <p-calendar
+                    [yearNavigator]="true"
+                    [monthNavigator]="true"
+                    yearRange="1980:2050"
+                    readonlyInput="true"
+                    name="dateOfBirth"
+                    dateFormat="mm-dd-yy"
+                    dataType="string"
+                    name="dateOfBirth"
+                    aria-required="true"
+                    [(ngModel)]="webW4Details.dateSubmitted"
+                    required
+                    disabled="true"
+                  ></p-calendar>
+                </div>
+                <label class="col-form-label"
+                  ><b>Date</b> <span class="text-danger">*</span></label
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="webW4Details.w4FormType == 2">
+  <div class="row border-bottom">
+    <div class="col-2 border-right">
+      <p class="m-0">Form <b style="font-size: 40px">W-4 </b></p>
+      <p style="font-size: smaller">
+        Department of the Treasury Internal Revenue Service
+      </p>
+    </div>
+    <div class="col-8 border-right text-center">
+      <h2>
+        <b>Employee’s Withholding Allowance Certificate</b>
+      </h2>
+      <p class="pb-1">
+        <i class="fa fa-play"></i
+        ><b>
+          Whether you’re entitled to claim a certain number of allowances or
+          exemption from withholding is subject to review by the IRS. Your
+          employer may be required to send a copy of this form to the IRS.</b
+        >
+      </p>
+    </div>
+    <div class="col-2 text-center pl-0 d-flex flex-column">
+      <div class="border-bottom">OMB No. 1545-0074</div>
+      <div>
+        <h1>2019</h1>
+      </div>
+    </div>
+  </div>
+  <div class="">
+    <div class="row border-bottom">
+      <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="row border-bottom">
+          <div class="col-xs-4 col-sm-4 col-md-4 form-group border-right">
+            <label class="col-form-label"
+              ><b>(1)</b> First name and middle initial
+              <span class="text-danger">*</span></label
+            >
+            <div class="d-flex align-items-center">
+              <input
+                type="text"
+                class="form-control"
+                name="firstName"
+                [(value)]="webW4Details.firstNameAndMiddileInitial"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-xs-4 col-sm-4 col-md-4 form-group border-right">
+            <label class="col-form-label"
+              >Last name <span class="text-danger">*</span></label
+            >
+            <div class="d-flex align-items-center">
+              <input
+                type="text"
+                class="form-control"
+                name="lastName"
+                [(value)]="webW4Details.lastName"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-xs-4 col-sm-4 col-md-4 form-group">
+            <label class="col-form-label"
+              ><b>(2)</b> Social Security Number
+              <span class="text-danger">*</span></label
+            >
+            <div class="d-flex align-items-center">
+              <p-inputMask
+                class="form-control"
+                mask="999-99-9999"
+                [(ngModel)]="webW4Details.socialSecurityNumber"
+                name="socialSecurityNumber"
+                unmask="true"
+                required
+                readonly="true"
+                #socialSecurityNumber
+              ></p-inputMask>
+              <!-- <input
+                type="text"
+                class="form-control"
+                name="socialSecurityNumber"
+                [(value)]="webW4Details.socialSecurityNumber"
+                readonly
+              /> -->
+            </div>
+          </div>
+        </div>
+        <div class="row border-bottom">
+          <div class="col-xs-6 col-sm-6 col-md-6 form-group border-right">
+            <div>
+              <label class="col-form-label"
+                >Home address (number and street or rural route)
+                <span class="text-danger">*</span></label
+              >
+              <div class="d-flex align-items-center">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="address"
+                  [(value)]="webW4Details.address"
+                  readonly
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-6 col-md-6 form-group">
+            <div class="col-12 pt-3">
+              <p-radioButton
+                name="maritalStatus"
+                value="0"
+                [(ngModel)]="webW4Details.maritalStatus"
+                label="Single"
+                aria-required="true"
+                class="mr-3"
+                required
+                disabled="true"
+              ></p-radioButton>
+              <p-radioButton
+                name="maritalStatus"
+                value="1"
+                [(ngModel)]="webW4Details.maritalStatus"
+                label="Married"
+                aria-required="true"
+                required
+                class="mr-3"
+                disabled="true"
+              ></p-radioButton>
+              <p-radioButton
+                name="maritalStatus"
+                value="2"
+                [(ngModel)]="webW4Details.maritalStatus"
+                label="Married, but withhold at higher Single rate"
+                aria-required="true"
+                required
+                class="mr-3"
+                disabled="true"
+              ></p-radioButton>
+            </div>
+            <div class="col-12">
+              <small
+                ><strong>Note:</strong> If married filing separately, check
+                "Married, but withhold at higher Single rate".</small
+              >
+            </div>
+          </div>
+        </div>
+        <div class="row border-bottom">
+          <div class="col-xs-6 col-sm-6 col-md-6 form-group border-right">
+            <div>
+              <label class="col-form-label"
+                >City or town, state, and ZIP code
+                <span class="text-danger">*</span></label
+              >
+              <div class="d-flex align-items-center">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="city"
+                  [(value)]="webW4Details.cityOrTownStateZipCode"
+                  readonly
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-6 col-md-6 form-group">
+            <div class="col-form-label">
+              <strong
+                >(4) If your last name differs from that shown on your social
+                security card, check here. You must call 800-772-1213 for a
+                replacement card. <i class="fa fa-play mr-2"></i
+                ><p-checkbox
+                  name="hasLastNameDiffers"
+                  [(ngModel)]="webW4Details.hasLastNameDiffers"
+                  [binary]="true"
+                  disabled="true"
+                ></p-checkbox>
+              </strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-9 col-sm-9 col-md-9 border-right">
+        <div>
+          <b>(5) </b> Total number of allowances you’re claiming (from the
+          applicable worksheet on the following pages)
+        </div>
+      </div>
+      <div
+        class="
+          col-xs-1 col-sm-1 col-md-1
+          border-right border-bottom
+          d-flex
+          align-items-end
+        "
+      >
+        <b>5</b>
+      </div>
+      <div
+        class="col-xs-2 col-sm-2 col-md-2 border-bottom d-flex align-items-end"
+      >
+        <p-inputNumber
+          mode="currency"
+          currency="USD"
+          locale="en-US"
+          name="totalNumberOfAllowances"
+          [(ngModel)]="webW4Details.totalNumberOfAllowances"
+          maxlength="12"
+          [minFractionDigits]="2"
+          [useGrouping]="false"
+          disabled="true"
+        ></p-inputNumber>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-9 col-sm-9 col-md-9 border-right">
+        <div>
+          <b>(6) </b> Additional amount, if any, you want withheld from each
+          paycheck
+        </div>
+      </div>
+      <div
+        class="
+          col-xs-1 col-sm-1 col-md-1
+          border-right border-bottom
+          d-flex
+          align-items-end
+        "
+      >
+        <b>6</b>
+      </div>
+      <div
+        class="col-xs-2 col-sm-2 col-md-2 border-bottom d-flex align-items-end"
+      >
+        <p-inputNumber
+          mode="currency"
+          currency="USD"
+          locale="en-US"
+          name="additionalAmount"
+          [(ngModel)]="webW4Details.additionalAmount"
+          maxlength="12"
+          [minFractionDigits]="2"
+          [useGrouping]="false"
+          disabled="true"
+        ></p-inputNumber>
+      </div>
+    </div>
+    <div class="row border-bottom pb-4">
+      <div class="col-xs-9 col-sm-9 col-md-9 border-right">
+        <div>
+          <b>(7) </b> I claim exemption from withholding for 2019, and I certify
+          that I meet <b>both</b> of the following conditions for exemption.
+          <ul class="m-0">
+            <li>
+              Last year I had a right to a refund of
+              <b>all</b> federal income tax withheld because I had <b>no</b> tax
+              liability,<b> and</b>
+            </li>
+            <li>
+              This year I expect a refund of <b>all</b> federal income tax
+              withheld because I expect to have <b>no</b> tax liability
+            </li>
+          </ul>
+          <p class="text-center">
+            If you meet both conditions, write “Exempt” here.......<i
+              class="fa fa-play mr-2"
+            ></i>
+          </p>
+        </div>
+      </div>
+      <div
+        class="
+          col-xs-1 col-sm-1 col-md-1
+          border-right border-bottom
+          d-flex
+          align-items-end
+        "
+      >
+        <b>7</b>
+      </div>
+      <div
+        class="col-xs-2 col-sm-2 col-md-2 border-bottom d-flex align-items-end"
+      >
+        <p-inputNumber
+          mode="currency"
+          currency="USD"
+          locale="en-US"
+          name="taxExempt"
+          [(ngModel)]="webW4Details.taxExempt"
+          maxlength="12"
+          [minFractionDigits]="2"
+          [useGrouping]="false"
+          disabled="true"
+        ></p-inputNumber>
+      </div>
+    </div>
+    <div class="row border-bottom">
+      <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="row">
+          <div class="col-12 py-3">
+            <div>
+              Under penalties of perjury, I declare that I have examined this
+              certificate and, to the best of my knowledge and belief, it is
+              true, correct, and complete.
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="row">
+              <div class="col-xs-8 col-sm-8 col-md-8 form-group border-right">
+                <div class="d-flex align-items-center">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="signatureOfTheEmployee"
+                    [(value)]="webW4Details.signatureOfTheEmployee"
+                    [ngStyle]="{
+                      'font-family': webW4Details.signatureFontOfTheEmployee
+                    }"
+                    [ngClass]="{
+                      'signature-box': signatureDetails?.w4Config != '1'
+                    }"
+                    readonly
+                  />
+                </div>
+                <label class="col-form-label"
+                  ><b>Employee’s signature </b> (This form is not valid unless
+                  you sign it.) <span class="text-danger">*</span></label
+                >
+              </div>
+              <div class="col-xs-4 col-sm-4 col-md-4 form-group">
+                <div class="">
+                  <p-calendar
+                    [yearNavigator]="true"
+                    [monthNavigator]="true"
+                    yearRange="1980:2050"
+                    readonlyInput="true"
+                    name="dateOfBirth"
+                    dateFormat="mm-dd-yy"
+                    dataType="string"
+                    name="dateOfBirth"
+                    aria-required="true"
+                    #dateSubmitted="ngModel"
+                    [(ngModel)]="webW4Details.dateSubmitted"
+                    required
+                    disabled="true"
+                  ></p-calendar>
+                </div>
+                <label class="col-form-label"
+                  ><b>Date</b> <span class="text-danger">*</span></label
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="row border-bottom">
+                      <div
+                        class="
+                          col-xs-8 col-sm-8 col-md-8
+                          form-group
+                          border-right
+                        "
+                      >
+                        <label class="col-form-label"
+                          ><b>8</b> Employer’s name and address (Employer:
+                          Complete boxes 8 and 10 if sending to IRS and complete
+                          boxes 8, 9, and 10 if sending to State Directory of
+                          New Hires.) <span class="text-danger">*</span></label
+                        >
+                        <div class="d-flex align-items-center">
+                          <input
+                            pInputText
+                            class="form-control"
+                            name="firstName"
+                            #newHires="ngModel"
+                            type="text"
+                            required
+                            maxlength="150"
+                            pattern="[A-Za-z ]{1,150}"
+                            [(ngModel)]="webW4Details.zipCode"
+                            disabled="true"
+                          />
+                        </div>
+                        <small
+                          class="text-danger"
+                          *ngIf="newHires.touched && newHires.invalid"
+                          >First name is required.</small
+                        >
+                      </div>
+                      <div
+                        class="
+                          col-xs-2 col-sm-2 col-md-2
+                          form-group
+                          border-right
+                        "
+                      >
+                        <label class="col-form-label"
+                          ><b>9</b> First date of employment
+                          <span class="text-danger">*</span></label
+                        >
+                        <div class="d-flex align-items-center">
+                          <p-calendar
+                            [yearNavigator]="true"
+                            [monthNavigator]="true"
+                            yearRange="1980:2050"
+                            readonlyInput="true"
+                            name="dateOfBirth"
+                            dateFormat="mm-dd-yy"
+                            dataType="string"
+                            name="dateOfBirth"
+                            aria-required="true"
+                            required
+                            [(ngModel)]="webW4Details.zipCode"
+                            disabled="true"
+                          ></p-calendar>
+                        </div>
+                      </div>
+                      <div class="col-xs-2 col-sm-2 col-md-2 form-group">
+                        <label class="col-form-label"
+                          ><b>10</b> Employer identification number (EIN)
+                          <span class="text-danger">*</span></label
+                        >
+                        <div class="d-flex align-items-center">
+                          <input
+                            pInputText
+                            class="form-control"
+                            name="socialSecurityNumber"
+                            [(ngModel)]="webW4Details.zipCode"
+                            #EIN="ngModel"
+                            type="text"
+                            required
+                            maxlength="100"
+                            pattern="[0-9]{1,150}"
+                            (keypress)="sharedService.keyPressNumber($event)"
+                            disabled="true"
+                          />
+                        </div>
+                        <small
+                          class="text-danger"
+                          *ngIf="EIN.touched && EIN.invalid"
+                          >Social Security Number is required</small
+                        >
+                      </div>
+                    </div> -->
+  </div>
+</div>

@@ -1,0 +1,693 @@
+<div class="page-wrapper">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">Dashboard</li>
+            <li class="breadcrumb-item active">I-9 Details</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <section>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-header">
+              <div
+                class="row d-flex justify-content-between align-items-center"
+              >
+                <div class="col">
+                  <h4 class="card-title mb-0">
+                    Employee W-4 Form -
+                    <span class="username"
+                      >{{ webI9Details?.firstName }}
+                      {{ webI9Details?.lastName }}
+                    </span>
+                  </h4>
+                </div>
+                <!-- <div class="col">
+                  <div>
+                    <a
+                      href="javascript:void(0)"
+                      (click)="showType()"
+                      class="edit-icon"
+                      ><i class="fa fa-pencil"></i
+                    ></a>
+                  </div>
+                </div> -->
+                <div class="col">
+                  <!-- <button
+                    type="button"
+                    class="btn btn-primary submit-btn float-right"
+                    (click)="showType()"
+                  >
+                    New
+                  </button> -->
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <h1 class="card-title">
+                Personal Information
+                <div
+                  class="d-flex justify-content-center float-right"
+                  *ngIf="webI9Details?.i9DetailsId"
+                >
+                  <span
+                    class="badge mr-3"
+                    [ngClass]="{
+                      ' bg-inverse-danger ': webI9Details?.i9Status == '0',
+                      ' bg-inverse-success': webI9Details?.i9Status == '2',
+                      ' bg-inverse-info': webI9Details?.i9Status == '1'
+                    }"
+                  >
+                    <i
+                      class="fa fa-dot-circle-o mr-1"
+                      [ngClass]="{
+                        ' text-danger ': webI9Details?.i9Status == '0',
+                        ' text-success': webI9Details?.i9Status == '2',
+                        ' text-info': webI9Details?.i9Status == '1'
+                      }"
+                    >
+                    </i>
+                    {{ Status[webI9Details?.i9Status] }}
+                  </span>
+                  <span
+                    ><a
+                      class="mr-3"
+                      href="javascript:void(0)"
+                      (click)="
+                        downloadI9Form(
+                          webI9Details?.employeeDocumentUploadDetailsId
+                        )
+                      "
+                      ><i class="fa fa-download fa-fw" aria-hidden="true"></i
+                      >&nbsp; I-9 DOCUMENT</a
+                    ></span
+                  >
+                </div>
+              </h1>
+              <ul class="personal-info">
+                <li class="clearfix">
+                  <div class="title">Last Name <span>(Family Name)</span>:</div>
+                  <div class="text">
+                    <span>{{ webI9Details?.lastName || "-" }}</span>
+                  </div>
+                </li>
+                <li class="clearfix">
+                  <div class="title">First Name <span>(Given Name)</span>:</div>
+                  <div class="text">
+                    <span>{{ webI9Details?.firstName || "-" }}</span>
+                  </div>
+                </li>
+
+                <li class="clearfix">
+                  <div class="title">Middle Initial:</div>
+                  <div class="text">
+                    <span>{{ webI9Details?.middleInitial || "-" }}</span>
+                  </div>
+                </li>
+                <li class="clearfix">
+                  <div class="title">
+                    Other Last Names Used <span>(if any)</span>:
+                  </div>
+                  <div class="text">
+                    <span>{{ webI9Details?.otherLastName || "-" }}</span>
+                  </div>
+                </li>
+                <li class="clearfix">
+                  <div class="title">Employee's E-mail Address:</div>
+                  <div class="text">
+                    <span>{{ webI9Details?.email || "-" }}</span>
+                  </div>
+                </li>
+                <li class="clearfix">
+                  <div class="title">Employee's Telephone Number:</div>
+                  <div class="text">
+                    <span>{{ webI9Details?.phoneNumber || "-" }}</span>
+                  </div>
+                </li>
+                <li class="clearfix">
+                  <div class="title">
+                    Date of Birth <span>(MM-DD-YYYY)</span>:
+                  </div>
+                  <div class="text">
+                    <span>{{ webI9Details?.dateOfBirth || "-" }}</span>
+                  </div>
+                </li>
+                <li class="clearfix">
+                  <div class="title">U.S. Social Security Number:</div>
+                  <div class="text">
+                    <span>{{ webI9Details?.usSsn || "-" }}</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="border-bottom"></div>
+            <div class="card-body">
+              <h1 class="card-title">Address Information</h1>
+              <ul class="personal-info">
+                <li class="clearfix">
+                  <div class="title">
+                    Address <span>(Street Number and Name)</span>:
+                  </div>
+                  <div class="text">
+                    <span>{{ webI9Details?.address || "-" }}</span>
+                  </div>
+                </li>
+                <li class="clearfix">
+                  <div class="title">Apt. Number:</div>
+                  <div class="text">
+                    <span>{{ webI9Details?.aptNumber || "-" }}</span>
+                  </div>
+                </li>
+                <li class="clearfix">
+                  <div class="title">City or Town:</div>
+                  <div class="text">
+                    <span>{{ webI9Details?.cityOrTown || "-" }}</span>
+                  </div>
+                </li>
+                <li class="clearfix">
+                  <div class="title">State:</div>
+                  <div class="text">
+                    <span>{{ webI9Details?.state || "-" }}</span>
+                  </div>
+                </li>
+                <li class="clearfix">
+                  <div class="title">ZIP Code:</div>
+                  <div class="text">
+                    <span>{{ webI9Details?.zipCode || "-" }}</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="border-bottom"></div>
+            <div class="card-body">
+              <h1 class="card-title">Citizen Information</h1>
+              <ul class="personal-info">
+                <li class="clearfix">
+                  <div class="title">A citizen of the United States:</div>
+                  <div class="text">
+                    <span>{{ checkType(webI9Details?.citizenOfUs) }}</span>
+                  </div>
+                </li>
+                <li class="clearfix">
+                  <div class="title">
+                    A noncitizen national of the United States:
+                  </div>
+                  <div class="text">
+                    <span>{{
+                      checkType(webI9Details?.nonCitizenNationalOfUs)
+                    }}</span>
+                  </div>
+                </li>
+                <li class="clearfix">
+                  <div class="title">A lawful permanent resident:</div>
+                  <div class="text">
+                    <span>{{
+                      checkType(webI9Details?.lawfulPermanentResident)
+                    }}</span>
+                  </div>
+                </li>
+                <li class="clearfix">
+                  <div class="title">An alien authorized to work:</div>
+                  <div class="text">
+                    <span>{{
+                      checkType(webI9Details?.alienAuthorizedToWork)
+                    }}</span>
+                  </div>
+                </li>
+                <li
+                  class="clearfix"
+                  *ngIf="webI9Details?.lprAlienRegNoOrUscisNo"
+                >
+                  <div class="title">
+                    Alien Registration Number/USCIS Number:
+                  </div>
+                  <div class="text">
+                    <span>{{
+                      webI9Details?.lprAlienRegNoOrUscisNo || "-"
+                    }}</span>
+                  </div>
+                </li>
+                <ng-container *ngIf="webI9Details?.alienRegNoOrUscisNo">
+                  <li class="clearfix">
+                    <div class="title">
+                      Alien Registration Number/USCIS Number:
+                    </div>
+                    <div class="text">
+                      <span>{{
+                        webI9Details?.alienRegNoOrUscisNo || "-"
+                      }}</span>
+                    </div>
+                  </li>
+                  <li class="clearfix">
+                    <div class="title">Form I-94 Admission Number:</div>
+                    <div class="text">
+                      <span>{{ webI9Details?.formI94AdmnNumber || "-" }}</span>
+                    </div>
+                  </li>
+                  <li class="clearfix">
+                    <div class="title">Foreign Passport Number:</div>
+                    <div class="text">
+                      <span>{{
+                        webI9Details?.foreignPassportNumber || "-"
+                      }}</span>
+                    </div>
+                  </li>
+                  <li class="clearfix">
+                    <div class="title">Country of Issuance:</div>
+                    <div class="text">
+                      <span>{{ webI9Details?.countryOfIssuance || "-" }}</span>
+                    </div>
+                  </li>
+                </ng-container>
+              </ul>
+            </div>
+            <!-- /Federal Unemployment -->
+            <section *ngIf="webI9Details?.i9Status == '1'">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="submit-section mb-4 mt-0">
+                    <button
+                      type="submit"
+                      class="btn btn-success submit-btn mr-2"
+                      (click)="action('approve')"
+                      data-toggle="modal"
+                      data-target="#confirmModel"
+                    >
+                      Approve
+                    </button>
+                    <button
+                      type="submit"
+                      class="btn btn-danger submit-btn mr-2"
+                      (click)="action('reject')"
+                      data-toggle="modal"
+                      data-target="#confirmModel"
+                    >
+                      Reject
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<!-- confirm model-->
+<div
+  class="modal custom-modal fade"
+  id="confirmModel"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <h3>Employer or Authorized Representative Review and Verification</h3>
+          <p>Are you sure ? Do you want to {{ confirmType }} I-9 ?</p>
+        </div>
+        <div class="border-bottom"></div>
+        <form #f="ngForm">
+          <div class="card-body">
+            <section>
+              <h4 class="card-title">Employee Information</h4>
+              <div class="row">
+                <div class="form-group col-md-3">
+                  <label class="mb-2 text-muted"
+                    >Last Name<span> (Family Name)</span>
+                  </label>
+                  <div class="d-flex align-items-center">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="employeeLastName"
+                      [(ngModel)]="i9EmployeerVerification.employeeLastName"
+                    />
+                  </div>
+                </div>
+                <div class="form-group col-md-3">
+                  <label class="mb-2 text-muted"
+                    >First Name<span> (Given Name)</span>
+                  </label>
+                  <div class="d-flex align-items-center">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="employeeFirstName"
+                      [(ngModel)]="i9EmployeerVerification.employeeFirstName"
+                    />
+                  </div>
+                </div>
+                <div class="form-group col-md-3">
+                  <label class="mb-2 text-muted">Middle Initial </label>
+                  <div class="d-flex align-items-center">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="employeeMiddleName"
+                      [(ngModel)]="i9EmployeerVerification.employeeMiddleName"
+                    />
+                  </div>
+                </div>
+                <div class="form-group col-md-3">
+                  <label class="mb-2 text-muted"
+                    >Citizenship/Immigration Status
+                  </label>
+                  <div class="d-flex align-items-center">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="employeeImmigrationStatus"
+                      [(ngModel)]="
+                        i9EmployeerVerification.employeeImmigrationStatus
+                      "
+                    />
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="mb-2 text-muted"
+                    >identityAndEmploymentAuthorizationList
+                    <span class="text-danger"> *</span>
+                  </label>
+                  <div class="d-flex align-items-center">
+                    <div class="mr-3">
+                      <p-radioButton
+                        name="identityAndEmploymentAuthorizationList"
+                        value="A"
+                        label="List A"
+                        [(ngModel)]="
+                          i9EmployeerVerification.identityAndEmploymentAuthorizationList
+                        "
+                      ></p-radioButton>
+                    </div>
+                    <div class="mr-3">
+                      <p-radioButton
+                        name="identityAndEmploymentAuthorizationList"
+                        value="B"
+                        label="List B"
+                        [(ngModel)]="
+                          i9EmployeerVerification.identityAndEmploymentAuthorizationList
+                        "
+                      ></p-radioButton>
+                    </div>
+                    <div class="">
+                      <p-radioButton
+                        name="identityAndEmploymentAuthorizationList"
+                        value="C"
+                        label="List C"
+                        [(ngModel)]="
+                          i9EmployeerVerification.identityAndEmploymentAuthorizationList
+                        "
+                      ></p-radioButton>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="mb-2 text-muted"
+                    >employee's first day of employment
+                    <span>(MM-DD-YYYY)</span>
+                  </label>
+                  <div class="">
+                    <p-calendar
+                      name="dateOfBirth"
+                      showIcon="true"
+                      dateFormat="mm-dd-yy"
+                      dataType="string"
+                      name="employeeFirstDateOfEmployment"
+                      [(ngModel)]="
+                        i9EmployeerVerification.employeeFirstDateOfEmployment
+                      "
+                    ></p-calendar>
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="mb-2 text-muted">Verification Type </label>
+                  <div
+                    class="float-right"
+                    *ngIf="i9EmployeerVerification.verificationType == 'Other'"
+                  >
+                    <a href="javascript:void(0)" (click)="refresh()">
+                      <i class="fa fa-refresh" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                  <div
+                    class=""
+                    *ngIf="i9EmployeerVerification.verificationType != 'Other'"
+                  >
+                    <p-dropdown
+                      [options]="verificationType"
+                      [(ngModel)]="i9EmployeerVerification.verificationType"
+                      name="verificationType"
+                      [filter]="true"
+                    ></p-dropdown>
+                  </div>
+                  <div
+                    class=""
+                    *ngIf="i9EmployeerVerification.verificationType == 'Other'"
+                  >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="customVerificationType"
+                      [(ngModel)]="
+                        i9EmployeerVerification.customVerificationType
+                      "
+                    />
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="mb-2 text-muted"
+                    >Additional Information
+                    <span class="text-danger"> *</span>
+                  </label>
+                  <div class="">
+                    <textarea
+                      [rows]="3"
+                      [cols]="30"
+                      pInputTextarea
+                      name="additionalInformation"
+                      [(ngModel)]="
+                        i9EmployeerVerification.additionalInformation
+                      "
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div class="border-bottom"></div>
+          <div class="card-body">
+            <section>
+              <div class="">
+                <h1 class="card-title">
+                  I-9 Authorization Documents
+                  <div>Need to show uploaded details here</div>
+                  <!-- <span *ngIf="i9?.employeeDocumentUploadDetailsId"
+                        ><a
+                          class="float-right mr-4"
+                          target="_blank"
+                          href="javascript:void(0)"
+                          (click)="
+                            downloadI9Form(i9?.employeeDocumentUploadDetailsId)
+                          "
+                          ><i
+                            class="fa fa-download fa-fw"
+                            aria-hidden="true"
+                          ></i
+                          >&nbsp; W-4 Authorization DOCUMENT
+                        </a></span
+                      > -->
+                </h1>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="submit-section m-0">
+                    <button
+                      type="button"
+                      class="btn btn-primary submit-btn mr-2"
+                      (click)="showDialogToUpload()"
+                    >
+                      Upload I-9 Authorization Document
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div class="border-bottom"></div>
+          <div class="card-body">
+            <h4 class="card-title">
+              Employer or Authorized Representative Information
+            </h4>
+            <section>
+              <div class="row">
+                <div class="form-group col-md-4">
+                  <label class="mb-2 text-muted">Signature</label>
+                  <div class="d-flex align-items-center">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="electronicSignatureOfTheEmployer"
+                      [(ngModel)]="
+                        i9EmployeerVerification.electronicSignatureOfTheEmployer
+                      "
+                    />
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="mb-2 text-muted"
+                    >Verification Date <span>(MM-DD-YYYY)</span>
+                  </label>
+                  <div class="">
+                    <p-calendar
+                      name="dateOfBirth"
+                      showIcon="true"
+                      dateFormat="mm-dd-yy"
+                      dataType="string"
+                      name="verifiedDate"
+                      [(ngModel)]="i9EmployeerVerification.verifiedDate"
+                    ></p-calendar>
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="mb-2 text-muted">Title </label>
+                  <div class="d-flex align-items-center">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="titleOfTheEmployer"
+                      [(ngModel)]="i9EmployeerVerification.titleOfTheEmployer"
+                    />
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="mb-2 text-muted">Last Name </label>
+                  <div class="d-flex align-items-center">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="lastNameOfTheEmployer"
+                      [(ngModel)]="
+                        i9EmployeerVerification.lastNameOfTheEmployer
+                      "
+                    />
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="mb-2 text-muted">First Name </label>
+                  <div class="d-flex align-items-center">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="firstNameOfTheEmployer"
+                      [(ngModel)]="
+                        i9EmployeerVerification.firstNameOfTheEmployer
+                      "
+                    />
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="mb-2 text-muted"
+                    >Employer's Business or Organization Name
+                  </label>
+                  <div class="d-flex align-items-center">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="organizationNameOfTheEmployer"
+                      [(ngModel)]="
+                        i9EmployeerVerification.organizationNameOfTheEmployer
+                      "
+                    />
+                  </div>
+                </div>
+                <div class="form-group col-md-3">
+                  <label class="mb-2 text-muted"
+                    >Address <span>(Street Number and Name)</span>
+                  </label>
+                  <div class="">
+                    <textarea
+                      [rows]="3"
+                      [cols]="30"
+                      pInputTextarea
+                      name="organizationAddressOfTheEmployer"
+                      [(ngModel)]="
+                        i9EmployeerVerification.organizationAddressOfTheEmployer
+                      "
+                    ></textarea>
+                  </div>
+                </div>
+                <div class="form-group col-md-3">
+                  <label class="mb-2 text-muted">City or Town </label>
+                  <div class="d-flex align-items-center">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="cityOrTown"
+                      [(ngModel)]="i9EmployeerVerification.cityOrTown"
+                    />
+                  </div>
+                </div>
+                <div class="form-group col-md-3">
+                  <label class="mb-2 text-muted">State</label>
+                  <div class="d-flex align-items-center">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="state"
+                      [(ngModel)]="i9EmployeerVerification.state"
+                    />
+                  </div>
+                </div>
+                <div class="form-group col-md-3">
+                  <label class="mb-2 text-muted">ZIP Code</label>
+                  <div class="d-flex align-items-center">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="zipCode"
+                      [(ngModel)]="i9EmployeerVerification.zipCode"
+                    />
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </form>
+        <div class="modal-btn">
+          <div class="row">
+            <div class="col-6 d-flex justify-content-end">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                (click)="confirm(confirmType)"
+                class="btn btn-success submit-btn"
+              >
+                <i class="fa fa-save"></i>&nbsp;Save
+              </a>
+            </div>
+            <div class="col-6 d-flex justify-content-start">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                class="btn btn-danger submit-btn"
+                ><i class="fa fa-times"></i>&nbsp;Cancel</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /confirm model-->

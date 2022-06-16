@@ -1,0 +1,59 @@
+<div
+  [ngStyle]="{ display: freeEmailDisplayDomain }"
+  data-backdrop="static"
+  class="modal custom-modal backdrop"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ fEDomainType }} Free Email Domain</h5>
+        <button type="button" class="close" (click)="modalClose()">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <div class="row" *ngIf="errLabel">
+            <div class="col-sm-6" style="color: red">
+              {{ errLabel }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label class="col-form-label"
+                  >Name <span class="text-danger">*</span></label
+                >
+                <input
+                  pInputText
+                  class="form-control"
+                  [(ngModel)]="fEDomain.domainName"
+                  value=""
+                  type="text"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="submit-section">
+            <button
+              type="button"
+              [disabled]="!fEDomain?.domainName"
+              class="btn btn-success submit-btn"
+              data-dismiss="modal"
+              (click)="save()"
+            >
+              <i class="fa fa-save"></i>&nbsp;
+              <ng-container *ngIf="fEDomainType == 'Edit'">
+                Update
+              </ng-container>
+              <ng-container *ngIf="fEDomainType == 'Add'"> Save </ng-container>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

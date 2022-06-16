@@ -1,0 +1,286 @@
+<div class="page-wrapper" *ngIf="profile.email">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="javscript:void(0)">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Profile</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="card mb-0">
+      <div class="card-body">
+        <ng-container *ngIf="userId">
+          <app-profile-profile-details
+            [profile]="profile"
+            (profileUpdated)="profileUpdated()"
+          ></app-profile-profile-details>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="card tab-box">
+      <div class="row user-tabs">
+        <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
+          <ng-container *ngIf="!accessType">
+            <ul class="nav nav-tabs nav-tabs-bottom">
+              <li class="nav-item" (click)="onProfileToggle()">
+                <a href="#emp_profile" data-toggle="tab" class="nav-link active"
+                  >Profile</a
+                >
+              </li>
+              <!-- <li class="nav-item">
+                <a href="#e_verify" data-toggle="tab" class="nav-link"
+                  >e-verify</a
+                >
+              </li> -->
+              <li class="nav-item" (click)="onBankAccountToggle()">
+                <a href="#bank_statutory" data-toggle="tab" class="nav-link"
+                  >Bank &amp; Statutory</a
+                >
+              </li>
+              <li class="nav-item" (click)="onDigitalSignatureToggle()">
+                <a href="#digital_signature" data-toggle="tab" class="nav-link"
+                  >Digital Signature</a
+                >
+              </li>
+            </ul>
+          </ng-container>
+          <ng-container *ngIf="accessType">
+            <ul class="nav nav-tabs nav-tabs-bottom">
+              <li class="nav-item" (click)="onProfileToggle()">
+                <a href="#emp_profile" data-toggle="tab" class="nav-link active"
+                  >Profile</a
+                >
+              </li>
+              <li class="nav-item" (click)="onProjectToggle()">
+                <a href="#emp_projects" data-toggle="tab" class="nav-link"
+                  >Projects</a
+                >
+              </li>
+              <li class="nav-item" (click)="onDocumentToggle()">
+                <a href="#emp_documents" data-toggle="tab" class="nav-link"
+                  >Documents</a
+                >
+              </li>
+              <li class="nav-item" (click)="onProjectDocumentToggle()">
+                <a href="#project_document" data-toggle="tab" class="nav-link"
+                  >Project Documents
+                </a>
+              </li>
+              <!-- <li class="nav-item" (click)="onSupplierDocumentToggle()">
+                <a href="#supplier_document" data-toggle="tab" class="nav-link"
+                  >Customer Documents
+                </a>
+              </li> -->
+              <li
+                class="nav-item"
+                *ngIf="
+                  profile.employeeType != '2' && profile.employeeType != '5'
+                "
+              >
+                <a
+                  href="#i9"
+                  data-toggle="tab"
+                  class="nav-link"
+                  (click)="onI9Toggle()"
+                  >I9
+                </a>
+                <span class="badge"><i class="fa fa-bell-o"></i></span>
+              </li>
+              <li
+                class="nav-item"
+                *ngIf="
+                  profile.employeeType != '2' && profile.employeeType != '5'
+                "
+              >
+                <a
+                  href="#w4"
+                  data-toggle="tab"
+                  class="nav-link"
+                  (click)="onW4Toggle()"
+                  >W4</a
+                >
+                <span class="badge"><i class="fa fa-bell-o"></i></span>
+              </li>
+              <li
+                class="nav-item"
+                (click)="onPaystubToggle()"
+                *ngIf="
+                  profile.employeeType != '2' && profile.employeeType != '5'
+                "
+              >
+                <a href="#paystubs" data-toggle="tab" class="nav-link"
+                  >Pay Stubs</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  href="#timesheets"
+                  data-toggle="tab"
+                  class="nav-link"
+                  (click)="onTimesheetToggle()"
+                  >Time Sheets</a
+                >
+              </li>
+
+              <li class="nav-item">
+                <a
+                  href="#notes"
+                  data-toggle="tab"
+                  class="nav-link"
+                  (click)="onNotesToggle()"
+                  >Comments</a
+                >
+              </li>
+              <!-- <li class="nav-item">
+                <a href="#e_verify" data-toggle="tab" class="nav-link"
+                  >e-verify</a
+                >
+              </li> -->
+              <li class="nav-item" (click)="onBankAccountToggle()">
+                <a href="#bank_statutory" data-toggle="tab" class="nav-link"
+                  >Bank &amp; Statutory</a
+                >
+              </li>
+            </ul>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content pt-0">
+      <!-- Profile Info Tab -->
+      <div id="emp_profile" class="pro-overview tab-pane fade show active">
+        <ng-container *ngIf="toggleType == 'profile'">
+          <app-profile-profile
+            [userId]="userId"
+            [profile]="profile"
+            [user]="user"
+            [state]="state"
+            (profileUpdated)="profileUpdated()"
+          >
+          </app-profile-profile>
+        </ng-container>
+      </div>
+      <!-- /Profile Info Tab -->
+
+      <!-- Projects Tab -->
+      <div class="tab-pane fade" id="emp_projects">
+        <ng-container *ngIf="toggleType == 'projects'">
+          <app-profile-projects
+            [userId]="userId"
+            [isEmp]="true"
+          ></app-profile-projects>
+        </ng-container>
+      </div>
+      <!-- /Projects Tab -->
+      <!-- Documents Info Tab-->
+      <div class="tab-pane fade" id="emp_documents">
+        <ng-container *ngIf="toggleType == 'documents'">
+          <app-profile-documents
+            [userId]="userId"
+            [isEmp]="true"
+          ></app-profile-documents>
+        </ng-container>
+      </div>
+      <!-- /Documents Info Tab-->
+      <!--  Project Document Info Tab-->
+      <div class="tab-pane fade" id="project_document">
+        <ng-container *ngIf="toggleType == 'project_document'">
+          <app-profile-project-documents
+            [userId]="userId"
+            [isEmp]="true"
+          ></app-profile-project-documents>
+        </ng-container>
+      </div>
+      <!--  /Project Document  Info Tab-->
+      <!--  Supplier Document Info Tab-->
+      <div class="tab-pane fade" id="supplier_document">
+        <ng-container *ngIf="toggleType == 'supplier_document'">
+          <app-profile-supplier-documents
+            [userId]="userId"
+            [isEmp]="true"
+          ></app-profile-supplier-documents>
+        </ng-container>
+      </div>
+      <!--  /Supplier Document  Info Tab-->
+      <!--  I9 Info Tab-->
+      <div class="tab-pane fade" id="i9">
+        <ng-container *ngIf="toggleType == 'i9'">
+          <app-i9 [userId]="userId" [isEmp]="true"></app-i9>
+        </ng-container>
+      </div>
+      <!--  /I9 Info Tab-->
+      <!--  W4 Info Tab-->
+      <div class="tab-pane fade" id="w4">
+        <ng-container *ngIf="toggleType == 'w4'">
+          <app-w4 [userId]="userId" [isEmp]="true"></app-w4>
+        </ng-container>
+      </div>
+      <!--  /W4 Info Tab-->
+      <!--  paystubs Info Tab-->
+      <div class="tab-pane fade" id="paystubs">
+        <ng-container *ngIf="toggleType == 'paystub'">
+          <app-paystubs
+            [userInfo]="user"
+            [isEmp]="true"
+            [userId]="userId"
+          ></app-paystubs>
+        </ng-container>
+      </div>
+      <!--  /paystubs Info Tab-->
+
+      <!--  timesheets Info Tab-->
+      <div class="tab-pane fade" id="timesheets">
+        <ng-container *ngIf="toggleType == 'timesheets'">
+          <app-timesheets
+            [userId]="userId"
+            [isEmp]="true"
+            [userName]="profile.fullName"
+          ></app-timesheets>
+        </ng-container>
+      </div>
+      <!--  /timesheets Info Tab-->
+      <!--  Notes Info Tab-->
+      <div class="tab-pane fade" id="notes">
+        <ng-container *ngIf="toggleType == 'notes'">
+          <app-notes [userId]="userId" [isEmp]="true"></app-notes>
+        </ng-container>
+      </div>
+      <!--  /Notes Info Tab-->
+      <!--  everify Info Tab-->
+      <div class="tab-pane fade" id="e_verify">
+        <img
+          src="assets/img/comming-soon.jpg"
+          class="img-fluid"
+          alt="Coming soon image"
+        />
+      </div>
+      <!--  /everify Info Tab-->
+      <!-- Bank Statutory Tab -->
+      <div class="tab-pane fade" id="bank_statutory">
+        <app-profile-bank-statutory
+          *ngIf="toggleType == 'bank_statutory'"
+          [userId]="userId"
+        ></app-profile-bank-statutory>
+      </div>
+      <!-- /Bank Statutory Tab -->
+      <!-- /digital signature Tab -->
+      <div class="tab-pane fade" id="digital_signature">
+        <app-digital-signature
+          *ngIf="toggleType == 'digital_signature'"
+        ></app-digital-signature>
+      </div>
+      <!-- /digital signature Tab -->
+    </div>
+  </div>
+  <!-- /Page Content -->
+</div>

@@ -1,0 +1,14 @@
+footer {
+  font-weight: 300;
+}
+footer li {
+  list-style-type: none;
+  padding-bottom: 5px;
+}
+footer ul {
+  padding: 0px;
+}
+footer li a,
+.social-media a {
+  color: white;
+}

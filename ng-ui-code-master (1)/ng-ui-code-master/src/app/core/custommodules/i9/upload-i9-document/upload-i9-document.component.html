@@ -1,0 +1,138 @@
+<div
+  id="add_employee"
+  class="modal custom-modal backdrop"
+  [ngStyle]="{ display: uploadDisplay }"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Upload I9 Document</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          (click)="closeAddmodal()"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form #f="ngForm">
+            <div class="row" *ngIf="errLabel">
+              <div class="col-sm-12" style="color: red">
+                {{ errLabel }}
+              </div>
+            </div>
+            <div class="row">
+              <!-- <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Document Title <span class="text-danger">*</span></label
+                  >
+                  <input
+                    class="form-control"
+                    name="documentTitle"
+                    [(ngModel)]="fileUpload.documentTitle"
+                    type="text"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="col-form-label">Document Number </label>
+                  <input
+                    class="form-control"
+                    name="documentNumber"
+                    [(ngModel)]="fileUpload.documentNumber"
+                    type="text"
+                  />
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="col-form-label">Document Expiry Date </label>
+                  <p-calendar
+                    name="documentExpiryDate"
+                    [(ngModel)]="fileUpload.documentExpiryDate"
+                    showIcon="true"
+                    dateFormat="mm-dd-yy"
+                    dataType="string"
+                  ></p-calendar>
+                </div>
+              </div> -->
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >File To Upload <span class="text-danger">*</span></label
+                  >
+                  <div class="d-flex align-items-center">
+                    <input
+                      (change)="onFileChange($event)"
+                      name="fileToUpload"
+                      class="form-control"
+                      type="file"
+                      required
+                      #fileInput
+                    />
+                    <div *ngIf="fileUpload.fileToUpload">
+                      <a
+                        class="btn btn-danger btn-clear-file"
+                        href="javascript:void(0)"
+                        aria-label="Remove"
+                        (click)="clearFile()"
+                      >
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="col-form-label">Alert Required</label>
+                  <div>
+                    <p-inputSwitch
+                      name="alertRequired"
+                      [(ngModel)]="fileUpload.checked"
+                    ></p-inputSwitch>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12" *ngIf="fileUpload.checked">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Alert Before No Of Days
+                    <span class="text-danger">*</span></label
+                  >
+                  <p-dropdown
+                    name="alertBeforeNoOfDays"
+                    [options]="noOfAlertsList"
+                    [(ngModel)]="fileUpload.alertBeforeNoOfDays"
+                    required
+                    [filter]="true"
+                  ></p-dropdown>
+                </div>
+              </div> -->
+            </div>
+
+            <div class="submit-section">
+              <button
+                type="submit"
+                class="btn btn-primary submit-btn"
+                (click)="save()"
+                [disabled]="!f.valid"
+              >
+                Upload
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

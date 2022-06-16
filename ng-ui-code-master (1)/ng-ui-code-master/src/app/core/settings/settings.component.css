@@ -1,0 +1,214 @@
+.view.profile-view .profile-img-wrap {
+  height: 64px;
+  width: 64px;
+}
+
+.view.profile-view .profile-basic {
+  margin-left: 72px;
+}
+
+.view .profile-img-wrap img {
+  height: 64px;
+  width: 64px;
+}
+
+.personal-info li .title {
+  width: 30%;
+}
+
+.form-scroll {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+#accordionExample .card-header {
+  /* background: linear-gradient(to right, #013893 0%, #00a2e3 100%); */
+  background-color: #f7f7f7;
+  padding: 0px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  text-decoration: none;
+  font-size: inherit;
+  font-weight: 500;
+}
+
+#accordionExample .card-header[aria-expanded="true"] {
+  background-color: #00a88e;
+}
+
+#accordionExample .card-header[aria-expanded="true"] button {
+  font-weight: 500;
+}
+
+#accordionExample .card-header:hover {
+  /* background: linear-gradient(to right, #013893 0%, #00a2e3 100%); */
+  color: inherit;
+}
+
+#accordionExample .card-header button {
+  color: inherit;
+  width: 100%;
+  text-align: left;
+  text-decoration: none;
+  padding-left: 5px;
+  font-size: inherit;
+  font-weight: 500;
+}
+
+#accordionExample .card {
+  margin-bottom: 25px;
+}
+
+#accordionExample .card-header button::after {
+  border-top: 0;
+  border-left: 0;
+  border-bottom: 2px solid #fff;
+  border-right: 2px solid #fff;
+  content: "";
+  height: 8px;
+  display: inline-block;
+  pointer-events: none;
+  -webkit-transform-origin: 66% 66%;
+  transform-origin: 66% 66%;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+  -webkit-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+  width: 8px;
+  border-color: #1f1f1f;
+  vertical-align: 2px;
+  margin-left: 2px;
+  position: absolute;
+  right: 10px;
+  top: 15px;
+}
+
+#accordionExample .card-header[aria-expanded="true"] button::after {
+  -webkit-transform: rotate(-135deg);
+  transform: rotate(-135deg);
+}
+
+.list-group-item {
+  padding: 5px;
+}
+
+#approvers .card-body {
+  max-height: 150px;
+  overflow: auto;
+}
+
+:host ::ng-deep .ui-table-customers .ui-table-caption {
+  color: inherit;
+  padding: 0.571em 1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+:host ::ng-deep .ui-table-customers .ui-table-thead > tr > th.actions {
+  width: 5%;
+}
+
+:host ::ng-deep #documents .ui-tabview .ui-tabview-panels {
+  padding: 0px;
+}
+.accordion .card-body {
+  font-size: 95%;
+}
+
+.gmail-note {
+  color: rgb(33, 3, 58);
+  font-weight: bold;
+  padding: 18px;
+}
+
+:host ::ng-deep .ui-table-customers .ui-table-tbody > tr > td {
+  text-align: left;
+}
+:host ::ng-deep .ui-table-customers .ui-table-tbody > tr > td:first-child {
+  text-align: left;
+  width: 14px;
+}
+:host ::ng-deep .ui-inputswitch {
+  font-size: 10px;
+}
+
+:host ::ng-deep .setting-toggle .ui-inputswitch {
+  display: inline-block;
+  position: absolute;
+  top: 10px;
+}
+.w4config {
+  background-color: #edecec;
+  font-weight: 500;
+}
+
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="employeeName"] {
+  text-align: left;
+  width: 16%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="timesheetNotification"] {
+  text-align: left;
+  width: 14%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="w4ConfigValue"] {
+  text-align: left;
+  width: 18%;
+}
+:host
+  ::ng-deep
+  .ui-table-customers
+  .ui-table-thead
+  > tr
+  > th[ng-reflect-field="i9ConfigValue"] {
+  text-align: left;
+  width: 18%;
+}
+.card-title {
+  text-align: center;
+  font-weight: 400px;
+  margin-bottom: 0%;
+  padding-bottom: 15px;
+  font-size: 14px;
+}
+.timesheetNotification {
+  text-align: center;
+  font-weight: 400px;
+  margin-bottom: 0%;
+  padding-bottom: 0px;
+  font-size: 14px;
+}
+.applyToAll {
+  padding-left: 500px;
+}
+.checkbox {
+  width: 15px;
+  height: 15px;
+  vertical-align: middle;
+  position: relative;
+  bottom: 1px;
+}
+#employeeIdConfig .form-check-inline {
+  display: flex;
+  padding: 5px 0px;
+}
+
+/* label {
+  display: block;
+} */

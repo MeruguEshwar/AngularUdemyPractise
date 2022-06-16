@@ -1,0 +1,342 @@
+<div class="page-wrapper">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">Dashboard</li>
+            <li class="breadcrumb-item active">W-4 Details</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <section>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-header">
+              <div
+                class="row d-flex justify-content-between align-items-center"
+              >
+                <div class="col">
+                  <h4 class="card-title mb-0">
+                    Employee W-4 Form -
+                    <span class="username">XYZ</span>
+                  </h4>
+                </div>
+                <!-- <div class="col">
+                  <div>
+                    <a
+                      href="javascript:void(0)"
+                      (click)="showType()"
+                      class="edit-icon"
+                      ><i class="fa fa-pencil"></i
+                    ></a>
+                  </div>
+                </div> -->
+                <div class="col">
+                  <!-- <button
+                    type="button"
+                    class="btn btn-primary submit-btn float-right"
+                    (click)="showType()"
+                  >
+                    New
+                  </button> -->
+                </div>
+              </div>
+            </div>
+            <!-- Federal Income Tax -->
+            <div class="card-body">
+              <h1 class="card-title">
+                Federal Income Tax
+                <div
+                  class="d-flex justify-content-center float-right"
+                  *ngIf="w4Details?.w4DetailsId"
+                >
+                  <span
+                    class="badge mr-3"
+                    [ngClass]="{
+                      ' bg-inverse-danger ': w4Details?.w4Status == '0',
+                      ' bg-inverse-success': w4Details?.w4Status == '2',
+                      ' bg-inverse-info': w4Details?.w4Status == '1'
+                    }"
+                  >
+                    <i
+                      class="fa fa-dot-circle-o mr-1"
+                      [ngClass]="{
+                        ' text-danger ': w4Details?.w4Status == '0',
+                        ' text-success': w4Details?.w4Status == '2',
+                        ' text-info': w4Details?.w4Status == '1'
+                      }"
+                    >
+                    </i>
+                    {{ Status[w4Details?.w4Status] }}
+                  </span>
+                  <span
+                    ><a
+                      class="mr-3"
+                      href="javascript:void(0)"
+                      (click)="
+                        downloadW4Form(
+                          w4Details?.employeeDocumentUploadDetailsId
+                        )
+                      "
+                      ><i class="fa fa-download fa-fw" aria-hidden="true"></i
+                      >&nbsp; W-4 DOCUMENT</a
+                    ></span
+                  >
+                </div>
+              </h1>
+              <ul class="personal-info">
+                <li class="clearfix">
+                  <div class="title">W-4 Form Type</div>
+                  <div class="text">
+                    <span>{{ W4FormType[w4Details?.w4FormType] }}</span>
+                  </div>
+                </li>
+                <li class="clearfix">
+                  <div class="title">Taxability:</div>
+                  <div class="text">
+                    <span>{{ Taxability[w4Details?.taxability] }}</span>
+                  </div>
+                </li>
+                <li class="clearfix">
+                  <div class="title">Taxes Withheld</div>
+                  <div class="text">
+                    <span>{{ YesNo[w4Details?.taxWithheld] }}</span>
+                  </div>
+                </li>
+                <li class="clearfix">
+                  <div class="title">Residency</div>
+                  <div class="text">
+                    <span>{{ Residency[w4Details?.residency] }}</span>
+                  </div>
+                </li>
+                <li class="clearfix">
+                  <div class="title">Filling Status</div>
+                  <div class="text">
+                    <span>{{ FillingStatus[w4Details?.fillingStatus] }}</span>
+                  </div>
+                </li>
+                <ng-container *ngIf="w4Details.w4FormType == 1">
+                  <li class="clearfix">
+                    <div class="title">Multiple Jobs</div>
+                    <div class="text">
+                      <span>{{ YesNo[w4Details?.multipleJobs] }}</span>
+                    </div>
+                  </li>
+                  <li class="clearfix">
+                    <div class="title">Dependents</div>
+                    <div class="text">
+                      <span>{{ w4Details?.dependents || '-' }}</span>
+                    </div>
+                  </li>
+                  <li class="clearfix">
+                    <div class="title">Other Income</div>
+                    <div class="text">
+                      <span>{{ w4Details?.otherIncome || '-' }}</span>
+                    </div>
+                  </li>
+                  <li class="clearfix">
+                    <div class="title">Deductions</div>
+                    <div class="text">
+                      <span>{{ w4Details?.deductions || '-' }}</span>
+                    </div>
+                  </li>
+                  <li class="clearfix">
+                    <div class="title">Extra Amount</div>
+                    <div class="text">
+                      <span>{{ w4Details?.extraAmount || '-' }}</span>
+                    </div>
+                  </li>
+                </ng-container>
+                <ng-container *ngIf="w4Details.w4FormType == 2">
+                  <li class="clearfix">
+                    <div class="title">Total No of Allowances</div>
+                    <div class="text">
+                      <span>{{
+                        w4Details?.totalNumberOfAllowances || '-'
+                      }}</span>
+                    </div>
+                  </li>
+                  <li class="clearfix">
+                    <div class="title">Additional Amount</div>
+                    <div class="text">
+                      <span>{{ w4Details?.additionalAmount || '-' }}</span>
+                    </div>
+                  </li>
+                </ng-container>
+                <li class="clearfix">
+                  <div class="title">Additional Percentage</div>
+                  <div class="text">
+                    <span>{{ w4Details?.additionalPercentage || '-' }}</span>
+                  </div>
+                </li>
+                <li class="clearfix">
+                  <div class="title">Override Amount</div>
+                  <div class="text">
+                    <span>{{ w4Details?.overrideAmount || '-' }}</span>
+                  </div>
+                </li>
+                <li class="clearfix">
+                  <div class="title">Override Percentage</div>
+                  <div class="text">
+                    <span>{{ w4Details?.overridePercentage || '-' }}</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <!-- /Federal Income Tax -->
+            <div class="border-bottom"></div>
+            <!-- Social Security / Medicare -->
+            <div class="card-body">
+              <h1 class="card-title">Social Security / Medicare</h1>
+              <div>
+                <ul class="personal-info">
+                  <li class="clearfix">
+                    <div class="title">Social Security Taxability</div>
+                    <div class="text">
+                      <span>{{
+                        Taxability[w4Details?.socialSecurityTaxability] ||
+                          'Taxable'
+                      }}</span>
+                    </div>
+                  </li>
+                  <li class="clearfix">
+                    <div class="title">Medicare Taxability</div>
+                    <div class="text">
+                      <span>{{
+                        Taxability[w4Details?.medicareSecurityTaxability] ||
+                          'Taxable'
+                      }}</span>
+                    </div>
+                  </li>
+                  <li
+                    class="clearfix"
+                    *ngIf="w4Details?.socialSecurityTaxability == 2"
+                  >
+                    <div class="title">Social Security Taxability Reason</div>
+                    <div class="text">
+                      <span>{{ w4Details?.sstExemptReason || '-' }}</span>
+                    </div>
+                  </li>
+                  <li
+                    class="clearfix"
+                    *ngIf="w4Details?.medicareSecurityTaxability == 2"
+                  >
+                    <div class="title">Medicare Taxability Reason</div>
+                    <div class="text">
+                      <span>{{ w4Details?.medicareExemptReason || '-' }}</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- /Social Security / Medicare -->
+            <div class="border-bottom"></div>
+            <!-- Federal Unemployment -->
+            <div class="card-body">
+              <h1 class="card-title">Federal Unemployment</h1>
+              <div>
+                <ul class="personal-info">
+                  <li class="clearfix">
+                    <div class="title">Taxability</div>
+                    <div class="text">
+                      <span>{{
+                        Taxability[
+                          w4Details?.federalUnemploymentSecurityTaxability
+                        ] || 'Taxable'
+                      }}</span>
+                    </div>
+                  </li>
+                  <li
+                    class="clearfix"
+                    *ngIf="
+                      w4Details?.federalUnemploymentSecurityTaxability == 2
+                    "
+                  >
+                    <div class="title">Exempt Reason</div>
+                    <div class="text">
+                      <span>{{
+                        w4Details?.federalUnemploymentExemptReason || '-'
+                      }}</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- /Federal Unemployment -->
+            <section *ngIf="w4Details?.w4Status == '1'">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="submit-section mb-4 mt-0">
+                    <button
+                      type="submit"
+                      class="btn btn-primary submit-btn mr-2"
+                      (click)="action('approve')"
+                      data-toggle="modal"
+                      data-target="#confirmModel"
+                    >
+                      Approve
+                    </button>
+                    <button
+                      type="submit"
+                      class="btn btn-primary submit-btn mr-2"
+                      (click)="action('reject')"
+                      data-toggle="modal"
+                      data-target="#confirmModel"
+                    >
+                      Reject
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<!-- confirm model-->
+<div
+  class="modal custom-modal fade"
+  id="confirmModel"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <h3>{{ confirmType }} W-4</h3>
+          <p>Are you sure ? Do you want to {{ confirmType }} W-4 ?</p>
+        </div>
+        <div class="modal-btn">
+          <div class="row">
+            <div class="col-6 d-flex justify-content-end">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                (click)="confirm(confirmType)"
+                class="btn btn-primary submit-btn"
+                >Confirm</a
+              >
+            </div>
+            <div class="col-6 d-flex justify-content-start">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                class="btn btn-primary submit-btn"
+                >Cancel</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /confirm model-->

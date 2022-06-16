@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+
+   <div id="myCarousel" class="carousel slide" data-ride="carousel">
+
+  	<!-- Indicators -->
+  	<ul>
+    		<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+    		<li data-target="#myCarousel" data-slide-to="1"></li>
+    		<li data-target="#myCarousel" data-slide-to="2"></li>
+  	</ul>
+  
+  	<!-- The slideshow -->
+  	<div class="carousel-inner">
+    			<div class="carousel-item active">
+      				<img src="la.jpg" alt="Los Angeles" width="1100" height="500">
+    			</div>
+    			<div class="carousel-item">
+      				<img src="chicago.jpg" alt="Chicago" width="1100" height="500">
+    			</div>
+    			<div class="carousel-item">
+      				<img src="ny.jpg" alt="New York" width="1100" height="500">
+    			</div>
+    	</div>
+  
+  	<!-- Left and right controls -->
+  	<a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+    		<span ></span>
+  	</a>
+  	<a class="carousel-control-next" href="#myCarousel" data-slide="next">
+    		<span ></span>
+  	</a>
+ </div>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ul class="carousel-indicators">
+  <li  data-slide-to="0" class="active">
+    <section class="welcome">
+      <div>
+        <nav
+          id="welcom-header"
+          class="navbar fixed-top navbar-expand-lg navbar-light bg-light starting"
+        >
+          <div class="container">
+            <a href="javascript:void(0)" class="colour-logo">
+              <img
+                src="assets/img/logo2.png"
+                style="height: 50px; width: 50px"
+                class="inv-logo"
+                alt=""
+            /></a>
+            <a href="javascript:void(0)" class="white-logo">
+              <img
+                src="assets/img/logo.png"
+                style="height: 50px; width: 50px"
+                class="inv-logo"
+                alt=""
+            /></a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div
+              class="collapse navbar-collapse overlay"
+              id="navbarSupportedContent"
+              style="font-weight: 500"
+            >
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                  <a
+                    class="nav-link dropdown-toggle active"
+                    href="#"
+                    id="navbarDropdown"
+                    role="button"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Products
+                  </a> 
+                  <div
+                    class="dropdown-menu products-dropdown"
+                    aria-labelledby="navbarDropdown"
+                    style="width: 600px"
+                  >
+                    <div class="d-flex">
+                      <a
+                        class="dropdown-item bg-ptp-on-hover"
+                        [routerLink]="['/payrole']"
+                      >
+                        <div class="feature-item d-flex">
+                          <div class="dot dot-md bg-ptp-light mr-2">
+                            <span class="icon icon-sm ic-finance text-ptp"
+                              ><i class="fa fa-university" aria-hidden="true"></i
+                            ></span>
+                          </div>
+                          <div>
+                            <h4>Procure To Pay</h4>
+                            <p class="text-muted">
+                              Empower your accounting teams with automated
+                              procurement-to-pay lifecycle experiences
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                      <a
+                        class="dropdown-item bg-hr-on-hover"
+                        [routerLink]="['/payrole']"
+                      >
+                        <div class="feature-item d-flex">
+                          <div class="dot dot-md bg-hr-light mr-2">
+                            <span class="icon icon-sm ic-finance text-hr"
+                              ><i class="fa fa-user" aria-hidden="true"></i
+                            ></span>
+                          </div>
+                          <div>
+                            <h4>Smart HR</h4>
+                            <p class="text-muted">
+                              Analyze employee data, organize communications, and
+                              create a high-performance workspace with integrated
+                              solutions
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                    <div class="d-flex">
+                      <a
+                        class="dropdown-item bg-aqua-on-hover"
+                        [routerLink]="['/payrole']"
+                      >
+                        <div class="feature-item d-flex">
+                          <div class="dot dot-md bg-aqua-light mr-2">
+                            <span class="icon icon-sm ic-finance text-aqua"
+                              ><i class="fa fa-money" aria-hidden="true"></i
+                            ></span>
+                          </div>
+                          <div>
+                            <h4>Payroll &amp; Expenses</h4>
+                            <p class="text-muted">
+                              Automate and pay employees on time and stay compliant
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                      <a
+                        class="dropdown-item bg-yellow-on-hover"
+                        [routerLink]="['/payrole']"
+                        id="time"
+                      >
+                        <div class="feature-item d-flex">
+                          <div class="dot dot-md bg-pp-light mr-2">
+                            <span class="icon icon-sm ic-finance text-pp"
+                              ><i class="fa fa-bar-chart" aria-hidden="true"></i
+                            ></span>
+                          </div>
+                          <div>
+                            <h4>Performance & Productivity</h4>
+                            <p class="text-muted">
+                              Align your team’s goals with the organization’s
+                              priorities to measure growth and performance
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                    <div class="d-flex border-bottom pb-2">
+                      <a
+                        class="dropdown-item bg-pt-on-hover"
+                        [routerLink]="['/payrole']"
+                      >
+                        <div class="feature-item d-flex">
+                          <div class="dot dot-md bg-pt-light mr-2">
+                            <span class="icon icon-sm ic-finance text-pt"
+                              ><i class="fa fa-cubes" aria-hidden="true"></i
+                            ></span>
+                          </div>
+                          <div>
+                            <h4>Projects & Timesheets</h4>
+                            <p class="text-muted">
+                              Create priority-first projects, assign resources, and
+                              track progress with dynamic data reviews
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                      <a
+                        class="dropdown-item bg-onBoarding-on-hover"
+                        [routerLink]="['/payrole']"
+                      >
+                        <div class="feature-item d-flex">
+                          <div class="dot dot-md bg-onBoarding-light mr-2">
+                            <span class="icon icon-sm ic-finance text-onBoarding"
+                              ><i class="fa fa-handshake-o" aria-hidden="true"></i
+                            ></span>
+                          </div>
+                          <div>
+                            <h4>Onboarding & Exit</h4>
+                            <p class="text-muted">
+                              Adapt to change by removing the complexities of talent
+                              onboarding and resource exit with predefined
+                              experiences
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                    <div class="d-flex pt-2">
+                      <!-- <a
+                      class="dropdown-item bg-aqua-on-hover"
+                      [routerLink]="['/payrole']"
+                      id="integration"
+                    >
+                      <div class="feature-item d-flex">
+                        <div class="dot dot-md bg-aqua-light mr-2">
+                          <span class="icon icon-sm ic-finance text-aqua"
+                            ><i class="fa fa-usd" aria-hidden="true"></i
+                          ></span>
+                        </div>
+                        <div>
+                          <h4>Onboarding & Exit</h4>
+                          <p class="text-muted">
+                            Adapt to change by removing the complexities of talent
+                            onboarding and resource exit with predefined experiences
+                          </p>
+                        </div>
+                      </div>
+                    </a> -->
+                      <a
+                        class="dropdown-item bg-aqua-on-hover"
+                        [routerLink]="['/payrole']"
+                        id="security"
+                      >
+                        <div class="feature-item d-flex">
+                          <div class="dot dot-md bg-fdx-light mr-2">
+                            <span class="icon icon-sm ic-finance text-fdx"
+                              ><i class="fa fa-recycle" aria-hidden="true"></i
+                            ></span>
+                          </div>
+                          <div>
+                            <h4>FDX</h4>
+                            <p class="text-muted">
+                              Identify, validate, and manage legal and
+                              tax-sensitized information with in-built systemic
+                              regulatory verifications
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </li>
+    
+                <!-- <li class="nav-item dropdown small-dropdown active">
+                <a
+                  class="nav-link dropdown-toggle"
+                  id="customers"
+                  href="#"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <span>Customers</span
+                  ><span class="icon icon-xs ic-chevron-down"></span>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="customers">
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0)"
+                      >Customer Experience</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0)"
+                      >Customer Stories</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0)"
+                      >Onboarding Support</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0)"
+                      >Wall of Love</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0)">Support</a>
+                  </li>
+                </ul>
+              </li> -->
+    
+                <li class="nav-item dropdown small-dropdown active">
+                  <a
+                    class="nav-link dropdown-toggle"
+                    id="about"
+                    href="#"
+                    role="button"
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <span>About</span
+                    ><span class="icon icon-xs ic-chevron-down"></span>
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="about">
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0)"
+                        >Our story</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0)"
+                        >Our team</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0)">Blog</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0)"
+                        >Resources</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0)"
+                        >Contact Us</a
+                      >
+                    </li>
+                  </ul>
+                </li>
+    
+                <li class="nav-item active">
+                  <a class="nav-link" href="javascript:void(0)"
+                    >Careers <span class="sr-only">(current)</span></a
+                  > 
+                </li>
+              </ul>
+              <div class="form-inline my-2 my-lg-0">
+                <a
+                  (click)="onLoginClick('login')"
+                  class="mr-4"
+                  style="cursor: pointer"
+                  >Login</a
+                >
+                <a href="javascript:void(0)" (click)="onLoginClick('register')"
+                  ><button class="btn add-btn">Get Started</button></a
+                > 
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </section>
+  </li>
+
+
+  <li data-target="#myCarousel" data-slide-to="1">
+    <section class="welcome">
+      <div>
+        <nav
+          id="welcom-header"
+          class="navbar fixed-top navbar-expand-lg navbar-light bg-light starting"
+        >
+          <div class="container">
+            <a href="javascript:void(0)" class="colour-logo">
+              <img
+                src="assets/img/logo2.png"
+                style="height: 50px; width: 50px"
+                class="inv-logo"
+                alt=""
+            /></a>
+            <a href="javascript:void(0)" class="white-logo">
+              <img
+                src="assets/img/logo.png"
+                style="height: 50px; width: 50px"
+                class="inv-logo"
+                alt=""
+            /></a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div
+              class="collapse navbar-collapse overlay"
+              id="navbarSupportedContent"
+              style="font-weight: 500"
+            >
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                  <a
+                    class="nav-link dropdown-toggle active"
+                    href="#"
+                    id="navbarDropdown"
+                    role="button"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Products
+                  </a> 
+                  <div
+                    class="dropdown-menu products-dropdown"
+                    aria-labelledby="navbarDropdown"
+                    style="width: 600px"
+                  >
+                    <div class="d-flex">
+                      <a
+                        class="dropdown-item bg-ptp-on-hover"
+                        [routerLink]="['/payrole']"
+                      >
+                        <div class="feature-item d-flex">
+                          <div class="dot dot-md bg-ptp-light mr-2">
+                            <span class="icon icon-sm ic-finance text-ptp"
+                              ><i class="fa fa-university" aria-hidden="true"></i
+                            ></span>
+                          </div>
+                          <div>
+                            <h4>Procure To Pay</h4>
+                            <p class="text-muted">
+                              Empower your accounting teams with automated
+                              procurement-to-pay lifecycle experiences
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                      <a
+                        class="dropdown-item bg-hr-on-hover"
+                        [routerLink]="['/payrole']"
+                      >
+                        <div class="feature-item d-flex">
+                          <div class="dot dot-md bg-hr-light mr-2">
+                            <span class="icon icon-sm ic-finance text-hr"
+                              ><i class="fa fa-user" aria-hidden="true"></i
+                            ></span>
+                          </div>
+                          <div>
+                            <h4>Smart HR</h4>
+                            <p class="text-muted">
+                              Analyze employee data, organize communications, and
+                              create a high-performance workspace with integrated
+                              solutions
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                    <div class="d-flex">
+                      <a
+                        class="dropdown-item bg-aqua-on-hover"
+                        [routerLink]="['/payrole']"
+                      >
+                        <div class="feature-item d-flex">
+                          <div class="dot dot-md bg-aqua-light mr-2">
+                            <span class="icon icon-sm ic-finance text-aqua"
+                              ><i class="fa fa-money" aria-hidden="true"></i
+                            ></span>
+                          </div>
+                          <div>
+                            <h4>Payroll &amp; Expenses</h4>
+                            <p class="text-muted">
+                              Automate and pay employees on time and stay compliant
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                      <a
+                        class="dropdown-item bg-yellow-on-hover"
+                        [routerLink]="['/payrole']"
+                        id="time"
+                      >
+                        <div class="feature-item d-flex">
+                          <div class="dot dot-md bg-pp-light mr-2">
+                            <span class="icon icon-sm ic-finance text-pp"
+                              ><i class="fa fa-bar-chart" aria-hidden="true"></i
+                            ></span>
+                          </div>
+                          <div>
+                            <h4>Performance & Productivity</h4>
+                            <p class="text-muted">
+                              Align your team’s goals with the organization’s
+                              priorities to measure growth and performance
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                    <div class="d-flex border-bottom pb-2">
+                      <a
+                        class="dropdown-item bg-pt-on-hover"
+                        [routerLink]="['/payrole']"
+                      >
+                        <div class="feature-item d-flex">
+                          <div class="dot dot-md bg-pt-light mr-2">
+                            <span class="icon icon-sm ic-finance text-pt"
+                              ><i class="fa fa-cubes" aria-hidden="true"></i
+                            ></span>
+                          </div>
+                          <div>
+                            <h4>Projects & Timesheets</h4>
+                            <p class="text-muted">
+                              Create priority-first projects, assign resources, and
+                              track progress with dynamic data reviews
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                      <a
+                        class="dropdown-item bg-onBoarding-on-hover"
+                        [routerLink]="['/payrole']"
+                      >
+                        <div class="feature-item d-flex">
+                          <div class="dot dot-md bg-onBoarding-light mr-2">
+                            <span class="icon icon-sm ic-finance text-onBoarding"
+                              ><i class="fa fa-handshake-o" aria-hidden="true"></i
+                            ></span>
+                          </div>
+                          <div>
+                            <h4>Onboarding & Exit</h4>
+                            <p class="text-muted">
+                              Adapt to change by removing the complexities of talent
+                              onboarding and resource exit with predefined
+                              experiences
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                    <div class="d-flex pt-2">
+                      <!-- <a
+                      class="dropdown-item bg-aqua-on-hover"
+                      [routerLink]="['/payrole']"
+                      id="integration"
+                    >
+                      <div class="feature-item d-flex">
+                        <div class="dot dot-md bg-aqua-light mr-2">
+                          <span class="icon icon-sm ic-finance text-aqua"
+                            ><i class="fa fa-usd" aria-hidden="true"></i
+                          ></span>
+                        </div>
+                        <div>
+                          <h4>Onboarding & Exit</h4>
+                          <p class="text-muted">
+                            Adapt to change by removing the complexities of talent
+                            onboarding and resource exit with predefined experiences
+                          </p>
+                        </div>
+                      </div>
+                    </a> -->
+                      <a
+                        class="dropdown-item bg-aqua-on-hover"
+                        [routerLink]="['/payrole']"
+                        id="security"
+                      >
+                        <div class="feature-item d-flex">
+                          <div class="dot dot-md bg-fdx-light mr-2">
+                            <span class="icon icon-sm ic-finance text-fdx"
+                              ><i class="fa fa-recycle" aria-hidden="true"></i
+                            ></span>
+                          </div>
+                          <div>
+                            <h4>FDX</h4>
+                            <p class="text-muted">
+                              Identify, validate, and manage legal and
+                              tax-sensitized information with in-built systemic
+                              regulatory verifications
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </li>
+    
+                <!-- <li class="nav-item dropdown small-dropdown active">
+                <a
+                  class="nav-link dropdown-toggle"
+                  id="customers"
+                  href="#"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <span>Customers</span
+                  ><span class="icon icon-xs ic-chevron-down"></span>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="customers">
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0)"
+                      >Customer Experience</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0)"
+                      >Customer Stories</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0)"
+                      >Onboarding Support</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0)"
+                      >Wall of Love</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0)">Support</a>
+                  </li>
+                </ul>
+              </li> -->
+    
+                <li class="nav-item dropdown small-dropdown active">
+                  <a
+                    class="nav-link dropdown-toggle"
+                    id="about"
+                    href="#"
+                    role="button"
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <span>About</span
+                    ><span class="icon icon-xs ic-chevron-down"></span>
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="about">
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0)"
+                        >Our story</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0)"
+                        >Our team</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0)">Blog</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0)"
+                        >Resources</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0)"
+                        >Contact Us</a
+                      >
+                    </li>
+                  </ul>
+                </li>
+    
+                <li class="nav-item active">
+                  <a class="nav-link" href="javascript:void(0)"
+                    >Careers <span class="sr-only">(current)</span></a
+                  > 
+                </li>
+              </ul>
+              <div class="form-inline my-2 my-lg-0">
+                <a
+                  (click)="onLoginClick('login')"
+                  class="mr-4"
+                  style="cursor: pointer"
+                  >Login</a
+                >
+                <a href="javascript:void(0)" (click)="onLoginClick('register')"
+                  ><button class="btn add-btn">Get Started</button></a
+                > 
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </section>
+  </li>
+
+  <li data-target="#myCarousel" data-slide-to="2">
+    <section class="welcome">
+      <div>
+        <nav
+          id="welcom-header"
+          class="navbar fixed-top navbar-expand-lg navbar-light bg-light starting"
+        >
+          <div class="container">
+            <a href="javascript:void(0)" class="colour-logo">
+              <img
+                src="assets/img/logo2.png"
+                style="height: 50px; width: 50px"
+                class="inv-logo"
+                alt=""
+            /></a>
+            <a href="javascript:void(0)" class="white-logo">
+              <img
+                src="assets/img/logo.png"
+                style="height: 50px; width: 50px"
+                class="inv-logo"
+                alt=""
+            /></a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div
+              class="collapse navbar-collapse overlay"
+              id="navbarSupportedContent"
+              style="font-weight: 500"
+            >
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                  <a
+                    class="nav-link dropdown-toggle active"
+                    href="#"
+                    id="navbarDropdown"
+                    role="button"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Products
+                  </a> 
+                  <div
+                    class="dropdown-menu products-dropdown"
+                    aria-labelledby="navbarDropdown"
+                    style="width: 600px"
+                  >
+                    <div class="d-flex">
+                      <a
+                        class="dropdown-item bg-ptp-on-hover"
+                        [routerLink]="['/payrole']"
+                      >
+                        <div class="feature-item d-flex">
+                          <div class="dot dot-md bg-ptp-light mr-2">
+                            <span class="icon icon-sm ic-finance text-ptp"
+                              ><i class="fa fa-university" aria-hidden="true"></i
+                            ></span>
+                          </div>
+                          <div>
+                            <h4>Procure To Pay</h4>
+                            <p class="text-muted">
+                              Empower your accounting teams with automated
+                              procurement-to-pay lifecycle experiences
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                      <a
+                        class="dropdown-item bg-hr-on-hover"
+                        [routerLink]="['/payrole']"
+                      >
+                        <div class="feature-item d-flex">
+                          <div class="dot dot-md bg-hr-light mr-2">
+                            <span class="icon icon-sm ic-finance text-hr"
+                              ><i class="fa fa-user" aria-hidden="true"></i
+                            ></span>
+                          </div>
+                          <div>
+                            <h4>Smart HR</h4>
+                            <p class="text-muted">
+                              Analyze employee data, organize communications, and
+                              create a high-performance workspace with integrated
+                              solutions
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                    <div class="d-flex">
+                      <a
+                        class="dropdown-item bg-aqua-on-hover"
+                        [routerLink]="['/payrole']"
+                      >
+                        <div class="feature-item d-flex">
+                          <div class="dot dot-md bg-aqua-light mr-2">
+                            <span class="icon icon-sm ic-finance text-aqua"
+                              ><i class="fa fa-money" aria-hidden="true"></i
+                            ></span>
+                          </div>
+                          <div>
+                            <h4>Payroll &amp; Expenses</h4>
+                            <p class="text-muted">
+                              Automate and pay employees on time and stay compliant
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                      <a
+                        class="dropdown-item bg-yellow-on-hover"
+                        [routerLink]="['/payrole']"
+                        id="time"
+                      >
+                        <div class="feature-item d-flex">
+                          <div class="dot dot-md bg-pp-light mr-2">
+                            <span class="icon icon-sm ic-finance text-pp"
+                              ><i class="fa fa-bar-chart" aria-hidden="true"></i
+                            ></span>
+                          </div>
+                          <div>
+                            <h4>Performance & Productivity</h4>
+                            <p class="text-muted">
+                              Align your team’s goals with the organization’s
+                              priorities to measure growth and performance
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                    <div class="d-flex border-bottom pb-2">
+                      <a
+                        class="dropdown-item bg-pt-on-hover"
+                        [routerLink]="['/payrole']"
+                      >
+                        <div class="feature-item d-flex">
+                          <div class="dot dot-md bg-pt-light mr-2">
+                            <span class="icon icon-sm ic-finance text-pt"
+                              ><i class="fa fa-cubes" aria-hidden="true"></i
+                            ></span>
+                          </div>
+                          <div>
+                            <h4>Projects & Timesheets</h4>
+                            <p class="text-muted">
+                              Create priority-first projects, assign resources, and
+                              track progress with dynamic data reviews
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                      <a
+                        class="dropdown-item bg-onBoarding-on-hover"
+                        [routerLink]="['/payrole']"
+                      >
+                        <div class="feature-item d-flex">
+                          <div class="dot dot-md bg-onBoarding-light mr-2">
+                            <span class="icon icon-sm ic-finance text-onBoarding"
+                              ><i class="fa fa-handshake-o" aria-hidden="true"></i
+                            ></span>
+                          </div>
+                          <div>
+                            <h4>Onboarding & Exit</h4>
+                            <p class="text-muted">
+                              Adapt to change by removing the complexities of talent
+                              onboarding and resource exit with predefined
+                              experiences
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                    <div class="d-flex pt-2">
+                      <!-- <a
+                      class="dropdown-item bg-aqua-on-hover"
+                      [routerLink]="['/payrole']"
+                      id="integration"
+                    >
+                      <div class="feature-item d-flex">
+                        <div class="dot dot-md bg-aqua-light mr-2">
+                          <span class="icon icon-sm ic-finance text-aqua"
+                            ><i class="fa fa-usd" aria-hidden="true"></i
+                          ></span>
+                        </div>
+                        <div>
+                          <h4>Onboarding & Exit</h4>
+                          <p class="text-muted">
+                            Adapt to change by removing the complexities of talent
+                            onboarding and resource exit with predefined experiences
+                          </p>
+                        </div>
+                      </div>
+                    </a> -->
+                      <a
+                        class="dropdown-item bg-aqua-on-hover"
+                        [routerLink]="['/payrole']"
+                        id="security"
+                      >
+                        <div class="feature-item d-flex">
+                          <div class="dot dot-md bg-fdx-light mr-2">
+                            <span class="icon icon-sm ic-finance text-fdx"
+                              ><i class="fa fa-recycle" aria-hidden="true"></i
+                            ></span>
+                          </div>
+                          <div>
+                            <h4>FDX</h4>
+                            <p class="text-muted">
+                              Identify, validate, and manage legal and
+                              tax-sensitized information with in-built systemic
+                              regulatory verifications
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </li>
+    
+                <!-- <li class="nav-item dropdown small-dropdown active">
+                <a
+                  class="nav-link dropdown-toggle"
+                  id="customers"
+                  href="#"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <span>Customers</span
+                  ><span class="icon icon-xs ic-chevron-down"></span>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="customers">
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0)"
+                      >Customer Experience</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0)"
+                      >Customer Stories</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0)"
+                      >Onboarding Support</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0)"
+                      >Wall of Love</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0)">Support</a>
+                  </li>
+                </ul>
+              </li> -->
+    
+                <li class="nav-item dropdown small-dropdown active">
+                  <a
+                    class="nav-link dropdown-toggle"
+                    id="about"
+                    href="#"
+                    role="button"
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <span>About</span
+                    ><span class="icon icon-xs ic-chevron-down"></span>
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="about">
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0)"
+                        >Our story</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0)"
+                        >Our team</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0)">Blog</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0)"
+                        >Resources</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0)"
+                        >Contact Us</a
+                      >
+                    </li>
+                  </ul>
+                </li>
+    
+                <li class="nav-item active">
+                  <a class="nav-link" href="javascript:void(0)"
+                    >Careers <span class="sr-only">(current)</span></a
+                  > 
+                </li>
+              </ul>
+              <div class="form-inline my-2 my-lg-0">
+                <a
+                  (click)="onLoginClick('login')"
+                  class="mr-4"
+                  style="cursor: pointer"
+                  >Login</a
+                >
+                <a href="javascript:void(0)" (click)="onLoginClick('register')"
+                  ><button class="btn add-btn">Get Started</button></a
+                > 
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </section>
+  </li>
+  
+</ul>

@@ -1,0 +1,379 @@
+<form #immigrationForm="ngForm" (ngSubmit)="onImmigrationSubmit()">
+  <div class="">
+    <div class="card m-0">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-3">
+            <div
+              class="form-group"
+              *ngIf="immigrationDetails.visaStatus != 'Other'"
+            >
+              <label>Visa Status <span class="text-danger"> *</span></label>
+              <p-dropdown
+                [options]="visaStatusList"
+                [(ngModel)]="immigrationDetails.visaStatus"
+                name="visaStatus"
+                (onChange)="changeImmigrationStatusType($event.value)"
+                required
+                [filter]="true"
+              ></p-dropdown>
+            </div>
+            <div
+              class="form-group"
+              *ngIf="immigrationDetails.visaStatus == 'Other'"
+            >
+              <label>Visa Status <span class="text-danger"> *</span> </label>
+              <a
+                href="javascript:void(0)"
+                (click)="resetType()"
+                class="float-right"
+              >
+                <i class="fa fa-refresh" aria-hidden="true"></i
+              ></a>
+              <input
+                class="form-control"
+                type="text"
+                name="visaStatus"
+                [(ngModel)]="immigrationDetails.customeVisaStatus"
+                pattern="[A-Za-z0-9 ]{1,150}"
+                (keypress)="sharedService.keyPressAlphaNumaric($event)"
+                required
+              />
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>Visa Expiry Date<span class="text-danger"> *</span></label>
+              <p-calendar
+                name="visaExpiryDate"
+                [(ngModel)]="immigrationDetails.visaExpiryDate"
+                showIcon="true"
+                dateFormat="mm-dd-yy"
+                dataType="string"
+                aria-required="true"
+                required
+              ></p-calendar>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>Visa Country <span class="text-danger">*</span></label>
+              <p-autoComplete
+                [suggestions]="filterCountry"
+                name="country"
+                [(ngModel)]="selectedCountry"
+                (completeMethod)="countryList($event)"
+                field="name"
+                placeholder="Enter Country"
+                aria-required="true"
+                required
+              >
+              </p-autoComplete>
+            </div>
+          </div>
+          <div class="submit-section">
+            <button
+              type="submit"
+              class="btn btn-success submit-btn"
+              [disabled]="!immigrationForm.valid"
+            >
+              <i class="fa fa-save"></i>&nbsp;Save
+            </button>
+          </div>
+        </div>
+        <hr />
+        <div class="card-body p-0">
+          <div class="col pl-0 pr-0" *ngIf="!loading">
+            <p-table
+              [columns]="cols"
+              [value]="immigrationDocList"
+              [rowsPerPageOptions]="[5, 10, 25, 50]"
+              styleClass="ui-table-customers"
+              #dt
+              [paginator]="true"
+              [rows]="5"
+              [showCurrentPageReport]="true"
+              [alwaysShowPaginator]="false"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [filterDelay]="0"
+              [globalFilterFields]="[]"
+            >
+              <ng-template pTemplate="caption">
+                <div
+                  class="ui-table-globalfilter-container"
+                  style="
+                    float: none;
+                    text-align: right;
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+                  "
+                >
+                  <!-- <input
+                    pInputText
+                    type="text"
+                    (input)="
+                      dt.filterGlobal($event.target.value, 'contains')
+                    "
+                    placeholder="Search"
+                  /> -->
+                  <button
+                    type="button"
+                    class="btn add-btn mr-2"
+                    (click)="uploadDocCatg()"
+                    [disabled]="!immigrationForm.valid"
+                  >
+                    <i class="fa fa-upload"></i> Upload Document
+                  </button>
+                  <span class="mr-2">OR</span>
+                  <button
+                    type="button"
+                    class="btn add-btn"
+                    (click)="linkDocuments()"
+                    [disabled]="!immigrationForm.valid"
+                  >
+                    <i class="fa fa-paperclip"></i> Link Document
+                  </button>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                    {{ col.header }}
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr [pSelectableRow]="rowData">
+                  <td *ngFor="let col of columns">
+                    <ng-container *ngIf="col.field == 'alertRequired'">
+                      {{ getAlertType(rowData[col.field]) }}
+                    </ng-container>
+                    <ng-container *ngIf="col.field == 'documentTitle'">
+                      <a (click)="onImageViewOpenClick()">
+                        {{ rowData[col.field] }}</a
+                      >
+                    </ng-container>
+                    <ng-container *ngIf="col.field == 'alertBeforeNoOfDays'">
+                      <ng-container *ngIf="rowData[col.field] != 0">
+                        {{ rowData[col.field] }}
+                      </ng-container>
+                    </ng-container>
+                    <ng-container
+                      *ngIf="
+                        col.field != 'alertRequired' &&
+                        col.field != 'documentTitle' &&
+                        col.field != 'alertBeforeNoOfDays'
+                      "
+                    >
+                      {{ rowData[col.field] }}
+                    </ng-container>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td [attr.colspan]="cols.length" style="text-align: center">
+                    No Records Found.
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<!-- Image view file Modal -->
+<ng-container *ngIf="viewImage">
+  <app-imageviwer (onClose)="onImageViewCloseClick($event)"> </app-imageviwer>
+</ng-container>
+
+<!-- /Image view file Modal -->
+<!-- Upload File Modal -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: uploadFileInfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          *ngIf="errorLabel"
+          style="position: absolute; left: 15px"
+          class="text-danger"
+        >
+          {{ errorLabel }}
+        </h5>
+        <h5 class="modal-title">Upload Document</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form (ngSubmit)="saveUploadFile(f)" #f="ngForm">
+            <div class="row" *ngIf="errorLabel">
+              <div class="col-sm-6" style="color: red">
+                {{ errorLabel }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Document Title <span class="text-danger">*</span></label
+                  >
+                  <input
+                    class="form-control"
+                    name="documentTitle"
+                    [(ngModel)]="fileUpload.documentTitle"
+                    type="text"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="col-form-label">Document Number </label>
+                  <input
+                    class="form-control"
+                    name="documentNumber"
+                    [(ngModel)]="fileUpload.documentNumber"
+                    type="text"
+                  />
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="col-form-label">Document Expiry Date </label>
+                  <p-calendar
+                    name="documentExpiryDate"
+                    [(ngModel)]="fileUpload.documentExpiryDate"
+                    showIcon="true"
+                    dateFormat="mm-dd-yy"
+                    dataType="string"
+                  ></p-calendar>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >File To Upload <span class="text-danger">*</span></label
+                  >
+                  <div class="d-flex align-items-center">
+                    <input
+                      (change)="onFileChange($event)"
+                      name="fileToUpload"
+                      class="form-control"
+                      type="file"
+                      required
+                      #fileInput
+                    />
+                    <div *ngIf="fileUpload.fileToUpload">
+                      <a
+                        class="btn btn-danger btn-clear-file"
+                        href="javascript:void(0)"
+                        aria-label="Remove"
+                        (click)="clearFile()"
+                      >
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="col-form-label">Alert Required</label>
+                  <div>
+                    <p-inputSwitch
+                      name="alertRequired"
+                      [(ngModel)]="fileUpload.checked"
+                    ></p-inputSwitch>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12" *ngIf="fileUpload.checked">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Alert Before No Of Days
+                    <span class="text-danger">*</span></label
+                  >
+                  <p-dropdown
+                    name="alertBeforeNoOfDays"
+                    [options]="noOfAlertsList"
+                    [(ngModel)]="fileUpload.alertBeforeNoOfDays"
+                    required
+                    [filter]="true"
+                  ></p-dropdown>
+                </div>
+              </div>
+            </div>
+
+            <div class="submit-section">
+              <button
+                type="submit"
+                class="btn btn-success submit-btn"
+                [disabled]="!fileSelected || !f.valid"
+              >
+                <i class="fa fa-upload"></i>&nbsp;Upload
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Upload file Modal -->
+
+<div
+  id="uploadFile1_info"
+  [ngStyle]="{ display: uploadFileInfo1 }"
+  class="modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Link Document</h5>
+        <h5
+          *ngIf="errorLabel"
+          style="position: relative; left: 15px"
+          class="text-danger"
+        >
+          {{ errorLabel }}
+        </h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodalLink()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <app-profile-documents
+            [isEmp]="true"
+            [isLink]="true"
+            (linkedDocuments)="linkedDocuments($event.link)"
+          ></app-profile-documents>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

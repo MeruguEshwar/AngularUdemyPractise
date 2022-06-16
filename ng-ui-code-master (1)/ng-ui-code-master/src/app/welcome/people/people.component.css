@@ -1,0 +1,12 @@
+:host ::ng-deep .manage_people {
+  color: #009ce7;
+}
+:host ::ng-deep .optimize_workspace {
+  color: #6ac069;
+}
+:host ::ng-deep .organize_data {
+  color: #8484d7;
+}
+:host ::ng-deep .automate_processes {
+  color: #e44c7d;
+}

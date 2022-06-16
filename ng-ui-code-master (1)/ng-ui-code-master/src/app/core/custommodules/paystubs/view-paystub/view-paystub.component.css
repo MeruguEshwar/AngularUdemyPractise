@@ -1,0 +1,103 @@
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+.netpayblock {
+  display: flex;
+  justify-content: space-between;
+}
+
+:host ::ng-deep .dropwonbox p-dropdown .ui-dropdown {
+  height: 44px !important;
+  width: 100% !important;
+  line-height: unset;
+}
+:host ::ng-deep .dropwonbox p-dropdown .ui-dropdown .ui-dropdown-label {
+  padding: 0.729em !important;
+}
+.graybox {
+  background-color: #e2e2e2;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+}
+#accordionExample .card-header {
+  /* background: linear-gradient(to right, #013893 0%, #00a2e3 100%); */
+  background-color: #f7f7f7;
+  padding: 0px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  text-decoration: none;
+  font-size: inherit;
+  font-weight: 500;
+}
+#accordionExample .card-header[aria-expanded="true"] {
+  background-color: #00a88e;
+}
+#accordionExample .card-header[aria-expanded="true"] button {
+  font-weight: 500;
+}
+#accordionExample .card-header:hover {
+  /* background: linear-gradient(to right, #013893 0%, #00a2e3 100%); */
+  color: inherit;
+}
+#accordionExample .card-header button {
+  color: inherit;
+  width: 100%;
+  text-align: left;
+  text-decoration: none;
+  padding-left: 5px;
+  font-size: inherit;
+  font-weight: 500;
+}
+#accordionExample .card {
+  margin-bottom: 25px;
+}
+#accordionExample .card-header button::after {
+  border-top: 0;
+  border-left: 0;
+  border-bottom: 2px solid #fff;
+  border-right: 2px solid #fff;
+  content: "";
+  height: 8px;
+  display: inline-block;
+  pointer-events: none;
+  -webkit-transform-origin: 66% 66%;
+  transform-origin: 66% 66%;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+  -webkit-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+  width: 8px;
+  border-color: #1f1f1f;
+  vertical-align: 2px;
+  margin-left: 2px;
+  position: absolute;
+  right: 10px;
+  top: 15px;
+}
+#accordionExample .card-header[aria-expanded="true"] button::after {
+  -webkit-transform: rotate(-135deg);
+  transform: rotate(-135deg);
+}
+.list-group-item {
+  padding: 5px;
+}
+#approvers .card-body {
+  max-height: 150px;
+  overflow: auto;
+}
+:host ::ng-deep .ui-table-customers .ui-table-caption {
+  color: inherit;
+  padding: 0.571em 1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

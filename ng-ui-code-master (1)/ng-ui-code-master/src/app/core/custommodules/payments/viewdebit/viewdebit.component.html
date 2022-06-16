@@ -1,0 +1,462 @@
+<div class="page-wrapper" style="min-height: 283px">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="javascript:void(0)">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">Payment</li>
+            <li class="breadcrumb-item active">View</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="card mb-0">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card mb-0">
+              <div class="card-body">
+                <h3 class="card-title">
+                  Payment Details
+                  <a
+                    href="#"
+                    data-toggle="modal"
+                    (click)="editPayment(payment)"
+                    class="edit-icon"
+                    ><i class="fa fa-pencil"></i
+                  ></a>
+                </h3>
+                <div class="profile-view">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <ul class="personal-info">
+                        <li *ngIf="payment?.companyName">
+                          <div class="title">Customer Name:</div>
+                          <div class="text">
+                            <strong> {{ payment?.companyName }}</strong>
+                          </div>
+                        </li>
+                        <li *ngIf="payment?.invoiceNumber">
+                          <div class="title">Invoice Number:</div>
+                          <div class="text">
+                            {{ payment?.invoiceNumber }}
+                          </div>
+                        </li>
+                        <li *ngIf="payment?.amount">
+                          <div class="title">Amount Sent:</div>
+                          <div class="text">
+                            {{ organizationCurrency }} {{ payment?.amount }}
+                          </div>
+                        </li>
+                        <li *ngIf="payment?.dateReceived">
+                          <div class="title">Date Sent:</div>
+                          <div class="text">{{ payment?.dateReceived }}</div>
+                        </li>
+                        <li *ngIf="payment?.paymentType">
+                          <div class="title">Payment Type:</div>
+                          <div class="text">{{ payment?.paymentType }}</div>
+                        </li>
+                        <li *ngIf="payment?.description">
+                          <div class="title">Description:</div>
+                          <div class="text">{{ payment?.description }}</div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 p-0 mt-4">
+          <section>
+            <div class="accordion" id="accordionExample">
+              <div class="card">
+                <div class="card-header" id="attachmentsHeading">
+                  <i class="fa fa-paperclip pl-3" aria-hidden="true"></i>
+                  <button
+                    class="btn btn-link"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#attachments"
+                    aria-expanded="true"
+                    aria-controls="attachments"
+                  >
+                    Attachments
+                  </button>
+                </div>
+
+                <div
+                  id="attachments"
+                  class="collapse show"
+                  aria-labelledby="attachmentsHeading"
+                  data-parent="#accordionExample"
+                >
+                  <div class="card-body pt-2">
+                    <div class="row align-items-center">
+                      <div class="col-auto float-right ml-auto">
+                        <a
+                          href="javascript:void(0)"
+                          class="btn add-btn"
+                          (click)="uploadAttachemnts()"
+                          ><i class="fa fa-plus"></i> Add Attachment</a
+                        >
+                      </div>
+                    </div>
+                    <div class="col pl-0 pr-0 mt-2" *ngIf="!loading">
+                      <p-table
+                        [columns]="attachmentCols"
+                        [value]="attachmentList"
+                        [rowsPerPageOptions]="[10, 25, 50]"
+                        styleClass="ui-table-customers"
+                        #dt
+                        [paginator]="true"
+                        [rows]="5"
+                        [showCurrentPageReport]="true"
+                        [alwaysShowPaginator]="false"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [filterDelay]="0"
+                        [globalFilterFields]="[
+                          'department',
+                          'description',
+                          'status'
+                        ]"
+                        class="invoice-list"
+                      >
+                        <ng-template pTemplate="header" let-columns>
+                          <tr>
+                            <th
+                              *ngFor="let col of columns"
+                              [pSortableColumn]="col.field"
+                            >
+                              {{ col.header }}
+                              <p-sortIcon [field]="col.field"></p-sortIcon>
+                            </th>
+                            <th class="actions" style="width: 8%">Actions</th>
+                          </tr>
+                        </ng-template>
+                        <ng-template
+                          pTemplate="body"
+                          let-rowData
+                          let-columns="columns"
+                          let-rowIndex="rowIndex"
+                        >
+                          <tr [pSelectableRow]="rowData">
+                            <td *ngFor="let col of columns">
+                              <ng-container *ngIf="col.field != 'status'">
+                                {{ rowData[col.field] }}
+                              </ng-container>
+                            </td>
+                            <td class="actions">
+                              <i
+                                class="fa fa-trash-o text-danger"
+                                style="cursor: pointer"
+                                data-target="#confirmModel"
+                                data-toggle="modal"
+                                (click)="onDeleteAttachment(rowData)"
+                              ></i>
+                            </td>
+                          </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                          <tr>
+                            <td
+                              [attr.colspan]="attachmentCols.length"
+                              style="text-align: center"
+                            >
+                              No Records Found.
+                            </td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Page Content -->
+</div>
+<!-- add payment model-->
+<div
+  id="add_payment"
+  [ngStyle]="{ display: addPaymentsModel }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="form-header my-3">
+        <h3>Payment Details - {{ payment.companyName }}</h3>
+      </div>
+      <div class="row justify-content-md-center">
+        <div class="col-sm-10">
+          <div class="card">
+            <form #paymentForm="ngForm">
+              <div class="modal-body">
+                <div class="row pt-3">
+                  <!-- <div class="col-6">
+                    <div class="form-group">
+                      <label
+                        >Supplier Name <span class="text-danger"> *</span>
+                      </label>
+                      <p-dropdown
+                        [options]="customerOptions"
+                        [(ngModel)]="selectedCustomerOptions"
+                        optionLabel="companyName"
+                        name="customersName"
+                        required
+                        [filter]="true"
+                      ></p-dropdown>
+                    </div>
+                  </div> -->
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label
+                        >{{ organizationCurrency }} Amount Sent
+                        <span class="text-danger"> *</span></label
+                      >
+                      <p-inputNumber
+                        name="number"
+                        [(ngModel)]="payment.amount"
+                        maxlength="12"
+                        [minFractionDigits]="2"
+                        [useGrouping]="false"
+                        ariaRequired="true"
+                        required
+                      ></p-inputNumber>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label
+                        >Date Sent <span class="text-danger"> *</span></label
+                      >
+                      <p-calendar
+                        [yearNavigator]="true"
+                        [monthNavigator]="true"
+                        yearRange="1980:2050"
+                        readonlyInput="true"
+                        id="dateReceived"
+                        showIcon="true"
+                        dateFormat="mm-dd-yy"
+                        name="invoiceDueDate"
+                        dataType="string"
+                        [(ngModel)]="payment.dateReceived"
+                        required
+                      ></p-calendar>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label
+                        >Payment Type <span class="text-danger"> *</span></label
+                      >
+                      <p-dropdown
+                        [options]="paymentOptions"
+                        [(ngModel)]="payment.paymentType"
+                        name="paymentOptions"
+                        [filter]="true"
+                        required="true"
+                      ></p-dropdown>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label>Invoice Number</label>
+                      <input
+                        class="form-control"
+                        type="text"
+                        [(ngModel)]="payment.invoiceNumber"
+                        name="invoiceNumber"
+                        (keypress)="sharedService.keyPressAlphaNumaric($event)"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label>Description</label>
+                      <textarea
+                        class="form-control"
+                        [(ngModel)]="payment.description"
+                        rows="3"
+                        name="description"
+                        (keypress)="sharedService.keyPressAddress($event)"
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="submit-section">
+                  <button
+                    class="btn btn-success submit-btn m-r-10"
+                    (click)="savePayments(paymentForm)"
+                    [disabled]="!paymentForm.valid"
+                  >
+                    <i class="fa fa-save"></i>&nbsp;Save
+                  </button>
+                  <button
+                    class="btn btn-danger submit-btn"
+                    (click)="closeModal()"
+                  >
+                    <i class="fa fa-times"></i>&nbsp;Cancel
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /add payment model-->
+<!-- Upload file model-->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: uploadFileInfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          *ngIf="errorLabel"
+          style="position: absolute; left: 15px"
+          class="text-danger"
+        >
+          {{ errorLabel }}
+        </h5>
+        <h5 class="modal-title">Upload Document</h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeModal(uploadForm)"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form (ngSubmit)="saveUploadFile()" #uploadForm="ngForm">
+            <div class="row" *ngIf="errorLabel">
+              <div class="col-sm-6" style="color: red">
+                {{ errorLabel }}
+              </div>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-12">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Title <span class="text-danger">*</span></label
+                  >
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="title"
+                    [(ngModel)]="uploadedFileTitle"
+                    maxlength="100"
+                    pattern="[A-Za-z ]{1,150}"
+                    (keypress)="sharedService.keyPressAlphabet($event)"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >File To Upload <span class="text-danger">*</span></label
+                  >
+                  <div class="d-flex align-items-center">
+                    <input
+                      class="form-control"
+                      type="file"
+                      id="fileToUpload"
+                      (change)="onFileChange($event)"
+                      #fileInput
+                      required
+                    />
+                    <div *ngIf="fileToUpload">
+                      <a
+                        class="btn btn-danger btn-clear-file"
+                        href="javascript:void(0)"
+                        aria-label="Remove"
+                        (click)="clearFile()"
+                      >
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="submit-section">
+              <button
+                type="submit"
+                class="btn btn-primary submit-btn"
+                [disabled]="!uploadForm.valid || !fileToUpload"
+              >
+                Upload
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Upload file Modal -->
+<!-- confirm model-->
+<div
+  class="modal custom-modal fade"
+  id="confirmModel"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <!-- <h3>Confirm</h3> -->
+          <p>Are you sure ? Do you want to Delete ?</p>
+        </div>
+        <div class="modal-btn">
+          <div class="row">
+            <div class="col-6 d-flex justify-content-end">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                (click)="confirm(confirmType)"
+                class="btn btn-primary submit-btn"
+                >Confirm</a
+              >
+            </div>
+            <div class="col-6 d-flex justify-content-start">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                class="btn btn-primary submit-btn"
+                >Cancel</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /confirm model-->

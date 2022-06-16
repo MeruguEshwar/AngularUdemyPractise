@@ -1,0 +1,5 @@
+.form-group span,
+.personal-info .title span {
+  font-size: 75%;
+  font-style: italic;
+}

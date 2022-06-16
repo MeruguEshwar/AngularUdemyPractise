@@ -1,0 +1,602 @@
+<div class="page-wrapper">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">Dashboard</li>
+            <li class="breadcrumb-item active">Advances</li>
+          </ul>
+        </div>
+        <div class="col-auto float-right ml-auto">
+          <button
+            type="button"
+            class="btn add-btn"
+            (click)="showDialogToAdd()"
+            [disabled]="!employeeSelectedToaddAdvancePayRate?.employeeDetailsId"
+          >
+            <i class="fa fa-plus"></i> Add Advance
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- /page Header-->
+    <!-- Search Filter -->
+    <div class="row filter-row" *ngIf="this.viewType">
+      <div class="col-sm-6 col-md-3">
+        <div class="form-group form-focus select-focus focused">
+          <p-dropdown
+            [options]="employeeList"
+            [(ngModel)]="selectedEmployee"
+            optionLabel="fullName"
+            [filter]="true"
+          ></p-dropdown>
+
+          <label class="focus-label"></label>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-2">
+        <a
+          href="javascript:void(0)"
+          class="btn btn-info btn-block"
+          (click)="getDetails(selectedEmployee)"
+        >
+          <i class="fa fa-search"></i>&nbsp;Get Advances</a
+        >
+      </div>
+    </div>
+    <!-- /Search Filter -->
+    <div
+      class="col pl-0 pr-0"
+      *ngIf="employeeSelectedToaddAdvancePayRate?.employeeDetailsId"
+    >
+      <p-table
+        [columns]="cols"
+        [value]="advancesPayRateList"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        styleClass="ui-table-customers"
+        #dt
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [alwaysShowPaginator]="false"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [filterDelay]="0"
+        [globalFilterFields]="['status']"
+      >
+        <ng-template pTemplate="caption">
+          <div>
+            Employee Advances -
+            <span class="username">{{
+              employeeSelectedToaddAdvancePayRate?.fullName
+            }}</span>
+          </div>
+
+          <div class="ui-table-globalfilter-container">
+            <input
+              pInputText
+              type="text"
+              (input)="dt.filterGlobal($event.target.value, 'contains')"
+              placeholder="Search"
+            />
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th style="width: 12%; text-align: center">#</th>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{ col.header }}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+            <!-- <th class="actions">Actions</th> -->
+          </tr>
+        </ng-template>
+        <ng-template
+          pTemplate="body"
+          let-rowData
+          let-columns="columns"
+          let-rowIndex="rowIndex"
+        >
+          <tr [pSelectableRow]="rowData">
+            <td>
+              <!-- <a href="javascript:void(0)"  (click)="showDialogToEdit(rowData)"
+                >#ADV-0000{{ rowIndex + 1 }}
+              </a> -->
+              <a
+                href="javascript:void(0)"
+                [routerLink]="['/admin/advances/advance/view']"
+                [state]="{
+                  details: rowData
+                }"
+                >#ADV-0000{{ rowIndex + 1 }}</a
+              >
+            </td>
+            <ng-container *ngFor="let col of columns">
+              <td
+                *ngIf="
+                  col.field != 'status' &&
+                  col.field != 'description' &&
+                  col.field != 'advanceAmount'
+                "
+              >
+                {{ rowData[col.field] }}
+              </td>
+              <td *ngIf="col.field == 'advanceAmount'">
+                <div *ngIf="rowData[col.field]; else noAmount">
+                  {{ organizationCurrency }} {{ rowData[col.field] }}
+                </div>
+                <ng-template #noAmount> &nbsp; </ng-template>
+              </td>
+
+              <td *ngIf="col.field == 'description'">
+                <div
+                  class="d-flex justify-content-start"
+                  pTooltip="{{ rowData[col.field] }}"
+                  tooltipPosition="top"
+                  *ngIf="rowData[col.field]"
+                >
+                  <div class="tab-descp">
+                    {{ rowData[col.field] }}
+                  </div>
+                  <div>
+                    <i class="fa fa-info-circle ml-3" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </td>
+              <td class="" *ngIf="col.field == 'status'">
+                <div class="dropdown action-label">
+                  <a
+                    class="btn btn-white btn-sm btn-rounded dropdown-toggle"
+                    href="#"
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <i
+                      class="fa fa-dot-circle-o text-info"
+                      *ngIf="rowData[col.field] == 'Advance Requested'"
+                    ></i>
+                    <i
+                      class="fa fa-dot-circle-o text-danger"
+                      *ngIf="rowData[col.field] == 'Advance Not Paid'"
+                    ></i>
+                    <i
+                      class="fa fa-dot-circle-o text-success"
+                      *ngIf="rowData[col.field] == 'Advance Paid'"
+                    ></i>
+                    {{ rowData[col.field] }}
+                  </a>
+                  <i
+                    class="fa fa-trash-o ml-3 text-danger"
+                    style="cursor: pointer"
+                    data-toggle="modal"
+                    data-target="#confirmModel"
+                    (click)="statusUpdate(rowData, '0', 'Delete')"
+                    aria-hidden="true"
+                  ></i>
+                  <div class="dropdown-menu dropdown-menu-right">
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      (click)="statusUpdate(rowData, '1', 'Update')"
+                      data-target="#confirmModel"
+                      data-toggle="modal"
+                      *ngIf="rowData[col.field] != 'Advance Requested'"
+                      ><i class="fa fa-dot-circle-o text-info"></i> Advance
+                      Requested
+                    </a>
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      data-target="#confirmModel"
+                      (click)="statusUpdate(rowData, '2', 'Update')"
+                      data-toggle="modal"
+                      *ngIf="rowData[col.field] != 'Advance Not Paid'"
+                      ><i class="fa fa-dot-circle-o text-danger"></i> Advance
+                      Not Paid
+                    </a>
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      data-target="#confirmModel"
+                      (click)="statusUpdate(rowData, '3', 'Update')"
+                      data-toggle="modal"
+                      *ngIf="rowData[col.field] != 'Advance Paid'"
+                      ><i class="fa fa-dot-circle-o text-success"></i> Advance
+                      Paid
+                    </a>
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td [attr.colspan]="cols.length + 1" style="text-align: center">
+              No Records Found.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <div
+      class="col pl-0 pr-0"
+      *ngIf="!employeeSelectedToaddAdvancePayRate?.employeeDetailsId"
+    >
+      <p-table
+        [columns]="cols"
+        [value]="advancesPayRateList"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        styleClass="ui-table-customers"
+        #dt
+        class="all-advancesPayRateList"
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [alwaysShowPaginator]="false"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [filterDelay]="0"
+        [globalFilterFields]="['status']"
+      >
+        <ng-template pTemplate="caption">
+          <div>
+            Employee Advances -
+            <span class="username">{{
+              employeeSelectedToaddAdvancePayRate?.fullName
+            }}</span>
+          </div>
+
+          <div class="ui-table-globalfilter-container">
+            <input
+              pInputText
+              type="text"
+              (input)="dt.filterGlobal($event.target.value, 'contains')"
+              placeholder="Search"
+            />
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{ col.header }}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+            <!-- <th class="actions">Actions</th> -->
+          </tr>
+        </ng-template>
+        <ng-template
+          pTemplate="body"
+          let-rowData
+          let-columns="columns"
+          let-rowIndex="rowIndex"
+        >
+          <tr [pSelectableRow]="rowData">
+            <ng-container *ngFor="let col of columns">
+              <td
+                *ngIf="
+                  col.field != 'status' &&
+                  col.field != 'description' &&
+                  col.field != 'employeeName' &&
+                  col.field != 'advanceAmount'
+                "
+              >
+                {{ rowData[col.field] }}
+              </td>
+              <td *ngIf="col.field == 'advanceAmount'">
+                <div *ngIf="rowData[col.field]; else noAmount">
+                  {{ organizationCurrency }} {{ rowData[col.field] }}
+                </div>
+                <ng-template #noAmount> &nbsp; </ng-template>
+              </td>
+              <td *ngIf="col.field == 'employeeName'">
+                <h2 class="table-avatar">
+                  <a
+                    href="javascript:void(0)"
+                    [routerLink]="['/admin/advances/advance/view']"
+                    [state]="{
+                      details: rowData
+                    }"
+                    >{{ rowData[col.field] }}</a
+                  >
+                </h2>
+              </td>
+
+              <td *ngIf="col.field == 'description'">
+                <div
+                  class="d-flex justify-content-start"
+                  pTooltip="{{ rowData[col.field] }}"
+                  tooltipPosition="top"
+                  *ngIf="rowData[col.field]"
+                >
+                  <div class="tab-descp">
+                    {{ rowData[col.field] }}
+                  </div>
+                  <div>
+                    <i class="fa fa-info-circle ml-3" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </td>
+              <td class="" *ngIf="col.field == 'status'">
+                <div class="dropdown action-label">
+                  <a
+                    class="btn btn-white btn-sm btn-rounded dropdown-toggle"
+                    href="#"
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <i
+                      class="fa fa-dot-circle-o text-info"
+                      *ngIf="rowData[col.field] == 'Advance Requested'"
+                    ></i>
+                    <i
+                      class="fa fa-dot-circle-o text-danger"
+                      *ngIf="rowData[col.field] == 'Advance Not Paid'"
+                    ></i>
+                    <i
+                      class="fa fa-dot-circle-o text-success"
+                      *ngIf="rowData[col.field] == 'Advance Paid'"
+                    ></i>
+                    {{ rowData[col.field] }}
+                  </a>
+                  <i
+                    class="fa fa-trash-o ml-3 text-danger"
+                    style="cursor: pointer"
+                    data-toggle="modal"
+                    data-target="#confirmModel"
+                    (click)="statusUpdate(rowData, '0', 'Delete')"
+                    aria-hidden="true"
+                  ></i>
+                  <div
+                    class="dropdown-menu dropdown-menu-right"
+                    x-placement="bottom-end"
+                    style="
+                      position: relative;
+                      will-change: transform;
+                      top: 0px;
+                      left: 0px;
+                      transform: translate3d(-17px, 31px, 0px);
+                    "
+                  >
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      (click)="statusUpdate(rowData, '1', 'Update')"
+                      data-target="#confirmModel"
+                      data-toggle="modal"
+                      *ngIf="rowData[col.field] != 'Advance Requested'"
+                      ><i class="fa fa-dot-circle-o text-info"></i> Advance
+                      Requested
+                    </a>
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      data-target="#confirmModel"
+                      (click)="statusUpdate(rowData, '2', 'Update')"
+                      data-toggle="modal"
+                      *ngIf="rowData[col.field] != 'Advance Not Paid'"
+                      ><i class="fa fa-dot-circle-o text-danger"></i> Advance
+                      Not Paid
+                    </a>
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      data-target="#confirmModel"
+                      (click)="statusUpdate(rowData, '3', 'Update')"
+                      data-toggle="modal"
+                      *ngIf="rowData[col.field] != 'Advance Paid'"
+                      ><i class="fa fa-dot-circle-o text-success"></i> Advance
+                      Paid
+                    </a>
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td [attr.colspan]="cols.length" style="text-align: center">
+              No Records Found.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+<!-- Add or edit deductions -->
+<div
+  id="uploadFile_info"
+  [ngStyle]="{ display: advanceModel }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          *ngIf="errorLabel"
+          style="position: absolute; left: 15px"
+          class="text-danger"
+        >
+          {{ errorLabel }}
+        </h5>
+        <h5 class="modal-title">
+          Advance Details : {{ selectedEmployee?.fullName }}
+        </h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeUploadmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card m-0">
+          <div class="card-body">
+            <form (ngSubmit)="save(f)" #f="ngForm">
+              <div class="row" *ngIf="errorLabel">
+                <div class="col-sm-6" style="color: red">
+                  {{ errorLabel }}
+                </div>
+              </div>
+              <div class="row">
+                <!-- <div class="form-group col-6">
+                  <label
+                    >Select Employee <span class="text-danger"> *</span></label
+                  >
+                  <p-dropdown
+                    [options]="employeeList"
+                    [filter]="true"
+                    [(ngModel)]="employeeSelectedToaddAdvancePayRate"
+                    name="employeeSelectedToaddAdvancePayRate"
+                    (onChange)="selectEmployeeToAddAdvancePayRate()"
+                    optionLabel="fullName"
+                    [filter]="true"
+                  ></p-dropdown>
+                </div> -->
+                <div class="form-group col-6">
+                  <label
+                    >{{ organizationCurrency }} Amount<span class="text-danger">
+                      *</span
+                    >
+                  </label>
+                  <p-inputNumber
+                    name="advanceAmount"
+                    [(ngModel)]="advancePayRateDetails.advanceAmount"
+                    maxlength="12"
+                    [minFractionDigits]="2"
+                    [useGrouping]="false"
+                    ariaRequired="true"
+                    required
+                  ></p-inputNumber>
+                  <!-- <input
+                    class="form-control text-right"
+                    type="number"
+                    name="advanceAmount"
+                    min="0"
+                    oninput="validity.valid||(value='');"
+                    [(ngModel)]="advancePayRateDetails.advanceAmount"
+                    required
+                  /> -->
+                </div>
+                <div class="col-6 form-group">
+                  <label
+                    >Requested Date<span class="text-danger"> *</span>
+                  </label>
+                  <p-calendar
+                    #minimumDate
+                    [yearNavigator]="true"
+                    [monthNavigator]="true"
+                    yearRange="1980:2050"
+                    readonlyInput="true"
+                    showIcon="true"
+                    dateFormat="mm-dd-yy"
+                    name="advanceRequestedDate"
+                    dataType="string"
+                    [(ngModel)]="advancePayRateDetails.advanceRequestedDate"
+                    required
+                  ></p-calendar>
+                </div>
+                <div
+                  class="form-group col-6"
+                  *ngIf="advancePayRateDetails?.employeeAdvanceDetailsId"
+                >
+                  <label>Advance Paid Date </label>
+                  <p-calendar
+                    [minDate]="minimumDate.value"
+                    [yearNavigator]="true"
+                    [monthNavigator]="true"
+                    yearRange="1980:2050"
+                    readonlyInput="true"
+                    showIcon="true"
+                    dateFormat="mm-dd-yy"
+                    name="advancePaidDate"
+                    dataType="string"
+                    [(ngModel)]="advancePayRateDetails.advancePaidDate"
+                  ></p-calendar>
+                </div>
+
+                <div class="form-group col-12">
+                  <label>Description </label>
+                  <textarea
+                    pInputTextarea
+                    autoResize="false"
+                    [rows]="5"
+                    name="description"
+                    [(ngModel)]="advancePayRateDetails.description"
+                    maxlength="2500"
+                    (keypress)="sharedService.keyPressAddress($event)"
+                  ></textarea>
+                </div>
+              </div>
+
+              <div class="submit-section">
+                <button
+                  type="submit"
+                  class="btn btn-success submit-btn"
+                  [disabled]="!f.valid"
+                >
+                  <i class="fa fa-save"></i>&nbsp;Save
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger submit-btn ml-2"
+                  (click)="closeUploadmodal()"
+                >
+                  <i class="fa fa-times"></i>&nbsp;Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Add or edit deductions -->
+<!-- confirm model-->
+<div
+  class="modal custom-modal fade"
+  id="confirmModel"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <h3>{{ confirmType }} Advance</h3>
+          <p>Are you sure ? Do you want to {{ confirmType }} Advance ?</p>
+        </div>
+        <div class="modal-btn">
+          <div class="row">
+            <div class="col-6 d-flex justify-content-end">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                (click)="confirm()"
+                class="btn btn-info submit-btn"
+                ><i class="fa fa-check"></i>&nbsp;Confirm</a
+              >
+            </div>
+            <div class="col-6 d-flex justify-content-start">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                class="btn btn-danger submit-btn"
+                ><i class="fa fa-times"></i>&nbsp;Cancel</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /confirm model-->

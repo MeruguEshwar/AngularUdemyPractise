@@ -1,0 +1,95 @@
+<div class="card">
+  <div class="card-body">
+    <h3 class="card-title" *ngIf="isPreview">
+      <a
+        href="javascript:void(0)"
+        class="edit-icon ng-star-inserted"
+        (click)="onEdit()"
+        ><i class="fa fa-pencil"></i></a
+      ><!--bindings={
+  "ng-reflect-ng-if": "1"
+}-->
+    </h3>
+    <form #digitalSign="ngForm">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Signature <span class="text-danger">*</span></label>
+            <input
+              class="form-control"
+              type="text"
+              name="fullName"
+              [(ngModel)]="fullName"
+              required
+              minlength="2"
+              [disabled]="isPreview"
+              (keypress)="sharedService.keyPressAlphabet($event)"
+            />
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="form-group">
+            <label>Initials <span class="text-danger">*</span></label>
+            <input
+              class="form-control"
+              type="text"
+              name="initials "
+              [(ngModel)]="initials"
+              required
+              [disabled]="isPreview"
+              minlength="1"
+              (keypress)="sharedService.keyPressAlphabet($event)"
+            />
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="form-group">
+            <label>Change Style</label>
+            <p-dropdown
+              [options]="changeStylesList"
+              [(ngModel)]="selectedStyle"
+              optionLabel="label"
+              (onChange)="selectStyle($event.value)"
+              name="signatureStyle"
+              [filter]="true"
+              [disabled]="isPreview"
+            ></p-dropdown>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label class="pb-3">Preview of the Signature</label>
+          <p [ngStyle]="{ 'font-family': signatureStyle }" class="signature">
+            {{ fullName }}
+          </p>
+        </div>
+        <div class="col-md-6">
+          <label class="pb-3">Preview of the Initials </label>
+          <p [ngStyle]="{ 'font-family': signatureStyle }" class="signature">
+            {{ initials }}
+          </p>
+        </div>
+      </div>
+      <div class="submit-section">
+        <button
+          *ngIf="!isPreview"
+          class="btn btn-success submit-btn mr-3"
+          type="submit"
+          (click)="saveSignature()"
+          [disabled]="!digitalSign.valid"
+        >
+          <i class="fa fa-save"></i>&nbsp;Save
+        </button>
+        <button
+          *ngIf="!isPreview"
+          class="btn btn-danger submit-btn"
+          type="submit"
+          (click)="cancel()"
+        >
+          <i class="fa fa-times"></i>&nbsp;Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

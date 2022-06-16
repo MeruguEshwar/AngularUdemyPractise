@@ -1,0 +1,18 @@
+:host
+  ::ng-deep
+  .yearLst
+  .ui-table-customers
+  .ui-table-globalfilter-container
+  input,
+:host ::ng-deep p-dropdown.yearLst .ui-dropdown {
+  width: 200px;
+  height: 33px;
+}
+:host ::ng-deep p-dropdown.yearLst .ui-dropdown .ui-dropdown-label {
+  height: 31px;
+  line-height: unset;
+}
+
+:host ::ng-deep p-dropdown.yearLst .ui-dropdown {
+  margin-right: 15px;
+}

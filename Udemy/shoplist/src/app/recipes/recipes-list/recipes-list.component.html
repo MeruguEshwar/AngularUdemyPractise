@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col-xs-12">
+        <div class="button btn btn-success">New Recipe</div>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-xs-12">
+        <!-- <a 
+        href="#" 
+        class="list-group-item clearfix" 
+        *ngFor = "let nani of recipes">
+        <div class="position-relative">
+        <div>
+            <h4 class="list-group-item-heading">{{nani.name}}</h4>
+            <p class="list-group-item-text">{{nani.descrption}}</p>
+        </div>
+        <span class="position-absolute top-0 end-0">
+            <img 
+            [src]="nani.imgpath" 
+            alt="{{nani.name}}" 
+            class="img-responsive" 
+            style="max-height: 50px;">
+        </span>
+        </div>
+    </a> -->
+        <app-recipes-item
+        *ngFor = "let recipeEle of recipes"
+       
+        ></app-recipes-item>
+    </div>
+</div>
+

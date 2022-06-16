@@ -1,0 +1,224 @@
+<div
+  id="add_employee"
+  class="modal custom-modal backdrop"
+  [ngStyle]="{ display: addemployeeDisplay }"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-capitalize">
+          Employee Details
+          <ng-container *ngIf="employee.firstName || employee.lastName">
+            : {{ employee.firstName }} {{ employee.lastName }}</ng-container
+          >
+        </h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card m-0">
+          <div class="card-body">
+            <form #f="ngForm" (ngSubmit)="save()">
+              <div>
+                <div class="row" *ngIf="errLabel">
+                  <div class="col-sm-6" class="text-danger">
+                    {{ errLabel }}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="col-form-label"
+                        >First Name <span class="text-danger">*</span></label
+                      >
+                      <input
+                        pInputText
+                        class="form-control"
+                        [(ngModel)]="employee.firstName"
+                        name="firstName"
+                        placeholder=" "
+                        type="text"
+                        required
+                        #firstName="ngModel"
+                        minlength="2"
+                        maxlength="150"
+                        pattern="[A-Za-z ]{1,150}"
+                        (keypress)="sharedService.keyPressAlphabet($event)"
+                      />
+                      <small
+                        class="text-danger"
+                        *ngIf="firstName.touched && firstName.invalid"
+                        >The given value is not a valid format.</small
+                      >
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="col-form-label"
+                        >Last Name <span class="text-danger">*</span></label
+                      >
+                      <input
+                        pInputText
+                        class="form-control"
+                        [(ngModel)]="employee.lastName"
+                        name="lastName"
+                        placeholder=" "
+                        type="text"
+                        required
+                        #lastName="ngModel"
+                        maxlength="150"
+                        pattern="[A-Za-z ]{1,150}"
+                        (keypress)="sharedService.keyPressAlphabet($event)"
+                      />
+                      <small
+                        class="text-danger"
+                        *ngIf="lastName.touched && lastName.invalid"
+                        >The given value is not a valid format.</small
+                      >
+                    </div>
+                  </div>
+                  <!-- <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Employee ID <span class="text-danger">*</span></label>
+                                <input pInputText class="form-control" [(ngModel)]="employee.employeeid"
+                                    name="employeeid" placeholder="employeeid" type="text">
+                            </div>
+                        </div> -->
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="col-form-label"
+                        >Email <span class="text-danger">*</span></label
+                      >
+                      <input
+                        pInputText
+                        class="form-control"
+                        [(ngModel)]="employee.email"
+                        type="email"
+                        name="email"
+                        #email="ngModel"
+                        maxlength="150"
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                        (keypress)="sharedService.keyPressEmail($event)"
+                        required
+                      />
+                      <small
+                        class="text-danger"
+                        *ngIf="email.touched && email.invalid"
+                        >The given value is not a valid format.</small
+                      >
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="col-form-label"
+                        >Mobile <span class="text-danger">*</span></label
+                      >
+                      <input
+                        pInputText
+                        class="form-control"
+                        [(ngModel)]="employee.phoneNumber"
+                        type="tel"
+                        name="phoneNumber"
+                        #phone="ngModel"
+                        maxlength="15"
+                        required
+                        pattern="[0-9]{10,15}"
+                        (keypress)="sharedService.keyPressNumber($event)"
+                      />
+                      <small
+                        class="text-danger"
+                        *ngIf="phone.touched && phone.invalid"
+                        >The given value is not a valid format.</small
+                      >
+                    </div>
+                  </div>
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                      <label class="col-form-label"
+                        >Role <span class="text-danger">*</span></label
+                      >
+                      <div>
+                        <div
+                          *ngFor="let role of roles; let i = index"
+                          class="{{ i == 0 ? 'ui-g-3' : 'ui-g-2' }}"
+                        >
+                          <p-radioButton
+                            name="role"
+                            [value]="role.value"
+                            [label]="role.label"
+                            [(ngModel)]="employee.roleId"
+                            [inputId]="'role' + i"
+                            required
+                          ></p-radioButton>
+                        </div>
+                      </div>
+                      <!-- <p-dropdown class="form-control"  [options]="designation" [(ngModel)]="selectedDesignation" placeholder="Select a City" [filter]="true">
+                                </p-dropdown> -->
+                    </div>
+                  </div>
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                      <label class="col-form-label"
+                        >Send Registration Mail
+                        <span class="text-danger">*</span></label
+                      >
+                      <div>
+                        <div
+                          *ngFor="let item of approvals; let i = index"
+                          class="ui-g-3"
+                        >
+                          <p-radioButton
+                            name="approval"
+                            [value]="item.value"
+                            [label]="item.label"
+                            [(ngModel)]="employee.sendRegistrationLink"
+                            [inputId]="'approval' + i"
+                            required
+                          ></p-radioButton>
+                        </div>
+                      </div>
+                      <!-- <p-dropdown class="form-control"  [options]="designation" [(ngModel)]="selectedDesignation" placeholder="Select a City" [filter]="true">
+                                </p-dropdown> -->
+                    </div>
+                  </div>
+                  <div class="col-sm-12" *ngIf="employee.sendRegistrationLink">
+                    <span class="text-info"
+                      >Note: Please ask the Employee to check the spam folder
+                      for the registration mail
+                    </span>
+                  </div>
+                </div>
+
+                <div class="submit-section">
+                  <button
+                    type="submit"
+                    class="btn btn-success submit-btn mr-2"
+                    [disabled]="!f.valid"
+                  >
+                    <i class="fa fa-save"></i>&nbsp;Save
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-danger submit-btn"
+                    (click)="closeAddmodal()"
+                  >
+                    <i class="fa fa-times"></i>&nbsp;Cancel
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

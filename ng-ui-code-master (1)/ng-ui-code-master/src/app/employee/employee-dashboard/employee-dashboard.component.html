@@ -1,0 +1,259 @@
+<div class="page-wrapper">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="javscript:void(0)">Dashboard</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="card mb-0">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="profile-view">
+              <div class="profile-img-wrap">
+                <div class="profile-img">
+                  <a href="javascript:void(0)">
+                    <img alt="" src="{{ pictureUrl + profile?.photoPath }}" />
+                    <!-- <img alt="" [src]="profile?.photoPath" /> -->
+                  </a>
+                </div>
+              </div>
+              <div class="profile-basic">
+                <div class="row">
+                  <div class="col-md-5">
+                    <div class="profile-info-left">
+                      <h3 class="user-name m-t-0 mb-0">
+                        {{ profile?.fullName }}
+                      </h3>
+                      <h6 class="text-muted">{{ profile?.department }}</h6>
+                      <small class="text-muted">{{
+                        profile?.designation
+                      }}</small>
+                      <div class="staff-id">
+                        Employee Id :
+                        <span class="text-muted">{{
+                          profile?.employeeId
+                        }}</span>
+                      </div>
+                      <div class="small doj text-muted">
+                        Date of Join :
+                        {{ profile?.dateOfJoining }} ({{ profile?.duration }})
+                      </div>
+                      <div class="staff-id">
+                        Supervisor :
+                        <span class="text-muted">{{
+                          profile?.reportingToEmployeeName
+                        }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-7">
+                    <ul class="personal-info">
+                      <li class="clearfix">
+                        <div class="title">Email</div>
+                        <div class="text">
+                          <span>: {{ profile?.email || '-' }}</span>
+                        </div>
+                      </li>
+                      <li class="clearfix">
+                        <div class="title">Date Of Birth</div>
+                        <div class="text">
+                          <span>: {{ profile?.dateOfBirth || '-' }}</span>
+                        </div>
+                      </li>
+                      <!-- <li class="clearfix">
+                        <div class="title">Nationality</div>
+                        <div class="text">
+                          <span>: {{ profile?.nationality || '-' }}</span>
+                        </div>
+                      </li>
+                      <li class="clearfix">
+                        <div class="title">Marital status</div>
+                        <div class="text" *ngIf="profile?.maritalStatus">
+                          : {{ MaritalStatus[profile?.maritalStatus] || '-' }}
+                          <span *ngIf="profile?.dateOfMarriage" class="ml-3">
+                            ({{ profile?.dateOfMarriage }})</span
+                          >
+                        </div>
+                      </li> -->
+                      <!-- <li class="clearfix">
+                        <div class="title">Gender</div>
+                        <div class="text">
+                          <span *ngIf="profile?.gender"
+                            >: {{ Gender[profile?.gender] }}</span
+                          >
+                        </div>
+                      </li> -->
+                      <li class="clearfix">
+                        <div class="title">Immigration Status</div>
+                        <div class="text">
+                          <span *ngIf="profile?.gender"
+                            >:
+                            {{
+                              getImmigrationStatus(profile?.immigrationStatus)
+                            }}</span
+                          >
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="pro-edit hover-item">
+                <a
+                  style="cursor: pointer; color: blue"
+                  class="nav-link"
+                  (click)="navigateToMyProfile()"
+                >
+                  My Profile</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Modal -->
+        <div
+          id="profile_info"
+          [ngStyle]="{ display: profileinfo }"
+          class="modal custom-modal backdrop"
+          role="dialog"
+          *ngIf="profileinfo == 'block'"
+        >
+          <div
+            class="modal-dialog modal-dialog-centered modal-xl"
+            role="document"
+          >
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5
+                  *ngIf="errorLabel"
+                  style="position: absolute; left: 15px"
+                  class="text-danger"
+                >
+                  {{ errorLabel }}
+                </h5>
+                <h5 class="modal-title">
+                  Profile Details<ng-container
+                    >: {{ profile?.firstName }}
+                    {{ profile?.lastName }}</ng-container
+                  >
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  (click)="closeAddmodal()"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /Profile Modal -->
+      </div>
+    </div>
+    <!-- <div class="card mb-0 mt-3">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6 d-flex">
+            <div class="card profile-box flex-fill">
+              <h3 class="card-title">Contact Details</h3>
+              <!-- <h5 class="section-title">Primary</h5> 
+              <ul class="personal-info">
+                <li>
+                  <div class="title">Address</div>
+                  <div class="text">
+                    <span>{{ profile?.address || '-' }}</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="title">City</div>
+                  <div class="text">
+                    <span>{{ profile?.city || '-' }}</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="title">State</div>
+                  <div class="text">
+                    <span>{{ profile?.state || '-' }}</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="title">Country</div>
+                  <div class="text">
+                    <span>{{ profile?.country || '-' }}</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="title">Zip Code</div>
+                  <div class="text">
+                    <span>{{ profile?.pinCode || '-' }}</span>
+                  </div>
+                </li>
+                <li class="clearfix">
+                  <div class="title">Phone Number</div>
+                  <div class="text">
+                    <span>{{ profile?.phoneNumber || '-' }}</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <!-- Direct Reports -->
+    <div class="row">
+      <div class="col-md-12 d-flex">
+        <div class="card mt-3 profile-box flex-fill">
+          <div class="card-body">
+            <h3 class="card-title">Direct Reports</h3>
+            <div class="row">
+              <div
+                class="col-md-4"
+                *ngFor="let report of profile?.directReports"
+              >
+                <div class="leave-info-box">
+                  <div class="media align-items-center">
+                    <a href="javascript:void(0)" class="avatar">
+                      <img
+                        src="{{ pictureUrl + report.photoPath }}"
+                        alt="user"
+                      />
+                    </a>
+                    <div class="media-body">
+                      <div class="text-sm my-0">
+                        {{ report.fullName }}
+                        <small class="text-muted"
+                          >( {{ report.employeeId }} )</small
+                        >
+                      </div>
+                      <div>
+                        <small class="text-muted">{{ report.department }}</small
+                        >,
+                        <small class="text-muted">{{
+                          report.designation
+                        }}</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

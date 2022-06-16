@@ -1,0 +1,46 @@
+<div class="row d-flex align-items-center">
+  <div class="col-sm-6" style="background-color: white">
+    <h1 class="heading1">
+      {{ bannerDetails.HeadLine }}
+    </h1>
+    <p class="paragraph1">
+      {{ bannerDetails.content }}
+    </p>
+    <button class="btn add-btn float-left" (click)="onLoginClick('register')">
+      Get Started >>
+    </button>
+  </div>
+  <div class="col-sm-6" style="background-color: white">
+    <img [src]="bannerDetails.img" alt="Cinque Terre" class="img-fluid" />
+  </div>
+</div>
+<div
+  class="modal custom-modal backdrop"
+  role="dialog"
+  id="getstarted"
+  [ngStyle]="{ display: getLoginDisplay }"
+  *ngIf="getLoginDisplay == 'block'"
+>
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-lg">
+    <div class="modal-content container no-gutters p-0">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-login
+          [nonRoutingModule]="true"
+          [actionType]="actionType"
+          (onClose)="onClose($event)"
+        ></app-login>
+      </div>
+    </div>
+  </div>
+</div>

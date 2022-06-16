@@ -1,0 +1,596 @@
+<div class="main-wrapper">
+  <div class="sidebar" id="sidebar">
+    <div
+      class="slimScrollDiv"
+      style="position: relative; overflow: hidden; width: 100%; height: 597px"
+    >
+      <div
+        class="sidebar-inner slimscroll"
+        style="overflow: hidden; width: 100%; height: 597px"
+      >
+        <div id="sidebar-menu" class="sidebar-menu">
+          <!-- <div
+            class="org-details d-flex justify-content-start align-items-center"
+          >
+            <div class="profile-img">
+              <a href="javascript:void(0)" class="avatar">
+                <img alt="" src="{{ pictureUrl + user.logoPath }}" />
+              </a>
+            </div>
+            <div>
+              <h4 class="org-name pl-3 m-0">{{ user.orgnizationName }}</h4>
+            </div>
+          </div> -->
+          <ng-container *ngIf="user.roleId == 1">
+            <ul>
+              <li class="submenu" routerLinkActive="active">
+                <a [routerLink]="['/supremeadmin/dashboard']" class="subdrop"
+                  ><i class="la la-dashboard"></i> <span>Dashboard</span></a
+                >
+              </li>
+              <li class="submenu" routerLinkActive="active">
+                <a [routerLink]="['/supremeadmin/organization']" class="subdrop"
+                  ><i class="la la-dashboard"></i> <span>Organizations</span></a
+                >
+              </li>
+              <li class="submenu" routerLinkActive="active">
+                <a
+                  [routerLink]="['/supremeadmin/freeemaildomain']"
+                  class="subdrop"
+                  ><i class="la la-dashboard"></i>
+                  <span>Free Email Domains</span></a
+                >
+              </li>
+              <li class="submenu" routerLinkActive="active">
+                <a
+                  [routerLink]="['/supremeadmin/feature_requests']"
+                  class="subdrop"
+                  ><i class="fa fa-commenting-o"></i>
+                  <span>Feature Requests</span></a
+                >
+              </li>
+            </ul>
+          </ng-container>
+          <ng-container *ngIf="user.roleId == 7">
+            <ul>
+              <li class="submenu" routerLinkActive="active">
+                <a [routerLink]="['/timesheet_Approvers']" class="subdrop"
+                  ><i class="fa fa-calendar"></i> <span>Timesheets</span></a
+                >
+              </li>
+            </ul>
+          </ng-container>
+          <ng-container *ngIf="user.roleId != 1 && user.roleId != 7">
+            <ng-container *ngIf="!switchedView">
+              <ul>
+                <li class="submenu" routerLinkActive="active">
+                  <a [routerLink]="['/employee/dashboard']" class="subdrop"
+                    ><i class="la la-dashboard"></i> <span>Dashboard</span></a
+                  >
+                </li>
+
+                <li class="submenu" routerLinkActive="active">
+                  <a [routerLink]="['/employee/timesheets']" class="subdrop"
+                    ><i class="fa fa-calendar"></i> <span>Timesheets</span></a
+                  >
+                </li>
+                <li
+                  class="submenu"
+                  routerLinkActive="active"
+                  *ngIf="user.employeeType != '2' && user.employeeType != '5'"
+                >
+                  <a [routerLink]="['/employee/paystub']" class="subdrop"
+                    ><i class="fa fa-balance-scale"></i> <span>Paystub</span></a
+                  >
+                </li>
+                <li class="submenu" routerLinkActive="active">
+                  <a [routerLink]="['/employee/project']" class="subdrop"
+                    ><i class="fa fa-cubes"></i> <span>Projects</span></a
+                  >
+                </li>
+                <li class="submenu" routerLinkActive="active">
+                  <a [routerLink]="['/employee/documents']" class="subdrop"
+                    ><i class="fa fa-files-o"></i> <span>Documents</span></a
+                  >
+                </li>
+                <li class="submenu" routerLinkActive="active">
+                  <a
+                    [routerLink]="['/employee/projectDocuments']"
+                    class="subdrop"
+                    ><i class="fa fa-book"></i>
+                    <span>Project Documents</span></a
+                  >
+                </li>
+
+                <!-- <li class="submenu" routerLinkActive="active">
+                  <a
+                    [routerLink]="['/employee/supplierDocuments']"
+                    class="subdrop"
+                    ><i class="fa fa-university"></i>
+                    <span>Customer Documents</span></a
+                  >
+                </li> -->
+                <li class="submenu" routerLinkActive="active">
+                  <a [routerLink]="['/employee/notes']" class="subdrop"
+                    ><i class="fa fa-comment"></i> <span>Comments</span></a
+                  >
+                </li>
+                <!-- <li class="submenu" routerLinkActive="active">
+                  <a [routerLink]="['/employee/requests']" class="subdrop"
+                    ><i class="fa fa-sticky-note-o"></i>
+                    <span>Requests</span></a
+                  >
+                </li> -->
+                <li
+                  class="submenu upmenu"
+                  routerLinkActive="active"
+                  *ngIf="user.employeeType != '2' && user.employeeType != '5'"
+                >
+                  <a
+                    href="javscript:void()"
+                    data-toggle="collapse"
+                    data-target="#enforcementToggleExternalContent"
+                    aria-controls="enforcementToggleExternalContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                    class="dropdown-toggle-menu"
+                    ><i class="fa fa-handshake-o"></i>
+                    <span>Onboarding </span></a
+                  >
+                  <div class="collapse" id="enforcementToggleExternalContent">
+                    <li class="submenu innermenu" routerLinkActive="active">
+                      <a [routerLink]="['/employee/i9']" class="subdrop"
+                        ><i class="fa fa-id-card"></i> <span>I9</span></a
+                      >
+                    </li>
+                    <li class="submenu innermenu" routerLinkActive="active">
+                      <a [routerLink]="['/employee/w4']" class="subdrop"
+                        ><i class="fa fa-file-word-o"></i> <span>W4</span></a
+                      >
+                    </li>
+                  </div>
+                </li>
+                <!-- <li class="submenu upmenu" routerLinkActive="active">
+                  <a
+                    href="javscript:void()"
+                    data-toggle="collapse"
+                    data-target="#employeePayHistory"
+                    aria-controls="employeePayHistory"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                    class="dropdown-toggle-menu"
+                    ><i class="fa fa-industry"></i>
+                    <span>My Pay Details </span></a
+                  >
+                  <div class="collapse" id="employeePayHistory">
+                    <li class="submenu innermenu" routerLinkActive="active">
+                      <a [routerLink]="['/employee/advances']" class="subdrop"
+                        ><i class="fa fa-gift"></i> <span>Advances</span></a
+                      >
+                    </li>
+                    <li class="submenu innermenu" routerLinkActive="active">
+                      <a [routerLink]="['/employee/deductions']" class="subdrop"
+                        ><i class="fa fa-eraser"></i> <span>Deductions</span></a
+                      >
+                    </li>
+
+                    <li class="submenu innermenu" routerLinkActive="active">
+                      <a [routerLink]="['/employee/payrate']" class="subdrop"
+                        ><i class="fa fa-calculator"></i>
+                        <span>Pay Rate</span></a
+                      >
+                    </li>
+                  </div>
+                </li> -->
+                <!-- <li class="submenu upmenu" routerLinkActive="active">
+                <a
+                  href="javscript:void()"
+                  data-toggle="collapse"
+                  data-target="#employeePayHistory"
+                  aria-controls="employeePayHistory"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation"
+                  ><i class="fa fa-handshake-o"></i>
+                  <span>Employee Pay History</span></a
+                >
+                <div class="collapse" id="employeePayHistory">
+                  <li class="submenu innermenu" routerLinkActive="active">
+                    <a [routerLink]="[user.role + '/advances']" class="subdrop"
+                      ><i class="fa fa-handshake-o"></i>
+                      <span>Advances</span></a
+                    >
+                  </li>
+                  <li class="submenu innermenu" routerLinkActive="active">
+                    <a
+                      [routerLink]="[user.role + '/deductions']"
+                      class="subdrop"
+                      ><i class="fa fa-handshake-o"></i>
+                      <span>Deductions</span></a
+                    >
+                  </li>
+                  <li class="submenu innermenu" routerLinkActive="active">
+                    <a [routerLink]="[user.role + '/expenses']" class="subdrop"
+                      ><i class="fa fa-handshake-o"></i>
+                      <span>Expenses</span></a
+                    >
+                  </li>
+                  <li class="submenu innermenu" routerLinkActive="active">
+                    <a [routerLink]="[user.role + '/payrate']" class="subdrop"
+                      ><i class="fa fa-handshake-o"></i>
+                      <span>Pay Rate</span></a
+                    >
+                  </li>
+                </div>
+              </li> -->
+                <!-- <li class="submenu" routerLinkActive="active">
+                  <a [routerLink]="['/employee/immigrations']" class="subdrop"
+                    ><i class="fa fa-plane"></i> <span>Immigration</span></a
+                  >
+                </li>
+                <li class="submenu" routerLinkActive="active">
+                  <a [routerLink]="['/employee/timeline']" class="subdrop"
+                    ><i class="fa fa-road"></i>
+                    <span>Employee Timeline</span></a
+                  >
+                </li> -->
+              </ul>
+            </ng-container>
+            <ng-container *ngIf="switchedView">
+              <ul>
+                <li class="submenu" routerLinkActive="active">
+                  <a [routerLink]="[user.role + '/dashboard']" class="subdrop"
+                    ><i class="la la-dashboard"></i> <span>Dashboard</span></a
+                  >
+                </li>
+                <ng-container *ngIf="megaMenu == 1">
+                  <li class="submenu" routerLinkActive="active">
+                    <a [routerLink]="[user.role + '/employees']" class="subdrop"
+                      ><i class="fa fa-users"></i> <span>Employees</span></a
+                    >
+                  </li>
+                  <li class="submenu" routerLinkActive="active">
+                    <a [routerLink]="[user.role + '/checklist']" class="subdrop"
+                      ><i class="fa fa-list"></i> <span>Checklist</span></a
+                    >
+                  </li>
+                  <li class="submenu" routerLinkActive="active">
+                    <a [routerLink]="[user.role + '/company']" class="subdrop"
+                      ><i class="fa fa-university"></i>
+                      <span>Customers</span></a
+                    >
+                  </li>
+                  <li class="submenu" routerLinkActive="active">
+                    <a [routerLink]="[user.role + '/category']" class="subdrop"
+                      ><i class="fa fa-folder-open-o"></i>
+                      <span>Document Category</span></a
+                    >
+                  </li>
+                  <li class="submenu" routerLinkActive="active">
+                    <a
+                      [routerLink]="[user.role + '/departments']"
+                      class="subdrop"
+                      ><i class="fa fa-sitemap"></i> <span>Departments</span></a
+                    >
+                  </li>
+                  <li class="submenu" routerLinkActive="active">
+                    <a
+                      [routerLink]="[user.role + '/designations']"
+                      class="subdrop"
+                      ><i class="la la-user-plus"></i>
+                      <span>Designations</span></a
+                    >
+                  </li>
+                  <li class="submenu" routerLinkActive="active">
+                    <a [routerLink]="[user.role + '/paystubs']" class="subdrop"
+                      ><i class="fa fa-balance-scale"></i>
+                      <span>Paystubs</span></a
+                    >
+                  </li>
+                  <li class="submenu" routerLinkActive="active">
+                    <a
+                      [routerLink]="[user.role + '/timesheets']"
+                      class="subdrop"
+                      ><i class="fa fa-calendar"></i> <span>Timesheets</span></a
+                    >
+                  </li>
+                  <li class="submenu" routerLinkActive="active">
+                    <a [routerLink]="[user.role + '/projects']" class="subdrop"
+                      ><i class="fa fa-cubes"></i> <span>Projects</span></a
+                    >
+                  </li>
+                  <!-- <li class="submenu" routerLinkActive="active">
+                  <a [routerLink]="[user.role + '/documents']" class="subdrop"
+                    ><i class="fa fa-files-o"></i> <span>Documents</span></a
+                  >
+                </li> -->
+                  <!-- <li class="submenu" routerLinkActive="active">
+                    <a [routerLink]="[user.role + '/approvers']" class="subdrop"
+                      ><i class="fa fa-check-square-o"></i>
+                      <span>Approvers</span></a
+                    >
+                  </li> -->
+                  <!-- <li class="submenu" routerLinkActive="active">
+                    <a [routerLink]="[user.role + '/requests']" class="subdrop"
+                      ><i class="fa fa-check-square-o"></i>
+                      <span>Requests</span></a
+                    >
+                  </li> -->
+                  <!-- <li class="submenu upmenu" routerLinkActive="active">
+                  <a
+                    href="javscript:void()"
+                    data-toggle="collapse"
+                    data-target="#enforcementToggleExternalContent"
+                    aria-controls="enforcementToggleExternalContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                    class="dropdown-toggle-menu"
+                    ><i class="fa fa-handshake-o"></i>
+                    <span>Onboarding </span></a
+                  >
+                  <div class="collapse" id="enforcementToggleExternalContent">
+                    <li class="submenu innermenu" routerLinkActive="active">
+                      <a [routerLink]="[user.role + '/i9']" class="subdrop"
+                        ><i class="fa fa-id-card-o"></i> <span>I9</span></a
+                      >
+                      <a [routerLink]="[user.role + '/w4']" class="subdrop"
+                        ><i class="fa fa-file-word-o"></i> <span>W4</span></a
+                      >
+                    </li>
+                  </div>
+                </li> -->
+                  <!-- <li class="submenu upmenu" routerLinkActive="active">
+                    <a
+                      href="javscript:void()"
+                      data-toggle="collapse"
+                      data-target="#enforcementToggleExternalContent"
+                      aria-controls="enforcementToggleExternalContent"
+                      aria-expanded="false"
+                      aria-label="Toggle navigation"
+                      class="dropdown-toggle-menu"
+                      ><i class="fa fa-handshake-o"></i>
+                      <span>Employee Onboarding </span></a
+                    >
+                    <div class="collapse" id="enforcementToggleExternalContent">
+                      <li class="submenu innermenu" routerLinkActive="active">
+                        <a [routerLink]="[user.role + '/i9']" class="subdrop"
+                          ><i class="fa fa-id-card"></i> <span>I9</span></a
+                        >
+                      </li>
+                      <li class="submenu innermenu" routerLinkActive="active">
+                        <a [routerLink]="[user.role + '/w4']" class="subdrop"
+                          ><i class="fa fa-file-word-o"></i> <span>W4</span></a
+                        >
+                      </li>
+                    </div>
+                  </li> -->
+                  <li class="submenu upmenu" routerLinkActive="active">
+                    <a
+                      href="javscript:void()"
+                      data-toggle="collapse"
+                      data-target="#employeePayHistory"
+                      aria-controls="employeePayHistory"
+                      aria-expanded="false"
+                      aria-label="Toggle navigation"
+                      class="dropdown-toggle-menu"
+                      ><i class="fa fa-industry"></i>
+                      <span>Employee Pay Details </span></a
+                    >
+                    <div class="collapse" id="employeePayHistory">
+                      <li class="submenu innermenu" routerLinkActive="active">
+                        <a
+                          [routerLink]="[user.role + '/advances']"
+                          class="subdrop"
+                          ><i class="fa fa-gift"></i> <span>Advances</span></a
+                        >
+                      </li>
+                      <li class="submenu innermenu" routerLinkActive="active">
+                        <a
+                          [routerLink]="[user.role + '/deductions']"
+                          class="subdrop"
+                          ><i class="fa fa-eraser"></i>
+                          <span>Deductions</span></a
+                        >
+                      </li>
+                      <li class="submenu innermenu" routerLinkActive="active">
+                        <a
+                          [routerLink]="[user.role + '/expenses']"
+                          class="subdrop"
+                          ><i class="fa fa-pie-chart"></i>
+                          <span>Expenses</span></a
+                        >
+                      </li>
+                      <li class="submenu innermenu" routerLinkActive="active">
+                        <a
+                          [routerLink]="[user.role + '/payrate']"
+                          class="subdrop"
+                          ><i class="fa fa-calculator"></i>
+                          <span>Pay Rate</span></a
+                        >
+                      </li>
+                    </div>
+                  </li>
+                  <li class="submenu upmenu" routerLinkActive="active">
+                    <a
+                      href="javscript:void()"
+                      data-toggle="collapse"
+                      data-target="#bulkUpload"
+                      aria-controls="bulkUpload"
+                      aria-expanded="false"
+                      aria-label="Toggle navigation"
+                      class="dropdown-toggle-menu"
+                      ><i class="fa fa-cloud-upload"></i>
+                      <span>Bulk Upload</span></a
+                    >
+                    <div class="collapse" id="bulkUpload">
+                      <li class="submenu innermenu" routerLinkActive="active">
+                        <a
+                          [routerLink]="[
+                            user.role + '/bulkupload/designations'
+                          ]"
+                          class="subdrop"
+                          ><i class="la la-user-plus"></i>
+                          <span>Designations</span></a
+                        >
+                      </li>
+                      <li class="submenu innermenu" routerLinkActive="active">
+                        <a
+                          [routerLink]="[user.role + '/bulkupload/departments']"
+                          class="subdrop"
+                          ><i class="fa fa-sitemap"></i>
+                          <span>Departments</span></a
+                        >
+                      </li>
+                      <li class="submenu innermenu" routerLinkActive="active">
+                        <a
+                          [routerLink]="[user.role + '/bulkupload/customers']"
+                          class="subdrop"
+                          ><i class="fa fa-university"></i>
+                          <span>Customers</span></a
+                        >
+                      </li>
+                    </div>
+                  </li>
+                </ng-container>
+                <ng-container *ngIf="megaMenu == 2">
+                  <li class="submenu upmenu" routerLinkActive="active">
+                    <a
+                      href="javscript:void()"
+                      data-toggle="collapse"
+                      data-target="#invoicesToggleExternalContent"
+                      aria-controls="invoicesToggleExternalContent"
+                      aria-expanded="false"
+                      aria-label="Toggle navigation"
+                      class="dropdown-toggle-menu"
+                      ><i class="fa fa-briefcase"></i> <span>Invoices </span></a
+                    >
+                    <div class="collapse" id="invoicesToggleExternalContent">
+                      <li class="submenu innermenu" routerLinkActive="active">
+                        <a
+                          [routerLink]="[user.role + '/invoices']"
+                          class="subdrop"
+                          ><i class="fa fa-briefcase"></i>
+                          <span>AR - Invoices</span></a
+                        >
+                      </li>
+                      <li class="submenu innermenu" routerLinkActive="active">
+                        <a
+                          [routerLink]="[user.role + '/ap_invoices']"
+                          class="subdrop"
+                          ><i class="fa fa-briefcase"></i>
+                          <span>AP - Invoices</span></a
+                        >
+                      </li>
+                    </div>
+                  </li>
+                  <li class="submenu upmenu" routerLinkActive="active">
+                    <a
+                      href="javscript:void()"
+                      data-toggle="collapse"
+                      data-target="#employeePayHistory"
+                      aria-controls="employeePayHistory"
+                      aria-expanded="false"
+                      aria-label="Toggle navigation"
+                      class="dropdown-toggle-menu"
+                      ><i class="fa fa-money"></i> <span>Payments </span></a
+                    >
+                    <div class="collapse" id="employeePayHistory">
+                      <li class="submenu innermenu" routerLinkActive="active">
+                        <a
+                          [routerLink]="[user.role + '/payments']"
+                          class="subdrop"
+                          ><i class="fa fa-money"></i> <span>Credit</span></a
+                        >
+                      </li>
+                      <li class="submenu innermenu" routerLinkActive="active">
+                        <a [routerLink]="[user.role + '/debit']" class="subdrop"
+                          ><i class="fa fa-money"></i> <span>Debit</span></a
+                        >
+                      </li>
+                    </div>
+                  </li>
+                </ng-container>
+                <ng-container *ngIf="megaMenu == 3">
+                  <li class="submenu" routerLinkActive="active">
+                    <a
+                      [routerLink]="[user.role + '/payment_reports']"
+                      class="subdrop"
+                      ><i class="la la-dashboard"></i>
+                      <span>Payment Reports</span></a
+                    >
+                  </li>
+                  <li class="submenu" routerLinkActive="active">
+                    <a
+                      [routerLink]="[user.role + '/invoice_Reports']"
+                      class="subdrop"
+                      ><i class="la la-dashboard"></i>
+                      <span>Invoice Reports</span></a
+                    >
+                  </li>
+                  <li class="submenu" routerLinkActive="active">
+                    <a
+                      [routerLink]="[user.role + '/employee_reports']"
+                      class="subdrop"
+                      ><i class="la la-dashboard"></i>
+                      <span>Employee Reports</span></a
+                    >
+                  </li>
+                  <li class="submenu" routerLinkActive="active">
+                    <a
+                      [routerLink]="[user.role + '/employee_timeline']"
+                      class="subdrop"
+                      ><i class="fa fa-road"></i>
+                      <span>Employee Timeline</span></a
+                    >
+                  </li>
+                </ng-container>
+                <ng-container *ngIf="megaMenu == 4">
+                  <li class="submenu" routerLinkActive="active">
+                    <a
+                      [routerLink]="[user.role + '/prospect_supplier']"
+                      class="subdrop"
+                      ><i class="la la-dashboard"></i>
+                      <span>Prospect Customer</span></a
+                    >
+                  </li>
+                  <li class="submenu" routerLinkActive="active">
+                    <a
+                      [routerLink]="[user.role + '/prospect_employee']"
+                      class="subdrop"
+                      ><i class="la la-dashboard"></i>
+                      <span>Prospect Employee</span></a
+                    >
+                  </li>
+                  <li class="submenu" routerLinkActive="active">
+                    <a
+                      [routerLink]="[user.role + '/Prospect_position']"
+                      class="subdrop"
+                      ><i class="la la-dashboard"></i>
+                      <span>Prospect Position</span></a
+                    >
+                  </li>
+                </ng-container>
+                <ng-container *ngIf="megaMenu == 5">
+                  <li class="submenu" routerLinkActive="active">
+                    <a
+                      [routerLink]="[user.role + '/immigrations']"
+                      class="subdrop"
+                      ><i class="fa fa-plane"></i> <span>Immigration</span></a
+                    >
+                  </li>
+                </ng-container>
+              </ul>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-logo">
+      <div class="footer fixed-bottom">
+        <span class="logo">
+          Powered by
+          <img src="assets/img/logo.png" width="auto" height="35" alt="" />
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

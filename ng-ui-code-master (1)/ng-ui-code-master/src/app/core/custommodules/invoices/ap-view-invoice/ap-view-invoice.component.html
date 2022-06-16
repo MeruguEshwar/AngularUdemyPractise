@@ -1,0 +1,1314 @@
+<div class="page-wrapper" style="min-height: 188px">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">Dashboard</li>
+            <li class="breadcrumb-item active">Invoice</li>
+          </ul>
+        </div>
+        <div class="col-auto float-right ml-auto">
+          <div class="btn-group btn-group-sm">
+            <!-- <button class="btn btn-white">CSV</button> -->
+            <button class="btn btn-white">
+              <a
+                class=""
+                [routerLink]="['/admin/ap_invoices/ap_invoice']"
+                [state]="{ invoiceDetailsId: invoiceDetailsId }"
+                ><i class="fa fa-pencil m-r-5"></i> Edit</a
+              >
+            </button>
+            <button
+              class="btn btn-white"
+              (click)="downloadInvoicePDF(invoiceDetailsId)"
+            >
+              <i class="fa fa-file-pdf-o"></i> PDF
+            </button>
+
+            <!-- <button class="btn btn-white">
+              <i class="fa fa-print"></i> Print
+            </button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <section>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-6">
+                  <img src="assets/img/logo2.png" class="inv-logo" alt="" />
+                  <ul class="list-unstyled">
+                    <li>
+                      <strong>{{ invoiceDetails?.organizationName }}</strong>
+                    </li>
+                    <!-- <li>
+                      {{
+                        invoiceDetails?.organizationAddressDetails
+                          ?.addressLine1
+                      }},{{
+                        invoiceDetails?.organizationAddressDetails
+                          ?.addressLine2
+                      }},
+                    </li>
+
+                    <li>
+                      {{ invoiceDetails?.organizationAddressDetails?.city }},{{
+                        invoiceDetails?.organizationAddressDetails?.state
+                      }},
+                    </li>
+                    <li>
+                      {{
+                        invoiceDetails?.organizationAddressDetails?.country
+                      }},{{
+                        invoiceDetails?.organizationAddressDetails?.pinCode
+                      }}
+                    </li> -->
+                  </ul>
+                </div>
+                <div class="col-sm-6">
+                  <div class="invoice-details">
+                    <h3 class="text-uppercase">
+                      Invoice Number #{{ invoiceDetails?.invoiceNumber }}
+                    </h3>
+                    <div class="row">
+                      <ul class="list-unstyled col-9 pr-2 p-0">
+                        <li>Date :</li>
+                        <li>Due Date :</li>
+                        <li>Term :</li>
+                      </ul>
+                      <ul class="list-unstyled col-3 text-left p-0">
+                        <li>{{ invoiceDetails?.invoiceDate | date }}</li>
+                        <li>
+                          {{ invoiceDetails?.invoiceDueDate | date }}
+                        </li>
+                        <li>Static</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6 col-lg-7 col-xl-5">
+                  <h5>Bill From:</h5>
+                  <ul class="list-unstyled">
+                    <li>
+                      <h5>
+                        <strong>{{ invoiceDetails?.companyEinNumber }}</strong>
+                      </h5>
+                    </li>
+                    <li>
+                      <span>{{ invoiceDetails?.companyName }}</span>
+                    </li>
+                    <li>{{ invoiceDetails?.companyAddress }}</li>
+                  </ul>
+                </div>
+                <div class="col-sm-6 col-lg-5 col-xl-7">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <h5>Payment by Mail:</h5>
+                      <ul class="list-unstyled invoice-payment-details">
+                        <li *ngIf="invoiceDetails?.totalAmount">
+                          <div>
+                            Total Due:
+                            <span class="text-muted">
+                              {{ organizationCurrency }}
+                              {{ invoiceDetails?.totalAmount }}
+                            </span>
+                          </div>
+                        </li>
+                        <li
+                          *ngIf="
+                            invoiceDetails?.organizationRemittanceDetails
+                              ?.bankName
+                          "
+                        >
+                          <div>
+                            Bank Name:
+                            <span class="text-muted">
+                              {{
+                                invoiceDetails?.organizationRemittanceDetails
+                                  ?.bankName
+                              }}
+                            </span>
+                          </div>
+                        </li>
+
+                        <li
+                          *ngIf="
+                            invoiceDetails?.organizationRemittanceDetails
+                              ?.accountAddress
+                          "
+                        >
+                          <div>
+                            Address:
+                            <span class="text-muted">
+                              {{
+                                invoiceDetails?.organizationRemittanceDetails
+                                  ?.accountAddress
+                              }}
+                            </span>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="col-sm-6">
+                      <h5>Online Payment:</h5>
+                      <ul class="list-unstyled invoice-payment-details">
+                        <li
+                          *ngIf="
+                            invoiceDetails?.organizationRemittanceDetails
+                              ?.accountName
+                          "
+                        >
+                          <div>
+                            Account Name:
+                            <span class="text-muted">
+                              {{
+                                invoiceDetails?.organizationRemittanceDetails
+                                  ?.accountName
+                              }}
+                            </span>
+                          </div>
+                        </li>
+                        <li
+                          *ngIf="
+                            invoiceDetails?.organizationRemittanceDetails
+                              ?.accountNumber
+                          "
+                        >
+                          <div>
+                            Account Number:
+                            <span class="text-muted">
+                              {{
+                                invoiceDetails?.organizationRemittanceDetails
+                                  ?.accountNumber
+                              }}
+                            </span>
+                          </div>
+                        </li>
+
+                        <li
+                          *ngIf="
+                            invoiceDetails?.organizationRemittanceDetails
+                              ?.ifscCode &&
+                            invoiceDetails?.organizationRemittanceDetails
+                              ?.ifscCode != ''
+                          "
+                        >
+                          <div>
+                            IFSC Code:
+                            <span class="text-muted">
+                              {{
+                                invoiceDetails?.organizationRemittanceDetails
+                                  ?.ifscCode
+                              }}
+                            </span>
+                          </div>
+                        </li>
+                        <li
+                          *ngIf="
+                            invoiceDetails?.organizationRemittanceDetails
+                              ?.routingNumber != '' &&
+                            invoiceDetails?.organizationRemittanceDetails
+                              ?.routingNumber
+                          "
+                        >
+                          <div>
+                            Routing Number:
+                            <span class="text-muted">
+                              {{
+                                invoiceDetails?.organizationRemittanceDetails
+                                  ?.routingNumber
+                              }}
+                            </span>
+                          </div>
+                        </li>
+                        <li
+                          *ngIf="
+                            invoiceDetails?.organizationRemittanceDetails
+                              ?.otherDetails
+                          "
+                        >
+                          <div>
+                            Other Details:
+                            <span class="text-muted">
+                              {{
+                                invoiceDetails?.organizationRemittanceDetails
+                                  ?.otherDetails
+                              }}
+                            </span>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>ITEM</th>
+                      <th class="d-none d-sm-table-cell">DESCRIPTION</th>
+                      <th>QUANTITY</th>
+                      <th>RATE</th>
+                      <th class="text-right">DISCOUNT</th>
+                      <th class="text-right">TAX</th>
+                      <th class="text-right">TOTAL</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container
+                      *ngFor="
+                        let invoice of invoiceDetails?.invoiceEntries;
+                        let i = index
+                      "
+                    >
+                      <tr>
+                        <td style="vertical-align: middle">{{ i + 1 }}</td>
+                        <td
+                          *ngIf="invoice?.projectDetailsId"
+                          style="width: 200px"
+                        >
+                          {{ invoice?.projectName }}
+                        </td>
+                        <td
+                          *ngIf="invoice?.employeeDetailsId"
+                          style="width: 200px"
+                        >
+                          {{ invoice?.employeeName }}
+                        </td>
+                        <td class="d-none d-sm-table-cell" style="width: 400px">
+                          <div
+                            class="d-flex justify-content-start"
+                            pTooltip="{{ invoice?.description }}"
+                            tooltipPosition="top"
+                          >
+                            <div class="tab-descp">
+                              {{ invoice?.description }}
+                            </div>
+                            <div>
+                              <i
+                                class="fa fa-info-circle ml-3"
+                                aria-hidden="true"
+                              ></i>
+                            </div>
+                          </div>
+                        </td>
+                        <td>{{ invoice?.quantity }}</td>
+                        <td>{{ invoice?.rate }}</td>
+                        <td class="text-right">
+                          <span
+                            class="currencyIcon"
+                            *ngIf="invoice?.discountType == 1"
+                            >{{ organizationCurrency }}</span
+                          >{{ invoice?.discount }}
+                          <span
+                            class="currencyIcon"
+                            *ngIf="invoice?.discountType == 2"
+                            >%</span
+                          >
+                        </td>
+                        <td class="text-right">
+                          <span
+                            class="currencyIcon"
+                            *ngIf="invoice?.taxType == 1"
+                            >{{ organizationCurrency }}</span
+                          >{{ invoice?.tax }}
+                          <span
+                            class="currencyIcon"
+                            *ngIf="invoice?.taxType == 2"
+                            >%</span
+                          >
+                        </td>
+
+                        <td class="text-right">
+                          <span class="currencyIcon">{{
+                            organizationCurrency
+                          }}</span>
+                          {{ invoice?.amount }}
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+              <div>
+                <div class="row invoice-payment">
+                  <div class="col-sm-7"></div>
+                  <div class="col-sm-5">
+                    <div class="">
+                      <div class="table-responsive no-border">
+                        <table class="table mb-0">
+                          <tbody>
+                            <!-- <tr>
+                            <th>Subtotal:</th>
+                            <td class="text-right">
+                              {{ getSubtotal(invoiceDetails?.invoiceEntries) }}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>Discount:</th>
+                            <td class="text-right">
+                              {{ getTax(invoiceDetails?.invoiceEntries) }}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>Tax:</th>
+                            <td class="text-right">
+                              {{ getTax(invoiceDetails?.invoiceEntries) }}
+                            </td>
+                          </tr> -->
+                            <tr>
+                              <th class="border-none">Total Tax:</th>
+                              <td class="text-right text-primary border-none">
+                                <h5>
+                                  <span class="currencyIcon">{{
+                                    organizationCurrency
+                                  }}</span>
+                                  {{ getTax(invoiceDetails?.invoiceEntries) }}
+                                </h5>
+                              </td>
+                            </tr>
+                            <tr>
+                              <th>Total Discount:</th>
+                              <td class="text-right text-primary">
+                                <h5>
+                                  <span class="currencyIcon">{{
+                                    organizationCurrency
+                                  }}</span>
+                                  {{
+                                    getDiscount(invoiceDetails?.invoiceEntries)
+                                  }}
+                                </h5>
+                              </td>
+                            </tr>
+                            <tr>
+                              <th>Total Amount:</th>
+                              <td class="text-right text-primary">
+                                <h5>
+                                  <span class="currencyIcon">{{
+                                    organizationCurrency
+                                  }}</span>
+                                  {{ invoiceDetails?.totalAmount }}
+                                </h5>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div class="invoice-info">
+                  <!-- <h5>Notes</h5>
+                  <p class="text-muted">
+                    {{ invoiceDetails?.otherInformation }}
+                  </p> -->
+                  <section>
+                    <div class="accordion" id="accordionExample">
+                      <div class="card">
+                        <div
+                          class="card-header"
+                          id="notesHeading"
+                          data-toggle="collapse"
+                          data-target="#notes"
+                          aria-expanded="true"
+                          aria-controls="notes"
+                        >
+                          <i
+                            class="fa fa-sticky-note-o pl-3"
+                            aria-hidden="true"
+                          ></i>
+                          <button class="btn btn-link" type="button">
+                            Additional Notes
+                          </button>
+                        </div>
+                        <div
+                          id="notes"
+                          class="collapse show"
+                          aria-labelledby="notesHeading"
+                          data-parent="#accordionExample"
+                        >
+                          <div class="card-body">
+                            {{ invoiceDetails?.notes }}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card">
+                        <div
+                          class="card-header"
+                          id="attachmentsHeading"
+                          data-toggle="collapse"
+                          data-target="#attachments"
+                          aria-expanded="false"
+                          aria-controls="attachments"
+                        >
+                          <i
+                            class="fa fa-paperclip pl-3"
+                            aria-hidden="true"
+                          ></i>
+                          <button class="btn btn-link" type="button">
+                            Attachments
+                          </button>
+                        </div>
+
+                        <div
+                          id="attachments"
+                          class="collapse"
+                          aria-labelledby="attachmentsHeading"
+                          data-parent="#accordionExample"
+                        >
+                          <div class="card-body pt-2">
+                            <div class="row align-items-center">
+                              <div class="col-auto float-right ml-auto">
+                                <a
+                                  href="javascript:void(0)"
+                                  class="btn add-btn"
+                                  (click)="uploadAttachemnts('attachment')"
+                                  ><i class="fa fa-plus"></i> Add Attachment</a
+                                >
+                              </div>
+                            </div>
+                            <div class="col pl-0 pr-0 mt-2" *ngIf="!loading">
+                              <p-table
+                                [columns]="attachmentCols"
+                                [value]="attachmentList"
+                                [rowsPerPageOptions]="[5, 10, 25, 50]"
+                                styleClass="ui-table-customers"
+                                #dt
+                                [paginator]="true"
+                                [rows]="5"
+                                [showCurrentPageReport]="true"
+                                [alwaysShowPaginator]="false"
+                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                [filterDelay]="0"
+                                [globalFilterFields]="[
+                                  'department',
+                                  'description',
+                                  'status'
+                                ]"
+                                class="invoice-list"
+                              >
+                                <ng-template pTemplate="header" let-columns>
+                                  <tr>
+                                    <th
+                                      *ngFor="let col of columns"
+                                      [pSortableColumn]="col.field"
+                                    >
+                                      {{ col.header }}
+                                      <p-sortIcon
+                                        [field]="col.field"
+                                      ></p-sortIcon>
+                                    </th>
+                                    <th class="actions" style="width: 8%">
+                                      Actions
+                                    </th>
+                                  </tr>
+                                </ng-template>
+                                <ng-template
+                                  pTemplate="body"
+                                  let-rowData
+                                  let-columns="columns"
+                                  let-rowIndex="rowIndex"
+                                >
+                                  <tr [pSelectableRow]="rowData">
+                                    <td *ngFor="let col of columns">
+                                      <!-- <ng-container
+                                        *ngIf="col.field == 'status'"
+                                      >
+                                        <i
+                                          class="fa fa-dot-circle-o text-success mr-2"
+                                        ></i>
+                                        {{ rowData[col.field] | status }}
+                                      </ng-container> -->
+                                      <ng-container
+                                        *ngIf="col.field != 'status'"
+                                      >
+                                        {{ rowData[col.field] }}
+                                      </ng-container>
+                                    </td>
+                                    <td class="actions">
+                                      <i
+                                        class="fa fa-trash-o text-danger mr-2"
+                                        style="cursor: pointer"
+                                        data-target="#confirmModel"
+                                        data-toggle="modal"
+                                        (click)="onDeleteAttachment(rowData)"
+                                      ></i>
+                                      <i
+                                        class="fa fa-download text-info"
+                                        style="cursor: pointer"
+                                        (click)="
+                                          downloadInvoiceAttachment(rowData)
+                                        "
+                                      ></i>
+                                    </td>
+                                  </tr>
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                  <tr>
+                                    <td
+                                      [attr.colspan]="attachmentCols.length"
+                                      style="text-align: center"
+                                    >
+                                      No Records found.
+                                    </td>
+                                  </tr>
+                                </ng-template>
+                              </p-table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card">
+                        <div
+                          class="card-header"
+                          id="paymentsHeading"
+                          data-toggle="collapse"
+                          data-target="#payments"
+                          aria-expanded="false"
+                          aria-controls="payments"
+                        >
+                          <i class="fa fa-money pl-3" aria-hidden="true"></i>
+                          <button class="btn btn-link" type="button">
+                            Payments
+                          </button>
+                        </div>
+                        <div
+                          id="payments"
+                          class="collapse"
+                          aria-labelledby="paymentsHeading"
+                          data-parent="#accordionExample"
+                        >
+                          <div class="card-body pt-2">
+                            <div class="row align-items-center">
+                              <div class="col-auto float-right ml-auto">
+                                <a
+                                  href="javascript:void(0)"
+                                  class="btn add-btn"
+                                  (click)="addPayments()"
+                                  ><i class="fa fa-plus"></i> Add Payment</a
+                                >
+                              </div>
+                            </div>
+                            <div class="col pl-0 pr-0 mt-2" *ngIf="!loading">
+                              <p-table
+                                [columns]="paymentsCols"
+                                [value]="paymentList"
+                                [rowsPerPageOptions]="[5, 10, 25, 50]"
+                                styleClass="ui-table-customers"
+                                #dt
+                                [paginator]="true"
+                                [rows]="5"
+                                [showCurrentPageReport]="true"
+                                [alwaysShowPaginator]="false"
+                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                [filterDelay]="0"
+                                [globalFilterFields]="[
+                                  'department',
+                                  'description',
+                                  'status'
+                                ]"
+                                class="payments"
+                              >
+                                <ng-template pTemplate="header" let-columns>
+                                  <tr>
+                                    <th style="width: 12%; text-align: center">
+                                      #
+                                    </th>
+                                    <th
+                                      *ngFor="let col of columns"
+                                      [pSortableColumn]="col.field"
+                                    >
+                                      {{ col.header }}
+                                      <p-sortIcon
+                                        [field]="col.field"
+                                      ></p-sortIcon>
+                                    </th>
+                                    <th class="actions" style="width: 5%"></th>
+                                  </tr>
+                                </ng-template>
+                                <ng-template
+                                  pTemplate="body"
+                                  let-rowData
+                                  let-columns="columns"
+                                  let-rowIndex="rowIndex"
+                                >
+                                  <tr [pSelectableRow]="rowData">
+                                    <td
+                                      data-toggle="modal"
+                                      (click)="editPayment(rowData)"
+                                      style="text-align: center"
+                                    >
+                                      <a href="javascript:void(0)"
+                                        >#PYMT-0000{{ rowIndex + 1 }}</a
+                                      >
+                                    </td>
+                                    <td *ngFor="let col of columns">
+                                      <ng-container
+                                        *ngIf="col.field != 'amount'"
+                                      >
+                                        {{ rowData[col.field] }}
+                                      </ng-container>
+                                      <ng-container
+                                        *ngIf="col.field == 'amount'"
+                                      >
+                                        {{ organizationCurrency }}
+                                        {{ rowData[col.field] }}
+                                      </ng-container>
+                                    </td>
+                                    <td class="actions">
+                                      <i
+                                        class="fa fa-trash-o m-r-5 text-danger"
+                                        style="cursor: pointer"
+                                        data-toggle="modal"
+                                        data-target="#confirmModel"
+                                        (click)="onDeletePayment(rowData)"
+                                      ></i>
+                                    </td>
+                                  </tr>
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                  <tr>
+                                    <td
+                                      [attr.colspan]="paymentsCols.length"
+                                      style="text-align: center"
+                                    >
+                                      No Records found.
+                                    </td>
+                                  </tr>
+                                </ng-template>
+                              </p-table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card">
+                        <div
+                          class="card-header"
+                          id="commentsHeading"
+                          data-toggle="collapse"
+                          data-target="#comments"
+                          aria-expanded="false"
+                          aria-controls="comments"
+                        >
+                          <i class="fa fa-comments pl-3" aria-hidden="true"></i>
+                          <button class="btn btn-link" type="button">
+                            Comments
+                          </button>
+                        </div>
+                        <div
+                          id="comments"
+                          class="collapse"
+                          aria-labelledby="commentsHeading"
+                          data-parent="#accordionExample"
+                        >
+                          <div class="card-body comments">
+                            <div class="chat-main-row">
+                              <!-- Chat Main Wrapper -->
+                              <div class="chat-main-wrapper">
+                                <!-- Chats View -->
+                                <div class="col-lg-12 message-view task-view">
+                                  <div class="chat-window">
+                                    <div class="chat-contents">
+                                      <div class="chat-content-wrap">
+                                        <div class="chat-wrap-inner">
+                                          <div class="chat-box">
+                                            <div class="chats">
+                                              <ng-container
+                                                *ngFor="
+                                                  let comment of commentList
+                                                "
+                                              >
+                                                <div
+                                                  class="chat chat-left mb-2"
+                                                >
+                                                  <div class="chat-body">
+                                                    <div class="chat-bubble">
+                                                      <div class="chat-content">
+                                                        <p>
+                                                          <strong
+                                                            >{{
+                                                              comment.employeeName
+                                                            }}.
+                                                            <span
+                                                              style="
+                                                                font-size: 12px;
+                                                                font-weight: 400;
+                                                              "
+                                                              >{{
+                                                                comment.commentDateTime
+                                                              }}</span
+                                                            >
+                                                          </strong>
+                                                          <strong
+                                                            style="
+                                                              float: right;
+                                                              font-weight: 400;
+                                                              font-size: 12px;
+                                                            "
+                                                            ><i
+                                                              class="
+                                                                fa
+                                                                fa-dot-circle-o
+                                                                text-info
+                                                                mr-1
+                                                              "
+                                                            ></i
+                                                            >{{
+                                                              comment.commentType ==
+                                                              "1"
+                                                                ? "Private"
+                                                                : "Customer"
+                                                            }}</strong
+                                                          >
+                                                        </p>
+
+                                                        <p>
+                                                          {{ comment.comment }}
+                                                        </p>
+                                                      </div>
+                                                      <div
+                                                        class="chat-action-btns"
+                                                      >
+                                                        <ul class="m-0">
+                                                          <li>
+                                                            <a
+                                                              href="javascript:void(0)"
+                                                              class="edit-msg"
+                                                              (click)="
+                                                                editInvoiceComment(
+                                                                  comment
+                                                                )
+                                                              "
+                                                              ><i
+                                                                class="
+                                                                  fa fa-pencil
+                                                                "
+                                                              ></i
+                                                            ></a>
+                                                          </li>
+                                                          <li>
+                                                            <a
+                                                              href="javascript:void(0)"
+                                                              class="del-msg"
+                                                              data-toggle="modal"
+                                                              data-target="#confirmModel"
+                                                              (click)="
+                                                                deleteInvoiceComment(
+                                                                  comment
+                                                                )
+                                                              "
+                                                              ><i
+                                                                class="
+                                                                  fa fa-trash-o
+                                                                "
+                                                              ></i
+                                                            ></a>
+                                                          </li>
+                                                        </ul>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </ng-container>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="chat-footer pt-2 pb-0">
+                                      <div class="message-bar">
+                                        <div class="message-inner">
+                                          <div class="message-area">
+                                            <div class="d-flex">
+                                              <div
+                                                class="
+                                                  d-flex
+                                                  align-items-center
+                                                "
+                                                style="width: 20%"
+                                              >
+                                                <p-selectButton
+                                                  [options]="messageType"
+                                                  [(ngModel)]="
+                                                    commentDetails.commentType
+                                                  "
+                                                  name="messageType"
+                                                ></p-selectButton>
+                                              </div>
+                                              <div class="input-group">
+                                                <textarea
+                                                  class="form-control"
+                                                  placeholder="Type message..."
+                                                  [(ngModel)]="
+                                                    commentDetails.comment
+                                                  "
+                                                ></textarea>
+                                                <span
+                                                  class="input-group-append"
+                                                >
+                                                  <button
+                                                    class="btn btn-custom"
+                                                    type="button"
+                                                    (click)="
+                                                      saveComment(
+                                                        commentDetails
+                                                      )
+                                                    "
+                                                  >
+                                                    <i class="fa fa-send"></i>
+                                                  </button>
+                                                </span>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <!-- /Chats View -->
+                              </div>
+                              <!-- /Chat Main Wrapper -->
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card">
+                        <div
+                          class="card-header"
+                          id="invoicesHistoryHeading"
+                          data-toggle="collapse"
+                          data-target="#invoicesHistory"
+                          aria-expanded="false"
+                          aria-controls="invoicesHistory"
+                        >
+                          <i
+                            class="fa fa-briefcase pl-3"
+                            aria-hidden="true"
+                          ></i>
+                          <button class="btn btn-link" type="button">
+                            Invoices History
+                          </button>
+                        </div>
+                        <div
+                          id="invoicesHistory"
+                          class="collapse"
+                          aria-labelledby="invoicesHistoryHeading"
+                          data-parent="#accordionExample"
+                        >
+                          <div class="card-body">
+                            Anim pariatur cliche reprehenderit, enim eiusmod
+                            high life accusamus terry richardson ad squid. 3
+                            wolf moon officia aute, non cupidatat skateboard
+                            dolor brunch. Food truck quinoa nesciunt laborum
+                            eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put
+                            a bird on it squid single-origin coffee nulla
+                            assumenda shoreditch et. Nihil anim keffiyeh
+                            helvetica, craft beer labore wes anderson cred
+                            nesciunt sapiente ea proident. Ad vegan excepteur
+                            butcher vice lomo. Leggings occaecat craft beer
+                            farm-to-table, raw denim aesthetic synth nesciunt
+                            you probably haven't heard of them accusamus labore
+                            sustainable VHS.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <!-- /Page Content -->
+  <!-- confirm model-->
+  <div
+    class="modal custom-modal fade"
+    id="confirmModel"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="form-header">
+            <h3>Confirm</h3>
+            <p>Are you sure ? Do you want to Delete?</p>
+          </div>
+          <div class="modal-btn delete-action">
+            <div class="row">
+              <div class="col-6">
+                <a
+                  href="javascript:void(0);"
+                  data-dismiss="modal"
+                  (click)="confirm(confirmType)"
+                  class="btn btn-info continue-btn"
+                  ><i class="fa fa-check"></i>&nbsp;Confirm</a
+                >
+              </div>
+              <div class="col-6">
+                <a
+                  href="javascript:void(0);"
+                  data-dismiss="modal"
+                  class="btn btn-danger cancel-btn"
+                  ><i class="fa fa-times"></i>&nbsp;Cancel</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /confirm model-->
+  <!-- add payment model-->
+  <div
+    id="add_payment"
+    [ngStyle]="{ display: addPaymentsModel }"
+    class="modal custom-modal backdrop"
+    role="dialog"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="form-header my-3">
+          <h3>
+            Payment Details: {{ invoiceDetails.companyName }} /
+            {{ invoiceDetails.invoiceNumber }}
+          </h3>
+        </div>
+        <div class="row justify-content-md-center">
+          <div class="col-sm-10">
+            <div class="card">
+              <form #paymentForm="ngForm">
+                <div class="modal-body">
+                  <div class="row pt-3">
+                    <!-- <div class="col-6">
+                      <div class="form-group">
+                        <label
+                          >Supplier Name <span class="text-danger"> *</span>
+                        </label>
+                        <p-dropdown
+                          [options]="customerOptions"
+                          [(ngModel)]="selectedCustomerOptions"
+                          optionLabel="companyName"
+                          name="customersName"
+                          required
+                          [filter]="true"
+                        ></p-dropdown>
+                      </div>
+                    </div> -->
+                    <!-- <div class="col-6">
+                      <div class="form-group">
+                        <div class="stats-info mt-2">
+                          <p>Customer Name :</p>
+                          <p>
+                            <strong> {{ invoiceDetails.companyName }}</strong>
+                          </p>
+                        </div>
+                      </div>
+                    </div> -->
+                    <!-- <div class="col-6">
+                      <div class="form-group">
+                        <div class="stats-info mt-2">
+                          <p>Invoice Number :</p>
+                          <p>
+                            <strong> {{ invoiceDetails.invoiceNumber }}</strong>
+                          </p>
+                        </div>
+                      </div>
+                    </div> -->
+
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label
+                          >{{ organizationCurrency }} Amount Sent
+                          <span class="text-danger"> *</span></label
+                        >
+                        <div>
+                          <p-inputNumber
+                            name="amount"
+                            [(ngModel)]="payment.amount"
+                            maxlength="12"
+                            [minFractionDigits]="2"
+                            [useGrouping]="false"
+                            ariaRequired="true"
+                            required
+                          ></p-inputNumber>
+                        </div>
+                        <!-- <input
+                          class="form-control"
+                          type="number"
+                          step="any"
+                          [(ngModel)]="payment.amount"
+                          name="amount"
+                          required
+                        /> -->
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label
+                          >Date Sent <span class="text-danger"> *</span></label
+                        >
+                        <p-calendar
+                          [yearNavigator]="true"
+                          [monthNavigator]="true"
+                          yearRange="1980:2050"
+                          readonlyInput="true"
+                          id="dateReceived"
+                          showIcon="true"
+                          dateFormat="mm-dd-yy"
+                          name="invoiceDueDate"
+                          dataType="string"
+                          [(ngModel)]="payment.dateReceived"
+                          required
+                        ></p-calendar>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label
+                          >Payment Type
+                          <span class="text-danger"> *</span></label
+                        >
+                        <p-dropdown
+                          [options]="paymentOptions"
+                          [(ngModel)]="selectedPaymentOptions"
+                          optionLabel="label"
+                          (onChange)="onPaymentOption($event.value)"
+                          name="customersName"
+                          aria-required="true"
+                          required
+                          [filter]="true"
+                        ></p-dropdown>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label>Description</label>
+                        <textarea
+                          class="form-control"
+                          [(ngModel)]="payment.description"
+                          rows="3"
+                          name="description"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <h3 class="card-titile attchmentlabel">
+                    Attachments
+                    <div class="col-auto float-right ml-auto">
+                      <a
+                        *ngIf="paymentForm.valid"
+                        href="javascript:void(0);"
+                        class=""
+                        (click)="uploadAttachemnts('paymentAttachment')"
+                        ><i class="fa fa-plus"></i> Add Attachment</a
+                      >
+                    </div>
+                  </h3>
+                  <div class="col pl-0 pr-0 mt-2" *ngIf="!loading">
+                    <p-table
+                      [columns]="attachmentCols"
+                      [value]="paymentsAttachmentList"
+                      [rowsPerPageOptions]="[5, 10, 25, 50]"
+                      styleClass="ui-table-customers"
+                      #dt
+                      [paginator]="true"
+                      [rows]="5"
+                      [showCurrentPageReport]="true"
+                      [alwaysShowPaginator]="false"
+                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      [filterDelay]="0"
+                      [globalFilterFields]="[
+                        'department',
+                        'description',
+                        'status'
+                      ]"
+                      class="invoice-list"
+                    >
+                      <ng-template pTemplate="header" let-columns>
+                        <tr>
+                          <th
+                            *ngFor="let col of columns"
+                            [pSortableColumn]="col.field"
+                          >
+                            {{ col.header }}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                          </th>
+                          <th class="actions" style="width: 13%">Actions</th>
+                        </tr>
+                      </ng-template>
+                      <ng-template
+                        pTemplate="body"
+                        let-rowData
+                        let-columns="columns"
+                        let-rowIndex="rowIndex"
+                      >
+                        <tr [pSelectableRow]="rowData">
+                          <td *ngFor="let col of columns">
+                            <ng-container *ngIf="col.field != 'status'">
+                              {{ rowData[col.field] }}
+                            </ng-container>
+                          </td>
+                          <td class="actions">
+                            <i
+                              class="fa fa-trash-o text-danger"
+                              style="cursor: pointer"
+                              data-target="#confirmModel"
+                              data-toggle="modal"
+                              (click)="onDeleteAttachment(rowData)"
+                            ></i>
+                          </td>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="emptymessage">
+                        <tr>
+                          <td
+                            [attr.colspan]="attachmentCols.length"
+                            style="text-align: center"
+                          >
+                            No Records found.
+                          </td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                  </div>
+                  <div class="submit-section">
+                    <!-- <button
+                      class="btn btn-primary submit-btn m-r-10"
+                      (click)="uploadAttachemnts('paymentAttachment')"
+                      [disabled]="!paymentForm.valid"
+                    >
+                      Add Attachment
+                    </button> -->
+                    <button
+                      class="btn btn-success submit-btn m-r-10"
+                      (click)="savePayments(paymentForm)"
+                      [disabled]="!paymentForm.valid"
+                    >
+                      <i class="fa fa-save"></i>&nbsp;Save
+                    </button>
+                    <button
+                      class="btn btn-danger submit-btn"
+                      (click)="closePaymentsModal(paymentForm)"
+                    >
+                      <i class="fa fa-times"></i>&nbsp;Cancel
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /add payment model-->
+  <!-- Upload file model-->
+  <div
+    id="uploadFile_info"
+    [ngStyle]="{ display: uploadFileInfo }"
+    class="modal custom-modal backdrop"
+    role="dialog"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Upload Document</h5>
+          <button
+            type="button"
+            class="close"
+            (click)="closeModal(uploadForm)"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <form
+              (ngSubmit)="saveUploadFile(uploadForm, uploadType)"
+              #uploadForm="ngForm"
+            >
+              <div class="row" *ngIf="errorLabel">
+                <div class="col-sm-6" style="color: red">
+                  {{ errorLabel }}
+                </div>
+              </div>
+              <div class="row justify-content-center">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label class="col-form-label"
+                      >Title <span class="text-danger">*</span></label
+                    >
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="title"
+                      [(ngModel)]="uploadedFileTitle"
+                      grequired
+                    />
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <label class="col-form-label"
+                      >File To Upload <span class="text-danger">*</span></label
+                    >
+                    <div class="d-flex align-items-center">
+                      <input
+                        class="form-control"
+                        type="file"
+                        id="fileToUpload"
+                        (change)="onFileChange($event)"
+                        #fileInput
+                      />
+                      <div *ngIf="fileToUpload">
+                        <a
+                          class="btn btn-danger btn-clear-file"
+                          href="javascript:void(0)"
+                          aria-label="Remove"
+                          (click)="clearFile()"
+                        >
+                          <i class="fa fa-times" aria-hidden="true"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="submit-section">
+                <button
+                  type="submit"
+                  class="btn btn-success submit-btn"
+                  [disabled]="!uploadForm.valid || !fileToUpload"
+                >
+                  <i class="fa fa-upload"></i>&nbsp;Upload
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Upload file Modal -->
+</div>

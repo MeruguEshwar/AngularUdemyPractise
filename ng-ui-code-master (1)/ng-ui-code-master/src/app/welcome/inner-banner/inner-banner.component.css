@@ -1,0 +1,17 @@
+.heading1 {
+  font-weight: bolder;
+  /* padding: 0px 0px 30px 0px; */
+  font-size: 30px;
+}
+
+.paragraph1 {
+  color: rgb(163, 153, 153);
+  padding: 0px 0px 25px 0px;
+  font-size: 18px;
+}
+.custom-modal .modal-header {
+  padding: 0px;
+}
+.custom-modal .modal-body {
+  padding: 0px;
+}

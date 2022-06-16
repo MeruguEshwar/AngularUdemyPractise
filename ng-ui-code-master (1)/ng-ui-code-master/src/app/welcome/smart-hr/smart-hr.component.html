@@ -1,0 +1,83 @@
+<div class="container-fluid p-0" style="background-color: white">
+  <app-welcome-header></app-welcome-header>
+  <app-inner-menu [menuDetails]="menuDetails"></app-inner-menu>
+
+  <div class="container py-3">
+    <app-inner-banner [bannerDetails]="bannerDetails"></app-inner-banner>
+  </div>
+  <div class="container-fluid p-0" style="background-color: #f7f7f7">
+    <div class="container">
+      <div class="row py-5 d-flex align-items-center">
+        <div class="col-sm-6">
+          <ul class="list-unstyled">
+            <li>
+              <h3>Step 1: Onboard New Employees</h3>
+              <p>
+                Obtain the identification, tax-sensitized, and professional
+                documentation from your recruits with a predefined series of
+                steps curated to help you identify, validate, and verify the
+                credibility of the incoming profiles
+              </p>
+            </li>
+            <li>
+              <h3>Step 2: Create Employee Profiles</h3>
+              <p>
+                Solicit, record, identify, validate, and communicate your
+                employee data for internal assessments, team management,
+                measuring productivity and performance parameters, and
+                maintaining a comprehensive virtual record of all employee
+                activities.
+              </p>
+            </li>
+            <li>
+              <h3>Step 3: Define Employee Experiences</h3>
+              <p>
+                Solicit, record, identify, validate, and communicate your
+                employee data for internal assessments, team management,
+                measuring productivity and performance parameters, and
+                maintaining a comprehensive virtual record of all employee
+                activities.
+              </p>
+            </li>
+            <li>
+              <h3>Step 4: Manage Employee Data</h3>
+              <p>
+                Solicit, record, identify, validate, and communicate your
+                employee data for internal assessments, team management,
+                measuring productivity and performance parameters, and
+                maintaining a comprehensive virtual record of all employee
+                activities.
+              </p>
+            </li>
+          </ul>
+        </div>
+        <div class="col-sm-6">
+          <div>
+            <img
+              src="assets/images/hiring2.png"
+              alt="Cinque Terre"
+              width="550"
+              height="400"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container pb-5">
+    <app-inner-sub-banner
+      [bannerDetails]="subBannerList"
+    ></app-inner-sub-banner>
+  </div>
+  <div class="container">
+    <app-view3 [list]="view3"></app-view3>
+  </div>
+  <div class="container">
+    <app-inner-sub-banner
+      [bannerDetails]="subBannerList2"
+    ></app-inner-sub-banner>
+  </div>
+  <!--footer-->
+  <app-welcome-footer></app-welcome-footer>
+</div>

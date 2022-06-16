@@ -1,0 +1,829 @@
+<div class="row">
+  <div class="col-md-6 d-flex">
+    <div class="card profile-box flex-fill">
+      <div class="card-body">
+        <h3 class="card-title">
+          Contact Details
+          <a
+            *ngIf="profile?.status"
+            href="javascript:void(0)"
+            class="edit-icon"
+            (click)="editprofile('emergencyContact')"
+            ><i class="fa fa-pencil"></i
+          ></a>
+        </h3>
+        <!-- <h5 class="section-title">Primary</h5> -->
+        <ul class="personal-info">
+          <li>
+            <div class="title">Address</div>
+            <div class="text">
+              <span>{{ profile?.address || "-" }}</span>
+            </div>
+          </li>
+          <li>
+            <div class="title">City</div>
+            <div class="text">
+              <span>{{ profile?.city || "-" }}</span>
+            </div>
+          </li>
+          <li>
+            <div class="title">State</div>
+            <div class="text">
+              <span>{{ profile?.state || "-" }}</span>
+            </div>
+          </li>
+          <li>
+            <div class="title">Country</div>
+            <div class="text">
+              <span>{{ profile?.country || "-" }}</span>
+            </div>
+          </li>
+          <li>
+            <div class="title">Zip Code</div>
+            <div class="text">
+              <span>{{ profile?.pinCode || "-" }}</span>
+            </div>
+          </li>
+          <li class="clearfix">
+            <div class="title">Phone Number</div>
+            <div class="text">
+              <span>{{ profile?.phoneNumber || "-" }}</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 d-flex">
+    <div class="card profile-box flex-fill">
+      <div class="card-body">
+        <h3 class="card-title">
+          Authorization Details
+          <!-- Social Security Details -->
+          <a
+            *ngIf="profile?.status"
+            href="javascript:void(0)"
+            class="edit-icon"
+            (click)="editprofile('personalInfo')"
+            ><i class="fa fa-pencil"></i
+          ></a>
+        </h3>
+        <ul class="personal-info">
+          <!-- <li>
+            <div class="title">Religion</div>
+            <div class="text">
+              <span>{{ profile?.religion || "-" }}</span>
+            </div>
+          </li> -->
+
+          <li>
+            <div class="title">Passport No</div>
+            <div class="text">{{ profile?.passportNo || "-" }}</div>
+          </li>
+          <li>
+            <div class="title">Passport Expiry Date</div>
+            <div class="text">
+              {{ profile?.passportExpDate || "-" }}
+            </div>
+          </li>
+          <li>
+            <div class="title">SSN</div>
+            <div class="text">
+              {{ profile?.ssn || "-" }}
+            </div>
+          </li>
+          <li>
+            <div class="title">Immigration Status</div>
+            <div class="text">
+              <a
+                href="javascript:void(0)"
+                (click)="immigrationStatusClick()"
+                class="badge noti-dot subdrop"
+                [ngClass]="{
+                  ' bg-inverse-danger ': profile?.immigrationStatus == '0',
+                  ' bg-inverse-success': profile?.immigrationStatus == '1',
+                  ' bg-inverse-info': profile?.immigrationStatus == null
+                }"
+                style="position: relative"
+              >
+                {{ getImmigrationStatus(profile?.immigrationStatus) }}
+              </a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6 d-flex">
+    <div class="card profile-box flex-fill">
+      <div class="card-body">
+        <h3 class="card-title">
+          Education Details
+          <a
+            *ngIf="profile?.status"
+            href="javascript:void(0)"
+            (click)="educationInfoClick()"
+            class="edit-icon"
+            data-target="#education_info"
+            ><i class="fa fa-pencil"></i
+          ></a>
+        </h3>
+        <div class="experience-box">
+          <ul class="experience-list">
+            <li *ngFor="let education of profile?.educations">
+              <div class="experience-user" *ngIf="education.institution">
+                <div class="before-circle"></div>
+              </div>
+              <div class="experience-content" *ngIf="education.institution">
+                <div class="timeline-content">
+                  <a href="javascript:void(0)" class="name">{{
+                    education.institution
+                  }}</a>
+                  <div>{{ education.degree }} {{ education.subject }}</div>
+                  <span class="time"
+                    >{{ education.startingDate }} -
+                    {{ education.completionDate }}</span
+                  >
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 d-flex">
+    <div class="card profile-box flex-fill">
+      <div class="card-body">
+        <h3 class="card-title">
+          Experience Details
+          <a
+            *ngIf="profile?.status"
+            href="javascript:void(0)"
+            class="edit-icon"
+            (click)="experienceClick()"
+            ><i class="fa fa-pencil"></i
+          ></a>
+        </h3>
+        <div class="experience-box">
+          <ul class="experience-list">
+            <li *ngFor="let experience of profile?.experiences">
+              <div class="experience-user" *ngIf="experience.jobPosition">
+                <div class="before-circle"></div>
+              </div>
+              <div class="experience-content" *ngIf="experience.jobPosition">
+                <div class="timeline-content">
+                  <a href="javascript:void(0)" class="name">
+                    {{ experience.jobPosition }} at
+                    {{ experience.companyName }}</a
+                  >
+                  <span class="time"
+                    >{{ experience.periodFrom }} -
+                    {{ experience.periodTo }}</span
+                  >
+                  <!-- <span class="time">Jan 2013 - Present (5 years 2 months)</span> -->
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6 d-flex">
+    <div class="card profile-box flex-fill">
+      <div class="card-body">
+        <h3 class="card-title">
+          Dependent Details
+          <a
+            *ngIf="profile?.status"
+            href="javascript:void(0)"
+            class="edit-icon"
+            (click)="editprofile('dependentInfo')"
+            ><i class="fa fa-pencil"></i
+          ></a>
+        </h3>
+        <div class="row">
+          <div class="col">
+            <p-table
+              [columns]="empDependtCols"
+              [value]="profile?.dependents"
+              [rowsPerPageOptions]="[3, 5]"
+              styleClass="ui-table-customers"
+              class="supplier-details"
+              #dt
+              [paginator]="true"
+              [rows]="3"
+              [showCurrentPageReport]="true"
+              [alwaysShowPaginator]="false"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [filterDelay]="0"
+              [globalFilterFields]="[]"
+            >
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                    {{ col.header }}
+                    <!-- <p-sortIcon [field]="col.field"></p-sortIcon> -->
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template
+                pTemplate="body"
+                let-rowData
+                let-columns="columns"
+                let-rowIndex="rowIndex"
+              >
+                <tr [pSelectableRow]="rowData">
+                  <td *ngFor="let col of columns">
+                    <ng-container *ngIf="col.field == 'name'">
+                      <h2 class="table-avatar">
+                        <a>
+                          {{ rowData[col.field] }}
+                          <br />
+                          <span class="text-muted">
+                            {{ Gender[rowData?.gender] }}</span
+                          >
+                        </a>
+                      </h2>
+                    </ng-container>
+                    <ng-container *ngIf="col.field != 'name'">{{
+                      rowData[col.field]
+                    }}</ng-container>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td
+                    [attr.colspan]="empDependtCols.length"
+                    style="text-align: center"
+                  >
+                    No Records found.
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 d-flex">
+    <div class="card profile-box flex-fill">
+      <div class="card-body">
+        <h3 class="card-title">
+          Emergency Contact Details
+          <a
+            *ngIf="profile?.status"
+            href="javascript:void(0)"
+            class="edit-icon"
+            (click)="editprofile('emergencyContactsInfo')"
+            ><i class="fa fa-pencil"></i
+          ></a>
+        </h3>
+        <div class="row">
+          <div class="col">
+            <p-table
+              [columns]="emergContactCols"
+              [value]="profile?.emergencyContacts"
+              [rowsPerPageOptions]="[3, 5]"
+              styleClass="ui-table-customers"
+              class="supplier-details"
+              #dt
+              [paginator]="true"
+              [rows]="3"
+              [showCurrentPageReport]="true"
+              [alwaysShowPaginator]="false"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [filterDelay]="0"
+              [globalFilterFields]="[]"
+            >
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                    {{ col.header }}
+                    <!-- <p-sortIcon [field]="col.field"></p-sortIcon> -->
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template
+                pTemplate="body"
+                let-rowData
+                let-columns="columns"
+                let-rowIndex="rowIndex"
+              >
+                <tr [pSelectableRow]="rowData">
+                  <td *ngFor="let col of columns">
+                    <ng-container *ngIf="col.field == 'name'">
+                      <h2 class="table-avatar">
+                        <a>
+                          {{ rowData[col.field] }}
+                          <br />
+                          <span class="text-muted"> {{ rowData?.email }}</span>
+                        </a>
+                      </h2>
+                    </ng-container>
+                    <ng-container *ngIf="col.field != 'name'">{{
+                      rowData[col.field]
+                    }}</ng-container>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td
+                    [attr.colspan]="emergContactCols.length"
+                    style="text-align: center"
+                  >
+                    No Records found.
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12 d-flex">
+    <div class="card profile-box flex-fill">
+      <div class="card-body">
+        <h3 class="card-title">Direct Reports</h3>
+        <div class="row">
+          <div class="col-md-4" *ngFor="let report of profile?.directReports">
+            <div class="leave-info-box">
+              <div class="media align-items-center">
+                <a href="javascript:void(0)" class="avatar">
+                  <img src="{{ pictureUrl + report.photoPath }}" alt="user" />
+                </a>
+                <div class="media-body">
+                  <div class="text-sm my-0">
+                    {{ report.fullName }}
+                    <small class="text-muted"
+                      >( {{ report.employeeId }} )</small
+                    >
+                  </div>
+                  <div>
+                    <small class="text-muted">{{ report.department }}</small
+                    >,
+                    <small class="text-muted">{{ report.designation }}</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Profile Modal -->
+<div
+  id="profile_info"
+  [ngStyle]="{ display: profileinfo }"
+  class="modal custom-modal backdrop"
+  role="dialog"
+  *ngIf="profileinfo == 'block'"
+>
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          *ngIf="errorLabel"
+          style="position: absolute; left: 15px"
+          class="text-danger"
+        >
+          {{ errorLabel }}
+        </h5>
+        <h5 class="modal-title text-capitalize">
+          Profile Details
+          <ng-container *ngIf="profile"
+            >: {{ profile?.firstName }} {{ profile?.lastName }}</ng-container
+          >
+        </h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body" *ngIf="profile">
+        <app-profile-edit
+          [activeTabIndex]="activeTabIndex"
+          [profile]="profile"
+          (errorMessage)="errorMessage($event)"
+          (updateProfile)="updateProfile()"
+          (onClose)="closeAddmodal()"
+        ></app-profile-edit>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Profile Modal -->
+<!-- Immigration Modal -->
+<div
+  id="immigrationInfo"
+  class="modal custom-modal backdrop"
+  [ngStyle]="{ display: immigrationInfo }"
+  role="dialog"
+  *ngIf="immigrationInfo == 'block'"
+>
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          *ngIf="errorLabel"
+          style="position: absolute; left: 15px"
+          class="text-danger"
+        >
+          {{ errorLabel }}
+        </h5>
+        <h5 class="modal-title text-capitalize">
+          Immigration Details
+          <ng-container *ngIf="saveProfile"
+            >: {{ saveProfile?.firstName }}
+            {{ saveProfile?.lastName }}</ng-container
+          >
+        </h5>
+        <button
+          type="button"
+          (click)="closeAddmodal()"
+          class="close"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-profile-immigrations
+          [userId]="userId"
+          (errorMessage)="errorMessage($event)"
+          (updateProfile)="immigrationUpdated($event)"
+        >
+        </app-profile-immigrations>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Immigration Modal -->
+<!-- Education Modal -->
+<div
+  id="education_info"
+  class="modal custom-modal backdrop"
+  *ngIf="educationInfo == 'block'"
+  [ngStyle]="{ display: educationInfo }"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          *ngIf="errorLabel"
+          style="position: absolute; left: 15px"
+          class="text-danger"
+        >
+          {{ errorLabel }}
+        </h5>
+        <h5 class="modal-title text-capitalize">
+          Education Details
+          <ng-container *ngIf="saveProfile"
+            >: {{ saveProfile?.firstName }}
+            {{ saveProfile?.lastName }}</ng-container
+          >
+        </h5>
+        <button
+          type="button"
+          (click)="closeAddmodal()"
+          class="close"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #educationForm="ngForm">
+          <div class="">
+            <div
+              class="card"
+              *ngFor="let education of saveProfile.educations; let i = index"
+            >
+              <div class="card-body">
+                <h3 class="card-title">
+                  Education {{ i + 1 }} Details
+                  <a
+                    *ngIf="profile.educations.length > 1"
+                    href="javascript:void(0);"
+                    (click)="onRemoveEducation(education)"
+                    class="delete-icon"
+                    ><i class="fa fa-trash-o"></i
+                  ></a>
+                </h3>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group form-focus focused">
+                      <input
+                        type="text"
+                        name="institution{{ i }}"
+                        [(ngModel)]="education.institution"
+                        class="form-control floating"
+                        (keypress)="sharedService.keyPressAlphabet($event)"
+                        required
+                      />
+                      <label class="focus-label"
+                        >Institution<span> *</span></label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group form-focus focused">
+                      <input
+                        type="text"
+                        name="subject{{ i }}"
+                        [(ngModel)]="education.subject"
+                        class="form-control floating"
+                        (keypress)="sharedService.keyPressAlphabet($event)"
+                        required
+                      />
+                      <label class="focus-label">Major<span> *</span></label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group form-focus focused">
+                      <p-calendar
+                        #minimumDate
+                        [yearNavigator]="true"
+                        [monthNavigator]="true"
+                        yearRange="1980:2050"
+                        readonlyInput="true"
+                        name="startingDate{{ i }}"
+                        [(ngModel)]="education.startingDate"
+                        showIcon="true"
+                        dateFormat="mm-dd-yy"
+                        dataType="string"
+                        required
+                      ></p-calendar>
+                      <label class="focus-label"
+                        >Starting Date<span> *</span></label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group form-focus focused">
+                      <p-calendar
+                        [yearNavigator]="true"
+                        [monthNavigator]="true"
+                        yearRange="1980:2050"
+                        readonlyInput="true"
+                        [minDate]="minimumDate.value"
+                        name="completionDate{{ i }}"
+                        [(ngModel)]="education.completionDate"
+                        showIcon="true"
+                        dateFormat="mm-dd-yy"
+                        dataType="string"
+                        required
+                      ></p-calendar>
+
+                      <label class="focus-label"
+                        >Completed Date<span> *</span></label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group form-focus focused">
+                      <input
+                        type="text"
+                        name="degree{{ i }}"
+                        [(ngModel)]="education.degree"
+                        class="form-control floating"
+                        (keypress)="sharedService.keyPressAlphabet($event)"
+                        required
+                      />
+                      <label class="focus-label">Degree<span> *</span></label>
+                    </div>
+                  </div>
+                  <!-- <div class="col-md-6">
+                   <div class="form-group form-focus focused">
+                     <input
+                       type="text"
+                       name="grade{{ i }}"
+                       [(ngModel)]="education.grade"
+                       class="form-control floating"
+                     />
+                     <label class="focus-label">Grade</label>
+                   </div>
+                 </div> -->
+                </div>
+              </div>
+            </div>
+            <div class="add-more float-right">
+              <a href="javascript:void(0);" (click)="onAddMoreEducation()"
+                ><i class="fa fa-plus-circle"></i> Add More</a
+              >
+            </div>
+          </div>
+          <div class="submit-section">
+            <button
+              class="btn btn-success submit-btn"
+              (click)="onEducationSubmit()"
+              [disabled]="!educationForm.valid"
+            >
+              <i class="fa fa-save"></i>&nbsp; Save
+            </button>
+            <button
+              class="btn btn-danger submit-btn ml-2"
+              (click)="closeAddmodal()"
+            >
+              <i class="fa fa-times"></i>&nbsp;Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Education Modal -->
+
+<!-- Experience Modal -->
+<div
+  id="experience_info"
+  class="modal custom-modal backdrop"
+  *ngIf="experienceInfo == 'block'"
+  [ngStyle]="{ display: experienceInfo }"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          *ngIf="errorLabel"
+          style="position: absolute; left: 15px"
+          class="text-danger"
+        >
+          {{ errorLabel }}
+        </h5>
+        <h5 class="modal-title text-capitalize">
+          Experience Details
+          <ng-container *ngIf="saveProfile"
+            >: {{ saveProfile?.firstName }}
+            {{ saveProfile?.lastName }}</ng-container
+          >
+        </h5>
+        <button
+          type="button"
+          class="close"
+          (click)="closeAddmodal()"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #experienceForm="ngForm">
+          <div class="">
+            <div
+              class="card"
+              *ngFor="let experience of profile.experiences; let i = index"
+            >
+              <div class="card-body">
+                <h3 class="card-title">
+                  Experience {{ i + 1 }} Details
+                  <a
+                    *ngIf="profile.experiences.length > 1"
+                    href="javascript:void(0);"
+                    (click)="onRemoveExperience(experience)"
+                    class="delete-icon"
+                    ><i class="fa fa-trash-o"></i
+                  ></a>
+                </h3>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group form-focus focused">
+                      <input
+                        type="text"
+                        name="companyName{{ i }}"
+                        [(ngModel)]="experience.companyName"
+                        class="form-control floating"
+                        value="Digital Devlopment Inc"
+                        (keypress)="sharedService.keyPressAlphabet($event)"
+                        required
+                      />
+                      <label class="focus-label"
+                        >Company Name<span> *</span></label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group form-focus focused">
+                      <input
+                        type="text"
+                        name="jobPosition{{ i }}"
+                        [(ngModel)]="experience.jobPosition"
+                        class="form-control floating"
+                        value="Web Developer"
+                        (keypress)="sharedService.keyPressAlphabet($event)"
+                        required
+                      />
+                      <label class="focus-label"
+                        >Job Position<span> *</span></label
+                      >
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group form-focus focused">
+                      <p-calendar
+                        #minimumDate
+                        [yearNavigator]="true"
+                        [monthNavigator]="true"
+                        yearRange="1980:2050"
+                        readonlyInput="true"
+                        name="periodFrom{{ i }}"
+                        [(ngModel)]="experience.periodFrom"
+                        showIcon="true"
+                        dateFormat="mm-dd-yy"
+                        dataType="string"
+                        required
+                      ></p-calendar>
+
+                      <label class="focus-label"
+                        >Period From<span> *</span></label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group form-focus focused">
+                      <p-calendar
+                        [yearNavigator]="true"
+                        [monthNavigator]="true"
+                        yearRange="1980:2050"
+                        readonlyInput="true"
+                        [minDate]="minimumDate.value"
+                        name="periodTo{{ i }}"
+                        [(ngModel)]="experience.periodTo"
+                        showIcon="true"
+                        dateFormat="mm-dd-yy"
+                        dataType="string"
+                        required
+                      ></p-calendar>
+
+                      <label class="focus-label"
+                        >Period To<span> *</span></label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group form-focus focused">
+                      <input
+                        type="text"
+                        name="location{{ i }}"
+                        [(ngModel)]="experience.location"
+                        class="form-control floating"
+                        value="United States"
+                        required
+                      />
+                      <label class="focus-label">Location<span> *</span></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="add-more float-right">
+              <a href="javascript:void(0);" (click)="onAddMoreExperience()"
+                ><i class="fa fa-plus-circle"></i> Add More</a
+              >
+            </div>
+          </div>
+          <div class="submit-section">
+            <button
+              class="btn btn-success submit-btn"
+              (click)="onExperienceSubmit()"
+              [disabled]="!experienceForm.valid"
+            >
+              <i class="fa fa-save"></i>&nbsp;Save
+            </button>
+            <button
+              class="btn btn-danger submit-btn ml-2"
+              (click)="closeAddmodal()"
+            >
+              <i class="fa fa-times"></i>&nbsp;Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Experience Modal -->

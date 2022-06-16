@@ -1,0 +1,515 @@
+<div class="row pt-2">
+  <div class="col-auto float-right ml-auto">
+    <a href="javascript:void(0)" (click)="addResourceAssignment()"
+      ><button class="btn add-btn">
+        <i class="fa fa-plus"></i> Assign Resource
+      </button></a
+    >
+  </div>
+</div>
+
+<div class="row">
+  <div class="col mt-2" *ngIf="!loading" style="font-size: 90%">
+    <p-treeTable
+      [columns]="projectResrCols"
+      [value]="resourcesList"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      styleClass="ui-table-customers"
+      #dt
+      [paginator]="true"
+      [rows]="5"
+      [showCurrentPageReport]="true"
+      [alwaysShowPaginator]="false"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [filterDelay]="0"
+      [globalFilterFields]="[]"
+    >
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" [ttSortableColumn]="col.field">
+            {{ col.header }}
+            <p-treeTableSortIcon [field]="col.field"></p-treeTableSortIcon>
+          </th>
+          <th style="width: 7%">Status</th>
+          <th class="actions" style="width: 3%"></th>
+        </tr>
+      </ng-template>
+      <ng-template
+        pTemplate="body"
+        let-rowNode
+        let-rowData="rowData"
+        let-columns="columns"
+      >
+        <!-- <tr [ngClass]="getRowData(rowNode)"> -->
+        <tr>
+          <td
+            *ngFor="let col of columns; let i = index"
+            [ttSelectableRow]="col.field"
+          >
+            <p-treeTableToggler
+              class="mr-2"
+              [rowNode]="rowNode"
+              *ngIf="i == 0"
+            ></p-treeTableToggler>
+            <ng-container *ngIf="col.field == 'rate'">
+              {{ organizationCurrency }} {{ rowData[col.field] }}
+            </ng-container>
+            <ng-container *ngIf="col.field == 'overtimeRate'">
+              {{ organizationCurrency }} {{ rowData[col.field] }}
+            </ng-container>
+            <ng-container *ngIf="col.field == 'doubleOvertimeRate'">
+              {{ organizationCurrency }} {{ rowData[col.field] }}
+            </ng-container>
+            <ng-container *ngIf="col.field == 'invoiceFrequency'">
+              <div *ngIf="rowData[col.field] == '1'">Weelkly</div>
+              <div *ngIf="rowData[col.field] == '2'">Semi Weekly</div>
+              <div *ngIf="rowData[col.field] == '3'">Monthly</div>
+            </ng-container>
+            <ng-container *ngIf="col.field == 'showInInvoice'">
+              <p-inputSwitch
+                [(ngModel)]="+rowData[col.field]"
+                name="updateShowInInvoice"
+                (onChange)="showInvoiceUpdate($event, rowData)"
+              ></p-inputSwitch>
+            </ng-container>
+            <ng-container
+              *ngIf="
+                col.field != 'rate' &&
+                col.field != 'doubleOvertimeRate' &&
+                col.field != 'overtimeRate' &&
+                col.field != 'invoiceFrequency' &&
+                col.field != 'showInInvoice'
+              "
+            >
+              {{ rowData[col.field] }}
+            </ng-container>
+          </td>
+          <td>
+            <ng-container *ngIf="rowData.endDate">
+              <span class="badge bg-inverse-completed">COMPLETE</span>
+              <!-- <div class="btn btn-white btn-sm btn-rounded">
+              <i class="fa fa-dot-circle-o text-success"></i> Complete
+            </div> -->
+            </ng-container>
+            <ng-container *ngIf="!rowData.endDate">
+              <span class="badge bg-inverse-in-progress">IN PROGRESS</span>
+              <!-- <div class="btn btn-white btn-sm btn-rounded">
+              <i class="fa fa-dot-circle-o text-success"></i> In Progress
+            </div> -->
+            </ng-container>
+          </td>
+          <td class="actions">
+            <div class="dropdown dropdown-action">
+              <a
+                href="#"
+                class="action-icon dropdown-toggle"
+                data-toggle="dropdown"
+                aria-expanded="false"
+                ><i class="material-icons">more_vert</i></a
+              >
+              <div
+                class="dropdown-menu dropdown-menu-right"
+                x-placement="top-end"
+                style="
+                  position: absolute;
+                  will-change: transform;
+                  top: 0px;
+                  left: 0px;
+                  transform: translate3d(72px, -2px, 0px);
+                "
+              >
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  data-toggle="modal"
+                  (click)="editRecord(rowData)"
+                  ><i class="fa fa-pencil-square-o m-r-5"></i> Edit</a
+                >
+
+                <a
+                  *ngIf="+rowData.status"
+                  class="dropdown-item delete"
+                  href="#"
+                  data-toggle="modal"
+                  (click)="onUpdateProjectAssignmentStatus(rowData)"
+                  data-target="#deactivate_project"
+                  ><i class="fa fa-trash-o m-r-5"></i> Deactivate</a
+                >
+                <a
+                  *ngIf="!+rowData.status"
+                  class="success"
+                  href="#"
+                  data-toggle="modal"
+                  (click)="onUpdateProjectAssignmentStatus(rowData)"
+                  data-target="#activate_project"
+                  ><i class="fa fa-check m-r-5"></i>Activate</a
+                >
+              </div>
+            </div>
+            <!-- <div class="d-flex justify-content-center align-items-center">
+            <a
+              href="javascript:void(0)"
+              data-toggle="modal"
+              (click)="editRecord(rowData)"
+              ><i class="fa fa-pencil-square-o m-r-5"></i>
+            </a>
+            <p-inputSwitch
+              [(ngModel)]="+rowData.status"
+              name="updateProjectAssignmentStatus"
+              (onChange)="updateProjectAssignmentStatus($event, rowData)"
+            ></p-inputSwitch>
+          </div> -->
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td
+            [attr.colspan]="projectResrCols.length"
+            style="text-align: center"
+          >
+            No Records Found.
+          </td>
+        </tr>
+      </ng-template>
+    </p-treeTable>
+  </div>
+</div>
+
+<div
+  class="modal custom-modal fade"
+  id="deactivate_project"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <h3>Deactivate Resource Assignment</h3>
+          <p>Are you sure ? Do you want to Deactivate Resource Assignment ?</p>
+        </div>
+        <div class="modal-btn">
+          <div class="row">
+            <div class="col-6 d-flex justify-content-end">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                (click)="updateProjectAssignmentStatus('deactivate')"
+                class="btn btn-info"
+                ><i class="fa fa-check"></i>&nbsp;Deactivate</a
+              >
+            </div>
+            <div class="col-6 d-flex justify-content-start">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                class="btn btn-danger"
+                ><i class="fa fa-times"></i>&nbsp;Cancel</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="modal custom-modal fade"
+  id="activate_project"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <h3>Activate Resource Assignment</h3>
+          <p>Are you sure ? Do you want to Activate Resource Assignment ?</p>
+        </div>
+        <div class="modal-btn">
+          <div class="row">
+            <div class="col-6 d-flex justify-content-end">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                (click)="updateProjectAssignmentStatus('activate')"
+                class="btn btn-info"
+                ><i class="fa fa-check"></i>&nbsp;Activate</a
+              >
+            </div>
+            <div class="col-6 d-flex justify-content-start">
+              <a
+                href="javascript:void(0);"
+                data-dismiss="modal"
+                class="btn btn-danger"
+                ><i class="fa fa-times"></i>&nbsp;Cancel</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Add Resource model model-->
+<div
+  [ngStyle]="{ display: addResourceModelInfo }"
+  class="modal custom-modal backdrop"
+  *ngIf="addResourceModelInfo == 'block'"
+>
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header m-0 pt-3">
+          <h4>
+            <ng-container
+              *ngIf="selectedProjectAssignMent.projectAssignmentDetailsId"
+              >Update</ng-container
+            >
+            <ng-container
+              *ngIf="!selectedProjectAssignMent.projectAssignmentDetailsId"
+              >Add</ng-container
+            >
+            Resource Assignment
+          </h4>
+        </div>
+        <div class="modal-btn">
+          <form #assignResource="ngForm" class="py-2">
+            <div class="card m-0">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label>Employee <span class="text-danger">*</span></label>
+                      <!-- <p-dropdown
+              [options]="lstEmployes"
+              [(ngModel)]="selectedEmployee"
+              (ngModelChange)="getProjectAssignMents($event)"
+              placeholder="Select a Employee"
+              name="employee"
+              [filter]="true"
+            >
+            </p-dropdown> -->
+                      <p-dropdown
+                        [options]="lstEmployes"
+                        [(ngModel)]="
+                          selectedProjectAssignMent.employeeDetailsId
+                        "
+                        placeholder="Select a Employee"
+                        name="employee"
+                        [filter]="true"
+                        required="true"
+                      >
+                      </p-dropdown>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label
+                        >Start Date <span class="text-danger">*</span></label
+                      >
+                      <p-calendar
+                        #minimumDate
+                        [yearNavigator]="true"
+                        [monthNavigator]="true"
+                        yearRange="1980:2050"
+                        readonlyInput="true"
+                        name="startDate"
+                        [(ngModel)]="selectedProjectAssignMent.startDate"
+                        showIcon="true"
+                        dateFormat="mm-dd-yy"
+                        dataType="string"
+                        required="true"
+                      ></p-calendar>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label>End Date</label>
+                      <p-calendar
+                        [yearNavigator]="true"
+                        [monthNavigator]="true"
+                        yearRange="1980:2050"
+                        readonlyInput="true"
+                        [minDate]="minimumDate.value"
+                        name="endDate"
+                        [(ngModel)]="selectedProjectAssignMent.endDate"
+                        showIcon="true"
+                        dateFormat="mm-dd-yy"
+                        dataType="string"
+                      ></p-calendar>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label
+                        >Invoice Frequency
+                        <span class="text-danger">*</span></label
+                      >
+                      <p-dropdown
+                        [options]="invoiceFrequencyList"
+                        [(ngModel)]="selectedProjectAssignMent.invoiceFrequency"
+                        placeholder="Select Invoice Frequency"
+                        name="invoiceFrequency"
+                        [filter]="true"
+                        required="true"
+                      >
+                      </p-dropdown>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label
+                        >Bill to Customer
+                        <span class="text-danger">*</span></label
+                      >
+                      <p-dropdown
+                        [options]="projectCustomerList"
+                        [(ngModel)]="selectedProjectAssignMent.companyDetailsId"
+                        placeholder="Select Customer"
+                        name="customer"
+                        [filter]="true"
+                        required="true"
+                      >
+                      </p-dropdown>
+                    </div>
+                  </div>
+                  <!-- 22/07/2021 -->
+                  <div class="col-2">
+                    <div class="form-group">
+                      <label class="col-form-label">Show In Invoice </label>
+                      <div>
+                        <p-inputSwitch
+                          [(ngModel)]="showInInvoice"
+                          name="showInInvoice"
+                        ></p-inputSwitch>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-2">
+                    <div class="form-group">
+                      <label
+                        >{{ organizationCurrency }} Rate
+                        <span class="text-danger">*</span></label
+                      >
+                      <input
+                        type="number"
+                        class="form-control"
+                        step="any"
+                        [(ngModel)]="selectedProjectAssignMent.rate"
+                        name="rate"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-2">
+                    <div class="form-group">
+                      <label class="col-form-label">Overtime Exemption </label>
+                      <div>
+                        <p-inputSwitch
+                          [(ngModel)]="isOvertimeExemption"
+                          name="overtimeExemption"
+                          (onChange)="
+                            handleIsOvertimeExemption(
+                              $event,
+                              selectedProjectAssignMent
+                            )
+                          "
+                        ></p-inputSwitch>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-3" *ngIf="!isOvertimeExemption">
+                    <div class="form-group">
+                      <label
+                        >{{ organizationCurrency }} Overtime Rate
+                        <span class="text-danger">*</span></label
+                      >
+                      <input
+                        type="number"
+                        class="form-control"
+                        step="any"
+                        [(ngModel)]="selectedProjectAssignMent.overtimeRate"
+                        name="overtimeRate"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-3" *ngIf="!isOvertimeExemption">
+                    <div class="form-group">
+                      <label
+                        >{{ organizationCurrency }} Double Overtime Rate
+                        <span class="text-danger">*</span></label
+                      >
+                      <input
+                        type="number"
+                        class="form-control"
+                        step="any"
+                        [(ngModel)]="
+                          selectedProjectAssignMent.doubleOvertimeRate
+                        "
+                        name="doubleOvertimeRate"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <!-- 22/07/2021 -->
+                  <div
+                    class="
+                      col-12
+                      d-flex
+                      align-items-center
+                      justify-content-center
+                    "
+                  >
+                    <button
+                      href="javascript:void(0);"
+                      data-dismiss="modal"
+                      (click)="assignProject(assignResource)"
+                      class="btn btn-success"
+                      [disabled]="!assignResource.valid"
+                    >
+                      <i class="fa fa-save"></i>&nbsp;
+                      <ng-container
+                        *ngIf="
+                          selectedProjectAssignMent.projectAssignmentDetailsId
+                        "
+                        >Update</ng-container
+                      >
+                      <ng-container
+                        *ngIf="
+                          !selectedProjectAssignMent.projectAssignmentDetailsId
+                        "
+                        >Save</ng-container
+                      >
+                    </button>
+                    <button
+                      *ngIf="selectedProjectAssignMent"
+                      class="btn btn-info ml-2"
+                      (click)="clear()"
+                    >
+                      <i class="fa fa-refresh"></i>&nbsp;Clear
+                    </button>
+                    <button class="btn btn-danger ml-2" (click)="cancel()">
+                      <i class="fa fa-times"></i>&nbsp;Cancel
+                    </button>
+                    <!-- <a
+                      href="javascript:void(0)"
+                      [routerLink]="['/admin/projects/project/view']"
+                      [state]="{ projectDetailsId: projectDetailsId }"
+                      class="btn btn-danger ml-2"
+                      (click)="cancel()"
+                      ><i class="fa fa-times"></i>&nbsp;Cancel</a
+                    > -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Add Resource model-->
